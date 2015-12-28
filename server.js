@@ -36,7 +36,7 @@ io.on('connection', function (socket) {
 	  			torrent.destroy();
 			})
 
-		  	socket.emit('download');
+		  	socket.emit('update-t');
 		});	
 	});
 
@@ -70,7 +70,14 @@ io.on('connection', function (socket) {
 	socket.on('remove-d',function(file){
 		fs.unlink(__dirname+"/public/downloads/"+file, function(err){
   			if (err) throw err;
-			socket.emit('remove-d');
+			socket.emit('update-d');
+		});
+	});
+
+	socket.on('rename-d',function(data){
+		fs.rename(__dirname+"/public/downloads/"+data.path+"/"+data.oldname, __dirname+"/public/downloads/"+data.path+"/"+data.newname, function(err){
+			if (err) throw err;
+			socket.emit('update-d');
 		});
 	});
 

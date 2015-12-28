@@ -1,4 +1,4 @@
-socket.on('download',function(){
+socket.on('update-t',function(){
 	listT();
 });
 
@@ -12,6 +12,6 @@ socket.on('list-d',function(directory){
 	listDirectory(directory);
 });
 
-socket.on('remove-d',function(){
+socket.on('update-d',function(){
 	listD();
 });

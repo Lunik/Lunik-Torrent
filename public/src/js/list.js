@@ -1,4 +1,4 @@
-setInterval(listT, 1000);
+setInterval(listT, 3000);
 setInterval(listD, 30000);
 
 $(document).ready(initList);
