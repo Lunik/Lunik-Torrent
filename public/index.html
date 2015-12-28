@@ -16,17 +16,31 @@
 		<input type="submit" name="torrent-start" value="Start Torrent">
 	</div>
 	<div class="container">
-		<table class="list">
-			<thead>
-				<tr>
-					<th>Nom</th>
-					<th>Taille</th>
-					<th>Progression</th>
-					<th>Up</th>
-					<th>Down</th>
-				</tr>
-			</thead>
-		</table>
+		<div class="torrent">
+			<table class="list">
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Taille</th>
+						<th>Progression</th>
+						<th>Up</th>
+						<th>Down</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="directory">
+			<table class="list">
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Taille</th>
+						<th>Date</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
 	</div>
 	<script src="src/js/jquery.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>

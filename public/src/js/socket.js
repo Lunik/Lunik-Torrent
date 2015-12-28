@@ -1,13 +1,13 @@
 socket.on('download',function(){
-
+	console.log("ok");
 });
 
-socket.on('list',function(torrents){
-	$('.container .list tbody').html("");
-	var i = 0;
-	torrents.forEach(function(torrent){
-		torrent.alter = i;
-		appendTorrent(torrent);
-		i = (i+1)%2;
-	});
+socket.on('list-t',function(torrents){
+	$('.container .torrent .list tbody').html("");
+	listTorrents(torrents);
+});
+
+socket.on('list-d',function(directory){
+	$('.container .directory .list tbody').html("");
+	listDirectory(directory);
 });

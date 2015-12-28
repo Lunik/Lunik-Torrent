@@ -4,7 +4,8 @@
   "description": "lunik torrent",
   "dependencies": {
     "express": "^4.13.3",
+    "fs": "0.0.2",
     "socket.io": "^1.3.7",
-    "webtorrent": "^0.64.0"
+    "webtorrent": "^0.64.0",
   }
 }

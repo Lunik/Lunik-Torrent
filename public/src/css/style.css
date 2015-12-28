@@ -13,6 +13,16 @@ html,body{
 	color: #FFF;
 }
 
+i.fa::before{
+	margin: 2px;
+}
+i.fa{
+	padding: 5px;
+}
+
+.but{
+	cursor: pointer;
+}
 /************/
 /* 	 Title	*/
 /************/
@@ -77,27 +87,40 @@ html,body{
 	margin-top: 20px;
 }
 
+.container .torrent, .container .directory{
+	margin: 50px 0px 50px 0px;
+}
+
+.container table{
+	border-collapse: collapse;
+}
+
 .list{
 	width: 90%;
 
 	margin: auto;
 	padding: 0px;
 
-	border: 2px solid grey;
-	border-radius: 5px;
+	border: 2px solid #DF7401;
 }
 
-.list .torrent{
+.list thead th{
+	background-color: #DF7401;
+	padding: 5px 0px 10px 0px;
+}
+
+.list td{
 	height: 30px;
 
 	list-style-type: none;
 }
 
-.list .torrent.alter{
+.list td.alter{
 	background-color: rgba(255, 128, 0, 0.3);
 }
 
 .list td{
+	padding: 2px;
 	text-align: center;
 }
 
@@ -106,7 +129,12 @@ html,body{
 	min-width: 55px;
 }
 
-.list td.size{
+.list td.date{
+	width: 10%;
+	min-width: 55px;
+}
+
+.list td.name{
 	width: 8%;
 	min-width: 55px;
 }
