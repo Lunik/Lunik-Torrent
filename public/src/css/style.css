@@ -1,0 +1,143 @@
+@import url(../font-awesome/css/font-awesome.min.css);
+*{
+	outline: none;
+}
+html,body{
+	width: 100%;
+	height: 100%;
+
+	margin: 0px;
+	padding: 0px;
+
+	background-color: #111;
+	color: #FFF;
+}
+
+/************/
+/* 	 Title	*/
+/************/
+
+.title{
+	text-align: center;
+}
+.title img{
+	width: 20%;
+}
+
+/************/
+/* 	 Menu	*/
+/************/
+.menu{
+	text-align: center;
+}
+
+.menu *{
+	margin: 5px;
+}
+
+.menu input{
+    height: 15px;
+
+    padding: 10px;
+    margin: 5px auto 5px auto;
+
+    color: grey;
+    font-size: 15px;
+    background-color: #FFF;
+    border: 1px solid #D8E1E4;
+    border-radius: 3px;
+}
+
+.menu input[type=text]{
+	width: 70%;
+}
+@media only screen and (max-width: 768px) {
+	.menu input[type=text]{
+		width: 90%;
+	}
+}
+
+.menu input[type=submit] {
+    width: 20%;
+    min-width: 120px;
+    height: 100%;
+    cursor: pointer;
+}
+.menu input[type="submit"]:hover{
+	background-color: #DDD;
+}
+.menu input[type="submit"]:active{
+	background-color: #CCC;
+}
+
+/****************/
+/* 	 Container	*/
+/****************/
+.container{
+	margin-top: 20px;
+}
+
+.list{
+	width: 90%;
+
+	margin: auto;
+	padding: 0px;
+
+	border: 2px solid grey;
+	border-radius: 5px;
+}
+
+.list .torrent{
+	height: 30px;
+
+	list-style-type: none;
+}
+
+.list .torrent.alter{
+	background-color: rgba(255, 128, 0, 0.3);
+}
+
+.list td{
+	text-align: center;
+}
+
+.list td.name{
+	width: 20%;
+	min-width: 55px;
+}
+
+.list td.size{
+	width: 8%;
+	min-width: 55px;
+}
+
+.list td.sup, .list td.sdown{
+	width: 8%;
+	min-width: 55px;
+}
+
+.list progress[value]{
+	-webkit-appearance: none;
+  	appearance: none;
+
+  	width: 95%;
+  	height: 15px;
+
+}
+
+.list progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+  background-color: #222;
+}
+
+.list progress[value]::-webkit-progress-value {
+  border-radius: 2px; 
+  background-size: 35px 20px, 100% 100%, 100% 100%;
+  background-color: #DF7401;
+}
+
+
+
+

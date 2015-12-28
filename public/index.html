@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lunik - Torrent</title>
+
+	<meta charset="UTF-8">
+
+	<link rel="stylesheet" href="src/css/style.css">
+</head>
+<body>
+	<div class="title">
+		<img src="src/image/logo.png">
+	</div>
+	<div class="menu">
+		<input type="text" name="torrent-link"placeholder="Torrent link...."><br/>
+		<input type="submit" name="torrent-start" value="Start Torrent">
+	</div>
+	<div class="container">
+		<table class="list">
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Taille</th>
+					<th>Progression</th>
+					<th>Up</th>
+					<th>Down</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<script src="src/js/jquery.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="src/js/app.js"></script>
+</body>
+</html>
