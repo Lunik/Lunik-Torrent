@@ -1,7 +1,15 @@
 // Setup basic express server
+var auth = require('http-auth');
+var basic = auth.basic({
+	realm: "Simon Area.",
+	file: __dirname+"/.htpasswd" // gevorg:gpass, Sarah:testpass ... 
+});
+
 var express = require('express');
 var app = express();
-var server = require('http').createServer(app);
+
+var server = require('http').createServer(basic,app);
+
 var io = require('socket.io')(server);
 var port = process.env.PORT || 80;
 var fs = require('fs');
@@ -18,7 +26,7 @@ app.use(express.static(__dirname + '/public'));
 
 io.on('connection', function (socket) {
 
-	socket.on('download',function(url){
+	socket.on('download-t',function(url){
 		client.add(url, {path: __dirname+"/public/downloads/"}, function (torrent) {
 		  	// Got torrent metadata!
 		  	log('Server is downloading:'+torrent.name);

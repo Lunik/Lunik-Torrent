@@ -3,7 +3,7 @@ $startTorrentBut = $('.menu input[name="torrent-start"]');
 
 $startTorrentBut.click(function(){
 	if($torrentInput.val()){
-		socket.emit('download',$torrentInput.val());
+		socket.emit('download-t',$torrentInput.val());
 		$torrentInput.val("");
 	}
 })
