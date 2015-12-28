@@ -10,7 +10,7 @@ html,body{
 	padding: 0px;
 
 	background-color: #111;
-	color: #FFF;
+	color: #AAA;
 }
 
 i.fa::before{
@@ -20,6 +20,13 @@ i.fa{
 	padding: 5px;
 }
 
+a{
+	color: #DF7401;
+	text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
 .but{
 	cursor: pointer;
 }
@@ -106,7 +113,13 @@ i.fa{
 
 .list thead th{
 	background-color: #DF7401;
-	padding: 5px 0px 10px 0px;
+	padding: 5px 10px 10px 10px;
+
+	text-align: left;
+
+	color: #111;
+	font-weight: bold;
+	font-size: 20px;
 }
 
 .list td{
@@ -115,18 +128,12 @@ i.fa{
 	list-style-type: none;
 }
 
-.list td.alter{
-	background-color: rgba(255, 128, 0, 0.3);
+.alter{
+	background-color: rgba(255, 255, 255, 0.1);
 }
 
 .list td{
-	padding: 2px;
-	text-align: center;
-}
-
-.list td.name{
-	width: 20%;
-	min-width: 55px;
+	padding: 2px 10px 2px 10px;
 }
 
 .list td.date{
@@ -134,8 +141,13 @@ i.fa{
 	min-width: 55px;
 }
 
-.list td.name{
+.torrent .list td.name{
 	width: 8%;
+	min-width: 55px;
+}
+
+.directory .list td.name{
+	width: 40%;
 	min-width: 55px;
 }
 
@@ -166,6 +178,22 @@ i.fa{
   background-color: #DF7401;
 }
 
+.actions .but:hover{
+	text-decoration: underline;
+}
+.actions .but#download{
+	color:#01DFD7;
+}
 
+.actions .but#delete{
+	color:#DF0101;
+}
 
+.actions .but#rename{
+	color:#DF7401;
+}
+
+.actions .but#info{
+	color: #86c351;
+}
 

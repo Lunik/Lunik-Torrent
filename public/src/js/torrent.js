@@ -19,8 +19,8 @@ function appendTorrent(torrent){
 	var $progress = $('<td>').addClass('progress').append(
 		$('<progress>').attr('max',torrent.size).attr('value',torrent.down)
 	).appendTo($torrent);
-	var $upspeed = $('<td>').addClass('sup').text(formatSpeed(torrent.sup)).appendTo($torrent);
 	var $downspeed = $('<td>').addClass('sdown').text(formatSpeed(torrent.sdown)).appendTo($torrent);
+	var $upspeed = $('<td>').addClass('sup').text(formatSpeed(torrent.sup)).appendTo($torrent);
 
 
 	$torrent.appendTo('.container .torrent .list');
