@@ -20,7 +20,7 @@ function appendDirectory(file){
 		socket.emit('remove-d',document.location.hash.substring(1)+"/"+file.name);
 	});
 	var $renameBut = $('<i>').addClass('but fa fa-pencil').attr('id','rename').text('rename').appendTo($actions).click(function(){
-		var name = prompt('New Name');
+		var name = prompt('New Name',file.name);
 		name = name.split('\/').pop();
 		if(name){
 			socket.emit('rename-d',{
