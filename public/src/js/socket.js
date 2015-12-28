@@ -1,5 +1,5 @@
 socket.on('download',function(){
-	console.log("ok");
+	listT();
 });
 
 socket.on('list-t',function(torrents){
@@ -10,4 +10,8 @@ socket.on('list-t',function(torrents){
 socket.on('list-d',function(directory){
 	$('.container .directory .list tbody').html("");
 	listDirectory(directory);
+});
+
+socket.on('remove-d',function(){
+	listD();
 });

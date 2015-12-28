@@ -42,16 +42,27 @@ io.on('connection', function (socket) {
 	        	return log(err);
 	    	}
 	    	var list = {};
-	    	files.forEach(function(file){
-	    		fs.stat(__dirname+"/public/downloads/"+dir+file,function(err, stats){
-	    			list[file] = stats;
-	    			list[file].isfile = stats.isFile();
-	    			list[file].isdir = stats.isDirectory()
-	    			if(Object.keys(list).length == files.length){
-	    				socket.emit('list-d',list);
-	    			}
-	    		});
-	    	});
+	    	if(files.length > 0){
+		    	files.forEach(function(file){
+		    		fs.stat(__dirname+"/public/downloads/"+dir+file,function(err, stats){
+		    			list[file] = stats;
+		    			list[file].isfile = stats.isFile();
+		    			list[file].isdir = stats.isDirectory()
+		    			if(Object.keys(list).length == files.length){
+		    				socket.emit('list-d',list);
+		    			}
+		    		});
+		    	});
+		    } else {
+		    	socket.emit('list-d',{});
+		    }
+		});
+	});
+
+	socket.on('remove-d',function(file){
+		fs.unlink(__dirname+"/public/downloads/"+file, function(err){
+  			if (err) throw err;
+			socket.emit('remove-d');
 		});
 	});
 

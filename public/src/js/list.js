@@ -14,7 +14,7 @@ function listT(){
 
 function listD(){
 	var hash = document.location.hash.substring(1);
-	socket.emit('list-d',hash+"/");
+	socket.emit('list-d',hash);
 }
 
 function listTorrents(torrents){
@@ -27,7 +27,6 @@ function listTorrents(torrents){
 }
 
 function listDirectory(directory){
-	console.log(directory);
 	var i = 0;
 	for(var key in directory){
 		var file = directory[key];
