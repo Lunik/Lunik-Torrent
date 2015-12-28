@@ -14,7 +14,7 @@ function appendDirectory(file){
 	var $actions = $('<td>').addClass('actions');
 
 	var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id','download').text('download').appendTo($actions).click(function(){
-		window.open("downloads/"+file.name);
+		window.open("downloads/"+document.location.hash.substring(1)+"/"+file.name);
 	});
 	var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id','delete').text('delete').appendTo($actions);
 	var $renameBut = $('<i>').addClass('but fa fa-pencil').attr('id','rename').text('rename').appendTo($actions);
