@@ -24,6 +24,13 @@ server.listen(port, function () {
 // Routing
 app.use(express.static(__dirname + '/public'));
 
+app.get('/:downloads(*)', function(req, res, next){
+  var file = req.params['0'];
+  var path = __dirname + '/downloads/' + file;
+
+  res.download(path);
+});
+
 io.on('connection', function (socket) {
 
 	socket.on('download-t',function(url){
