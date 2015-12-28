@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var port = process.env.PORT || 5002;
+var port = process.env.PORT || 80;
 var fs = require('fs');
 
 var WebTorrent = require('webtorrent');
