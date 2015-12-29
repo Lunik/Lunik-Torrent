@@ -55,7 +55,7 @@ io.on('connection', function (socket) {
 		    		fs.stat(__dirname+"/public/downloads/"+dir+file,function(err, stats){
 		    			list[file] = stats;
 		    			list[file].isfile = stats.isFile();
-		    			list[file].isdir = stats.isDirectory()
+		    			list[file].isdir = stats.isDirectory();
 		    			if(Object.keys(list).length == files.length){
 		    				socket.emit('list-d',list);
 		    			}
@@ -68,9 +68,16 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('remove-d',function(file){
-		fs.unlink(__dirname+"/public/downloads/"+file, function(err){
-  			if (err) throw err;
-			socket.emit('update-d');
+		fs.stat(__dirname+"/public/downloads/"+file, function(err, stats){
+			if(stats.isDirectory()){
+				removeRecursif(__dirname+"/public/downloads/"+file);
+				socket.emit('update-d');
+			} else {
+				fs.unlink(__dirname+"/public/downloads/"+file, function(err){
+  					if (err) throw err;
+					socket.emit('update-d');
+				});
+			}
 		});
 	});
 
@@ -105,4 +112,17 @@ function listTorrents(){
 	return torrents;
 }
 
+function removeRecursif(path){
+	if(fs.existsSync(path)) {
+		fs.readdirSync(path).forEach(function(file,index){
+	    	var curPath = path + "/" + file;
+	    	if(fs.lstatSync(curPath).isDirectory()) { // recurse
+	        	deleteFolderRecursive(curPath);
+	     	} else { // delete file
+	        	fs.unlinkSync(curPath);
+	      	}
+	    });
+	    fs.rmdirSync(path);
+  	}
+}
 
