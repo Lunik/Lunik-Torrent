@@ -1,25 +1,32 @@
 // Setup basic express server
 var auth = require('http-auth');
 var basic = auth.basic({
-	realm: "Simon Area.",
-	file: __dirname+"/.htpasswd" // gevorg:gpass, Sarah:testpass ... 
+	realm: "Protected area. Please disperse !",
+	file: __dirname+"/.htpasswd"
 });
 
+//file management
+var fs = require('fs');
+fs.writeFile("log.txt", "",'utf-8', function(err){
+	if(err) throw err;
+});
+
+//setup http server
 var express = require('express');
 var app = express();
-
 var server = require('http').createServer(basic,app);
-
-var io = require('socket.io')(server);
 var port = process.env.PORT || 80;
-var fs = require('fs');
-
-var WebTorrent = require('webtorrent');
-var client = new WebTorrent();
 
 server.listen(port, function () {
   log('Server listening at port '+port);
 });
+
+//socket io
+var io = require('socket.io')(server);
+
+//webtorrent
+var WebTorrent = require('webtorrent');
+var client = new WebTorrent();
 
 // Routing
 app.use(express.static(__dirname + '/public'));
@@ -29,10 +36,10 @@ io.on('connection', function (socket) {
 	socket.on('download-t',function(url){
 		client.add(url, {path: __dirname+"/public/downloads/"}, function (torrent) {
 		  	// Got torrent metadata!
-		  	log('Server is downloading:'+torrent.name);
+		  	log("Start downloading: "+torrent.name);
 
 		  	torrent.on('done', function(){
-	  			log('Server finish downloading:'+torrent.name);
+	  			log("Finish downloading: "+torrent.name);
 	  			torrent.destroy();
 			})
 
@@ -46,13 +53,12 @@ io.on('connection', function (socket) {
 
 	socket.on('list-d',function(dir){
 		fs.readdir(__dirname+"/public/downloads/"+dir, function(err, files){
-			if(err) {
-	        	return log(err);
-	    	}
+			if(err) return log(err);
 	    	var list = {};
 	    	if(files.length > 0){
 		    	files.forEach(function(file){
 		    		fs.stat(__dirname+"/public/downloads/"+dir+file,function(err, stats){
+		    			if(err) return log(err);
 		    			list[file] = stats;
 		    			list[file].isfile = stats.isFile();
 		    			list[file].isdir = stats.isDirectory();
@@ -68,13 +74,15 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('remove-d',function(file){
+		log("Remove: "+file);
 		fs.stat(__dirname+"/public/downloads/"+file, function(err, stats){
+			if(err) return log(err);
 			if(stats.isDirectory()){
 				removeRecursif(__dirname+"/public/downloads/"+file);
 				socket.emit('update-d');
 			} else {
 				fs.unlink(__dirname+"/public/downloads/"+file, function(err){
-  					if (err) throw err;
+  					if(err) return log(err);
 					socket.emit('update-d');
 				});
 			}
@@ -82,8 +90,9 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('rename-d',function(data){
+		log("Rename: "+data.oldname+" In: "+date.newname);
 		fs.rename(__dirname+"/public/downloads/"+data.path+"/"+data.oldname, __dirname+"/public/downloads/"+data.path+"/"+data.newname, function(err){
-			if (err) throw err;
+			if(err) return log(err);
 			socket.emit('update-d');
 		});
 	});
@@ -92,6 +101,9 @@ io.on('connection', function (socket) {
 
 function log(text){
 	console.log(text);
+	fs.appendFile("log.txt", text+"\n", 'utf8', function(err){
+		if(err) throw err;
+	});
 }
 
 function listTorrents(){
