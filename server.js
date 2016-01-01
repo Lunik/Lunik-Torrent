@@ -107,7 +107,7 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('rename-d',function(data){
-		log("Rename: "+data.oldname+" In: "+date.newname);
+		log("Rename: "+data.oldname+" In: "+data.newname);
 		fs.rename(__dirname+"/public/downloads/"+data.path+"/"+data.oldname, __dirname+"/public/downloads/"+data.path+"/"+data.newname, function(err){
 			if(err) return log(err);
 			socket.emit('update-d');
