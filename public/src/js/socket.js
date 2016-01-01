@@ -2,16 +2,24 @@ socket.on('update-t',function(){
 	listT();
 });
 
+socket.on('finish-t',function(hash){
+	$('.torrent[hash='+hash+']')
+});
+
 socket.on('list-t',function(torrents){
-	$('.container .torrent .list tbody').html("");
+	setTimeout(listT, 3000);
 	listTorrents(torrents);
 });
 
 socket.on('list-d',function(directory){
-	$('.container .directory .list tbody').html("");
+	setTimeout(listD, 30000);
 	listDirectory(directory);
 });
 
 socket.on('update-d',function(){
 	listD();
+});
+
+socket.on('update-t',function(){
+	listT();
 });

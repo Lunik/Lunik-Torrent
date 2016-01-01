@@ -11,6 +11,9 @@ fs.writeFile("log.txt", "",'utf-8', function(err){
 	if(err) throw err;
 });
 
+var cp = require('child_process');
+
+
 //setup http server
 var express = require('express');
 var app = express();
@@ -28,27 +31,33 @@ var io = require('socket.io')(server);
 var WebTorrent = require('webtorrent');
 var client = new WebTorrent();
 
+var Childs = [];
 // Routing
 app.use(express.static(__dirname + '/public'));
 
 io.on('connection', function (socket) {
 
 	socket.on('download-t',function(url){
-		client.add(url, {path: __dirname+"/public/downloads/"}, function (torrent) {
-		  	// Got torrent metadata!
-		  	log("Start downloading: "+torrent.name);
+		var n = cp.fork(__dirname + '/tclient.js');
+		Childs.push(n);
+		n.on('message',function(data){
+			switch(data.type){
+				case 'finish':
+					socket.broadcast.emit('finish-t');
+					break;
+				case 'info':
+					socket.broadcast.emit('list-t',data.torrent);
+					break;
+			}
+		});
 
-		  	torrent.on('done', function(){
-	  			log("Finish downloading: "+torrent.name);
-	  			torrent.destroy();
-			})
-
-		  	socket.emit('update-t');
-		});	
+		n.send({'type': "download", 'torrent': url});
 	});
 
 	socket.on('list-t',function(){
-		socket.emit('list-t',listTorrents());
+		Childs.forEach(function(client){
+			client.send({'type':"info"});
+		});	
 	});
 
 	socket.on('list-d',function(dir){
@@ -73,8 +82,16 @@ io.on('connection', function (socket) {
 		});
 	});
 
+	socket.on('remove-t',function(hash){
+		log('Remove torrent: '+hash);
+		client.remove(hash, function (err) {
+			if(err) return log(err);
+		});
+		socket.emit('update-t');
+	});
+
 	socket.on('remove-d',function(file){
-		log("Remove: "+file);
+		log("Remove file: "+file);
 		fs.stat(__dirname+"/public/downloads/"+file, function(err, stats){
 			if(err) return log(err);
 			if(stats.isDirectory()){
@@ -104,24 +121,6 @@ function log(text){
 	fs.appendFile("log.txt", text+"\n", 'utf8', function(err){
 		if(err) throw err;
 	});
-}
-
-function listTorrents(){
-	var torrents = [];
-	client.torrents.forEach(function (torrent){
-		var t = {};
-		t.name = torrent.name;
-		t.size = torrent.length;
-		if(torrent.swarm){
-			t.sdown = torrent.swarm.downloadSpeed();
-			t.sup = torrent.swarm.uploadSpeed();
-			t.down = torrent.swarm.downloaded;
-			t.up = torrent.swarm.uploaded;
-		}
-		torrents.push(t);
-	});
-
-	return torrents;
 }
 
 function removeRecursif(path){

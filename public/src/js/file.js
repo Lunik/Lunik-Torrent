@@ -14,3 +14,8 @@ function formatDate(date){
 
 	return date;
 }
+
+function formatTime(time){
+	
+	return time;
+}

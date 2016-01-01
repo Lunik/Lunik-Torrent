@@ -1,5 +1,3 @@
-setInterval(listT, 3000);
-setInterval(listD, 30000);
 
 $(document).ready(initList);
 $(window).bind('hashchange',listD).trigger('hashchange');
@@ -13,6 +11,7 @@ function listT(){
 };
 
 function listD(){
+	$('.container .directory .list tbody').html("");
 	var hash = document.location.hash.substring(1);
 	socket.emit('list-d',hash);
 }
