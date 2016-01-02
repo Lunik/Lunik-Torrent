@@ -74,9 +74,15 @@ io.on('connection', function (socket) {
 		    	files.forEach(function(file){
 		    		fs.stat(__dirname+"/public/downloads/"+dir+file,function(err, stats){
 		    			if(err) return log(err);
-		    			list[file] = stats;
+		    			if(stats.isFile()){
+		    				list[file] = stats;
+		    			} else {
+		    				stats.size = sizeRecursif(__dirname+"/public/downloads/"+dir+file);
+		    				list[file] = stats;
+		    			}
 		    			list[file].isfile = stats.isFile();
 		    			list[file].isdir = stats.isDirectory();
+
 		    			if(Object.keys(list).length == files.length){
 		    				socket.emit('list-d',list);
 		    			}
@@ -143,3 +149,17 @@ function removeRecursif(path){
   	}
 }
 
+function sizeRecursif(path){
+	var size = 0;
+	if(fs.existsSync(path)) {
+		fs.readdirSync(path).forEach(function(file,index){
+	    	var curPath = path + "/" + file;
+	    	if(fs.lstatSync(curPath).isDirectory()) { // recurse
+	        	sizeRecursif(curPath);
+	     	} else { // read size
+	        	size += fs.statSync(curPath).size;
+	      	}
+	    });
+	    return size;
+  	}
+}

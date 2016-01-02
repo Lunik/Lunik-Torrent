@@ -11,8 +11,9 @@ function formatSpeed(bytes){
 }
 
 function formatDate(date){
-
-	return date;
+	//return date;
+	var date = new Date(date);
+	return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getMinutes();
 }
 
 function formatTime(time){
