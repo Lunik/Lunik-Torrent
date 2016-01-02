@@ -1,6 +1,4 @@
-
-$(document).ready(initList);
-$(window).bind('hashchange',listD).trigger('hashchange');
+$(window).bind('hashchange',initList).trigger('hashchange');
 
 function initList(){
 	listT();
@@ -8,12 +6,13 @@ function initList(){
 }
 function listT(){
 	socket.emit('list-t');
+	setTimeout(listT, 3000);
 };
 
 function listD(){
-	$('.container .directory .list tbody').html("");
 	var hash = document.location.hash.substring(1);
 	socket.emit('list-d',hash);
+	setTimeout(listD, 30000);
 }
 
 function listTorrents(torrents){

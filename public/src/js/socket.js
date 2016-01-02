@@ -3,16 +3,15 @@ socket.on('update-t',function(){
 });
 
 socket.on('finish-t',function(hash){
-	$('.torrent[hash='+hash+']')
+	$('.torrent[hash='+hash+']').remove();
 });
 
 socket.on('list-t',function(torrents){
-	setTimeout(listT, 3000);
 	listTorrents(torrents);
 });
 
 socket.on('list-d',function(directory){
-	setTimeout(listD, 30000);
+	$('.container .directory .list tbody').html("");
 	listDirectory(directory);
 });
 

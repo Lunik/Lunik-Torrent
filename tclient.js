@@ -12,7 +12,6 @@ process.on('message', function(data) {
 			  			console.log("Finish torrent: "+torrent.name);
 			  			torrent.destroy();
 			  			process.send({'type':"finish",'hash':torrent.infoHash});
-			  			process.kill('SIGINT');
 				});
 			});	
 			break;

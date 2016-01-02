@@ -32,6 +32,7 @@ var WebTorrent = require('webtorrent');
 var client = new WebTorrent();
 
 var Childs = [];
+var TorrentTable = {};
 // Routing
 app.use(express.static(__dirname + '/public'));
 
@@ -44,9 +45,14 @@ io.on('connection', function (socket) {
 			switch(data.type){
 				case 'finish':
 					socket.broadcast.emit('finish-t');
+					socket.emit('finish-t',data.hash);
+					delete Childs.indexOf(n);
+					delete TorrentTable[n]
 					break;
 				case 'info':
 					socket.broadcast.emit('list-t',data.torrent);
+					socket.emit('list-t',data.torrent);
+					TorrentTable[n] = data.torrent.hash;
 					break;
 			}
 		});

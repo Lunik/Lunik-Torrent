@@ -4,12 +4,12 @@ $startTorrentBut = $('.menu input[name="torrent-start"]');
 $startTorrentBut.click(function(){
 	if($torrentInput.val()){
 		socket.emit('download-t',$torrentInput.val());
-		//$torrentInput.val("");
+		$torrentInput.val("");
 	}
 })
 
 function appendTorrent(torrent){
-	if($('.torrent[hash='+torrent.hash+']').length){
+	if($('.torrent[hash='+torrent.hash+']').length > 0){
 		var $torrent = $('.torrent[hash='+torrent.hash+']');
 		$torrent.html('');
 	} else {

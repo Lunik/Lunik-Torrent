@@ -16,6 +16,14 @@ function formatDate(date){
 }
 
 function formatTime(time){
-	
-	return time;
+	var x = time / 1000
+	var seconds = x % 60
+	x /= 60
+	var minutes = x % 60
+	x /= 60
+	var hours = x % 24
+	x /= 24
+	var days = x
+
+	return Math.round(days)+"j "+Math.round(hours)+":"+Math.round(minutes)+":"+Math.round(seconds);
 }
