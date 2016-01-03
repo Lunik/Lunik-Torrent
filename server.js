@@ -47,15 +47,13 @@ io.on('connection', function (socket) {
 
 	function startTorrent(url){
 		log('Trying to download: '+url);
-		var hash = parseTorrent(url).infoHash;
-		log("Hash: "+hash)
 			
 		//evite de lancer deux fois le meme torrent
-		if(TorrentTable[hash] == null){
+		if(TorrentTable[url] == null){
 			//Si trop de torrent en cours
 			if(Childs.length < 5){
 				var n = cp.fork(__dirname + '/tclient.js');
-				TorrentTable[hash] = n;
+				TorrentTable[url] = n;
 				Childs.push(n);
 				n.on('message',function(data){
 					switch(data.type){
@@ -64,7 +62,7 @@ io.on('connection', function (socket) {
 							socket.emit('finish-t',data.hash);
 							n.kill('SIGHUP');
 							delete Childs[Childs.indexOf(n)];
-							delete TorrentTable[hash];
+							delete TorrentTable[url];
 
 							//Relance un torrent si il y en a en attente
 							if(TorrentWaitList.length > 0){
