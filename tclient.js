@@ -10,8 +10,8 @@ process.on('message', function(data) {
 
 				torrent.on('done', function(){
 			  			console.log("Finish torrent: "+torrent.name);
-			  			torrent.destroy();
 			  			process.send({'type':"finish",'hash':torrent.infoHash});
+			  			torrent.destroy();
 				});
 			});	
 			break;

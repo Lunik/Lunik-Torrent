@@ -23,6 +23,8 @@ var port = process.env.PORT || 80;
 server.listen(port, function () {
   log('Server listening at port '+port);
 });
+// Routing
+app.use(express.static(__dirname + '/public'));
 
 //socket io
 var io = require('socket.io')(server);
@@ -31,34 +33,62 @@ var io = require('socket.io')(server);
 var WebTorrent = require('webtorrent');
 var client = new WebTorrent();
 
+var parseTorrent = require('parse-torrent');
+
 var Childs = [];
 var TorrentTable = {};
-// Routing
-app.use(express.static(__dirname + '/public'));
+var TorrentWaitList = [];
 
 io.on('connection', function (socket) {
 
 	socket.on('download-t',function(url){
-		var n = cp.fork(__dirname + '/tclient.js');
-		Childs.push(n);
-		n.on('message',function(data){
-			switch(data.type){
-				case 'finish':
-					socket.broadcast.emit('finish-t');
-					socket.emit('finish-t',data.hash);
-					delete Childs.indexOf(n);
-					delete TorrentTable[n]
-					break;
-				case 'info':
-					socket.broadcast.emit('list-t',data.torrent);
-					socket.emit('list-t',data.torrent);
-					TorrentTable[n] = data.torrent.hash;
-					break;
-			}
-		});
-
-		n.send({'type': "download", 'torrent': url});
+		startTorrent(url);
 	});
+
+	function startTorrent(url){
+		log('Trying to download: '+url);
+		var hash = parseTorrent(url).infoHash;
+		log("Hash: "+hash)
+			
+		//evite de lancer deux fois le meme torrent
+		if(TorrentTable[hash] == null){
+			//Si trop de torrent en cours
+			if(Childs.length < 5){
+				var n = cp.fork(__dirname + '/tclient.js');
+				TorrentTable[hash] = n;
+				Childs.push(n);
+				n.on('message',function(data){
+					switch(data.type){
+						case 'finish':
+							socket.broadcast.emit('finish-t');
+							socket.emit('finish-t',data.hash);
+							n.kill('SIGHUP');
+							delete Childs[Childs.indexOf(n)];
+							delete TorrentTable[hash];
+
+							//Relance un torrent si il y en a en attente
+							if(TorrentWaitList.length > 0){
+								var newUrl = TorrentWaitList[0];
+								startTorrent(newUrl);
+								TorrentWaitList.shift();
+							}
+							break;
+						case 'info':
+							socket.broadcast.emit('list-t',data.torrent);
+							socket.emit('list-t',data.torrent);
+							break;
+					}
+				});
+
+				n.send({'type': "download", 'torrent': url});
+
+				} else {
+					//On push dans la liste d'attente
+					if(TorrentWaitList.indexOf(url) == -1)
+						TorrentWaitList.push(url);
+				}
+			}
+	}
 
 	socket.on('list-t',function(){
 		Childs.forEach(function(client){
@@ -127,6 +157,7 @@ io.on('connection', function (socket) {
 	});
 
 });
+
 
 function log(text){
 	console.log(text);

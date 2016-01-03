@@ -1,5 +1,6 @@
 $(document).ready(init);
 
+
 var socket = io();
 
 function init(){

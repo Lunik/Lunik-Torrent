@@ -86,6 +86,26 @@ a:hover {
 	background-color: #CCC;
 }
 
+.menu .external-torrent-link{
+	padding: 20px 10px 10px 20px;
+
+	vertical-align: bottom;
+}
+
+.menu .external-torrent-link#katcr{
+	background: url("../image/torrent/katcr.png") no-repeat;
+	background-size: 100%;
+}
+
+.menu .external-torrent-link#cpasbien{
+	background: url("../image/torrent/cpasbien.png") no-repeat;
+	background-size: 100%;
+}
+
+.menu .external-torrent-link#zetorrent{
+	background: url("../image/torrent/zetorrent.png") no-repeat;
+	background-size: 100%;
+}
 /****************/
 /* 	 Container	*/
 /****************/
