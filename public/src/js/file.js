@@ -18,13 +18,20 @@ function formatDate(date){
 
 function formatTime(time){
 	var x = time / 1000
-	var seconds = x % 60
+	var seconds = Math.round(x % 60);
 	x /= 60
-	var minutes = x % 60
+	var minutes = Math.round(x % 60);
 	x /= 60
-	var hours = x % 24
+	var hours = Math.round(x % 24);
 	x /= 24
-	var days = x
+	var days = Math.round(x)
 
-	return Math.round(days)+"j "+Math.round(hours)+":"+Math.round(minutes)+":"+Math.round(seconds);
+	var returnString = "";
+
+	if(days > 0) returnString += days+"j - ";
+	if(hours > 0) returnString += hours+"h ";
+	if(minutes > 0) returnString += minutes+"m ";
+	if(seconds > 0) returnString += seconds+"s ";
+
+	return returnString;
 }

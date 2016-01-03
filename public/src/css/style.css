@@ -197,6 +197,10 @@ a:hover {
   background-color: #DF7401;
 }
 
+.progress .remaining-time, .progress .percent{
+	display: inline-block;
+	margin-right: 20px;
+}
 .actions .but:hover{
 	text-decoration: underline;
 }

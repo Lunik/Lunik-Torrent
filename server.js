@@ -35,63 +35,14 @@ var client = new WebTorrent();
 
 var parseTorrent = require('parse-torrent');
 
-var Childs = [];
-var TorrentTable = {};
+var TorrentUrlToChild = {};
+var TorrentHashToChild = {};
 var TorrentWaitList = [];
 
 io.on('connection', function (socket) {
 
 	socket.on('download-t',function(url){
 		startTorrent(url);
-	});
-
-	function startTorrent(url){
-		log('Trying to download: '+url);
-			
-		//evite de lancer deux fois le meme torrent
-		if(TorrentTable[url] == null){
-			//Si trop de torrent en cours
-			if(Childs.length < 5){
-				var n = cp.fork(__dirname + '/tclient.js');
-				TorrentTable[url] = n;
-				Childs.push(n);
-				n.on('message',function(data){
-					switch(data.type){
-						case 'finish':
-							socket.broadcast.emit('finish-t');
-							socket.emit('finish-t',data.hash);
-							n.kill('SIGHUP');
-							delete Childs[Childs.indexOf(n)];
-							delete TorrentTable[url];
-
-							//Relance un torrent si il y en a en attente
-							if(TorrentWaitList.length > 0){
-								var newUrl = TorrentWaitList[0];
-								startTorrent(newUrl);
-								TorrentWaitList.shift();
-							}
-							break;
-						case 'info':
-							socket.broadcast.emit('list-t',data.torrent);
-							socket.emit('list-t',data.torrent);
-							break;
-					}
-				});
-
-				n.send({'type': "download", 'torrent': url});
-
-				} else {
-					//On push dans la liste d'attente
-					if(TorrentWaitList.indexOf(url) == -1)
-						TorrentWaitList.push(url);
-				}
-			}
-	}
-
-	socket.on('list-t',function(){
-		Childs.forEach(function(client){
-			client.send({'type':"info"});
-		});	
 	});
 
 	socket.on('list-d',function(dir){
@@ -124,10 +75,8 @@ io.on('connection', function (socket) {
 
 	socket.on('remove-t',function(hash){
 		log('Remove torrent: '+hash);
-		client.remove(hash, function (err) {
-			if(err) return log(err);
-		});
-		socket.emit('update-t');
+		TorrentHashToChild[hash].send({'type': "remove"});
+		socket.emit('finish-t',hash);
 	});
 
 	socket.on('remove-d',function(file){
@@ -163,6 +112,51 @@ function log(text){
 		if(err) throw err;
 	});
 }
+
+function startTorrent(url){
+	log('Trying to download: '+url);
+			
+	//evite de lancer deux fois le meme torrent
+	if(TorrentUrlToChild[url] == null){
+		//Si trop de torrent en cours
+		if(Object.keys(TorrentUrlToChild).length < 5){
+			var n = cp.fork(__dirname + '/tclient.js');
+			TorrentUrlToChild[url] = n;
+			n.on('message',function(data){
+				switch(data.type){
+					case 'finish':
+						io.sockets.emit('finish-t',data.hash);
+						n.kill('SIGHUP');
+						delete TorrentUrlToChild[url];
+						delete TorrentHashToChild[data.hash];
+
+						//Relance un torrent si il y en a en attente
+						if(TorrentWaitList.length > 0){
+							var newUrl = TorrentWaitList[0];
+							startTorrent(newUrl);
+							TorrentWaitList.shift();
+						}
+						break;
+					case 'info':
+						io.sockets.emit('list-t',data.torrent);
+						TorrentHashToChild[data.torrent.hash] = n;
+						break;
+				}
+			});
+
+			n.send({'type': "download", 'torrent': url});
+
+			} else {
+				log("Too much client. Adding torrent to the waitlist.")
+				//On push dans la liste d'attente
+				if(TorrentWaitList.indexOf(url) == -1)
+					TorrentWaitList.push(url);
+			}
+		} else {
+			log("Torrent is already downloading.");
+		}
+	}
+
 
 function removeRecursif(path){
 	if(fs.existsSync(path)) {

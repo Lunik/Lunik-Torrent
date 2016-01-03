@@ -7,7 +7,7 @@ socket.on('finish-t',function(hash){
 });
 
 socket.on('list-t',function(torrents){
-	listTorrents(torrents);
+	listTorrent(torrents);
 });
 
 socket.on('list-d',function(directory){
@@ -17,8 +17,4 @@ socket.on('list-d',function(directory){
 
 socket.on('update-d',function(){
 	listD();
-});
-
-socket.on('update-t',function(){
-	listT();
 });

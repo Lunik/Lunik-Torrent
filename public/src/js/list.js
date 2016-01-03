@@ -1,13 +1,8 @@
 $(window).bind('hashchange',initList).trigger('hashchange');
 
 function initList(){
-	listT();
 	listD();
 }
-function listT(){
-	socket.emit('list-t');
-	setTimeout(listT, 3000);
-};
 
 function listD(){
 	var hash = document.location.hash.substring(1);
@@ -15,13 +10,8 @@ function listD(){
 	setTimeout(listD, 30000);
 }
 
-function listTorrents(torrents){
-	var i = 0;
-	torrents.forEach(function(torrent){
-		torrent.alter = i;
-		appendTorrent(torrent);
-		i = (i+1)%2;
-	});
+function listTorrent(torrent){
+	appendTorrent(torrent);
 }
 
 function listDirectory(directory){
