@@ -13,9 +13,11 @@ function appendDirectory(file){
 	var $date = $('<td>').addClass('date').text(formatDate(file.ctime)).appendTo($file);
 	var $actions = $('<td>').addClass('actions');
 
-	var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id','download').text('download').appendTo($actions).click(function(){
-		window.open("downloads/"+document.location.hash.substring(1)+"/"+file.name);
-	});
+	if(file.isfile){
+		var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id','download').text('download').appendTo($actions).click(function(){
+			window.open("downloads/"+document.location.hash.substring(1)+"/"+file.name);
+		});
+	}
 	var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id','delete').text('delete').appendTo($actions).click(function(){
 		socket.emit('remove-d',document.location.hash.substring(1)+"/"+file.name);
 	});
@@ -30,7 +32,9 @@ function appendDirectory(file){
 			});
 		}
 	});
-	var $infoBut = $('<i>').addClass('but fa fa-info').attr('id','info').text('infos').appendTo($actions);
+	if(file.isfile){
+		var $infoBut = $('<i>').addClass('but fa fa-info').attr('id','info').text('infos').appendTo($actions);
+	}	
 
 	$actions.appendTo($file);
 

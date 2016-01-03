@@ -1,4 +1,8 @@
 $(window).bind('hashchange',initList).trigger('hashchange');
+$(document).ready(function(){
+	$('.container .directory .list tbody').tablesorter(); 
+	$('.container .torrent .list tbody').tablesorter(); 
+});
 
 function initList(){
 	listD();

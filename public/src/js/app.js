@@ -4,6 +4,8 @@ $(document).ready(init);
 var socket = io();
 
 function init(){
+	$.getScript('src/js/jquery.tablesorter.min.js');
+	
 	$.getScript('src/js/socket.js');
 
 	$.getScript('src/js/list.js');
