@@ -35,3 +35,10 @@ function formatTime(time){
 
 	return returnString;
 }
+
+function getExtention(file){
+	if(file.isfile)
+		return file.name.split('.')[file.name.split('.').length - 1];
+	else
+		return 'dir';
+}

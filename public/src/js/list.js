@@ -32,7 +32,7 @@ function filAriane(){
 	var $ariane = $('.directory .fil-ariane').html("");
 	var $delimiter = $('<span>').addClass('delimiter').text(">");
 
-	var $home = $('<a>').attr('href','#').text("Home").appendTo($ariane);
+	var $home = $('<a>').attr('href','#').attr('data-file',"/").text("Home").appendTo($ariane);
 
 	var directories = document.location.hash.substring(1).split('/');
 	var profDir = "";
@@ -44,4 +44,14 @@ function filAriane(){
 		}
 	});
 	
+	$('.fil-ariane a').droppable({
+		greedy: true,
+   		drop : function(data){
+   			var folder = "";
+   			var file = $(data.toElement).attr('data-file');
+   			var path = $(this).attr('href');
+
+   			socket.emit('mv',{'file':file,'path':path,'folder':folder});
+   		}
+	});
 }

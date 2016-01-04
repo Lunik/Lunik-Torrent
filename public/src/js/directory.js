@@ -5,10 +5,24 @@ function appendDirectory(file){
 		$file.addClass('alter');
 	}
 
-	var $name = $('<td>').addClass('name').html(
+	var $name = $('<td>').addClass('name').attr('id', getExtention(file)).attr('data-file',file.name).html(
 		file.isdir ? 
-		$('<a>').attr('href', "#"+document.location.hash.substring(1)+file.name+"/").text(file.name.substring(0,30)) :
+		$('<a>').attr('href', "#"+document.location.hash.substring(1)+file.name+"/").text(file.name.substring(0,50)) :
 		file.name.substring(0,30)).appendTo($file);
+	if(file.isfile)
+		$name.draggable({revert : true});
+	else
+		$name.droppable({
+		greedy: true,
+   		drop : function(data){
+   			var folder = $(this).attr('data-file');
+   			var file = $(data.toElement).attr('data-file');
+   			var path = document.location.hash.substring(1);
+
+   			socket.emit('mv',{'file':file,'path':path,'folder':folder});
+   		}
+	});
+
 	var $size = $('<td>').addClass('size').text(formatSize(file.size)).appendTo($file);
 	var $date = $('<td>').addClass('date').text(formatDate(file.ctime)).appendTo($file);
 	var $actions = $('<td>').addClass('actions');

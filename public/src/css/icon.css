@@ -1,0 +1,40 @@
+i.fa::before{
+	margin: 2px;
+}
+i.fa{
+	padding: 5px;
+}
+
+.actions .but#download{
+	color:#01DFD7;
+}
+
+.actions .but#delete{
+	color:#DF0101;
+}
+
+.actions .but#rename{
+	color:#DF7401;
+}
+
+.actions .but#info{
+	color: #86c351;
+}
+
+.name {
+	background-repeat: no-repeat;
+	background-image: url("../image/file/file.png");
+	background-size: 25px;
+	padding:5px 0px 0px 30px !important;
+}
+
+.name#dir{ background-image: url("../image/file/dir.png");}
+.name#avi{ background-image: url("../image/file/avi.png");}
+.name#mkv{ background-image: url("../image/file/mkv.png");}
+.name#html{ background-image: url("../image/file/html.png");}
+.name#jpg{ background-image: url("../image/file/jpg.png");}
+.name#mp3{ background-image: url("../image/file/mp3.png");}
+.name#mp4{ background-image: url("../image/file/mp4.png");}
+.name#pdf{ background-image: url("../image/file/pdf.png");}
+.name#png{ background-image: url("../image/file/png.png");}
+.name#txt{ background-image: url("../image/file/txt.png");}

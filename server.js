@@ -1,3 +1,4 @@
+var DEFAULTPATH = __dirname+"/public/downloads/";
 // Setup basic express server
 var auth = require('http-auth');
 var basic = auth.basic({
@@ -18,7 +19,7 @@ var cp = require('child_process');
 var express = require('express');
 var app = express();
 var server = require('http').createServer(basic,app);
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8888;
 
 server.listen(port, function () {
   log('Server listening at port '+port);
@@ -52,16 +53,16 @@ io.on('connection', function (socket) {
 	});
 	
 	socket.on('list-d',function(dir){
-		fs.readdir(__dirname+"/public/downloads/"+dir, function(err, files){
+		fs.readdir(DEFAULTPATH+dir, function(err, files){
 			if(err) return log(err);
 	    	var list = {};
 	    	if(files.length > 0){
 		    	files.forEach(function(file){
-		    		stats = fs.statSync(__dirname+"/public/downloads/"+dir+file);
+		    		stats = fs.statSync(DEFAULTPATH+dir+file);
 		    		if(stats.isFile()){
 		    			list[file] = stats;
 		    		} else {
-		    			stats.size = sizeRecursif(__dirname+"/public/downloads/"+dir+file);
+		    			stats.size = sizeRecursif(DEFAULTPATH+dir+file);
 		    			list[file] = stats;
 		    		}
 		    		list[file].isfile = stats.isFile();
@@ -85,13 +86,13 @@ io.on('connection', function (socket) {
 
 	socket.on('remove-d',function(file){
 		log("Remove file: "+file);
-		fs.stat(__dirname+"/public/downloads/"+file, function(err, stats){
+		fs.stat(DEFAULTPATH+file, function(err, stats){
 			if(err) return log(err);
 			if(stats.isDirectory()){
-				removeRecursif(__dirname+"/public/downloads/"+file);
+				removeRecursif(DEFAULTPATH+file);
 				socket.emit('update-d');
 			} else {
-				fs.unlink(__dirname+"/public/downloads/"+file, function(err){
+				fs.unlink(DEFAULTPATH+file, function(err){
   					if(err) return log(err);
 					socket.emit('update-d');
 				});
@@ -101,7 +102,7 @@ io.on('connection', function (socket) {
 
 	socket.on('rename-d',function(data){
 		log("Rename: "+data.oldname+" In: "+data.newname);
-		fs.rename(__dirname+"/public/downloads/"+data.path+"/"+data.oldname, __dirname+"/public/downloads/"+data.path+"/"+data.newname, function(err){
+		fs.rename(DEFAULTPATH+data.path+"/"+data.oldname, DEFAULTPATH+data.path+"/"+data.newname, function(err){
 			if(err) return log(err);
 			socket.emit('update-d');
 		});
@@ -109,8 +110,16 @@ io.on('connection', function (socket) {
 
 	socket.on('mkdir',function(data){
 		log('Mkdir: '+data.path+"/"+data.name);
-		fs.mkdir(__dirname+"/public/downloads/"+data.path+"/"+data.name, function(){
+		fs.mkdir(DEFAULTPATH+data.path+"/"+data.name, function(){
 			socket.emit('update-d');
+		});
+	});
+
+	socket.on('mv',function(data){
+		console.log(data);
+		fs.rename(DEFAULTPATH+data.path+data.file, DEFAULTPATH+data.path+data.folder+"/"+data.file,function(err){
+			if(err) return log(err);
+			socket.emit('update-d');	
 		});
 	});
 });
