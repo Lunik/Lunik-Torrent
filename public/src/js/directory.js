@@ -7,7 +7,7 @@ function appendDirectory(file){
 
 	var $name = $('<td>').addClass('name').html(
 		file.isdir ? 
-		$('<a>').attr('href', "#"+document.location.hash.substring(1)+"/"+file.name+"/").text(file.name.substring(0,30)) :
+		$('<a>').attr('href', "#"+document.location.hash.substring(1)+file.name+"/").text(file.name.substring(0,30)) :
 		file.name.substring(0,30)).appendTo($file);
 	var $size = $('<td>').addClass('size').text(formatSize(file.size)).appendTo($file);
 	var $date = $('<td>').addClass('date').text(formatDate(file.ctime)).appendTo($file);
@@ -41,3 +41,12 @@ function appendDirectory(file){
 
 	$file.appendTo('.container .directory .list');
 }
+
+$('.but#mkdir i').click(function(){
+	var name = prompt("Nom du nouveau dossier ?");
+	if(name)
+		socket.emit('mkdir',{'path':document.location.hash.substring(1), 'name':name});
+});
+
+
+

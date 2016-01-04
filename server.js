@@ -41,7 +41,10 @@ var TorrentWaitList = [];
 
 io.on('connection', function (socket) {
 
-	//TorrentUrlToChild.each()
+	for(var key in TorrentHashToChild){
+		TorrentHashToChild[key].send({'type':"info"});
+	}
+
 	socket.on('download-t',function(url){
 		startTorrent(url);
 	});
@@ -104,6 +107,12 @@ io.on('connection', function (socket) {
 		});
 	});
 
+	socket.on('mkdir',function(data){
+		log('Mkdir: '+data.path+"/"+data.name);
+		fs.mkdir(__dirname+"/public/downloads/"+data.path+"/"+data.name, function(){
+			socket.emit('update-d');
+		});
+	});
 });
 
 
@@ -164,7 +173,7 @@ function removeRecursif(path){
 		fs.readdirSync(path).forEach(function(file,index){
 	    	var curPath = path + "/" + file;
 	    	if(fs.lstatSync(curPath).isDirectory()) { // recurse
-	        	deleteFolderRecursive(curPath);
+	        	removeRecursif(curPath);
 	     	} else { // delete file
 	        	fs.unlinkSync(curPath);
 	      	}

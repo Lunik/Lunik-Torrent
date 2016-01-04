@@ -20,11 +20,11 @@ i.fa{
 	padding: 5px;
 }
 
-a{
+a, .container .but#mkdir i{
 	color: #DF7401;
 	text-decoration: none;
 }
-a:hover {
+a:hover, .container .but#mkdir i:hover{
     text-decoration: underline;
 }
 .but{
@@ -115,6 +115,21 @@ a:hover {
 
 .container .torrent, .container .directory{
 	margin: 50px 0px 50px 0px;
+}
+
+.directory .but#mkdir{
+	display: block;
+
+	text-align: center;
+	font-size: 20px;
+}
+
+.directory .fil-ariane{
+	text-align: center;
+}
+
+.fil-ariane .delimiter{
+	margin: 0px 5px 0px 5px;
 }
 
 .container table{
