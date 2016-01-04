@@ -1,3 +1,5 @@
+var socket = io();
+
 socket.on('update-t',function(){
 	listT();
 });

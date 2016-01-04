@@ -41,14 +41,16 @@ var TorrentWaitList = [];
 
 io.on('connection', function (socket) {
 
-	for(var key in TorrentHashToChild){
-		TorrentHashToChild[key].send({'type':"info"});
-	}
+	socket.on('ready',function(){
+		for(var key in TorrentHashToChild){
+			TorrentHashToChild[key].send({'type':"info"});
+		}
 
-	socket.on('download-t',function(url){
-		startTorrent(url);
+		socket.on('download-t',function(url){
+			startTorrent(url);
+		});
 	});
-
+	
 	socket.on('list-d',function(dir){
 		fs.readdir(__dirname+"/public/downloads/"+dir, function(err, files){
 			if(err) return log(err);
