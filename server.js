@@ -55,21 +55,19 @@ io.on('connection', function (socket) {
 	    	var list = {};
 	    	if(files.length > 0){
 		    	files.forEach(function(file){
-		    		fs.stat(__dirname+"/public/downloads/"+dir+file,function(err, stats){
-		    			if(err) return log(err);
-		    			if(stats.isFile()){
-		    				list[file] = stats;
-		    			} else {
-		    				stats.size = sizeRecursif(__dirname+"/public/downloads/"+dir+file);
-		    				list[file] = stats;
-		    			}
-		    			list[file].isfile = stats.isFile();
-		    			list[file].isdir = stats.isDirectory();
+		    		stats = fs.statSync(__dirname+"/public/downloads/"+dir+file);
+		    		if(stats.isFile()){
+		    			list[file] = stats;
+		    		} else {
+		    			stats.size = sizeRecursif(__dirname+"/public/downloads/"+dir+file);
+		    			list[file] = stats;
+		    		}
+		    		list[file].isfile = stats.isFile();
+		    		list[file].isdir = stats.isDirectory();
 
-		    			if(Object.keys(list).length == files.length){
-		    				socket.emit('list-d',list);
-		    			}
-		    		});
+		    		if(Object.keys(list).length == files.length){
+		    			socket.emit('list-d',list);
+		    		}
 		    	});
 		    } else {
 		    	socket.emit('list-d',{});
