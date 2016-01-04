@@ -19,7 +19,8 @@ function appendDirectory(file){
 		});
 	}
 	var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id','delete').text('delete').appendTo($actions).click(function(){
-		socket.emit('remove-d',document.location.hash.substring(1)+"/"+file.name);
+		if(confirm("Confirmer la suppression ?"))
+			socket.emit('remove-d',document.location.hash.substring(1)+"/"+file.name);
 	});
 	var $renameBut = $('<i>').addClass('but fa fa-pencil').attr('id','rename').text('rename').appendTo($actions).click(function(){
 		var name = prompt('New Name',file.name);

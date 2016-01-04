@@ -26,7 +26,7 @@ function appendTorrent(torrent){
 	var $size = $('<td>').addClass('size').text(formatSize(torrent.size)).appendTo($torrent);
 	var $progress = $('<td>').addClass('progress').append(
 		$('<progress>').attr('max',1).attr('value',torrent.progress),
-		$('<p>').addClass('percent').text(Math.round((torrent.down*100) /torrent.size) +"%"),
+		$('<p>').addClass('percent').text(Math.round(torrent.progress*100) +"%"),
 		$('<p>').addClass('remaining-time').text(formatTime(torrent.timeRemaining))
 	).appendTo($torrent);
 	var $downspeed = $('<td>').addClass('sdown').text(formatSpeed(torrent.sdown)).appendTo($torrent);
@@ -35,7 +35,8 @@ function appendTorrent(torrent){
 	var $actions = $('<td>').addClass('actions');
 
 	var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id','delete').text('delete').appendTo($actions).click(function(){
-		socket.emit('remove-t',$(this).parent().parent().attr('hash'));
+		if(confirm("Confirmer la suppression ?"))
+			socket.emit('remove-t',$(this).parent().parent().attr('hash'));
 	});
 	$actions.appendTo($torrent);
 

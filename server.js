@@ -41,6 +41,7 @@ var TorrentWaitList = [];
 
 io.on('connection', function (socket) {
 
+	//TorrentUrlToChild.each()
 	socket.on('download-t',function(url){
 		startTorrent(url);
 	});

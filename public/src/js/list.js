@@ -4,6 +4,7 @@ $(document).ready(function(){
 	$('.container .torrent .list tbody').tablesorter(); 
 });
 
+var DTimer;
 function initList(){
 	listD();
 }
@@ -11,7 +12,9 @@ function initList(){
 function listD(){
 	var hash = document.location.hash.substring(1);
 	socket.emit('list-d',hash);
-	setTimeout(listD, 30000);
+	clearTimeout(DTimer)
+	DTimer = setTimeout(listD, 1000);
+	console.log('plop');
 }
 
 function listTorrent(torrent){
