@@ -19,7 +19,7 @@ var cp = require('child_process');
 var express = require('express');
 var app = express();
 var server = require('http').createServer(basic,app);
-var port = process.env.PORT || 8888;
+var port = process.env.PORT || 80;
 
 server.listen(port, function () {
   log('Server listening at port '+port);
