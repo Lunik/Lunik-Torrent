@@ -29,7 +29,7 @@ function appendTorrent(torrent){
 		$('<p>').addClass('percent').text(Math.round(torrent.progress*100) +"%"),
 		$('<p>').addClass('remaining-time').text(formatTime(torrent.timeRemaining))
 	).appendTo($torrent);
-	var $downspeed = $('<td>').addClass('sdown').text(formatSpeed(torrent.sdown)).appendTo($torrent);
+	var $downspeed = $('<td>').addClass('sdown').text(formatSpeed(torrent.sdown)+" ("+torrent.seed+")").appendTo($torrent);
 	var $upspeed = $('<td>').addClass('sup').text(formatSpeed(torrent.sup)).appendTo($torrent);
 
 	var $actions = $('<td>').addClass('actions');

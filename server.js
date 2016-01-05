@@ -116,7 +116,6 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('mv',function(data){
-		console.log(data);
 		fs.rename(DEFAULTPATH+data.path+data.file, DEFAULTPATH+data.path+data.folder+"/"+data.file,function(err){
 			if(err) return log(err);
 			socket.emit('update-d');	
@@ -138,9 +137,10 @@ function startTorrent(url){
 	//evite de lancer deux fois le meme torrent
 	if(TorrentUrlToChild[url] == null){
 		//Si trop de torrent en cours
-		if(Object.keys(TorrentUrlToChild).length < 5){
+		if(Object.keys(TorrentUrlToChild).length < 3){
 			var n = cp.fork(__dirname + '/tclient.js');
 			TorrentUrlToChild[url] = n;
+			io.sockets.emit('start-t');
 			n.on('message',function(data){
 				switch(data.type){
 					case 'finish':
@@ -148,7 +148,7 @@ function startTorrent(url){
 						n.kill('SIGHUP');
 						delete TorrentUrlToChild[url];
 						delete TorrentHashToChild[data.hash];
-
+						fs.renameSync(__dirname+"/public/torrents/"+data.name, DEFAULTPATH+data.name);
 						//Relance un torrent si il y en a en attente
 						if(TorrentWaitList.length > 0){
 							var newUrl = TorrentWaitList[0];
@@ -160,6 +160,18 @@ function startTorrent(url){
 						io.sockets.emit('list-t',data.torrent);
 						TorrentHashToChild[data.torrent.hash] = n;
 						break;
+					case 'remove':
+						io.sockets.emit('finish-t',data.hash);
+						n.kill('SIGHUP');
+						delete TorrentUrlToChild[url];
+						delete TorrentHashToChild[data.hash];
+						fs.unlinkSync(__dirname+"/public/torrents/"+data.name);
+						//Relance un torrent si il y en a en attente
+						if(TorrentWaitList.length > 0){
+							var newUrl = TorrentWaitList[0];
+							startTorrent(newUrl);
+							TorrentWaitList.shift();
+						}
 				}
 			});
 

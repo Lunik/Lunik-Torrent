@@ -7,8 +7,8 @@ var theTorrent;
 process.on('message', function(data) {
 	switch(data.type){
 		case 'download':
-			log('CHILD start: '+data.torrent);
-			client.add(data.torrent, {path: __dirname+"/public/downloads/"}, function (torrent) {
+			log('Child pid: '+process.pid+' start: '+data.torrent);
+			client.add(data.torrent, {path: __dirname+"/public/torrents/"}, function (torrent) {
 				theTorrent = torrent;
 				// Got torrent metadata!
 				log("Start torrent: "+torrent.name);
@@ -24,7 +24,11 @@ process.on('message', function(data) {
 
 				torrent.on('done', function(){
 			  			log("Finish torrent: "+torrent.name);
-			  			process.send({'type':"finish",'hash':torrent.infoHash});
+			  			process.send({
+			  				'type':"finish",
+			  				'hash':torrent.infoHash,
+			  				'name': torrent.name
+			  			});
 			  			torrent.destroy();
 				});
 			});	
@@ -36,7 +40,11 @@ process.on('message', function(data) {
 
 		case 'remove':
 			log("Removing torrent: "+theTorrent.name);
-			process.send({'type':"finish",'hash':theTorrent.infoHash});
+			process.send({
+				'type':"finish",
+				'hash':theTorrent.infoHash, 
+				'name': theTorrent.name
+			});
 			theTorrent.destroy();
 			break;
 	}
@@ -54,6 +62,7 @@ function listTorrents(){
 				t.sup = torrent.swarm.uploadSpeed();
 				t.down = torrent.swarm.downloaded;
 				t.up = torrent.swarm.uploaded;
+				t.seed = torrent.swarm._peersLength;
 				t.progress = torrent.progress;
 				t.timeRemaining = torrent.timeRemaining;
 			}

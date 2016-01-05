@@ -183,6 +183,10 @@ a:hover, .container .but#mkdir i:hover{
 	min-width: 55px;
 }
 
+.torrent .list td.size{
+	width: 50px;
+}
+
 .list td.sup, .list td.sdown{
 	width: 8%;
 	min-width: 55px;

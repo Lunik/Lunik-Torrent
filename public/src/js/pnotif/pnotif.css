@@ -1,0 +1,41 @@
+.pnotif-container{
+  position: fixed;
+  display: none;
+
+  width: 200px;
+  min-height: 80px;
+
+  background-color: #111;
+
+  border: 3px solid #AAA;
+  border-radius: 3px;
+
+  color: #FFF;
+  text-align: center;
+}
+
+.pnotif-but{
+  padding: 1px;
+  margin: 2px;
+
+  border: 3px outset #FFF;
+  border-radius: 3px;
+
+  color: #FFF;
+
+  background-color: #111;
+}
+
+.pnotif-but:active{
+  border-style: inset;
+}
+
+.pnotif-accept{
+  border-color: green;
+  background-color: green;
+}
+
+.pnotif-decline{
+  border-color: red;
+  background-color: red;
+}

@@ -20,3 +20,9 @@ socket.on('list-d',function(directory){
 socket.on('update-d',function(){
 	listD();
 });
+
+socket.on('start-t',function(data){
+	var notif = new Pnotif();
+	notif.init('top-right',"<p style='padding: 10px; margin: 0px;>Le torrent va commencer dans quelques instants</p>",5000);
+	notif.draw();
+});
