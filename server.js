@@ -1,7 +1,7 @@
 var DEFAULTFILESPATH = __dirname+"/public/files/";
 var DEFAULTDOWNLOADPATH = __dirname+"/public/downloads/";
-var DEFAULTTORRENTPATH = __dirname+"/public/torrents.txt";
-var DEFAULTLOGPATH = __dirname+"log.txt";
+var DEFAULTTORRENTPATH = __dirname+"/torrents.txt";
+var DEFAULTLOGPATH = __dirname+"/log.txt";
 
 // Setup basic express server
 var auth = require('http-auth');
@@ -139,10 +139,14 @@ io.on('connection', function (socket) {
 	});
 });
 
+function getDate(){
+	var date = new Date();
+	return date.getDate()+"/"+(date.getMonth()+1)+" "+(date.getHours()+1)+":"+(date.getMinutes()+1)+":"+(date.getSeconds()+1);
+}
 
 function log(text){
 	console.log(text);
-	fs.appendFile(DEFAULTLOGPATH, text+"\n", 'utf8', function(err){
+	fs.appendFile(DEFAULTLOGPATH, "["+getDate()+"] "+text+"\n", 'utf8', function(err){
 		if(err) throw err;
 	});
 }
