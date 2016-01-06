@@ -18,7 +18,10 @@ var cp = require('child_process');
 //setup http server
 var express = require('express');
 var app = express();
-var server = require('http').createServer(basic,app);
+var http = require('http')
+http.globalAgent.maxSockets = Infinity;  
+var server = http.createServer(basic,app);
+
 var port = process.env.PORT || 80;
 
 server.listen(port, function () {
