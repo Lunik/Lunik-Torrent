@@ -18,6 +18,8 @@ var cp = require('child_process');
 //setup http server
 var express = require('express');
 var app = express();
+var compression = require('compression');
+app.use(compression());
 var http = require('http')
 http.globalAgent.maxSockets = Infinity;  
 var server = http.createServer(basic,app);

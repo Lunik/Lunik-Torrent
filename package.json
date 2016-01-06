@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "lunik torrent",
   "dependencies": {
+    "compression": "*",
     "express": "*",
     "fs": "*",
     "http-auth": "*",
