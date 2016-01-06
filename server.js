@@ -1,4 +1,8 @@
-var DEFAULTPATH = __dirname+"/public/downloads/";
+var DEFAULTFILESPATH = __dirname+"/public/files/";
+var DEFAULTDOWNLOADPATH = __dirname+"/public/downloads/";
+var DEFAULTTORRENTPATH = __dirname+"/public/torrents.txt";
+var DEFAULTLOGPATH = __dirname+"log.txt";
+
 // Setup basic express server
 var auth = require('http-auth');
 var basic = auth.basic({
@@ -8,7 +12,7 @@ var basic = auth.basic({
 
 //file management
 var fs = require('fs');
-fs.writeFile("log.txt", "",'utf-8', function(err){
+fs.writeFile(DEFAULTLOGPATH, "",'utf-8', function(err){
 	if(err) throw err;
 });
 
@@ -41,9 +45,16 @@ var client = new WebTorrent();
 
 var parseTorrent = require('parse-torrent');
 
+//Torrent memory tab
 var TorrentUrlToChild = {};
 var TorrentHashToChild = {};
 var TorrentWaitList = [];
+
+//Auto start torrent in file
+fs.writeFile(DEFAULTTORRENTPATH, "",'utf-8', function(err){
+	if(err) throw err;
+});
+setInterval(startPointTorrent, 30000);
 
 io.on('connection', function (socket) {
 
@@ -58,16 +69,16 @@ io.on('connection', function (socket) {
 	});
 	
 	socket.on('list-d',function(dir){
-		fs.readdir(DEFAULTPATH+dir, function(err, files){
+		fs.readdir(DEFAULTFILESPATH+dir, function(err, files){
 			if(err) return log(err);
 	    	var list = {};
 	    	if(files.length > 0){
 		    	files.forEach(function(file){
-		    		stats = fs.statSync(DEFAULTPATH+dir+file);
+		    		stats = fs.statSync(DEFAULTFILESPATH+dir+file);
 		    		if(stats.isFile()){
 		    			list[file] = stats;
 		    		} else {
-		    			stats.size = sizeRecursif(DEFAULTPATH+dir+file);
+		    			stats.size = sizeRecursif(DEFAULTFILESPATH+dir+file);
 		    			list[file] = stats;
 		    		}
 		    		list[file].isfile = stats.isFile();
@@ -91,13 +102,13 @@ io.on('connection', function (socket) {
 
 	socket.on('remove-d',function(file){
 		log("Remove file: "+file);
-		fs.stat(DEFAULTPATH+file, function(err, stats){
+		fs.stat(DEFAULTFILESPATH+file, function(err, stats){
 			if(err) return log(err);
 			if(stats.isDirectory()){
-				removeRecursif(DEFAULTPATH+file);
+				removeRecursif(DEFAULTFILESPATH+file);
 				socket.emit('update-d');
 			} else {
-				fs.unlink(DEFAULTPATH+file, function(err){
+				fs.unlink(DEFAULTFILESPATH+file, function(err){
   					if(err) return log(err);
 					socket.emit('update-d');
 				});
@@ -107,7 +118,7 @@ io.on('connection', function (socket) {
 
 	socket.on('rename-d',function(data){
 		log("Rename: "+data.oldname+" In: "+data.newname);
-		fs.rename(DEFAULTPATH+data.path+"/"+data.oldname, DEFAULTPATH+data.path+"/"+data.newname, function(err){
+		fs.rename(DEFAULTFILESPATH+data.path+"/"+data.oldname, DEFAULTFILESPATH+data.path+"/"+data.newname, function(err){
 			if(err) return log(err);
 			socket.emit('update-d');
 		});
@@ -115,13 +126,13 @@ io.on('connection', function (socket) {
 
 	socket.on('mkdir',function(data){
 		log('Mkdir: '+data.path+"/"+data.name);
-		fs.mkdir(DEFAULTPATH+data.path+"/"+data.name, function(){
+		fs.mkdir(DEFAULTFILESPATH+data.path+"/"+data.name, function(){
 			socket.emit('update-d');
 		});
 	});
 
 	socket.on('mv',function(data){
-		fs.rename(DEFAULTPATH+data.path+data.file, DEFAULTPATH+data.path+data.folder+"/"+data.file,function(err){
+		fs.rename(DEFAULTFILESPATH+data.path+data.file, DEFAULTFILESPATH+data.path+data.folder+"/"+data.file,function(err){
 			if(err) return log(err);
 			socket.emit('update-d');	
 		});
@@ -131,7 +142,7 @@ io.on('connection', function (socket) {
 
 function log(text){
 	console.log(text);
-	fs.appendFile("log.txt", text+"\n", 'utf8', function(err){
+	fs.appendFile(DEFAULTLOGPATH, text+"\n", 'utf8', function(err){
 		if(err) throw err;
 	});
 }
@@ -153,7 +164,7 @@ function startTorrent(url){
 						n.kill('SIGHUP');
 						delete TorrentUrlToChild[url];
 						delete TorrentHashToChild[data.hash];
-						fs.renameSync(__dirname+"/public/torrents/"+data.name, DEFAULTPATH+data.name);
+						fs.renameSync(DEFAULTDOWNLOADPATH+data.name, DEFAULTFILESPATH+data.name);
 						//Relance un torrent si il y en a en attente
 						if(TorrentWaitList.length > 0){
 							var newUrl = TorrentWaitList[0];
@@ -170,7 +181,7 @@ function startTorrent(url){
 						n.kill('SIGHUP');
 						delete TorrentUrlToChild[url];
 						delete TorrentHashToChild[data.hash];
-						fs.unlinkSync(__dirname+"/public/torrents/"+data.name);
+						fs.unlinkSync(DEFAULTDOWNLOADPATH+data.name);
 						//Relance un torrent si il y en a en attente
 						if(TorrentWaitList.length > 0){
 							var newUrl = TorrentWaitList[0];
@@ -222,3 +233,21 @@ function sizeRecursif(path){
 	    return size;
   	}
 }
+
+function startPointTorrent(){
+	log("Scan for new torrent.");
+	fs.readFile(DEFAULTTORRENTPATH,'utf-8', function(err, data) {
+		if (err) return log(err);
+		var torrents = data.split("\n");
+		fs.writeFile(DEFAULTTORRENTPATH, "",'utf-8', function(err){
+			if (err) return log(err);
+	  		torrents.forEach(function(element){
+	  			if(element != "")
+	  				startTorrent(element);
+	  		});
+		});
+	});
+}
+
+
+

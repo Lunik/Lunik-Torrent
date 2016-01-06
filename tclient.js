@@ -1,3 +1,8 @@
+var DEFAULTFILESPATH = __dirname+"/public/files/";
+var DEFAULTDOWNLOADPATH = __dirname+"/public/downloads/";
+var DEFAULTTORRENTPATH = __dirname+"/public/torrents";
+var DEFAULTLOGPATH = __dirname+"log.txt";
+
 var WebTorrent = require('webtorrent');
 var client = new WebTorrent();
 
@@ -8,7 +13,7 @@ process.on('message', function(data) {
 	switch(data.type){
 		case 'download':
 			log('Child pid: '+process.pid+' start: '+data.torrent);
-			client.add(data.torrent, {path: __dirname+"/public/torrents/"}, function (torrent) {
+			client.add(data.torrent, {path: DEFAULTDOWNLOADPATH}, function (torrent) {
 				theTorrent = torrent;
 				// Got torrent metadata!
 				log("Start torrent: "+torrent.name);
@@ -74,7 +79,7 @@ function listTorrents(){
 
 function log(text){
 	console.log(text);
-	fs.appendFile("log.txt", text+"\n", 'utf8', function(err){
+	fs.appendFile(DEFAULTLOGPATH, text+"\n", 'utf8', function(err){
 		if(err) throw err;
 	});
 }
