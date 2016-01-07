@@ -13,8 +13,11 @@ socket.on('list-t', function (torrents) {
 })
 
 socket.on('list-d', function (directory) {
-  $('.container .directory .list tbody').html('')
+  $.each($('.container .directory .list tbody *'), function (key, value) {
+    $(value).addClass('toremove')
+  })
   listDirectory(directory)
+  $('.toremove').remove()
 })
 
 socket.on('update-d', function () {
