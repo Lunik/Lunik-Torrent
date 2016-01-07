@@ -67,6 +67,7 @@ io.on('connection', function (socket) {
     fs.readdir(DEFAULTFILESPATH + dir, function (err, files) {
       if (err) return log(err)
       var list = {}
+      var totalSize = 0
       if (files.length > 0) {
         files.forEach(function (file) {
           var stats = fs.statSync(DEFAULTFILESPATH + dir + file)
@@ -79,8 +80,10 @@ io.on('connection', function (socket) {
           list[file].isfile = stats.isFile()
           list[file].isdir = stats.isDirectory()
 
+          totalSize += stats.size
+
           if (Object.keys(list).length === files.length) {
-            socket.emit('list-d', list)
+            socket.emit('list-d', {'totalSize': totalSize,'files': list})
           }
         })
       } else {
@@ -200,6 +203,9 @@ function startTorrent (url) {
   } else {
     log('Torrent is already downloading.')
   }
+}
+
+function listDirectory (dir) {
 }
 
 function removeRecursif (path) {

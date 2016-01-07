@@ -55,6 +55,10 @@ function appendDirectory (file) {
   $file.appendTo('.container .directory .list')
 }
 
+function appendDirectorySize (size) {
+  $('.folder-size').text(formatSize(size))
+}
+
 $('.but#mkdir i').click(function () {
   var name = prompt('Nom du nouveau dossier ?')
   if (name)

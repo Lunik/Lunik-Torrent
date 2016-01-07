@@ -13,10 +13,11 @@ socket.on('list-t', function (torrents) {
 })
 
 socket.on('list-d', function (directory) {
+  appendDirectorySize(directory.totalSize)
   $.each($('.container .directory .list tbody *'), function (key, value) {
     $(value).addClass('toremove')
   })
-  listDirectory(directory)
+  listDirectory(directory.files)
   $('.toremove').remove()
 })
 

@@ -130,6 +130,10 @@ a:hover, .container .but#mkdir i:hover{
 	padding: 10px;
 }
 
+.folder-size{
+	text-align: center;
+}
+
 .container table{
 	border-collapse: collapse;
 }
