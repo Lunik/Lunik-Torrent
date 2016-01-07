@@ -28,7 +28,7 @@ function appendDirectory (file) {
 
   if (file.isfile) {
     var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id', 'download').text('download').appendTo($actions).click(function () {
-      window.open('downloads/' + document.location.hash.substring(1) + '/' + file.name)
+      window.open('files/' + document.location.hash.substring(1) + '/' + file.name)
     })
   }
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
