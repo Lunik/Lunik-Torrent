@@ -1,6 +1,6 @@
 function appendDirectory (file) {
   var $file = $('<tr>').addClass('file')
-  if (file.alter === 1) {
+  if (file.alter == 1) {
     $file.addClass('alter')
   }
 
@@ -28,7 +28,7 @@ function appendDirectory (file) {
 
   if (file.isfile) {
     var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id', 'download').text('download').appendTo($actions).click(function () {
-      window.open('files/?f=' + document.location.hash.substring(1) + '/' + file.name)
+      window.open('downloads/' + document.location.hash.substring(1) + '/' + file.name)
     })
   }
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {

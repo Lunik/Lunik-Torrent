@@ -18,42 +18,28 @@ fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
 
 var cp = require('child_process')
 
+// setup http server
 var express = require('express')
 var app = express()
 var compression = require('compression')
 app.use(compression())
-// Routing
-app.use(express.static(__dirname + '/public'))
-app.get('/files/', function (req, res) {
-  var file = DEFAULTFILESPATH + req.query.f
-
-  fs.stat(file, function (err, stats) {
-    if (err) return log(err)
-    var filename = file.split('/')[file.split('/').length - 1]
-
-    fs.readFile(file, function (err, data) {
-      if (err) return log(err)
-      res.setHeader('Content-disposition', 'attachment; filename=' + filename)
-      res.setHeader('Content-Length', stats.size)
-      res.setHeader('Content-type', 'application/octet-stream')
-      res.send(data)
-    })
-
-  })
-
-})
-
-// setup http server
 var http = require('http')
 http.globalAgent.maxSockets = Infinity
 var server = http.createServer(basic, app)
+
 var port = process.env.PORT || 80
+
 server.listen(port, function () {
   log('Server listening at port ' + port)
 })
+// Routing
+app.use(express.static(__dirname + '/public'))
 
 // socket io
 var io = require('socket.io')(server)
+
+// webtorrent
+var WebTorrent = require('webtorrent')
 
 // Torrent memory tab
 var TorrentUrlToChild = {}
