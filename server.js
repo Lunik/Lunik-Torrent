@@ -8,6 +8,8 @@ var fs = require('fs')
 fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
   if (err) log(err)
 })
+fs.mkdir(DEFAULTFILESPATH)
+fs.mkdir(DEFAULTDOWNLOADPATH)
 
 var cp = require('child_process')
 
