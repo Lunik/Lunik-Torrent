@@ -178,8 +178,8 @@ a:hover, .container .but#mkdir i:hover{
 }
 
 .torrent .list td.name{
-	width: 8%;
-	min-width: 55px;
+	width: 20%;
+	min-width: 100px;
 }
 
 .directory .list td.name{
