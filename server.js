@@ -3,20 +3,27 @@ var DEFAULTDOWNLOADPATH = __dirname + '/public/downloads/'
 var DEFAULTTORRENTPATH = __dirname + '/torrents.txt'
 var DEFAULTLOGPATH = __dirname + '/log.txt'
 
+// file management
+var fs = require('fs')
+fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
+  if (err) log(err)
+})
+
+var cp = require('child_process')
+
 // Setup basic express server
 var auth = require('http-auth')
+fs.stat(__dirname + '/.htpasswd', function (err, stats) {
+  if (!stats) {
+    fs.writeFile(__dirname + '/.htpasswd', '', 'utf-8', function (err) {
+      if (err) log(err)
+    })
+  }
+})
 var basic = auth.basic({
   realm: 'Protected area. Please disperse !',
   file: __dirname + '/.htpasswd'
 })
-
-// file management
-var fs = require('fs')
-fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
-  if (err) throw err
-})
-
-var cp = require('child_process')
 
 // setup http server
 var express = require('express')
