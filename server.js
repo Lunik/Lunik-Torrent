@@ -59,8 +59,8 @@ app.get('/files/', function (req, res) {
       res.setHeader('Content-disposition', 'attachment; filename=' + req.query.f)
       res.setHeader('Content-Length', stats.size)
       res.setHeader('Content-type', 'application/octet-stream')
-      var fReadStream = fs.createReadStream(filename)
-      fReadStream.pipe(res).pipe(res)
+      var fReadStream = fs.createReadStream(filename, {highWaterMark: Math.pow(2, 16)})
+      fReadStream.pipe(res)
     } else {
       res.end("Le fichier n'existe pas")
     }
