@@ -3,3 +3,4 @@ node_modules
 log*
 depot
 torrents.txt
+.htpasswd
