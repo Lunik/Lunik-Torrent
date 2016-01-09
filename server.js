@@ -60,7 +60,7 @@ app.get('/files/', function (req, res) {
       res.setHeader('Content-Length', stats.size)
       res.setHeader('Content-type', 'application/octet-stream')
       var fReadStream = fs.createReadStream(filename)
-      fReadStream.pipe(res)
+      fReadStream.pipe(res).pipe(res)
     } else {
       res.end("Le fichier n'existe pas")
     }
