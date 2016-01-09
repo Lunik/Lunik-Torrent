@@ -22,7 +22,7 @@ function appendTorrent (torrent) {
     $torrent.addClass('alter')
   }
 
-  var $name = $('<td>').addClass('name').text(torrent.name.substring(0, 30)).appendTo($torrent)
+  var $name = $('<td>').addClass('name').text(formatName(torrent.name.substring(0, 50))).appendTo($torrent)
   var $size = $('<td>').addClass('size').text(formatSize(torrent.size)).appendTo($torrent)
   var $progress = $('<td>').addClass('progress').append(
     $('<progress>').attr('max', 1).attr('value', torrent.progress),

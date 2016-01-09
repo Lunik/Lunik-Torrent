@@ -4,7 +4,7 @@ function appendDirectory (file) {
     $file.addClass('alter')
   }
 
-  var $name = $('<td>').addClass('name').attr('id', getExtention(file)).attr('data-file', file.name).html(
+  var $name = $('<td>').addClass('name').attr('id', getExtention(file)).attr('data-file', formatName(file.name)).html(
     file.isdir ?
       $('<a>').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name.substring(0, 50)) :
       file.name.substring(0, 30)).appendTo($file)
