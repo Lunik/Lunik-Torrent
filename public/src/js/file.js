@@ -43,7 +43,7 @@ function getExtention (file) {
 }
 
 function formatName (name) {
-  name = name.replace(/\.[A-Za-z0-9]*$/, '')
+  name = name.replace(/[A-Za-z0-9]*$/, '')
     .replace(/S[0-9]*E[0-9]*/, '') // numero d'episode
     .replace(/[ \.](([Ff][Rr])|([Vv][Oo])|(VOSTFR)|(FASTSUB)|(HDTV)|(XviD-ARK01))/g, '')
     .replace(/\./g, ' ') // point
