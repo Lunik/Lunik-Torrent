@@ -52,6 +52,21 @@ fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function (err) {
 })
 setInterval(startPointTorrent, 30000)
 
+app.get('/files/', function (req, res) {
+  var filename = DEFAULTFILESPATH + req.query.f
+  fs.stat(filename, function (err, stats) {
+    if (stats) {
+      res.setHeader('Content-disposition', 'attachment; filename=' + req.query.f)
+      res.setHeader('Content-Length', stats.size)
+      res.setHeader('Content-type', 'application/octet-stream')
+      var fReadStream = fs.createReadStream(filename)
+      fReadStream.pipe(res)
+    } else {
+      res.end("Le fichier n'existe pas")
+    }
+  })
+})
+
 io.on('connection', function (socket) {
   socket.on('ready', function () {
     for (var key in TorrentHashToChild) {
@@ -203,9 +218,6 @@ function startTorrent (url) {
   } else {
     log('Torrent is already downloading.')
   }
-}
-
-function listDirectory (dir) {
 }
 
 function removeRecursif (path) {
