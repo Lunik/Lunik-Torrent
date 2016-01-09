@@ -13,13 +13,7 @@ var cp = require('child_process')
 
 // Setup basic express server
 var auth = require('http-auth')
-fs.stat(__dirname + '/.htpasswd', function (err, stats) {
-  if (stats != null) {
-    fs.writeFile(__dirname + '/.htpasswd', '', 'utf-8', function (err) {
-      if (err) log(err)
-    })
-  }
-})
+
 var basic = auth.basic({
   realm: 'Protected area. Please disperse !',
   file: __dirname + '/.htpasswd'
