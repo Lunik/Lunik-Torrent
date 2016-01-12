@@ -2,7 +2,7 @@ $torrentInput = $('.menu input[name="torrent-link"]')
 $startTorrentBut = $('.menu input[name="torrent-start"]')
 $searchTorrentBut = $('.menu input[name="torrent-search"]')
 $currentSubmit = $searchTorrentBut
-$searchResultList = $('.menu .search-result')
+$searchResultTable = $('.menu .search-result')
 
 $torrentInput.keyup(function () {
   var value = $(this).val()
@@ -30,12 +30,12 @@ $searchTorrentBut.click(function () {
   if ($torrentInput.val()) {
     socket.emit('search-t', $torrentInput.val())
     $torrentInput.val('')
-    $searchResultList.html('')
+    $searchResultTable.html('')
   }
 })
 
 $('.search-result').on('click', 'li', function () {
-  $searchResultList.html('')
+  $searchResultTable.html('')
   $torrentInput.val($(this).attr('torrent-link'))
   $torrentInput.trigger('keyup')
 })

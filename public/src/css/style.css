@@ -119,14 +119,18 @@ a:hover, .container .but#mkdir i:hover{
 
 	border: 2px solid #DF7401;
 }
-.search-result li{
+.search-result tr{
 	cursor: pointer;
 	text-align: left;
 }
 
-.search-result li:hover{
+.search-result tr:hover{
 	background-color: #DF7401;
 	color: black;
+}
+
+.search-result .fa{
+	padding: 0px;
 }
 /****************/
 /* 	 Container	*/

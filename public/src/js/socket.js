@@ -33,8 +33,13 @@ socket.on('start-t', function (data) {
 
 socket.on('search-t', function (data) {
   console.log(data)
-  var $searchList = $('.menu .search-result')
+  var $searchTable = $('.menu .search-result')
   data.items.forEach(function (element, index) {
-    var item = $('<li>').attr('torrent-link', element.torrent).text(element.title).appendTo($searchList)
+    var $item = $('<tr>').attr('torrent-link', element.torrent)
+    $('<td>').text(element.title).appendTo($item)
+    $('<td>').text(element.size).appendTo($item)
+    $('<td>').html($('<i>').addClass('fa fa-arrow-up').text(element.seeds)).appendTo($item)
+    $('<td>').html($('<i>').addClass('fa fa-arrow-down').text(element.leechs)).appendTo($item)
+    $item.appendTo($searchTable)
   })
 })
