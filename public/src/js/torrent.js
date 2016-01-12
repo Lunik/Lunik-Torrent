@@ -34,7 +34,7 @@ $searchTorrentBut.click(function () {
   }
 })
 
-$('.search-result').on('click', 'li', function () {
+$('.search-result').on('click', 'tr', function () {
   $searchResultTable.html('')
   $torrentInput.val($(this).attr('torrent-link'))
   $torrentInput.trigger('keyup')
