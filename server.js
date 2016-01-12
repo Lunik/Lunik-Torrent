@@ -9,11 +9,11 @@ fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
   if (err) log(err)
 })
 
+// Child process 
 var cp = require('child_process')
 
 // Setup basic express server
 var auth = require('http-auth')
-
 var basic = auth.basic({
   realm: 'Protected area. Please disperse !',
   file: __dirname + '/.htpasswd'
@@ -27,12 +27,11 @@ app.use(compression())
 var http = require('http')
 http.globalAgent.maxSockets = Infinity
 var server = http.createServer(basic, app)
-
 var port = process.env.PORT || 80
-
 server.listen(port, function () {
   log('Server listening at port ' + port)
 })
+
 // Routing
 app.use(express.static(__dirname + '/public'))
 
@@ -50,6 +49,7 @@ fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function (err) {
 })
 setInterval(startPointTorrent, 30000)
 
+// Search Api
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 

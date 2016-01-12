@@ -3,11 +3,11 @@
   "version": "1.0.1",
   "description": "lunik torrent",
   "dependencies": {
-    "compression": "*",
-    "express": "*",
-    "fs": "*",
-    "http-auth": "*",
-    "socket.io": "*",
-    "webtorrent": "*"
+    "compression": "1.6.0",
+    "express": "2.0.6",
+    "fs": "0.0.2",
+    "http-auth": "2.2.8",
+    "socket.io": "1.4.4",
+    "webtorrent": "0.72.1"
   }
 }
