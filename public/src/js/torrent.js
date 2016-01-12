@@ -22,6 +22,7 @@ $startTorrentBut.click(function () {
   if ($torrentInput.val()) {
     socket.emit('download-t', $torrentInput.val())
     $torrentInput.val('')
+    $torrentInput.trigger('keyup')
   }
 })
 
