@@ -8,12 +8,6 @@ var fs = require('fs')
 fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
   if (err) log(err)
 })
-fs.mkdir(DEFAULTFILESPATH, function (err) {
-  if (err) log(err)
-})
-fs.mkdir(DEFAULTDOWNLOADPATH, function (err) {
-  if (err) log(err)
-})
 
 var cp = require('child_process')
 
@@ -45,9 +39,6 @@ app.use(express.static(__dirname + '/public'))
 // socket io
 var io = require('socket.io')(server)
 
-// webtorrent
-var WebTorrent = require('webtorrent')
-
 // Torrent memory tab
 var TorrentUrlToChild = {}
 var TorrentHashToChild = {}
@@ -58,6 +49,9 @@ fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function (err) {
   if (err) throw err
 })
 setInterval(startPointTorrent, 30000)
+
+var CPBAPI = require('cpasbien-api')
+var CpasbienApi = new CPBAPI()
 
 app.get('/files/', function (req, res) {
   var filename = DEFAULTFILESPATH + req.query.f
@@ -155,6 +149,19 @@ io.on('connection', function (socket) {
     fs.rename(DEFAULTFILESPATH + data.path + data.file, DEFAULTFILESPATH + data.path + data.folder + '/' + data.file, function (err) {
       if (err) return log(err)
       socket.emit('update-d')
+    })
+  })
+
+  socket.on('search-t', function (query) {
+    log('Search: ' + query)
+    CpasbienApi.Search(query, {scope: 'tvshow', language: 'FR'}).then(function (data) {
+      socket.emit('search-t', data)
+    })
+    CpasbienApi.Search(query, {scope: 'tvshow', language: 'EN'}).then(function (data) {
+      socket.emit('search-t', data)
+    })
+    CpasbienApi.Search(query).then(function (data) {
+      socket.emit('search-t', data)
     })
   })
 })

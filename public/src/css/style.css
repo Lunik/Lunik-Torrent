@@ -47,10 +47,8 @@ a:hover, .container .but#mkdir i:hover{
 }
 
 .menu input{
-    height: 15px;
-
     padding: 10px;
-    margin: 5px auto 5px auto;
+    margin: 5px auto -5px auto;
 
     color: grey;
     font-size: 15px;
@@ -81,7 +79,7 @@ a:hover, .container .but#mkdir i:hover{
 }
 
 .menu .external-torrent-link{
-	padding: 20px 10px 10px 20px;
+	padding: 10px 10px 10px 20px;
 
 	vertical-align: bottom;
 }
@@ -99,6 +97,36 @@ a:hover, .container .but#mkdir i:hover{
 .menu .external-torrent-link#zetorrent{
 	background: url("../image/torrent/zetorrent.png") no-repeat;
 	background-size: 100%;
+}
+
+.menu input[name="torrent-start"]{
+	display: none;
+}
+
+/********************/
+/* 	 Search Result	*/
+/********************/
+.search-result{
+	display: block;
+	width: 71%;
+
+	margin: auto;
+	padding: 0px;
+
+	list-style-type: none;
+
+	font-size: 15px;
+
+	border: 2px solid #DF7401;
+}
+.search-result li{
+	cursor: pointer;
+	text-align: left;
+}
+
+.search-result li:hover{
+	background-color: #DF7401;
+	color: black;
 }
 /****************/
 /* 	 Container	*/
@@ -187,7 +215,7 @@ a:hover, .container .but#mkdir i:hover{
 	min-width: 55px;
 }
 
-.torrent .list td.size{
+.list td.size{
 	width: 50px;
 }
 
