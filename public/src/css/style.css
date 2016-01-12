@@ -99,6 +99,12 @@ a:hover, .container .but#mkdir i:hover{
 	background-size: 100%;
 }
 
+
+.menu .external-torrent-link#torrent9{
+	background: url("../image/torrent/torrent9.png") no-repeat;
+	background-size: 100%;
+}
+
 .menu input[name="torrent-start"]{
 	display: none;
 }
