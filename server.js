@@ -57,7 +57,7 @@ app.get('/files/', function (req, res) {
   var filename = DEFAULTFILESPATH + req.query.f
   fs.stat(filename, function (err, stats) {
     if (stats) {
-      res.setHeader('Content-disposition', 'attachment; filename=' + req.query.f)
+      res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f + '"')
       res.setHeader('Content-Length', stats.size)
       res.setHeader('Content-type', 'application/octet-stream')
       var fReadStream = fs.createReadStream(filename, {highWaterMark: Math.pow(2, 16)})
