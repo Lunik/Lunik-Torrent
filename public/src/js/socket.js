@@ -32,7 +32,6 @@ socket.on('start-t', function (data) {
 })
 
 socket.on('search-t', function (data) {
-  console.log(data)
   var $searchTable = $('.menu .search-result')
   data.items.forEach(function (element, index) {
     var $item = $('<tr>').attr('torrent-link', element.torrent)
