@@ -32,7 +32,12 @@ socket.on('start-t', function (data) {
 })
 
 socket.on('search-t', function (data) {
-  var $searchTable = $('.menu .search-result')
+  var $searchTable = $('.menu .search-result').append()
+
+  var $closeBut = $('<button>').addClass('close-search').text('x').click(function () {
+    $searchTable.html('')
+  }).appendTo($searchTable)
+
   data.items.forEach(function (element, index) {
     var $item = $('<tr>').attr('torrent-link', element.torrent)
     $('<td>').text(element.title).appendTo($item)
@@ -48,4 +53,16 @@ socket.on('error-t', function (hash) {
   var notif = new Pnotif()
   notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Erreur avec le torrent. Nouvelle tentative dans quelques instants</p>", 10000)
   notif.draw()
+})
+
+socket.on('last-t', function (data) {
+  var $searchTable = $('.menu .search-result')
+  data.items.forEach(function (element, index) {
+    var $item = $('<tr>').attr('torrent-link', element.torrent)
+    $('<td>').text(element.title).appendTo($item)
+    $('<td>').text(element.size).appendTo($item)
+    $('<td>').html($('<i>').addClass('fa fa-arrow-up').text(element.seeds)).appendTo($item)
+    $('<td>').html($('<i>').addClass('fa fa-arrow-down').text(element.leechs)).appendTo($item)
+    $item.appendTo($searchTable)
+  })
 })

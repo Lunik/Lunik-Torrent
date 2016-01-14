@@ -138,6 +138,18 @@ a:hover, .container .but#mkdir i:hover{
 .search-result .fa{
 	padding: 0px;
 }
+
+.search-result .close-search{
+	float: right;
+
+	background: none;
+	border: none;
+
+	font-size: 20px;
+	color: #DF7401;
+
+	cursor: pointer;
+}
 /****************/
 /* 	 Container	*/
 /****************/

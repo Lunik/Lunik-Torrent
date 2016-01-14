@@ -53,6 +53,7 @@ setInterval(startPointTorrent, 30000)
 // Search Api
 var CPBAPI = require('cpasbien-parser')
 var CpasbienApi = new CPBAPI()
+var LASTCPB = {'timeout': 0, 'data': []}
 
 app.get('/files/', function (req, res) {
   var filename = DEFAULTFILESPATH + req.query.f
@@ -163,6 +164,18 @@ io.on('connection', function (socket) {
     })
     CpasbienApi.Search(query).then(function (data) {
       socket.emit('search-t', data)
+    })
+  })
+
+  socket.on('last-t', function () {
+    CpasbienApi.Latest({scope: 'tvshow', language: 'FR'}).then(function (data) {
+      socket.emit('last-t', data)
+    })
+    CpasbienApi.Latest({scope: 'tvshow', language: 'EN'}).then(function (data) {
+      socket.emit('last-t', data)
+    })
+    CpasbienApi.Latest().then(function (data) {
+      socket.emit('last-t', data)
     })
   })
 })
