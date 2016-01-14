@@ -157,25 +157,24 @@ io.on('connection', function (socket) {
   socket.on('search-t', function (query) {
     log('Search: ' + query)
     CpasbienApi.Search(query, {scope: 'tvshow', language: 'FR'}).then(function (data) {
-      socket.emit('search-t', data)
+      socket.emit('search-t', {'type': 'series', 'data': data})
     })
     CpasbienApi.Search(query, {scope: 'tvshow', language: 'EN'}).then(function (data) {
-      socket.emit('search-t', data)
+      socket.emit('search-t', {'type': 'series', 'data': data})
     })
     CpasbienApi.Search(query).then(function (data) {
-      socket.emit('search-t', data)
+      socket.emit('search-t', {'type': 'films', 'data': data})
     })
   })
 
   socket.on('last-t', function () {
-    CpasbienApi.Latest({scope: 'tvshow', language: 'FR'}).then(function (data) {
-      socket.emit('last-t', data)
-    })
-    CpasbienApi.Latest({scope: 'tvshow', language: 'EN'}).then(function (data) {
-      socket.emit('last-t', data)
+    CpasbienApi.Latest({scope: 'tvshow'}).then(function (data) {
+      data.items = data.items.slice(0, 10)
+      socket.emit('search-t', {'type': 'series', 'data': data})
     })
     CpasbienApi.Latest().then(function (data) {
-      socket.emit('last-t', data)
+      data.items = data.items.slice(0, 10)
+      socket.emit('search-t', {'type': 'films', 'data': data})
     })
   })
 })

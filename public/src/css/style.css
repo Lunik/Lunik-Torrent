@@ -125,12 +125,17 @@ a:hover, .container .but#mkdir i:hover{
 
 	border: 2px solid #DF7401;
 }
-.search-result tr{
+.search-result .search-header{
+	text-align: left;
+	font-size: 30px;
+}
+
+.search-result .search-item{
 	cursor: pointer;
 	text-align: left;
 }
 
-.search-result tr:hover{
+.search-result .search-item:hover{
 	background-color: #DF7401;
 	color: black;
 }

@@ -31,10 +31,13 @@ $searchTorrentBut.click(function () {
     socket.emit('search-t', $torrentInput.val())
     $torrentInput.val('')
     $searchResultTable.html('')
+  } else {
+    socket.emit('last-t')
+    $searchResultTable.html('')
   }
 })
 
-$('.search-result').on('click', 'tr', function () {
+$('.search-result').on('click', '.search-item', function () {
   $searchResultTable.html('')
   $torrentInput.val($(this).attr('torrent-link'))
   $torrentInput.trigger('keyup')
