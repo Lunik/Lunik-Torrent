@@ -21,7 +21,7 @@ process.on('message', function (data) {
         var timeout = new Date().getTime()
         torrent.on('download', function (chunkSize) {
           var currentTime = new Date().getTime()
-          if ((currentTime - timeout) > 1000) {
+          if ((currentTime - timeout) > 3000) {
             process.send({'type': 'info', 'torrent': listTorrents()})
             timeout = currentTime
           }
