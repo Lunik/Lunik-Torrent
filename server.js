@@ -226,12 +226,14 @@ function startTorrent (url) {
       })
 
       n.on('exit', function (code, signal) {
-        log('Child: ' + url + ' \n exit with code: ' + code)
-        io.sockets.emit('error-t', TorrentUrlToHash[url])
-        delete TorrentUrlToChild[url]
-        delete TorrentHashToChild[TorrentUrlToHash[url]]
-        delete TorrentUrlToHash[url]
-        startTorrent(url)
+        if (signal != 'SIGHUP') {
+          log('Child: ' + url + ' \n exit with code: ' + code)
+          io.sockets.emit('error-t', TorrentUrlToHash[url])
+          delete TorrentUrlToChild[url]
+          delete TorrentHashToChild[TorrentUrlToHash[url]]
+          delete TorrentUrlToHash[url]
+          startTorrent(url)
+        }
       })
       n.send({'type': 'download', 'torrent': url})
 
