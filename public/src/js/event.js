@@ -1,5 +1,4 @@
 $(window).keydown(function (event) {
-  console.log(event.which)
   switch (event.which) {
     case 13:
       $currentSubmit.trigger('click')

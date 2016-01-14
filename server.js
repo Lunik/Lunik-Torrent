@@ -41,6 +41,7 @@ var io = require('socket.io')(server)
 // Torrent memory tab
 var TorrentUrlToChild = {}
 var TorrentHashToChild = {}
+var TorrentUrlToHash = {}
 var TorrentWaitList = []
 
 // Auto start torrent in file
@@ -194,6 +195,7 @@ function startTorrent (url) {
             io.sockets.emit('finish-t', data.hash)
             n.kill('SIGHUP')
             delete TorrentUrlToChild[url]
+            delete TorrentUrlToHash[url]
             delete TorrentHashToChild[data.hash]
             fs.renameSync(DEFAULTDOWNLOADPATH + data.name, DEFAULTFILESPATH + data.name)
             // Relance un torrent si il y en a en attente
@@ -206,11 +208,13 @@ function startTorrent (url) {
           case 'info':
             io.sockets.emit('list-t', data.torrent)
             TorrentHashToChild[data.torrent.hash] = n
+            TorrentUrlToHash[url] = data.torrent.hash
             break
           case 'remove':
             io.sockets.emit('finish-t', data.hash)
             n.kill('SIGHUP')
             delete TorrentUrlToChild[url]
+            delete TorrentUrlToHash[url]
             delete TorrentHashToChild[data.hash]
             fs.unlinkSync(DEFAULTDOWNLOADPATH + data.name)
             // Relance un torrent si il y en a en attente
@@ -221,6 +225,14 @@ function startTorrent (url) {
         }
       })
 
+      n.on('exit', function (code, signal) {
+        log('Child: ' + url + ' \n exit with code: ' + code)
+        io.sockets.emit('error-t', TorrentUrlToHash[url])
+        delete TorrentUrlToChild[url]
+        delete TorrentHashToChild[TorrentUrlToHash[url]]
+        delete TorrentUrlToHash[url]
+        startTorrent(url)
+      })
       n.send({'type': 'download', 'torrent': url})
 
     } else {
