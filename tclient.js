@@ -1,6 +1,6 @@
 var DEFAULTFILESPATH = __dirname + '/public/files/'
 var DEFAULTDOWNLOADPATH = __dirname + '/public/downloads/'
-var DEFAULTTORRENTPATH = __dirname + '/torrents'
+var DEFAULTTORRENTPATH = __dirname + '/torrents.txt'
 var DEFAULTLOGPATH = __dirname + '/log.txt'
 
 var WebTorrent = require('webtorrent')
