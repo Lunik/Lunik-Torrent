@@ -1,11 +1,11 @@
-var Pnotif = function () {
-  this.init = function (pos, html, timeOut) {
+var Pnotif = function() {
+  this.init = function(pos, html, timeOut) {
     this.pos = getXYFromPos(pos)
     this.html = html
     this.timeOut = timeOut
   }
 
-  this.draw = function () {
+  this.draw = function() {
     $container = $('<div>').addClass('pnotif-container')
     for (var key in this.pos) {
       $container.css(key, this.pos[key])
@@ -15,16 +15,17 @@ var Pnotif = function () {
     $('body').append($container)
 
     $container.fadeIn().delay(this.timeOut).fadeOut('slow')
-    setTimeout(function () {
+    setTimeout(function() {
       $container.remove()
     }, this.timeOut + 1000)
   }
 }
 
-function pnotifClose () {
+function pnotifClose() {
   $('.pnotif-container').remove()
 }
-function getXYFromPos (pos) {
+
+function getXYFromPos(pos) {
   var xy = {}
   switch (pos) {
     case 'top-right':

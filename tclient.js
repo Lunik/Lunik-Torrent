@@ -9,25 +9,30 @@ var client = new WebTorrent()
 var fs = require('fs')
 
 var theTorrent
-process.on('message', function (data) {
+process.on('message', function(data) {
   switch (data.type) {
     case 'download':
       log('Child pid: ' + process.pid + ' start: ' + data.torrent)
-      client.add(data.torrent, {path: DEFAULTDOWNLOADPATH}, function (torrent) {
+      client.add(data.torrent, {
+        path: DEFAULTDOWNLOADPATH
+      }, function(torrent) {
         theTorrent = torrent
-        // Got torrent metadata!
+          // Got torrent metadata!
         log('Start torrent: ' + torrent.name)
 
         var timeout = new Date().getTime()
-        torrent.on('download', function (chunkSize) {
+        torrent.on('download', function(chunkSize) {
           var currentTime = new Date().getTime()
           if ((currentTime - timeout) > 3000) {
-            process.send({'type': 'info', 'torrent': listTorrents()})
+            process.send({
+              'type': 'info',
+              'torrent': listTorrents()
+            })
             timeout = currentTime
           }
         })
 
-        torrent.on('done', function () {
+        torrent.on('done', function() {
           log('Finish torrent: ' + torrent.name)
           process.send({
             'type': 'finish',
@@ -40,7 +45,10 @@ process.on('message', function (data) {
       break
 
     case 'info':
-      process.send({'type': 'info', 'torrent': listTorrents()})
+      process.send({
+        'type': 'info',
+        'torrent': listTorrents()
+      })
       break
 
     case 'remove':
@@ -55,9 +63,9 @@ process.on('message', function (data) {
   }
 })
 
-function listTorrents () {
+function listTorrents() {
   var t = {}
-  client.torrents.forEach(function (torrent) {
+  client.torrents.forEach(function(torrent) {
     if (!torrent.client.destroyed) {
       t.name = torrent.name
       t.size = torrent.length
@@ -77,14 +85,14 @@ function listTorrents () {
   return t
 }
 
-function getDate () {
+function getDate() {
   var date = new Date()
   return date.getDate() + '/' + (date.getMonth() + 1) + ' ' + (date.getHours() + 1) + ':' + (date.getMinutes() + 1) + ':' + (date.getSeconds() + 1)
 }
 
-function log (text) {
+function log(text) {
   console.log(text)
-  fs.appendFile(DEFAULTLOGPATH, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
+  fs.appendFile(DEFAULTLOGPATH, '[' + getDate() + '] ' + text + '\n', 'utf8', function(err) {
     if (err) throw err
   })
 }

@@ -1,41 +1,41 @@
 var socket = io()
 
-socket.on('update-t', function () {
+socket.on('update-t', function() {
   listT()
 })
 
-socket.on('finish-t', function (hash) {
+socket.on('finish-t', function(hash) {
   $('.torrent[hash=' + hash + ']').remove()
 })
 
-socket.on('list-t', function (torrents) {
+socket.on('list-t', function(torrents) {
   listTorrent(torrents)
 })
 
-socket.on('list-d', function (directory) {
+socket.on('list-d', function(directory) {
   appendDirectorySize(directory.totalSize)
-  $.each($('.container .directory .list tbody *'), function (key, value) {
+  $.each($('.container .directory .list tbody *'), function(key, value) {
     $(value).addClass('toremove')
   })
   listDirectory(directory.files)
   $('.toremove').remove()
 })
 
-socket.on('update-d', function () {
+socket.on('update-d', function() {
   listD()
 })
 
-socket.on('start-t', function (data) {
+socket.on('start-t', function(data) {
   var notif = new Pnotif()
   notif.init('top-right', "<p style='padding: 10px; margin: 0px;'>Le torrent va commencer dans quelques instants.</p>", 10000)
   notif.draw()
 })
 
-socket.on('search-t', function (data) {
+socket.on('search-t', function(data) {
   var $searchDiv = $('.menu .search-result')
 
   if ($('.search-result .close-search').length <= 0) {
-    var $closeBut = $('<button>').addClass('close-search').text('x').click(function () {
+    var $closeBut = $('<button>').addClass('close-search').text('x').click(function() {
       $searchDiv.html('')
     }).appendTo($searchDiv)
   }
@@ -50,7 +50,7 @@ socket.on('search-t', function (data) {
   }
   var $series = $('.search-result .series')
 
-  data.data.items.forEach(function (element, index) {
+  data.data.items.forEach(function(element, index) {
     var $item = $('<tr>').addClass('search-item').attr('torrent-link', element.torrent)
     $('<td>').text(element.title).appendTo($item)
     $('<td>').text(element.size).appendTo($item)
@@ -66,7 +66,7 @@ socket.on('search-t', function (data) {
   })
 })
 
-socket.on('error-t', function (hash) {
+socket.on('error-t', function(hash) {
   $('.torrent[hash=' + hash + ']').remove()
   var notif = new Pnotif()
   notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Erreur avec le torrent. Nouvelle tentative dans quelques instants</p>", 10000)

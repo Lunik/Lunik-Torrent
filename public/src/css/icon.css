@@ -1,40 +1,54 @@
-i.fa::before{
-	margin: 2px;
+i.fa::before {
+  margin: 2px;
 }
-i.fa{
-	padding: 5px;
+i.fa {
+  padding: 5px;
 }
-
-.actions .but#download{
-	color:#01DFD7;
+.actions .but#download {
+  color: #01DFD7;
 }
-
-.actions .but#delete{
-	color:#DF0101;
+.actions .but#delete {
+  color: #DF0101;
 }
-
-.actions .but#rename{
-	color:#DF7401;
+.actions .but#rename {
+  color: #DF7401;
 }
-
-.actions .but#info{
-	color: #86c351;
+.actions .but#info {
+  color: #86c351;
 }
-
 .directory .name {
-	background-repeat: no-repeat;
-	background-image: url("../image/file/file.png");
-	background-size: 25px;
-	padding:5px 0px 0px 30px !important;
+  background-repeat: no-repeat;
+  background-image: url("../image/file/file.png");
+  background-size: 25px;
+  padding: 5px 0px 0px 30px !important;
 }
-
-.directory .name#dir{ background-image: url("../image/file/dir.png");}
-.directory .name#avi{ background-image: url("../image/file/avi.png");}
-.directory .name#mkv{ background-image: url("../image/file/mkv.png");}
-.directory .name#html{ background-image: url("../image/file/html.png");}
-.directory .name#jpg{ background-image: url("../image/file/jpg.png");}
-.directory .name#mp3{ background-image: url("../image/file/mp3.png");}
-.directory .name#mp4{ background-image: url("../image/file/mp4.png");}
-.directory .name#pdf{ background-image: url("../image/file/pdf.png");}
-.directory .name#png{ background-image: url("../image/file/png.png");}
-.directory .name#txt{ background-image: url("../image/file/txt.png");}
+.directory .name#dir {
+  background-image: url("../image/file/dir.png");
+}
+.directory .name#avi {
+  background-image: url("../image/file/avi.png");
+}
+.directory .name#mkv {
+  background-image: url("../image/file/mkv.png");
+}
+.directory .name#html {
+  background-image: url("../image/file/html.png");
+}
+.directory .name#jpg {
+  background-image: url("../image/file/jpg.png");
+}
+.directory .name#mp3 {
+  background-image: url("../image/file/mp3.png");
+}
+.directory .name#mp4 {
+  background-image: url("../image/file/mp4.png");
+}
+.directory .name#pdf {
+  background-image: url("../image/file/pdf.png");
+}
+.directory .name#png {
+  background-image: url("../image/file/png.png");
+}
+.directory .name#txt {
+  background-image: url("../image/file/txt.png");
+}

@@ -1,23 +1,23 @@
 {
-   "name":"lunik-torrent",
-   "version":"1.6.3",
-   "description":"Web torrent client with directory storage",
-   "author":"Guillaume Lunik <guillaume.lunik@gmail.com",
-   "scripts":{
-      "start":"node server.js"
-   },
-   "main":"server.js",
-   "repository":{
-      "type":"git",
-      "url":"https://github.com/Lunik/Nodejs-torrent"
-   },
-   "dependencies":{
-      "compression":"*",
-      "cpasbien-api":"*",
-      "express":"*",
-      "fs":"*",
-      "http-auth":"*",
-      "socket.io":"*",
-      "webtorrent":"*"
-   }
+  "name": "lunik-torrent",
+  "version": "1.6.4",
+  "description": "Web torrent client with directory storage",
+  "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lunik/Nodejs-torrent"
+  },
+  "dependencies": {
+    "compression": "*",
+    "cpasbien-api": "*",
+    "express": "*",
+    "fs": "*",
+    "http-auth": "*",
+    "socket.io": "*",
+    "webtorrent": "*"
+  }
 }
