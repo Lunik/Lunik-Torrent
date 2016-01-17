@@ -51,7 +51,7 @@ fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function (err) {
 setInterval(startPointTorrent, 30000)
 
 // Search Api
-var CPBAPI = require('cpasbien-parser')
+var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 var LASTCPB = {'timeout': 0, 'data': []}
 
