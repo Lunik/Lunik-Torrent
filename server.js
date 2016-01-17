@@ -9,7 +9,7 @@ fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
   if (err) log(err)
 })
 
-// Child process 
+// Child process
 var cp = require('child_process')
 
 // Setup basic express server
@@ -53,7 +53,6 @@ setInterval(startPointTorrent, 30000)
 // Search Api
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
-var LASTCPB = {'timeout': 0, 'data': []}
 
 app.get('/files/', function (req, res) {
   var filename = DEFAULTFILESPATH + req.query.f
@@ -62,7 +61,7 @@ app.get('/files/', function (req, res) {
       res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f + '"')
       res.setHeader('Content-Length', stats.size)
       res.setHeader('Content-type', 'application/octet-stream')
-      var fReadStream = fs.createReadStream(filename, {highWaterMark: Math.pow(2, 16)})
+      var fReadStream = fs.createReadStream(filename, {highWaterMark: Math.pow(2, 16), bufferSize: 64 * 1024})
       fReadStream.pipe(res)
     } else {
       res.end("Le fichier n'existe pas")
@@ -238,7 +237,7 @@ function startTorrent (url) {
       })
 
       n.on('exit', function (code, signal) {
-        if (signal != 'SIGHUP') {
+        if (signal !== 'SIGHUP') {
           log('Child: ' + url + ' \n exit with code: ' + code)
           io.sockets.emit('error-t', TorrentUrlToHash[url])
           delete TorrentUrlToChild[url]
@@ -252,8 +251,9 @@ function startTorrent (url) {
     } else {
       log('Too much client. Adding torrent to the waitlist.')
       // On push dans la liste d'attente
-      if (TorrentWaitList.indexOf(url) === -1)
+      if (TorrentWaitList.indexOf(url) === -1) {
         TorrentWaitList.push(url)
+      }
     }
   } else {
     log('Torrent is already downloading.')
@@ -280,7 +280,7 @@ function sizeRecursif (path) {
     fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + '/' + file
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
-        sizeRecursif(curPath)
+        size += sizeRecursif(curPath)
       } else { // read size
         size += fs.statSync(curPath).size
       }
