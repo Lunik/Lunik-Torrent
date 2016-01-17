@@ -9,5 +9,12 @@
 [![socketio](https://img.shields.io/badge/socket.io-v1.4.4%20-green.svg)](http://socket.io/)
 [![cpasbien-api](https://img.shields.io/badge/cpasbien--api-v1%20-green.svg)](https://github.com/yadomi/cpasbien-api)
 
+## Installation
+  $ git clone https://github.com/Lunik/Nodejs-torrent.git
+  $ npm install
+
+## Run
+  $ npm start
+  
 ## View:
 ![Nodejs-Torrent](http://puu.sh/mdzuP/ee58ae716b.png)
