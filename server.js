@@ -324,7 +324,6 @@ function sizeRecursif(path) {
 }
 
 function startPointTorrent() {
-  log('Scan for new torrent.')
   fs.readFile(DEFAULTTORRENTPATH, 'utf-8', function(err, data) {
     if (err) return log(err)
     var torrents = data.split('\n')
