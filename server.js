@@ -56,6 +56,7 @@ var CpasbienApi = new CPBAPI()
 
 app.get('/files/', function(req, res) {
   var filename = DEFAULTFILESPATH + req.query.f
+  log(req.user+" download: "+req.query.f)
   fs.stat(filename, function(err, stats) {
     if (stats) {
       res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f + '"')
