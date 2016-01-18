@@ -4,3 +4,6 @@ node_modules
 depot
 torrents.txt
 .htpasswd
+public/files/
+public/downloads/
+public/torrent.txt
