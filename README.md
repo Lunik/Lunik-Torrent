@@ -4,6 +4,7 @@
 ## Installation
     $ git clone https://github.com/Lunik/Nodejs-torrent.git
     $ npm install
+    $ npm test
 
 ## Run
     $ npm start
