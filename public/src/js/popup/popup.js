@@ -15,23 +15,18 @@ var Popup = function(){
   //Ouvrir le popup
   this.draw = function(){
     //Creation de l'ombre
-    var $shadow = $("<div>").addClass('popupShadow').appendTo($('body'))
+    var $shadow = $("<div>").addClass('popupShadow')
 
     //Creation du contenu du popup
-    var $container = $('.popupContainer')
+    var $container = $('<div>').addClass('popupContainer')
       .css("width",this.width+"px")
       .css("height",this.height+"px")
       .css("margin-top",this.posY+"px")
       .css("margin-left",this.posX+"px")
-      .append(
-        $("<h1>").addClass('popupTitle').text(this.title),
-        $('<p>').addClass('popupHtml').text(this.html)
-      )
-      .appendTo($shadow);
 
     if(this.closeBut){
     //Creation du bouton de fermeture du popup
-      $('.popupClose')
+      $('<button>').addClass('popupClose')
         .css("margin-top",-15)
         .css("margin-left",this.width-15)
         .click(function(){
@@ -39,6 +34,13 @@ var Popup = function(){
         })
         .appendTo($container)
     }
+
+    $container.append(
+      $("<h1>").addClass('popupTitle').text(this.title),
+      $('<p>').addClass('popupHtml').text(this.html)
+    ).appendTo($shadow);
+    $shadow.appendTo($('body'))
+
   };
 
   this.center = function(){
