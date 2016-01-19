@@ -54,9 +54,12 @@ setInterval(startPointTorrent, 30000)
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 
+//Allocine api
+var allocine = require('allocine-api')
+
 app.get('/files/', function(req, res) {
   var filename = DEFAULTFILESPATH + req.query.f
-  log(req.user+" download: "+req.query.f)
+  log(req.user + ' download: ' + req.query.f)
   fs.stat(filename, function(err, stats) {
     if (stats) {
       res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f + '"')
@@ -206,6 +209,40 @@ io.on('connection', function(socket) {
         'data': data
       })
     })
+  })
+
+  socket.on('infos-d', function(data){
+    if(data.type == "series"){
+      allocine.api('search', {q: data.query, filter: 'tvseries'}, function(err, data){
+        if(data.feed.totalResults > 0){
+          allocine.api('tvseries',{code: data.feed.tvseries[0].code}, function(err, data){
+            socket.emit('infos-d', {
+              'type': 'series',
+              'title': data.tvseries.title,
+              'link': data.tvseries.link.length > 0 ? data.tvseries.link[0].href : '',
+              'description': data.tvseries.synopsisShort,
+              'poster': data.tvseries.poster ? data.tvseries.poster.href : '',
+              'rating': (data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2
+            })
+          })
+        }
+      })
+    } else if(data.type == 'films'){
+      allocine.api('search', {q: data.query, filter: 'movie'}, function(err, data){
+        if(data.feed.totalResults > 0){
+          allocine.api('movie',{code: data.feed.movie[0].code}, function(err, data){
+            socket.emit('infos-d', {
+              'type': 'films',
+              'title': data.movie.title,
+              'link': data.movie.link[0].href,
+              'description': data.movie.synopsisShort,
+              'poster': data.movie.poster ? data.movie.poster.href : '',
+              'rating': (data.movie.statistics.pressRating + data.movie.statistics.userRating) / 2
+            })
+          })
+        }
+      })
+    }
   })
 })
 

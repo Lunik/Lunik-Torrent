@@ -1,4 +1,5 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
+@import url(mediainfo.css);
 @import url(icon.css);
 * {
   outline: none;
