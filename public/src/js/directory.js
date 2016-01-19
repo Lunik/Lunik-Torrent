@@ -53,7 +53,12 @@ function appendDirectory(file) {
     }
   })
   if (file.isfile) {
-    var $infoBut = $('<i>').addClass('but fa fa-info').attr('id', 'info').text('infos').appendTo($actions)
+    var $infoBut = $('<i>').addClass('but fa fa-info').attr('id', 'info').text('infos').appendTo($actions).click(function(){
+      var title = $($(this).parent().parent().children()[0]).text()
+      cleanTitle(title)
+      var type = getMediaType(title)
+      socket.emit('infos-d', {type:type, query:title})
+    })
   }
 
   $actions.appendTo($file)
@@ -73,3 +78,11 @@ $('.but#mkdir i').click(function() {
       'name': name
     })
 })
+
+function cleanTitle(title){
+
+}
+
+function getMediaType(title){
+  return 'series'
+}
