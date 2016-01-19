@@ -57,7 +57,8 @@ function appendDirectory(file) {
       var title = $($(this).parent().parent().children()[0]).text()
       cleanTitle(title)
       var type = getMediaType(title)
-      socket.emit('infos-d', {type:type, query:title})
+      console.log(title)
+      //socket.emit('infos-d', {type:type, query:title})
     })
   }
 
