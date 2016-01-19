@@ -216,7 +216,6 @@ io.on('connection', function(socket) {
       allocine.api('search', {q: data.query, filter: 'tvseries'}, function(err, data){
         if(data.feed.totalResults > 0){
           allocine.api('tvseries',{code: data.feed.tvseries[0].code}, function(err, data){
-            console.log(data.tvseries)
             socket.emit('infos-d', {
               'type': 'series',
               'title': data.tvseries.title,

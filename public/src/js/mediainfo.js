@@ -26,7 +26,6 @@ function mediaInfoHtml(data) {
 function mediaInfoPopup(data){
   var p = new Popup()
   var html = mediaInfoHtml(data);
-  console.log(html)
   p.init(null,null,null,null,html.title,html.content,true)
   p.draw()
 }
