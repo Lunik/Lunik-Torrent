@@ -55,10 +55,9 @@ function appendDirectory(file) {
   if (file.isfile) {
     var $infoBut = $('<i>').addClass('but fa fa-info').attr('id', 'info').text('infos').appendTo($actions).click(function(){
       var title = $($(this).parent().parent().children()[0]).text()
-      cleanTitle(title)
       var type = getMediaType(title)
-      console.log(title)
-      //socket.emit('infos-d', {type:type, query:title})
+      title = cleanTitle(title)
+      socket.emit('infos-d', {type:type, query:title})
     })
   }
 
@@ -82,11 +81,19 @@ $('.but#mkdir i').click(function() {
 
 function cleanTitle(title){
   title = title.replace(/\.[A-Za-z0-9]*$/,'') //remove extension
+  .replace(/S[0-9^E]*E[0-9]*/, '') //numero d'episode
   .replace(/[ \.](([Ff][Rr])|([Vv][Oo])|(VOSTFR)|(FASTSUB)|(HDTV)|(XviD-ARK01))/g, '') //remove useless stuff
   .replace(/\./g,' ') //point
   .replace(/ $/,''); //espace en fin de chaine
+
+  return title
 }
 
 function getMediaType(title){
-  return 'series'
+  var regex = /S[0-9^E]*E[0-9]/
+  if(title.search(regex) == -1){
+    return 'films'
+  } else {
+    return 'series'
+  }
 }
