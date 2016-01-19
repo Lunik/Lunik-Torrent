@@ -228,7 +228,7 @@ io.on('connection', function(socket) {
           })
         }
       })
-    } else {
+    } else if(data.type == 'films'){
       allocine.api('search', {q: data.query, filter: 'movie'}, function(err, data){
         if(data.feed.totalResults > 0){
           allocine.api('movie',{code: data.feed.movie[0].code}, function(err, data){
