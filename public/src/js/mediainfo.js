@@ -1,3 +1,9 @@
+function mediaInfoGet(string){
+  var type = getMediaType(title)
+  title = cleanTitle(title)
+  socket.emit('infos-d', {type:type, query:title})
+}
+
 function mediaInfoHtml(data) {
   var html = {};
   html.title = $('<a/>').attr('href', data.link).text(data.title);
@@ -28,4 +34,23 @@ function mediaInfoPopup(data){
   var html = mediaInfoHtml(data);
   p.init(null,null,null,null,html.title,html.content,true)
   p.draw()
+}
+
+function cleanTitle(title){
+  title = title.replace(/\.[A-Za-z0-9]*$/,'') //remove extension
+  .replace(/S[0-9^E]*E[0-9]*/, '') //numero d'episode
+  .replace(/[ \.](([Ff][Rr])|([Vv][Oo])|(VOSTFR)|(FASTSUB)|(HDTV)|(XviD-ARK01))/g, '') //remove useless stuff
+  .replace(/\./g,' ') //point
+  .replace(/ $/,''); //espace en fin de chaine
+
+  return title
+}
+
+function getMediaType(title){
+  var regex = /S[0-9^E]*E[0-9]/
+  if(title.search(regex) == -1){
+    return 'films'
+  } else {
+    return 'series'
+  }
 }
