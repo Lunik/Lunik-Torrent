@@ -1,7 +1,13 @@
-function mediaInfoGet(string){
+function mediaInfoGet(title){
   var type = getMediaType(title)
   title = cleanTitle(title)
-  socket.emit('infos-d', {type:type, query:title})
+  if(readData(title.toLowerCase()) != null){
+    console.log("Already into storage");
+    mediaInfoPopup(readData(title.toLowerCase()))
+  } else {
+    console.log("Not in storage");
+    socket.emit('infos-d', {type:type, query:title})
+  }
 }
 
 function mediaInfoHtml(data) {

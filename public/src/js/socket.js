@@ -75,4 +75,5 @@ socket.on('error-t', function(hash) {
 
 socket.on('infos-d', function(data){
   mediaInfoPopup(data)
+  storeData(data.query.toLowerCase(), data);
 })
