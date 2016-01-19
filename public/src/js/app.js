@@ -8,10 +8,12 @@ function init() {
       $.getScript('src/js/torrent.js', function() {
         $.getScript('src/js/directory.js', function() {
           $.getScript('src/js/list.js', function() {
-            $.getScript('src/js/event.js', function() {
-              $.getScript('src/js/pnotif/pnotif.js', function() {
-                $.getScript('src/js/popup/popup.js', function() {
-                  socket.emit('ready')
+            $.getScript('src/js/mediainfo.js', function() {
+              $.getScript('src/js/event.js', function() {
+                $.getScript('src/js/pnotif/pnotif.js', function() {
+                  $.getScript('src/js/popup/popup.js', function() {
+                    socket.emit('ready')
+                  })
                 })
               })
             })
