@@ -72,3 +72,7 @@ socket.on('error-t', function(hash) {
   notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Erreur avec le torrent. Nouvelle tentative dans quelques instants</p>", 10000)
   notif.draw()
 })
+
+socket.on('infos-d', function(data){
+  console.log(data)
+})
