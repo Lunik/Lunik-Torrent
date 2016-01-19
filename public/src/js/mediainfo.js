@@ -1,8 +1,9 @@
 function mediaInfoGet (title) {
+  title = title.toLowerCase()
   var type = getMediaType(title)
   title = cleanTitle(title)
-  if (readData(title.toLowerCase()) != null) {
-    mediaInfoPopup(readData(title.toLowerCase()))
+  if (readData(title) != null) {
+    mediaInfoPopup(readData(title))
   } else {
     socket.emit('infos-d', {
       type: type,
@@ -46,7 +47,7 @@ function mediaInfoPopup (data) {
 function cleanTitle (title) {
   title = title.replace(/\.[A-Za-z0-9]*$/, '') // remove extension
     .replace(/S[0-9^E]*E[0-9]*/, '') // numero d'episode
-    .replace(/[ \.](([Ff][Rr])|([Vv][Oo])|(VOSTFR)|(FASTSUB)|(HDTV)|(XviD-ARK01))/g, '') // remove useless stuff
+    .replace(/[ \.]((french)|(dvdrip)|(xvid-trs)|(fr)|(vo)|(vostfr)|(fastub)|(hdtv)|(xvid-ark01))/g, '') // remove useless stuff
     .replace(/\./g, ' ') // point
     .replace(/ $/, '') // espace en fin de chaine
 
