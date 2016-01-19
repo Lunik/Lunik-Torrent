@@ -36,8 +36,8 @@ var Popup = function(){
     }
 
     $container.append(
-      $("<h1>").addClass('popupTitle').text(this.title),
-      $('<p>').addClass('popupHtml').text(this.html)
+      $("<h1>").addClass('popupTitle').append(this.title),
+      $('<p>').addClass('popupHtml').append(this.html)
     ).appendTo($shadow);
     $shadow.appendTo($('body'))
 
