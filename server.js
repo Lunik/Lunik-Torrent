@@ -1,7 +1,5 @@
-var DEFAULTFILESPATH = __dirname + '/public/files/'
-var DEFAULTDOWNLOADPATH = __dirname + '/public/downloads/'
-var DEFAULTTORRENTPATH = __dirname + '/torrents.txt'
-var DEFAULTLOGPATH = __dirname + '/log.txt'
+var CONFIG = require('./config.js')
+module.exports = CONFIG
 
 var checkUpdate = require('check-update-github')
 var pkg = require('./package.json')
@@ -19,7 +17,7 @@ checkUpdate({
 
 // file management
 var fs = require('fs')
-fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
+fs.writeFile(CONFIG.LOGS, '', 'utf-8', function (err) {
   if (err) log(err)
 })
 
@@ -30,7 +28,7 @@ var cp = require('child_process')
 var auth = require('http-auth')
 var basic = auth.basic({
   realm: 'Protected area. Please disperse !',
-  file: __dirname + '/.htpasswd'
+  file: CONFIG.HTPASSWD
 })
 
 // setup http server
@@ -41,7 +39,7 @@ app.use(compression())
 var http = require('http')
 http.globalAgent.maxSockets = Infinity
 var server = http.createServer(basic, app)
-var port = process.env.PORT || 80
+var port = process.env.PORT || CONFIG.PORT
 server.listen(port, function () {
   log('Server listening at port ' + port)
 })
@@ -59,7 +57,7 @@ var TorrentUrlToHash = {}
 var TorrentWaitList = []
 
 // Auto start torrent in file
-fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function (err) {
+fs.writeFile(CONFIG.TORRENTS, '', 'utf-8', function (err) {
   if (err) throw err
 })
 setInterval(startPointTorrent, 30000)
@@ -72,7 +70,7 @@ var CpasbienApi = new CPBAPI()
 var allocine = require('allocine-api')
 
 app.get('/files/', function (req, res) {
-  var filename = DEFAULTFILESPATH + req.query.f
+  var filename = CONFIG.FILES + req.query.f
   log(req.user + ' download: ' + req.query.f)
   fs.stat(filename, function (err, stats) {
     if (stats) {
@@ -101,17 +99,17 @@ io.on('connection', function (socket) {
   })
 
   socket.on('list-d', function (dir) {
-    fs.readdir(DEFAULTFILESPATH + dir, function (err, files) {
+    fs.readdir(CONFIG.FILES + dir, function (err, files) {
       if (err) return log(err)
       var list = {}
       var totalSize = 0
       if (files.length > 0) {
         files.forEach(function (file) {
-          var stats = fs.statSync(DEFAULTFILESPATH + dir + file)
+          var stats = fs.statSync(CONFIG.FILES + dir + file)
           if (stats.isFile()) {
             list[file] = stats
           } else {
-            stats.size = sizeRecursif(DEFAULTFILESPATH + dir + file)
+            stats.size = sizeRecursif(CONFIG.FILES + dir + file)
             list[file] = stats
           }
           list[file].isfile = stats.isFile()
@@ -142,13 +140,13 @@ io.on('connection', function (socket) {
 
   socket.on('remove-d', function (file) {
     log('Remove file: ' + file)
-    fs.stat(DEFAULTFILESPATH + file, function (err, stats) {
+    fs.stat(CONFIG.FILES + file, function (err, stats) {
       if (err) return log(err)
       if (stats.isDirectory()) {
-        removeRecursif(DEFAULTFILESPATH + file)
+        removeRecursif(CONFIG.FILES + file)
         socket.emit('update-d')
       } else {
-        fs.unlink(DEFAULTFILESPATH + file, function (err) {
+        fs.unlink(CONFIG.FILES + file, function (err) {
           if (err) return log(err)
           socket.emit('update-d')
         })
@@ -158,7 +156,7 @@ io.on('connection', function (socket) {
 
   socket.on('rename-d', function (data) {
     log('Rename: ' + data.oldname + ' In: ' + data.newname)
-    fs.rename(DEFAULTFILESPATH + data.path + '/' + data.oldname, DEFAULTFILESPATH + data.path + '/' + data.newname, function (err) {
+    fs.rename(CONFIG.FILES + data.path + '/' + data.oldname, CONFIG.FILES + data.path + '/' + data.newname, function (err) {
       if (err) return log(err)
       socket.emit('update-d')
     })
@@ -166,13 +164,13 @@ io.on('connection', function (socket) {
 
   socket.on('mkdir', function (data) {
     log('Mkdir: ' + data.path + '/' + data.name)
-    fs.mkdir(DEFAULTFILESPATH + data.path + '/' + data.name, function () {
+    fs.mkdir(CONFIG.FILES + data.path + '/' + data.name, function () {
       socket.emit('update-d')
     })
   })
 
   socket.on('mv', function (data) {
-    fs.rename(DEFAULTFILESPATH + data.path + data.file, DEFAULTFILESPATH + data.path + data.folder + '/' + data.file, function (err) {
+    fs.rename(CONFIG.FILES + data.path + data.file, CONFIG.FILES + data.path + data.folder + '/' + data.file, function (err) {
       if (err) return log(err)
       socket.emit('update-d')
     })
@@ -279,7 +277,7 @@ function getDate () {
 
 function log (text) {
   console.log(text)
-  fs.appendFile(DEFAULTLOGPATH, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
+  fs.appendFile(CONFIG.LOGS, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
     if (err) throw err
   })
 }
@@ -302,7 +300,7 @@ function startTorrent (url) {
             delete TorrentUrlToChild[url]
             delete TorrentUrlToHash[url]
             delete TorrentHashToChild[data.hash]
-            fs.renameSync(DEFAULTDOWNLOADPATH + data.name, DEFAULTFILESPATH + data.name)
+            fs.renameSync(CONFIG.DOWNLOADS + data.name, CONFIG.FILES + data.name)
             // Relance un torrent si il y en a en attente
             if (TorrentWaitList.length > 0) {
               var newUrl = TorrentWaitList[0]
@@ -321,7 +319,7 @@ function startTorrent (url) {
             delete TorrentUrlToChild[url]
             delete TorrentUrlToHash[url]
             delete TorrentHashToChild[data.hash]
-            fs.unlinkSync(DEFAULTDOWNLOADPATH + data.name)
+            fs.unlinkSync(CONFIG.DOWNLOADS + data.name)
             // Relance un torrent si il y en a en attente
             if (TorrentWaitList.length > 0) {
               startTorrent(TorrentWaitList[0])
@@ -387,10 +385,10 @@ function sizeRecursif (path) {
 }
 
 function startPointTorrent () {
-  fs.readFile(DEFAULTTORRENTPATH, 'utf-8', function (err, data) {
+  fs.readFile(CONFIG.TORRENTS, 'utf-8', function (err, data) {
     if (err) return log(err)
     var torrents = data.split('\n')
-    fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function (err) {
+    fs.writeFile(CONFIG.TORRENTS, '', 'utf-8', function (err) {
       if (err) return log(err)
       torrents.forEach(function (element) {
         if (element !== '') {
