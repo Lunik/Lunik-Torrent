@@ -3,8 +3,9 @@
 
 ## Installation
     $ git clone https://github.com/Lunik/Nodejs-torrent.git
+    $ cd Lunik-Torrent
     $ npm install
-    $ npm test
+    $ nano config.js
 
 ## Run
     $ npm start
