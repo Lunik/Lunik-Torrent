@@ -80,7 +80,10 @@ $('.but#mkdir i').click(function() {
 })
 
 function cleanTitle(title){
-
+  title = title.replace(/\.[A-Za-z0-9]*$/,'') //remove extension
+  .replace(/[ \.](([Ff][Rr])|([Vv][Oo])|(VOSTFR)|(FASTSUB)|(HDTV)|(XviD-ARK01))/g, '') //remove useless stuff
+  .replace(/\./g,' ') //point
+  .replace(/ $/,''); //espace en fin de chaine
 }
 
 function getMediaType(title){
