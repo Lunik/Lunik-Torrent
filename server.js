@@ -3,6 +3,20 @@ var DEFAULTDOWNLOADPATH = __dirname + '/public/downloads/'
 var DEFAULTTORRENTPATH = __dirname + '/torrents.txt'
 var DEFAULTLOGPATH = __dirname + '/log.txt'
 
+var checkUpdate = require('check-update-github')
+var pkg = require('./package.json')
+
+checkUpdate({
+    name: pkg.name,
+    currentVersion: pkg.version,
+    user: 'Lunik',
+    branch: 'master'
+    }, function(err, latestVersion, defaultMessage){
+    if(!err){
+        console.log(defaultMessage);
+    }
+});
+
 // file management
 var fs = require('fs')
 fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
