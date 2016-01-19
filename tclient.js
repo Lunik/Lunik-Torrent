@@ -1,5 +1,4 @@
-var PATH = require('./config.js')
-
+var CONFIG = require('./config.js')
 var WebTorrent = require('webtorrent')
 var client = new WebTorrent()
 
@@ -11,7 +10,7 @@ process.on('message', function (data) {
     case 'download':
       log('Child pid: ' + process.pid + ' start: ' + data.torrent)
       client.add(data.torrent, {
-        path: PATH.DOWNLOADS
+        path: CONFIG.DOWNLOADS
       }, function (torrent) {
         theTorrent = torrent
         // Got torrent metadata!
@@ -89,7 +88,7 @@ function getDate () {
 
 function log (text) {
   console.log(text)
-  fs.appendFile(PATH.LOGS, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
+  fs.appendFile(CONFIG.LOGS, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
     if (err) throw err
   })
 }
