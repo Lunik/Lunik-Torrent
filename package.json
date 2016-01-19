@@ -1,6 +1,6 @@
 {
   "name": "lunik-torrent",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
   "scripts": {
@@ -19,6 +19,7 @@
     "fs": "*",
     "http-auth": "*",
     "socket.io": "*",
-    "webtorrent": "*"
+    "webtorrent": "*",
+    "allocine-api": "*"
   }
 }
