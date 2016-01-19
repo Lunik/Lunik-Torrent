@@ -54,6 +54,9 @@ setInterval(startPointTorrent, 30000)
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 
+//Allocine api
+var allocine = require('allocine-api')
+
 app.get('/files/', function(req, res) {
   var filename = DEFAULTFILESPATH + req.query.f
   log(req.user + ' download: ' + req.query.f)
