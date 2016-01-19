@@ -4,7 +4,7 @@
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
   "scripts": {
-    "test": "echo 'admin:admin' > .htpasswd; mkdir public/files; mkdir public/downloads; touch public/torrent.txt",
+    "test": "echo 'admin:admin' > .htpasswd; mkdir files; mkdir downloads; touch public/torrent.txt",
     "start": "node server.js"
   },
   "main": "server.js",
