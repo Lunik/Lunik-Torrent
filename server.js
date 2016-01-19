@@ -5,7 +5,7 @@ var DEFAULTLOGPATH = __dirname + '/log.txt'
 
 // file management
 var fs = require('fs')
-fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function(err) {
+fs.writeFile(DEFAULTLOGPATH, '', 'utf-8', function (err) {
   if (err) log(err)
 })
 
@@ -28,7 +28,7 @@ var http = require('http')
 http.globalAgent.maxSockets = Infinity
 var server = http.createServer(basic, app)
 var port = process.env.PORT || 80
-server.listen(port, function() {
+server.listen(port, function () {
   log('Server listening at port ' + port)
 })
 
@@ -45,7 +45,7 @@ var TorrentUrlToHash = {}
 var TorrentWaitList = []
 
 // Auto start torrent in file
-fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function(err) {
+fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function (err) {
   if (err) throw err
 })
 setInterval(startPointTorrent, 30000)
@@ -54,13 +54,13 @@ setInterval(startPointTorrent, 30000)
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 
-//Allocine api
+// Allocine api
 var allocine = require('allocine-api')
 
-app.get('/files/', function(req, res) {
+app.get('/files/', function (req, res) {
   var filename = DEFAULTFILESPATH + req.query.f
   log(req.user + ' download: ' + req.query.f)
-  fs.stat(filename, function(err, stats) {
+  fs.stat(filename, function (err, stats) {
     if (stats) {
       res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f + '"')
       res.setHeader('Content-Length', stats.size)
@@ -73,26 +73,26 @@ app.get('/files/', function(req, res) {
   })
 })
 
-io.on('connection', function(socket) {
-  socket.on('ready', function() {
+io.on('connection', function (socket) {
+  socket.on('ready', function () {
     for (var key in TorrentHashToChild) {
       TorrentHashToChild[key].send({
         'type': 'info'
       })
     }
 
-    socket.on('download-t', function(url) {
+    socket.on('download-t', function (url) {
       startTorrent(url)
     })
   })
 
-  socket.on('list-d', function(dir) {
-    fs.readdir(DEFAULTFILESPATH + dir, function(err, files) {
+  socket.on('list-d', function (dir) {
+    fs.readdir(DEFAULTFILESPATH + dir, function (err, files) {
       if (err) return log(err)
       var list = {}
       var totalSize = 0
       if (files.length > 0) {
-        files.forEach(function(file) {
+        files.forEach(function (file) {
           var stats = fs.statSync(DEFAULTFILESPATH + dir + file)
           if (stats.isFile()) {
             list[file] = stats
@@ -118,7 +118,7 @@ io.on('connection', function(socket) {
     })
   })
 
-  socket.on('remove-t', function(hash) {
+  socket.on('remove-t', function (hash) {
     log('Remove torrent: ' + hash)
     TorrentHashToChild[hash].send({
       'type': 'remove'
@@ -126,15 +126,15 @@ io.on('connection', function(socket) {
     socket.emit('finish-t', hash)
   })
 
-  socket.on('remove-d', function(file) {
+  socket.on('remove-d', function (file) {
     log('Remove file: ' + file)
-    fs.stat(DEFAULTFILESPATH + file, function(err, stats) {
+    fs.stat(DEFAULTFILESPATH + file, function (err, stats) {
       if (err) return log(err)
       if (stats.isDirectory()) {
         removeRecursif(DEFAULTFILESPATH + file)
         socket.emit('update-d')
       } else {
-        fs.unlink(DEFAULTFILESPATH + file, function(err) {
+        fs.unlink(DEFAULTFILESPATH + file, function (err) {
           if (err) return log(err)
           socket.emit('update-d')
         })
@@ -142,34 +142,34 @@ io.on('connection', function(socket) {
     })
   })
 
-  socket.on('rename-d', function(data) {
+  socket.on('rename-d', function (data) {
     log('Rename: ' + data.oldname + ' In: ' + data.newname)
-    fs.rename(DEFAULTFILESPATH + data.path + '/' + data.oldname, DEFAULTFILESPATH + data.path + '/' + data.newname, function(err) {
+    fs.rename(DEFAULTFILESPATH + data.path + '/' + data.oldname, DEFAULTFILESPATH + data.path + '/' + data.newname, function (err) {
       if (err) return log(err)
       socket.emit('update-d')
     })
   })
 
-  socket.on('mkdir', function(data) {
+  socket.on('mkdir', function (data) {
     log('Mkdir: ' + data.path + '/' + data.name)
-    fs.mkdir(DEFAULTFILESPATH + data.path + '/' + data.name, function() {
+    fs.mkdir(DEFAULTFILESPATH + data.path + '/' + data.name, function () {
       socket.emit('update-d')
     })
   })
 
-  socket.on('mv', function(data) {
-    fs.rename(DEFAULTFILESPATH + data.path + data.file, DEFAULTFILESPATH + data.path + data.folder + '/' + data.file, function(err) {
+  socket.on('mv', function (data) {
+    fs.rename(DEFAULTFILESPATH + data.path + data.file, DEFAULTFILESPATH + data.path + data.folder + '/' + data.file, function (err) {
       if (err) return log(err)
       socket.emit('update-d')
     })
   })
 
-  socket.on('search-t', function(query) {
+  socket.on('search-t', function (query) {
     log('Search: ' + query)
     CpasbienApi.Search(query, {
       scope: 'tvshow',
       language: 'FR'
-    }).then(function(data) {
+    }).then(function (data) {
       socket.emit('search-t', {
         'type': 'series',
         'data': data
@@ -178,13 +178,13 @@ io.on('connection', function(socket) {
     CpasbienApi.Search(query, {
       scope: 'tvshow',
       language: 'EN'
-    }).then(function(data) {
+    }).then(function (data) {
       socket.emit('search-t', {
         'type': 'series',
         'data': data
       })
     })
-    CpasbienApi.Search(query).then(function(data) {
+    CpasbienApi.Search(query).then(function (data) {
       socket.emit('search-t', {
         'type': 'films',
         'data': data
@@ -192,17 +192,17 @@ io.on('connection', function(socket) {
     })
   })
 
-  socket.on('last-t', function() {
+  socket.on('last-t', function () {
     CpasbienApi.Latest({
       scope: 'tvshow'
-    }).then(function(data) {
+    }).then(function (data) {
       data.items = data.items.slice(0, 10)
       socket.emit('search-t', {
         'type': 'series',
         'data': data
       })
     })
-    CpasbienApi.Latest().then(function(data) {
+    CpasbienApi.Latest().then(function (data) {
       data.items = data.items.slice(0, 10)
       socket.emit('search-t', {
         'type': 'films',
@@ -211,14 +211,19 @@ io.on('connection', function(socket) {
     })
   })
 
-  socket.on('infos-d', function(query){
-    if(query.type == "series"){
-      allocine.api('search', {q: query.query, filter: 'tvseries'}, function(err, data){
-        if(data.feed.totalResults > 0){
-          allocine.api('tvseries',{code: data.feed.tvseries[0].code}, function(err, data){
+  socket.on('infos-d', function (query) {
+    if (query.type == 'series') {
+      allocine.api('search', {
+        q: query.query,
+        filter: 'tvseries'
+      }, function (err, data) {
+        if (data.feed.totalResults > 0) {
+          allocine.api('tvseries', {
+            code: data.feed.tvseries[0].code
+          }, function (err, data) {
             socket.emit('infos-d', {
               'type': 'series',
-              'query':query.query,
+              'query': query.query,
               'title': data.tvseries.title,
               'link': data.tvseries.link.length > 0 ? data.tvseries.link[0].href : '',
               'description': data.tvseries.synopsisShort,
@@ -228,13 +233,18 @@ io.on('connection', function(socket) {
           })
         }
       })
-    } else if(query.type == 'films'){
-      allocine.api('search', {q: query.query, filter: 'movie'}, function(err, data){
-        if(data.feed.totalResults > 0){
-          allocine.api('movie',{code: data.feed.movie[0].code}, function(err, data){
+    } else if (query.type == 'films') {
+      allocine.api('search', {
+        q: query.query,
+        filter: 'movie'
+      }, function (err, data) {
+        if (data.feed.totalResults > 0) {
+          allocine.api('movie', {
+            code: data.feed.movie[0].code
+          }, function (err, data) {
             socket.emit('infos-d', {
               'type': 'films',
-              'query':query.query,
+              'query': query.query,
               'title': data.movie.title,
               'link': data.movie.link[0].href,
               'description': data.movie.synopsisShort,
@@ -248,19 +258,19 @@ io.on('connection', function(socket) {
   })
 })
 
-function getDate() {
+function getDate () {
   var date = new Date()
   return date.getDate() + '/' + (date.getMonth() + 1) + ' ' + (date.getHours() + 1) + ':' + (date.getMinutes() + 1) + ':' + (date.getSeconds() + 1)
 }
 
-function log(text) {
+function log (text) {
   console.log(text)
-  fs.appendFile(DEFAULTLOGPATH, '[' + getDate() + '] ' + text + '\n', 'utf8', function(err) {
+  fs.appendFile(DEFAULTLOGPATH, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
     if (err) throw err
   })
 }
 
-function startTorrent(url) {
+function startTorrent (url) {
   log('Trying to download: ' + url)
 
   // evite de lancer deux fois le meme torrent
@@ -270,7 +280,7 @@ function startTorrent(url) {
       var n = cp.fork(__dirname + '/tclient.js')
       TorrentUrlToChild[url] = n
       io.sockets.emit('start-t')
-      n.on('message', function(data) {
+      n.on('message', function (data) {
         switch (data.type) {
           case 'finish':
             io.sockets.emit('finish-t', data.hash)
@@ -279,7 +289,7 @@ function startTorrent(url) {
             delete TorrentUrlToHash[url]
             delete TorrentHashToChild[data.hash]
             fs.renameSync(DEFAULTDOWNLOADPATH + data.name, DEFAULTFILESPATH + data.name)
-              // Relance un torrent si il y en a en attente
+            // Relance un torrent si il y en a en attente
             if (TorrentWaitList.length > 0) {
               var newUrl = TorrentWaitList[0]
               startTorrent(newUrl)
@@ -298,7 +308,7 @@ function startTorrent(url) {
             delete TorrentUrlToHash[url]
             delete TorrentHashToChild[data.hash]
             fs.unlinkSync(DEFAULTDOWNLOADPATH + data.name)
-              // Relance un torrent si il y en a en attente
+            // Relance un torrent si il y en a en attente
             if (TorrentWaitList.length > 0) {
               startTorrent(TorrentWaitList[0])
               TorrentWaitList.shift()
@@ -306,7 +316,7 @@ function startTorrent(url) {
         }
       })
 
-      n.on('exit', function(code, signal) {
+      n.on('exit', function (code, signal) {
         if (signal !== 'SIGHUP') {
           log('Child: ' + url + ' \n exit with code: ' + code)
           io.sockets.emit('error-t', TorrentUrlToHash[url])
@@ -323,7 +333,7 @@ function startTorrent(url) {
 
     } else {
       log('Too much client. Adding torrent to the waitlist.')
-        // On push dans la liste d'attente
+      // On push dans la liste d'attente
       if (TorrentWaitList.indexOf(url) === -1) {
         TorrentWaitList.push(url)
       }
@@ -333,9 +343,9 @@ function startTorrent(url) {
   }
 }
 
-function removeRecursif(path) {
+function removeRecursif (path) {
   if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function(file, index) {
+    fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + '/' + file
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
         removeRecursif(curPath)
@@ -347,10 +357,10 @@ function removeRecursif(path) {
   }
 }
 
-function sizeRecursif(path) {
+function sizeRecursif (path) {
   var size = 0
   if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function(file, index) {
+    fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + '/' + file
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
         size += sizeRecursif(curPath)
@@ -362,13 +372,13 @@ function sizeRecursif(path) {
   }
 }
 
-function startPointTorrent() {
-  fs.readFile(DEFAULTTORRENTPATH, 'utf-8', function(err, data) {
+function startPointTorrent () {
+  fs.readFile(DEFAULTTORRENTPATH, 'utf-8', function (err, data) {
     if (err) return log(err)
     var torrents = data.split('\n')
-    fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function(err) {
+    fs.writeFile(DEFAULTTORRENTPATH, '', 'utf-8', function (err) {
       if (err) return log(err)
-      torrents.forEach(function(element) {
+      torrents.forEach(function (element) {
         if (element !== '') {
           startTorrent(element)
         }

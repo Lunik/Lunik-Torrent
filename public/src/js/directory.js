@@ -1,4 +1,4 @@
-function appendDirectory(file) {
+function appendDirectory (file) {
   var $file = $('<tr>').addClass('file')
   if (file.alter == 1) {
     $file.addClass('alter')
@@ -6,8 +6,8 @@ function appendDirectory(file) {
 
   var $name = $('<td>').addClass('name').attr('id', getExtention(file)).attr('data-file', file.name).html(
     file.isdir ?
-    $('<a>').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name.substring(0, 50)) :
-    file.name.substring(0, 30)).appendTo($file)
+      $('<a>').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name.substring(0, 50)) :
+      file.name.substring(0, 30)).appendTo($file)
   if (file.isfile)
     $name.draggable({
       revert: true
@@ -15,7 +15,7 @@ function appendDirectory(file) {
   else
     $name.droppable({
       greedy: true,
-      drop: function(data) {
+      drop: function (data) {
         var folder = $(this).attr('data-file')
         var file = $(data.toElement).attr('data-file')
         var path = document.location.hash.substring(1)
@@ -33,15 +33,15 @@ function appendDirectory(file) {
   var $actions = $('<td>').addClass('actions')
 
   if (file.isfile) {
-    var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id', 'download').text('download').appendTo($actions).click(function() {
+    var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id', 'download').text('download').appendTo($actions).click(function () {
       window.open('files/?f=' + document.location.hash.substring(1) + '/' + file.name)
     })
   }
-  var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function() {
+  var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
     if (confirm('Confirmer la suppression ?'))
       socket.emit('remove-d', document.location.hash.substring(1) + '/' + file.name)
   })
-  var $renameBut = $('<i>').addClass('but fa fa-pencil').attr('id', 'rename').text('rename').appendTo($actions).click(function() {
+  var $renameBut = $('<i>').addClass('but fa fa-pencil').attr('id', 'rename').text('rename').appendTo($actions).click(function () {
     var name = prompt('New Name', file.name)
     if (name) {
       name = name.split('\/').pop()
@@ -53,7 +53,7 @@ function appendDirectory(file) {
     }
   })
   if (file.isfile) {
-    var $infoBut = $('<i>').addClass('but fa fa-info').attr('id', 'info').text('infos').appendTo($actions).click(function(){
+    var $infoBut = $('<i>').addClass('but fa fa-info').attr('id', 'info').text('infos').appendTo($actions).click(function () {
       var title = $($(this).parent().parent().children()[0]).text()
       mediaInfoGet(title)
     })
@@ -64,11 +64,11 @@ function appendDirectory(file) {
   $file.appendTo('.container .directory .list')
 }
 
-function appendDirectorySize(size) {
+function appendDirectorySize (size) {
   $('.folder-size').text(formatSize(size))
 }
 
-$('.but#mkdir i').click(function() {
+$('.but#mkdir i').click(function () {
   var name = prompt('Nom du nouveau dossier ?')
   if (name)
     socket.emit('mkdir', {

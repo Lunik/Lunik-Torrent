@@ -1,21 +1,21 @@
-function formatSize(bytes) {
+function formatSize (bytes) {
   var sizes = ['b', 'kb', 'mb', 'gb', 'tb']
   if (bytes == 0) return '0 b'
   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
 }
 
-function formatSpeed(bytes) {
+function formatSpeed (bytes) {
   return formatSize(bytes) + '/s'
 }
 
-function formatDate(date) {
+function formatDate (date) {
   // return date
   var date = new Date(date)
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getMinutes()
 }
 
-function formatTime(time) {
+function formatTime (time) {
   var x = time / 1000
   var seconds = Math.round(x % 60)
   x /= 60
@@ -35,14 +35,14 @@ function formatTime(time) {
   return returnString
 }
 
-function getExtention(file) {
+function getExtention (file) {
   if (file.isfile)
     return file.name.split('.')[file.name.split('.').length - 1]
   else
     return 'dir'
 }
 
-function formatName(name) {
+function formatName (name) {
   name = name.replace(/\.[A-Za-z0-9]*$/, '')
     .replace(/\[[^\]]*]/, '')
     .replace(/[ \.](([Ff][Rr])|([Vv][Oo])|(VOSTFR)|(FASTSUB)|(HDTV)|(XviD-ARK01)|(FRENCH))/g, '')
