@@ -43,8 +43,8 @@ function appendDirectory(file) {
   })
   var $renameBut = $('<i>').addClass('but fa fa-pencil').attr('id', 'rename').text('rename').appendTo($actions).click(function() {
     var name = prompt('New Name', file.name)
-    name = name.split('\/').pop()
     if (name) {
+      name = name.split('\/').pop()
       socket.emit('rename-d', {
         'path': document.location.hash.substring(1),
         'oldname': file.name,
