@@ -213,17 +213,34 @@ io.on('connection', function(socket) {
 
   socket.on('infos-d', function(query){
     allocine.api('search', {q: query, filter: 'tvseries'}, function(err, data){
-      socket.emit('infos-d',{
-        'count': data.feed.totalResults,
-        'data': data.feed.tvseries
-      })
+      if(data.feed.totalResults > 0){
+        allocine.api('tvseries',{code: data.feed.tvseries[0].code}, function(err, data){
+          console.log(data.tvseries)
+          socket.emit('infos-d', {
+            'type': 'series',
+            'title': data.tvseries.title,
+            'link': data.tvseries.link.length > 0 ? data.tvseries.link[0].href : '',
+            'description': data.tvseries.synopsisShort,
+            'poster': data.tvseries.poster ? data.tvseries.poster.href : '',
+            'rating': (data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2
+          })
+        })
+      }
     })
 
-    allocine.api('search', {q: query, filter: 'movies'}, function(err, data){
-      socket.emit('infos-d',{
-        'count': data.feed.totalResults,
-        'data': data.feed.tvseries
-      })
+    allocine.api('search', {q: query, filter: 'movie'}, function(err, data){
+      if(data.feed.totalResults > 0){
+        allocine.api('movie',{code: data.feed.movie[0].code}, function(err, data){
+          socket.emit('infos-d', {
+            'type': 'films',
+            'title': data.movie.title,
+            'link': data.movie.link[0].href,
+            'description': data.movie.synopsisShort,
+            'poster': data.movie.poster ? data.movie.poster.href : '',
+            'rating': (data.movie.statistics.pressRating + data.movie.statistics.userRating) / 2
+          })
+        })
+      }
     })
   })
 })
