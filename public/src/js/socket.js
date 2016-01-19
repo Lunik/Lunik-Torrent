@@ -74,8 +74,5 @@ socket.on('error-t', function(hash) {
 })
 
 socket.on('infos-d', function(data){
-  var p = new Popup()
-  p.init(null,null,null,null,"Infos","<p></p>",true)
-  p.draw()
-  console.log(data)
+  mediaInfoPopup(data)
 })
