@@ -213,7 +213,17 @@ io.on('connection', function(socket) {
 
   socket.on('infos-d', function(query){
     allocine.api('search', {q: query, filter: 'tvseries'}, function(err, data){
-      console.log(data)
+      socket.emit('infos-d',{
+        'count': data.feed.totalResults,
+        'data': data.feed.tvseries
+      })
+    })
+
+    allocine.api('search', {q: query, filter: 'movies'}, function(err, data){
+      socket.emit('infos-d',{
+        'count': data.feed.totalResults,
+        'data': data.feed.tvseries
+      })
     })
   })
 })
