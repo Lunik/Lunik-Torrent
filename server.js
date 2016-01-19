@@ -210,6 +210,10 @@ io.on('connection', function(socket) {
       })
     })
   })
+
+  socket.on('infos-d', function(query){
+    
+  })
 })
 
 function getDate() {
