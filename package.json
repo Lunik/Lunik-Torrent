@@ -20,6 +20,7 @@
     "http-auth": "*",
     "socket.io": "*",
     "webtorrent": "*",
-    "allocine-api": "*"
+    "allocine-api": "*",
+    "check-update-github": "*"
   }
 }
