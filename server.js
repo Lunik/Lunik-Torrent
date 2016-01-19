@@ -212,7 +212,9 @@ io.on('connection', function(socket) {
   })
 
   socket.on('infos-d', function(query){
-    
+    allocine.api('search', {q: query, filter: 'tvseries'}, function(err, data){
+      console.log(data)
+    })
   })
 })
 
