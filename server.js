@@ -1,4 +1,4 @@
-var CONFIG = require('./config.js')
+var CONFIG = require('./config.json')
 
 var checkUpdate = require('check-update-github')
 var pkg = require('./package.json')

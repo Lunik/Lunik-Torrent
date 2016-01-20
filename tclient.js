@@ -1,4 +1,4 @@
-var CONFIG = require('./config.js')
+var CONFIG = require('./config.json')
 var WebTorrent = require('webtorrent')
 var client = new WebTorrent()
 
