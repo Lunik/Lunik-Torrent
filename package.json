@@ -1,6 +1,6 @@
 {
   "name": "lunik-torrent",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
   "scripts": {
