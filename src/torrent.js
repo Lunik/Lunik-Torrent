@@ -13,6 +13,7 @@ function Torrent() {
 
   this.waitList = {}
 
+  setInterval(this.startPointTorrent, 30000)
 }
 
 Torrent.prototype.start = function(url) {
@@ -23,7 +24,7 @@ Torrent.prototype.start = function(url) {
     if (Object.keys(this.urlToChild).length < this.config.torrent.max) {
       var n = cp.fork(__dirname + '/tclient.js')
       this.urlToChild[url] = n
-        this.io.sockets.emit('start-t')
+      this.io.sockets.emit('start-t')
       n.on('message', function(data) {
         switch (data.type) {
           case 'finish':
@@ -59,7 +60,7 @@ Torrent.prototype.start = function(url) {
         }
       })
 
-      n.on('exit', function (code, signal) {
+      n.on('exit', function(code, signal) {
         if (signal !== 'SIGHUP') {
           Log.print('Child: ' + url + ' \n exit with code: ' + code)
           instTorrent.io.sockets.emit('error-t', TorrentUrlToHash[url])
@@ -76,7 +77,7 @@ Torrent.prototype.start = function(url) {
       })
     } else {
       Log.print('Too much client. Adding torrent to the waitlist.')
-      // On push dans la liste d'attente
+        // On push dans la liste d'attente
       if (this.waitList.indexOf(url) === -1) {
         this.waitList.push(url)
       }
@@ -86,9 +87,9 @@ Torrent.prototype.start = function(url) {
   }
 }
 
-Torrent.prototype.remove = function(hash){
+Torrent.prototype.remove = function(hash) {
   this.hashToChild[hash].send({
-    'type':'remove'
+    'type': 'remove'
   })
 }
 
@@ -101,5 +102,17 @@ Torrent.prototype.on = function(what, f) {
 
   }
 }
+
+Torrent.prototype.startPointTorrent = function() {
+  var data = fs.readFileSync(instTorrent.config.torrent.scanTorrent, 'utf-8')
+  var torrents = data.split('\n')
+  fs.writeFileSync(instTorrent.config.torrent.scanTorrent, '', 'utf-8')
+  torrents.forEach(function(element) {
+    if (element !== '') {
+      instTorrent.start(element)
+    }
+  })
+}
+
 var instTorrent = new Torrent()
 module.exports = instTorrent
