@@ -34,12 +34,12 @@ function appendDirectory (file) {
 
   if (file.isfile) {
     var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id', 'download').text('download').appendTo($actions).click(function () {
-      window.open('files/?f=' + document.location.hash.substring(1) + '/' + file.name)
+      window.open('files/?f=' + document.location.hash.substring(1) + file.name)
     })
   }
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
     if (confirm('Confirmer la suppression ?'))
-      socket.emit('remove-d', document.location.hash.substring(1) + '/' + file.name)
+      socket.emit('remove-d', document.location.hash.substring(1) + file.name)
   })
   var $renameBut = $('<i>').addClass('but fa fa-pencil').attr('id', 'rename').text('rename').appendTo($actions).click(function () {
     var name = prompt('New Name', file.name)
