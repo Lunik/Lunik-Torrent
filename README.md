@@ -9,10 +9,10 @@
     require('lunik-torrent')
 
 ## Git
-    $ git clone https://github.com/Lunik/Nodejs-torrent.git
+    $ git clone https://github.com/Lunik/Lunik-Torrent.git
     $ cd Lunik-Torrent
     $ npm install
-    $ nano config.json
+    $ nano src/config.json
 ##### Run
     $ npm start
 

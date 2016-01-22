@@ -20,7 +20,7 @@ function appendDirectory (file) {
         var file = $(data.toElement).attr('data-file')
         var path = document.location.hash.substring(1)
 
-        socket.emit('mv', {
+        socket.emit('mv-d', {
           'file': file,
           'path': path,
           'folder': folder
@@ -71,7 +71,7 @@ function appendDirectorySize (size) {
 $('.but#mkdir i').click(function () {
   var name = prompt('Nom du nouveau dossier ?')
   if (name)
-    socket.emit('mkdir', {
+    socket.emit('mkdir-d', {
       'path': document.location.hash.substring(1),
       'name': name
     })

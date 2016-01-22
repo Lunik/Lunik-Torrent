@@ -1,8 +1,0 @@
-{
-  "PORT": 80,
-  "FILES": "./files/",
-  "DOWNLOADS": "./downloads/",
-  "TORRENTS": "./torrents.txt",
-  "LOGS": "./log.txt",
-  "HTPASSWD": "./.htpasswd" 
-}

@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-*log*
+*log.txt
 depot
 torrents.txt
 .htpasswd
