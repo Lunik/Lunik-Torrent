@@ -14,7 +14,8 @@ Directory.prototype.list = function(dir) {
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else  {
-    if (this.dir[dir].ctime < fs.statSync(instDirectory.path + dir).ctime) {
+    if (this.dir[dir].mtime < fs.statSync(instDirectory.path + dir).mtime) {
+      console.log('plop')
       this.dir[dir] = this.getDir(dir)
     }
   }
@@ -47,7 +48,7 @@ Directory.prototype.getDir = function(dir) {
   }
 
   return {
-    'ctime': fs.statSync(instDirectory.path + dir).ctime,
+    'mtime': fs.statSync(instDirectory.path + dir).mtime,
     'totalSize': totalSize,
     'files': list
   }
