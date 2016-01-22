@@ -2,17 +2,17 @@ var Log = require('./log.js')
 
 var fs = require('fs')
 
-function Directory() {
+function Directory () {
   this.config = require('./config.json')
   this.path = this.config.directory.path
 }
 
-Directory.prototype.list = function(dir) {
+Directory.prototype.list = function (dir) {
   var files = fs.readdirSync(this.path + dir)
   var list = {}
   var totalSize = 0
   if (files.length > 0) {
-    files.forEach(function(file) {
+    files.forEach(function (file) {
       var stats = fs.statSync(instDirectory.path + dir + file)
       if (stats.isFile()) {
         list[file] = stats
@@ -35,7 +35,7 @@ Directory.prototype.list = function(dir) {
   }
 }
 
-Directory.prototype.remove = function(file) {
+Directory.prototype.remove = function (file) {
   Log.print('Remove file: ' + file)
   var stats = fs.statSync(this.path + file)
   if (stats.isDirectory()) {
@@ -45,23 +45,23 @@ Directory.prototype.remove = function(file) {
   }
 }
 
-Directory.prototype.rename = function(path, oldname, newname) {
+Directory.prototype.rename = function (path, oldname, newname) {
   Log.print('Rename: ' + oldname + ' In: ' + newname)
-  fs.renameSync(this.path + path + "/" + oldname, this.path + path + "/" + newname)
+  fs.renameSync(this.path + path + '/' + oldname, this.path + path + '/' + newname)
 }
 
-Directory.prototype.mkdir = function(path, name) {
+Directory.prototype.mkdir = function (path, name) {
   Log.print('Mkdir: ' + path + '/' + name)
-  fs.mkdirSync(this.path + path + "/" + name)
+  fs.mkdirSync(this.path + path + '/' + name)
 }
 
-Directory.prototype.mv = function(path, file, folder){
-  Log.print('Move: '+ file+ " into " + path + folder)
+Directory.prototype.mv = function (path, file, folder) {
+  Log.print('Move: ' + file + ' into ' + path + folder)
   fs.renameSync(this.path + path + file, this.path + path + folder + '/' + file)
 }
-function removeRecursif(path) {
+function removeRecursif (path) {
   if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function(file, index) {
+    fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + '/' + file
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
         removeRecursif(curPath)
@@ -73,10 +73,10 @@ function removeRecursif(path) {
   }
 }
 
-function sizeRecursif(path) {
+function sizeRecursif (path) {
   var size = 0
   if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function(file, index) {
+    fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + '/' + file
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
         size += sizeRecursif(curPath)

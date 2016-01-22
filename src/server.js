@@ -8,7 +8,7 @@ var http = require('http')
 
 http.globalAgent.maxSockets = Infinity
 
-function Server() {
+function Server () {
   this.config = require('./config.json')
 
   this.basic = auth.basic({
@@ -20,10 +20,10 @@ function Server() {
   this.app.use(compression())
   this.app.use(express.static(__dirname + '/public'))
 
-  this.app.get('/files/', function(req, res) {
+  this.app.get('/files/', function (req, res) {
     var filename = instServer.config.directory.path + req.query.f
     Log.print(req.user + ' download: ' + req.query.f)
-    fs.stat(filename, function(err, stats) {
+    fs.stat(filename, function (err, stats) {
       if (stats) {
         res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f + '"')
         res.setHeader('Content-Length', stats.size)
@@ -37,11 +37,10 @@ function Server() {
   })
 
   this.server = http.createServer(this.basic, this.app)
-  this.server.listen(this.config.server.port, function() {
+  this.server.listen(this.config.server.port, function () {
     Log.print('Server listening at port ' + instServer.config.server.port)
   })
 }
-
 
 var instServer = new Server()
 module.exports = instServer

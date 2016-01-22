@@ -1,18 +1,17 @@
-var Log  = require('./log.js')
+var Log = require('./log.js')
 
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 
-function SearchT() {
-
+function SearchT () {
 }
 
-SearchT.prototype.search = function(query, socket) {
+SearchT.prototype.search = function (query, socket) {
   Log.print('Search: ' + query)
   CpasbienApi.Search(query, {
     scope: 'tvshow',
     language: 'FR'
-  }).then(function(data) {
+  }).then(function (data) {
     socket.emit('search-t', {
       'type': 'series',
       'data': data
@@ -22,14 +21,14 @@ SearchT.prototype.search = function(query, socket) {
   CpasbienApi.Search(query, {
     scope: 'tvshow',
     language: 'EN'
-  }).then(function(data) {
+  }).then(function (data) {
     socket.emit('search-t', {
       'type': 'series',
       'data': data
     })
   })
 
-  CpasbienApi.Search(query).then(function(data) {
+  CpasbienApi.Search(query).then(function (data) {
     socket.emit('search-t', {
       'type': 'films',
       'data': data
@@ -37,17 +36,17 @@ SearchT.prototype.search = function(query, socket) {
   })
 }
 
-SearchT.prototype.latest = function(socket) {
+SearchT.prototype.latest = function (socket) {
   CpasbienApi.Latest({
     scope: 'tvshow'
-  }).then(function(data) {
+  }).then(function (data) {
     data.items = data.items.slice(0, 10)
     socket.emit('search-t', {
       'type': 'series',
       'data': data
     })
   })
-  CpasbienApi.Latest().then(function(data) {
+  CpasbienApi.Latest().then(function (data) {
     data.items = data.items.slice(0, 10)
     socket.emit('search-t', {
       'type': 'films',

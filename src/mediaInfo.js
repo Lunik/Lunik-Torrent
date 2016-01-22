@@ -1,14 +1,13 @@
 var allocine = require('allocine-api')
 
-function MediaInfo() {
-
+function MediaInfo () {
 }
 
-MediaInfo.prototype.getMediaInfo = function(query, type, code, socket) {
+MediaInfo.prototype.getMediaInfo = function (query, type, code, socket) {
   if (type == 'tvseries') {
     allocine.api('tvseries', {
       code: code
-    }, function(err, data) {
+    }, function (err, data) {
       socket.emit('infos-d', {
         'type': 'series',
         'query': query,
@@ -22,7 +21,7 @@ MediaInfo.prototype.getMediaInfo = function(query, type, code, socket) {
   } else if (type == 'movie') {
     allocine.api('movie', {
       code: code
-    }, function(err, data) {
+    }, function (err, data) {
       socket.emit('infos-d', {
         'type': 'films',
         'query': query,
@@ -36,29 +35,28 @@ MediaInfo.prototype.getMediaInfo = function(query, type, code, socket) {
   }
 }
 
-MediaInfo.prototype.search = function(type, query, socket) {
+MediaInfo.prototype.search = function (type, query, socket) {
   if (type == 'tvseries') {
     allocine.api('search', {
       q: query,
       filter: 'tvseries'
-    }, function(err, data) {
+    }, function (err, data) {
       if (data.feed.totalResults > 0) {
         instMediaInfo.getMediaInfo(query, type, data.feed.tvseries[0].code, socket)
       }
     })
   } else if (type == 'movie') {
-
     allocine.api('search', {
       q: query,
       filter: 'movie'
-    }, function(err, data) {
+    }, function (err, data) {
       if (data.feed.totalResults > 0) {
         instMediaInfo.getMediaInfo(query, type, data.feed.movie[0].code, socket)
       }
     })
   }
 }
-MediaInfo.prototype.getInfo = function(type, query, socket) {
+MediaInfo.prototype.getInfo = function (type, query, socket) {
   if (type == 'series') {
     this.search('tvseries', query, socket)
   } else if (type == 'films') {
