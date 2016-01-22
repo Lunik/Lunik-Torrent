@@ -15,7 +15,6 @@ Directory.prototype.list = function(dir) {
     this.dir[dir] = this.getDir(dir)
   } else  {
     if (this.dir[dir].mtime < fs.statSync(instDirectory.path + dir).mtime) {
-      console.log('plop')
       this.dir[dir] = this.getDir(dir)
     }
   }
