@@ -57,7 +57,6 @@ function Socket(socket, directory, torrent) {
     search.latest(socket)
   })
   this.socket.on("infos-d", function(query) {
-    console.log(query)
     var info = require('./mediaInfo.js')
     info.getInfo(query.type, query.query, socket)
   })
