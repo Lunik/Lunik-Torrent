@@ -1,5 +1,4 @@
 var WebTorrent = require('webtorrent')
-var fs = require('fs')
 var Log = require('./log.js')
 
 function Client() {
@@ -40,7 +39,7 @@ Client.prototype.download = function(torrentLink) {
 }
 
 Client.prototype.stop = function(){
-  
+
 }
 
 Client.prototype.getTorrent = function() {
