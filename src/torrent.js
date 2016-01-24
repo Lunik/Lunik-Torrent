@@ -12,12 +12,22 @@ function Torrent () {
   this.urlToHash = {}
 
   this.waitList = {}
+  this.countTry = {}
 
   setInterval(this.startPointTorrent, 30000)
 }
 
 Torrent.prototype.start = function (url) {
-  Log.print('Trying to download: ' + url)
+  if (this.countTry[url] == null) {
+    this.countTry[url] = 1
+  } else {
+    this.countTry[url]++
+  }
+  if (this.countTry[url] > this.config.client.maxTry) {
+    return -1
+  }
+
+  Log.print('Try nb '+this.countTry[url]+' to download: ' + url)
   // evite de lancer deux fois le meme torrent
   if (this.urlToChild[url] == null) {
     // Si trop de torrent en cours
@@ -63,9 +73,9 @@ Torrent.prototype.start = function (url) {
       n.on('exit', function (code, signal) {
         if (signal !== 'SIGHUP') {
           Log.print('Child: ' + url + ' \n exit with code: ' + code)
-          instTorrent.io.sockets.emit('error-t', TorrentUrlToHash[url])
+          instTorrent.io.sockets.emit('error-t', instTorrent.urlToHash[url])
           delete instTorrent.urlToChild[url]
-          delete instTorrent.hashToChild[this.urlToHash[url]]
+          delete instTorrent.hashToChild[instTorrent.urlToHash[url]]
           delete instTorrent.urlToHash[url]
           instTorrent.start(url)
         }

@@ -4,7 +4,8 @@
   },
   "client": {
     "downloads": "downloads/",
-    "timeout": 3000
+    "timeout": 3000,
+    "maxTry":3
   },
   "server": {
     "port": 80,
