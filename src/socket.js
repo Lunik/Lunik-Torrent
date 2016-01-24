@@ -46,6 +46,7 @@ function Socket (socket, directory, torrent) {
   })
 
   this.socket.on('mv-d', function (data) {
+    Directory.mv(data.path, data.file, data.folder)
     socket.emit('update-d')
   })
   this.socket.on('search-t', function (query) {
