@@ -52,7 +52,7 @@ function filAriane () {
       var file = $(data.toElement).attr('data-file')
       var path = $(this).attr('href')
 
-      socket.emit('mv', {
+      socket.emit('mv-d', {
         'file': file,
         'path': path,
         'folder': folder
