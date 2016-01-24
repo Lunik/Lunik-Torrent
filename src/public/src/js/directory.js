@@ -38,7 +38,7 @@ function appendDirectory (file) {
     })
   }
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
-    if (confirm('Confirmer la suppression ?'))
+    if (confirm('Confirmer la suppression de '+file.name+' ?'))
       socket.emit('remove-d', document.location.hash.substring(1) + file.name)
   })
   var $renameBut = $('<i>').addClass('but fa fa-pencil').attr('id', 'rename').text('rename').appendTo($actions).click(function () {
