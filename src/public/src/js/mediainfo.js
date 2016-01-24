@@ -26,7 +26,7 @@ function mediaInfoHtml (data) {
   $rating = $('<div/>').addClass('rating').text(Math.round(data.rating) + '/5')
   $infos.append($rating)
 
-  $synopsis = $('<div/>').addClass('synopsis').text(data.description)
+  $synopsis = $('<div/>').addClass('synopsis').html(data.description)
   $lirelasuite = $('<br><a/>').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...')
   $synopsis.append($lirelasuite)
   $infos.append($synopsis)
