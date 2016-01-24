@@ -69,7 +69,7 @@ socket.on('search-t', function (data) {
 socket.on('error-t', function (hash) {
   $('.torrent[hash=' + hash + ']').remove()
   var notif = new Pnotif()
-  notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Erreur avec le torrent. Nouvelle tentative dans quelques instants</p>", 10000)
+  notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Erreur avec le torrent<br>InfoHash: "+hash+" </p>", 10000)
   notif.draw()
 })
 
