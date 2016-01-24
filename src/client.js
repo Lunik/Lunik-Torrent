@@ -21,6 +21,7 @@ Client.prototype.download = function (torrentLink) {
   }, function (torrent) {
     instClient.torrent = torrent
     Log.print('Start torrent: ' + instClient.torrent.name)
+    instClient.updateFunction(instClient.getTorrent())
 
     instClient.torrent.on('download', function (chunkSize) {
       var currentTime = new Date().getTime()
@@ -42,22 +43,20 @@ Client.prototype.stop = function () {}
 
 Client.prototype.getTorrent = function () {
   var t = {}
-  this.client.torrents.forEach(function (torrent) {
-    if (!torrent.client.destroyed) {
-      t.name = torrent.name
-      t.size = torrent.length
-      if (torrent.swarm) {
-        t.hash = torrent.infoHash
-        t.sdown = torrent.swarm.downloadSpeed()
-        t.sup = torrent.swarm.uploadSpeed()
-        t.down = torrent.swarm.downloaded
-        t.up = torrent.swarm.uploaded
-        t.seed = torrent.swarm._peersLength
-        t.progress = torrent.progress
-        t.timeRemaining = torrent.timeRemaining
-      }
+  if (!this.torrent.client.destroyed) {
+    t.name = this.torrent.name
+    t.size = this.torrent.length
+    if (this.torrent.swarm) {
+      t.hash = this.torrent.infoHash
+      t.sdown = this.torrent.swarm.downloadSpeed()
+      t.sup = this.torrent.swarm.uploadSpeed()
+      t.down = this.torrent.swarm.downloaded
+      t.up = this.torrent.swarm.uploaded
+      t.seed = this.torrent.swarm._peersLength
+      t.progress = this.torrent.progress
+      t.timeRemaining = this.torrent.timeRemaining
     }
-  })
+  }
 
   return t
 }
