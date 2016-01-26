@@ -13,14 +13,14 @@
     "url": "https://github.com/Lunik/Lunik-Torrent"
   },
   "dependencies": {
-    "compression": "*",
-    "cpasbien-api": "*",
-    "express": "*",
-    "fs": "*",
-    "http-auth": "*",
-    "socket.io": "*",
-    "webtorrent": "*",
-    "allocine-api": "*",
-    "check-update-github": "*"
+    "compression": "^1.6.0",
+    "cpasbien-api": "^1.1.0",
+    "express": "^4.13.3",
+    "fs": "^0.0.2",
+    "http-auth": "^2.2.8",
+    "socket.io": "^1.4.4",
+    "webtorrent": "^0.72.1",
+    "allocine-api": "^0.1.9",
+    "check-update-github": "^0.0.3"
   }
 }
