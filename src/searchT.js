@@ -6,51 +6,36 @@ var CpasbienApi = new CPBAPI()
 function SearchT () {
 }
 
-SearchT.prototype.search = function (query, socket) {
+SearchT.prototype.search = function (query, callback) {
   Log.print('Search: ' + query)
   CpasbienApi.Search(query, {
     scope: 'tvshow',
-    language: 'FR'
-  }).then(function (data) {
-    socket.emit('search-t', {
-      'type': 'series',
-      'data': data
-    })
-  })
-
-  CpasbienApi.Search(query, {
-    scope: 'tvshow',
     language: 'EN'
-  }).then(function (data) {
-    socket.emit('search-t', {
-      'type': 'series',
-      'data': data
-    })
-  })
-
-  CpasbienApi.Search(query).then(function (data) {
-    socket.emit('search-t', {
-      'type': 'films',
-      'data': data
+  }).then(function (data1) {
+    data1.type = 'series'
+    CpasbienApi.Search(query, {
+      scope: 'tvshow',
+      language: 'FR'
+    }).then(function (data2) {
+      data2.type = 'series'
+      CpasbienApi.Search(query).then(function (data3) {
+        data3.type = 'films'
+        callback({tven: data1, tvfr: data2, mv: data3})
+      })
     })
   })
 }
 
-SearchT.prototype.latest = function (socket) {
+SearchT.prototype.latest = function (callback) {
   CpasbienApi.Latest({
     scope: 'tvshow'
-  }).then(function (data) {
-    data.items = data.items.slice(0, 10)
-    socket.emit('search-t', {
-      'type': 'series',
-      'data': data
-    })
-  })
-  CpasbienApi.Latest().then(function (data) {
-    data.items = data.items.slice(0, 10)
-    socket.emit('search-t', {
-      'type': 'films',
-      'data': data
+  }).then(function (data1) {
+    data1.type = 'series'
+    data1.items = data1.items.slice(0, 10)
+    CpasbienApi.Latest().then(function (data2) {
+      data2.type = 'films'
+      data2.items = data2.items.slice(0, 10)
+      callback({tv: data1, mv: data2})
     })
   })
 }

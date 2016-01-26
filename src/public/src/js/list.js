@@ -1,21 +1,47 @@
 $(window).bind('hashchange', initList).trigger('hashchange')
 
 var DTimer
+var TTimer
 
 function initList () {
   filAriane()
   listD()
+  listT()
 }
 
 function listD () {
-  var hash = document.location.hash.substring(1)
-  socket.emit('list-d', hash)
+  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
+  $.post('/list-d', {dir: hash}, function (directory) {
+    directory = JSON.parse(directory)
+    appendDirectorySize(directory.totalSize)
+    $.each($('.container .directory .list tbody *'), function (key, value) {
+      $(value).addClass('toremove')
+    })
+    listDirectory(directory.files)
+    $('.toremove').remove()
+  })
   clearTimeout(DTimer)
   DTimer = setTimeout(listD, 30000)
 }
 
-function listTorrent (torrent) {
-  appendTorrent(torrent)
+function listT () {
+  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
+  $.post('/list-t', function (torrents) {
+    torrents = JSON.parse(torrents)
+    $('.toremove').remove()
+    $.each($('.container .torrent .list tbody *'), function (key, value) {
+      $(value).addClass('toremove')
+    })
+    listTorrent(torrents)
+  })
+  clearTimeout(TTimer)
+  TTimer = setTimeout(listT, 3000)
+}
+
+function listTorrent (torrents) {
+  for (key in torrents) {
+    appendTorrent(torrents[key])
+  }
 }
 
 function listDirectory (directory) {
@@ -52,10 +78,12 @@ function filAriane () {
       var file = $(data.toElement).attr('data-file')
       var path = $(this).attr('href')
 
-      socket.emit('mv-d', {
+      $.post('/mv-d', {
         'file': file,
         'path': path,
         'folder': folder
+      }, function (file) {
+        $('tr[data-file="' + file + '"]').remove()
       })
     }
   })

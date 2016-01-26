@@ -6,7 +6,7 @@ $searchResultTable = $('.menu .search-result')
 
 $torrentInput.keyup(function () {
   var value = $(this).val()
-  if (value.search('.torrent') != -1 || value.search('http://') != -1) {
+  if (value.search('.torrent') != -1 || value.search('http://') != -1 || value.search('magnet') != -1) {
     $startTorrentBut.show()
     $searchTorrentBut.hide()
     $currentSubmit = $startTorrentBut
@@ -20,21 +20,19 @@ $torrentInput.keyup(function () {
 
 $startTorrentBut.click(function () {
   if ($torrentInput.val()) {
-    socket.emit('download-t', $torrentInput.val())
+    var notif = new Pnotif()
+    notif.init('top-right', "<p style='padding: 10px; margin: 0px;'>Le torrent va commencer dans quelques instants.</p>", 10000)
+    notif.draw()
+    $.post('/download-t', {url: $torrentInput.val()}, function () {})
     $torrentInput.val('')
     $torrentInput.trigger('keyup')
   }
 })
 
 $searchTorrentBut.click(function () {
-  if ($torrentInput.val()) {
-    socket.emit('search-t', $torrentInput.val())
-    $torrentInput.val('')
-    $searchResultTable.html('')
-  } else {
-    socket.emit('last-t')
-    $searchResultTable.html('')
-  }
+  searchTorrent($torrentInput.val())
+  $torrentInput.val('')
+  $searchResultTable.html('')
 })
 
 $('.search-result').on('click', '.search-item', function () {
@@ -71,7 +69,9 @@ function appendTorrent (torrent) {
 
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
     if (confirm('Confirmer la suppression ?')) {
-      socket.emit('remove-t', $(this).parent().parent().attr('hash'))
+      $.post('/remove-t', {hash: torrent.hash}, function (hash) {
+        $('.torrent[hash=' + hash + ']').remove()
+      })
     }
   })
   $actions.appendTo($torrent)

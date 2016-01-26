@@ -1,6 +1,5 @@
-var Server = require('./server.js')
+var Torrent = require('./torrent.js')
 
-var Io = require('./io.js')
-Io(Server.server)
+var Server = require('./server.js')
 
 var update = require('./update.js')

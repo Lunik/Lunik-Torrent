@@ -3,12 +3,12 @@ var allocine = require('allocine-api')
 function MediaInfo () {
 }
 
-MediaInfo.prototype.getMediaInfo = function (query, type, code, socket) {
+MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
   if (type == 'tvseries') {
     allocine.api('tvseries', {
       code: code
     }, function (err, data) {
-      socket.emit('infos-d', {
+      callback({
         'type': 'series',
         'query': query,
         'title': data.tvseries.title,
@@ -22,7 +22,7 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, socket) {
     allocine.api('movie', {
       code: code
     }, function (err, data) {
-      socket.emit('infos-d', {
+      callback({
         'type': 'films',
         'query': query,
         'title': data.movie.title,
@@ -35,18 +35,18 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, socket) {
   }
 }
 
-MediaInfo.prototype.search = function (type, query, socket) {
+MediaInfo.prototype.search = function (type, query, callback) {
   if (type == 'tvseries') {
     allocine.api('search', {
       q: query,
       filter: 'tvseries'
     }, function (err, data) {
       if (data.feed.totalResults > 0) {
-        //Maybe Change that
+        // Maybe Change that
         while(data.feed.tvseries[0].length > 0 || data.feed.tvseries[0].yearStart < 2000){
           data.feed.tvseries.shift()
         }
-        instMediaInfo.getMediaInfo(query, type, data.feed.tvseries[0].code, socket)
+        instMediaInfo.getMediaInfo(query, type, data.feed.tvseries[0].code, callback)
       }
     })
   } else if (type == 'movie') {
@@ -55,16 +55,16 @@ MediaInfo.prototype.search = function (type, query, socket) {
       filter: 'movie'
     }, function (err, data) {
       if (data.feed.totalResults > 0) {
-        instMediaInfo.getMediaInfo(query, type, data.feed.movie[0].code, socket)
+        instMediaInfo.getMediaInfo(query, type, data.feed.movie[0].code, callback)
       }
     })
   }
 }
-MediaInfo.prototype.getInfo = function (type, query, socket) {
+MediaInfo.prototype.getInfo = function (type, query, callback) {
   if (type == 'series') {
-    this.search('tvseries', query, socket)
+    this.search('tvseries', query, callback)
   } else if (type == 'films') {
-    this.search('movie', query, socket)
+    this.search('movie', query, callback)
   }
 }
 
