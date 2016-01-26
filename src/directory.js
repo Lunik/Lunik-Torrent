@@ -32,15 +32,8 @@ Directory.prototype.getDir = function(dir) {
 
   if (files.length > 0) {
     files.forEach(function(file) {
-      var stats = fs.statSync(instDirectory.path + dir + file)
-      if (stats.isFile()) {
-        list[file] = stats
-      } else {
-        stats.size = sizeRecursif(instDirectory.path + dir + file)
-        list[file] = stats
-      }
-      list[file].isfile = stats.isFile()
-      list[file].isdir = stats.isDirectory()
+      var stats = instDirectory.getInfo(instDirectory.path + dir + file)
+      list[file] = stats
 
       totalSize += stats.size
     })
@@ -51,6 +44,21 @@ Directory.prototype.getDir = function(dir) {
     'totalSize': totalSize,
     'files': list
   }
+}
+
+Directory.prototype.getInfo = function(file){
+  var stats = fs.statSync(file)
+  var sfile = {}
+  if (stats.isFile()) {
+    sfile = stats
+  } else {
+    stats.size = sizeRecursif(file)
+    sfile = stats
+  }
+  sfile.isfile = stats.isFile()
+  sfile.isdir = stats.isDirectory()
+
+  return sfile
 }
 
 Directory.prototype.remove = function(file) {
