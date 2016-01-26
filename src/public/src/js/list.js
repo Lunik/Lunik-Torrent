@@ -60,10 +60,12 @@ function filAriane () {
       var file = $(data.toElement).attr('data-file')
       var path = $(this).attr('href')
 
-      socket.emit('mv-d', {
+      $.post('/mv-d', {
         'file': file,
         'path': path,
         'folder': folder
+      }, function(file){
+        $('tr[data-file="'+file+'"]').remove()
       })
     }
   })

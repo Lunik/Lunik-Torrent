@@ -18,12 +18,14 @@ function appendDirectory (file) {
       drop: function (data) {
         var folder = $(this).attr('data-file')
         var file = $(data.toElement).attr('data-file')
-        var path = document.location.hash.substring(1)
+        var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : "/"
 
-        socket.emit('mv-d', {
+        $.post('/mv-d', {
           'file': file,
           'path': path,
           'folder': folder
+        }, function(file){
+          $('tr[data-file="'+file+'"]').remove()
         })
       }
     })
