@@ -1,10 +1,10 @@
 var Log = require('./log.js')
+var config = require('./config.json')
 
 var cp = require('child_process')
 var fs = require('fs')
 
 function Torrent () {
-  this.config = require('./config.json')
 
   this.urlToChild = {}
   this.hashToChild = {}
@@ -23,7 +23,7 @@ Torrent.prototype.start = function (url) {
   } else {
     this.countTry[url]++
   }
-  if (this.countTry[url] > this.config.client.maxTry) {
+  if (this.countTry[url] > config.client.maxTry) {
     return -1
   }
 
@@ -31,7 +31,7 @@ Torrent.prototype.start = function (url) {
   // evite de lancer deux fois le meme torrent
   if (this.urlToChild[url] == null) {
     // Si trop de torrent en cours
-    if (Object.keys(this.urlToChild).length < this.config.torrent.max) {
+    if (Object.keys(this.urlToChild).length < config.torrent.max) {
       var n = cp.fork(__dirname + '/tclient.js')
       this.urlToChild[url] = n
       //this.io.sockets.emit('start-t')
@@ -44,7 +44,7 @@ Torrent.prototype.start = function (url) {
             delete instTorrent.urlToChild[url]
             delete instTorrent.urlToHash[url]
             delete instTorrent.hashToChild[data.hash]
-            fs.renameSync(instTorrent.config.torrent.downloads + data.name, instTorrent.config.directory.path + data.name)
+            fs.renameSync(config.torrent.downloads + data.name, config.directory.path + data.name)
             // Relance un torrent si il y en a en attente
             if (instTorrent.waitList.length > 0) {
               instTorrent.start(instTorrent.waitList[0])
@@ -63,7 +63,7 @@ Torrent.prototype.start = function (url) {
             delete instTorrent.urlToChild[url]
             delete instTorrent.urlToHash[url]
             delete instTorrent.hashToChild[data.hash]
-            fs.unlinkSync(instTorrent.config.torrent.downloads + data.name)
+            fs.unlinkSync(config.torrent.downloads + data.name)
             // Relance un torrent si il y en a en attente
             if (instTorrent.waitList.length > 0) {
               instTorrent.start(this.waitList[0])
@@ -117,9 +117,9 @@ Torrent.prototype.on = function (what, f) {
 }
 
 Torrent.prototype.startPointTorrent = function () {
-  var data = fs.readFileSync(instTorrent.config.torrent.scanTorrent, 'utf-8')
+  var data = fs.readFileSync(config.torrent.scanTorrent, 'utf-8')
   var torrents = data.split('\n')
-  fs.writeFileSync(instTorrent.config.torrent.scanTorrent, '', 'utf-8')
+  fs.writeFileSync(config.torrent.scanTorrent, '', 'utf-8')
   torrents.forEach(function (element) {
     if (element !== '') {
       instTorrent.start(element)

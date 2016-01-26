@@ -1,9 +1,10 @@
-var WebTorrent = require('webtorrent')
-var Log = require('./log.js')
 
+var Log = require('./log.js')
+var config = require('./config.json')
+
+var WebTorrent = require('webtorrent')
 function Client () {
   this.client = new WebTorrent()
-  this.config = require('./config.json')
   this.torrentLink = ''
   this.torrent = {}
   this.timeout = new Date().getTime()
@@ -17,7 +18,7 @@ Client.prototype.download = function (torrentLink) {
   Log.print('Start: ' + torrentLink)
 
   this.client.add(torrentLink, {
-    path: this.config.torrent.downloads
+    path: config.torrent.downloads
   }, function (torrent) {
     instClient.torrent = torrent
     Log.print('Start torrent: ' + instClient.torrent.name)
@@ -25,7 +26,7 @@ Client.prototype.download = function (torrentLink) {
 
     instClient.torrent.on('download', function (chunkSize) {
       var currentTime = new Date().getTime()
-      if ((currentTime - instClient.timeout) > instClient.config.client.timeout) {
+      if ((currentTime - instClient.timeout) > config.client.timeout) {
         instClient.updateFunction(instClient.getTorrent())
         instClient.timeout = currentTime
       }

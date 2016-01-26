@@ -1,6 +1,7 @@
 var Log = require('./log.js')
 var Torrent = require('./torrent.js')
 var Directory = require('./directory.js')
+var config = require('./config.json')
 
 var fs = require('fs')
 var auth = require('http-auth')
@@ -12,11 +13,9 @@ var bodyParser = require('body-parser')
 http.globalAgent.maxSockets = Infinity
 
 function Server () {
-  this.config = require('./config.json')
-
   this.basic = auth.basic({
-    realm: this.config.server.message,
-    file: this.config.server.htpasswd
+    realm: config.server.message,
+    file: config.server.htpasswd
   })
 
   this.app = express()
@@ -26,13 +25,13 @@ function Server () {
   this.app.use(bodyParser.urlencoded({ extended: true }))
 
   this.server = http.createServer(this.basic, this.app)
-  this.server.listen(this.config.server.port, function () {
-    Log.print('Server listening at port ' + instServer.config.server.port)
+  this.server.listen(config.server.port, function () {
+    Log.print('Server listening at port ' + config.server.port)
   })
 
   //Client Download file
   this.app.get('/files', function (req, res) {
-    var filename = instServer.config.directory.path + req.query.f
+    var filename = config.directory.path + req.query.f
     Log.print(req.user + ' download file: ' + req.query.f)
     fs.stat(filename, function (err, stats) {
       if (stats) {

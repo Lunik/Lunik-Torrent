@@ -1,11 +1,8 @@
 var Log = require('./log.js')
-
+var config = require('./config.json')
 var fs = require('fs')
 
 function Directory() {
-  this.config = require('./config.json')
-  this.path = this.config.directory.path
-
   this.dir = {}
 }
 
@@ -14,7 +11,7 @@ Directory.prototype.list = function(dir) {
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else  {
-    if (this.dir[dir].mtime < fs.statSync(instDirectory.path + dir).mtime) {
+    if (this.dir[dir].mtime < fs.statSync(config.directory.path + dir).mtime) {
       this.dir[dir] = this.getDir(dir)
     }
   }
@@ -28,11 +25,11 @@ Directory.prototype.list = function(dir) {
 Directory.prototype.getDir = function(dir) {
   var list = {}
   var totalSize = 0
-  var files = fs.readdirSync(this.path + dir)
+  var files = fs.readdirSync(config.directory.path + dir)
 
   if (files.length > 0) {
     files.forEach(function(file) {
-      var stats = instDirectory.getInfo(instDirectory.path + dir + file)
+      var stats = instDirectory.getInfo(config.directory.path+ dir + file)
       list[file] = stats
 
       totalSize += stats.size
@@ -40,7 +37,7 @@ Directory.prototype.getDir = function(dir) {
   }
 
   return {
-    'mtime': fs.statSync(instDirectory.path + dir).mtime,
+    'mtime': fs.statSync(config.directory.path + dir).mtime,
     'totalSize': totalSize,
     'files': list
   }
@@ -62,12 +59,12 @@ Directory.prototype.getInfo = function(file){
 }
 
 Directory.prototype.remove = function(file) {
-  fs.stat(this.path + file, function(err, stats) {
+  fs.stat(config.directory.path + file, function(err, stats) {
     if (err) Log.print(err)
     if (stats.isDirectory()) {
-      removeRecursif(instDirectory.path + file)
+      removeRecursif(config.directory.path + file)
     } else {
-      fs.unlink(instDirectory.path + file, function(err) {
+      fs.unlink(config.directory.path + file, function(err) {
         if (err) Log.print(err)
       })
     }
@@ -76,19 +73,19 @@ Directory.prototype.remove = function(file) {
 }
 
 Directory.prototype.rename = function(path, oldname, newname) {
-  fs.rename(this.path + path + '/' + oldname, this.path + path + '/' + newname, function(err) {
+  fs.rename(config.directory.path + path + '/' + oldname, config.directory.path + path + '/' + newname, function(err) {
     if (err) Log.print(err)
   })
 }
 
 Directory.prototype.mkdir = function(path, name) {
-  fs.mkdir(this.path + path + '/' + name, function(err) {
+  fs.mkdir(config.directory.path + path + '/' + name, function(err) {
     if (err) Log.print(err)
   })
 }
 
 Directory.prototype.mv = function(path, file, folder) {
-  fs.rename(this.path + path + file, this.path + path + folder + '/' + file, function(err) {
+  fs.rename(config.directory.path + path + file, config.directory.path + path + folder + '/' + file, function(err) {
     if (err) Log.print(err)
   })
 }
