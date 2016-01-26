@@ -71,8 +71,7 @@ function appendDirectory (file) {
 
   if (file.isfile) {
     var $infoBut = $('<i>').addClass('but fa fa-info').attr('id', 'info').text('infos').appendTo($actions).click(function () {
-      var title = $($(this).parent().parent().children()[0]).text()
-      mediaInfoGet(title)
+      mediaInfoGet( file.name)
     })
   }
 

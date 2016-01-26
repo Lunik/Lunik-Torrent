@@ -5,9 +5,13 @@ function mediaInfoGet (title) {
   if (readData(title) != null) {
     mediaInfoPopup(readData(title))
   } else {
-    socket.emit('infos-d', {
+    $.post('/info-d', {
       type: type,
       query: title
+    }, function(data){
+      data = JSON.parse(data)
+      mediaInfoPopup(data)
+      storeData(data.query.toLowerCase(), data)
     })
   }
 }
