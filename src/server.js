@@ -139,7 +139,6 @@ function Server () {
   })
 
   this.app.post('/info-d', function(req, res){
-    console.log(req.body);
     if(req.body.type && req.body.query){
       var infoEngine = require('./mediaInfo.js')
       infoEngine.getInfo(req.body.type, req.body.query, function(data){
