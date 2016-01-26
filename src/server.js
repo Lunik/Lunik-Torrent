@@ -8,7 +8,6 @@ var express = require('express')
 var compression = require('compression')
 var http = require('http')
 var bodyParser = require('body-parser')
-var browserify = require('browserify-middleware');
 
 http.globalAgent.maxSockets = Infinity
 
@@ -31,6 +30,7 @@ function Server () {
     Log.print('Server listening at port ' + instServer.config.server.port)
   })
 
+  //Client Download file
   this.app.get('/files', function (req, res) {
     var filename = instServer.config.directory.path + req.query.f
     Log.print(req.user + ' download file: ' + req.query.f)
@@ -47,6 +47,7 @@ function Server () {
     })
   })
 
+  //client start torrent
   this.app.post('/download-t', function (req, res) {
     if (req.body.url) {
       Log.print(req.user + ' download torrent: ' + req.body.url)
@@ -57,10 +58,12 @@ function Server () {
     }
   })
 
+  //client ask list of torrent active
   this.app.post('/list-t', function (req, res) {
     res.end(JSON.stringify(Torrent.info))
   })
 
+  //client ask list of directory
   this.app.post('/list-d', function (req, res) {
     if (req.body.dir) {
       res.end(JSON.stringify(Directory.list(req.body.dir)))
@@ -69,6 +72,7 @@ function Server () {
     }
   })
 
+  //client remove torrent
   this.app.post('/remove-t', function (req, res) {
     if (req.body.hash) {
       Log.print(req.user + ' remove torrent: ' + req.body.hash)
@@ -79,6 +83,7 @@ function Server () {
     }
   })
 
+  //client remove directory / file
   this.app.post('/remove-d', function (req, res) {
     if (req.body.file) {
       Log.print(req.user + ' remove file: ' + req.body.file)
@@ -89,6 +94,7 @@ function Server () {
     }
   })
 
+  //client rename file
   this.app.post('/rename-d', function (req, res) {
     if (req.body.path && req.body.oldname && req.body.newname) {
       Directory.rename(req.body.path, req.body.oldname, req.body.newname)
@@ -98,6 +104,7 @@ function Server () {
     }
   })
 
+  //client create directory
   this.app.post('/mkdir-d', function (req, res) {
     if (req.body.path && req.body.name) {
       Directory.mkdir(req.body.path, req.body.name)
@@ -107,6 +114,7 @@ function Server () {
     }
   })
 
+  //client move directory
   this.app.post('/mv-d', function (req, res) {
     if (req.body.path && req.body.file && req.body.folder) {
       Directory.mv(req.body.path, req.body.file, req.body.folder)
