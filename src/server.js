@@ -97,6 +97,7 @@ function Server () {
   //client rename file
   this.app.post('/rename-d', function (req, res) {
     if (req.body.path && req.body.oldname && req.body.newname) {
+      Log.print(req.user + ' rename file: ' + req.body.path+req.body.oldname+ " in: "+req.body.newname)
       Directory.rename(req.body.path, req.body.oldname, req.body.newname)
       res.end(JSON.stringify({path: req.body.path, oldname: req.body.oldname, newname: req.body.newname}))
     } else {
@@ -107,6 +108,7 @@ function Server () {
   //client create directory
   this.app.post('/mkdir-d', function (req, res) {
     if (req.body.path && req.body.name) {
+        Log.print(req.user + ' create directory: ' + req.body.path+req.body.name)
       Directory.mkdir(req.body.path, req.body.name)
       res.end(req.body.name)
     } else {
@@ -117,6 +119,7 @@ function Server () {
   //client move directory
   this.app.post('/mv-d', function (req, res) {
     if (req.body.path && req.body.file && req.body.folder) {
+      Log.print(req.user + ' move: ' + req.body.path+req.body.file+ " in: "+req.body.path+req.body.folder)
       Directory.mv(req.body.path, req.body.file, req.body.folder)
       res.end(req.body.file)
     } else {
