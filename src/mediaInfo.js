@@ -42,7 +42,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
       filter: 'tvseries'
     }, function (err, data) {
       if (data.feed.totalResults > 0) {
-        //Maybe Change that
+        // Maybe Change that
         while(data.feed.tvseries[0].length > 0 || data.feed.tvseries[0].yearStart < 2000){
           data.feed.tvseries.shift()
         }

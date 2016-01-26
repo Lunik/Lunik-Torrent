@@ -12,14 +12,14 @@ SearchT.prototype.search = function (query, callback) {
     scope: 'tvshow',
     language: 'EN'
   }).then(function (data1) {
-    data1.type = "series"
+    data1.type = 'series'
     CpasbienApi.Search(query, {
       scope: 'tvshow',
       language: 'FR'
     }).then(function (data2) {
-      data2.type = "series"
+      data2.type = 'series'
       CpasbienApi.Search(query).then(function (data3) {
-        data3.type = "films"
+        data3.type = 'films'
         callback({tven: data1, tvfr: data2, mv: data3})
       })
     })
@@ -30,10 +30,10 @@ SearchT.prototype.latest = function (callback) {
   CpasbienApi.Latest({
     scope: 'tvshow'
   }).then(function (data1) {
-    data1.type = "series"
+    data1.type = 'series'
     data1.items = data1.items.slice(0, 10)
     CpasbienApi.Latest().then(function (data2) {
-      data2.type = "films"
+      data2.type = 'films'
       data2.items = data2.items.slice(0, 10)
       callback({tv: data1, mv: data2})
     })

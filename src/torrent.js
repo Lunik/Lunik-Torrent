@@ -5,7 +5,6 @@ var cp = require('child_process')
 var fs = require('fs')
 
 function Torrent () {
-
   this.urlToChild = {}
   this.hashToChild = {}
   this.urlToHash = {}
@@ -27,14 +26,14 @@ Torrent.prototype.start = function (url) {
     return -1
   }
 
-  Log.print('Try nb '+this.countTry[url]+' to download: ' + url)
+  Log.print('Try nb ' + this.countTry[url] + ' to download: ' + url)
   // evite de lancer deux fois le meme torrent
   if (this.urlToChild[url] == null) {
     // Si trop de torrent en cours
     if (Object.keys(this.urlToChild).length < config.torrent.max) {
       var n = cp.fork(__dirname + '/tclient.js')
       this.urlToChild[url] = n
-      //this.io.sockets.emit('start-t')
+      // this.io.sockets.emit('start-t')
       n.on('message', function (data) {
         switch (data.type) {
           case 'finish':

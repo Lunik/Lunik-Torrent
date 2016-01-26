@@ -1,4 +1,3 @@
-
 var Log = require('./log.js')
 var config = require('./config.json')
 

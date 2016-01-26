@@ -8,7 +8,7 @@ function mediaInfoGet (title) {
     $.post('/info-d', {
       type: type,
       query: title
-    }, function(data){
+    }, function (data) {
       data = JSON.parse(data)
       mediaInfoPopup(data)
       storeData(data.query.toLowerCase(), data)

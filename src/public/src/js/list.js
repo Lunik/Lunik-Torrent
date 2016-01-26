@@ -10,8 +10,8 @@ function initList () {
 }
 
 function listD () {
-  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : "/"
-  $.post('/list-d', {dir: hash}, function(directory){
+  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
+  $.post('/list-d', {dir: hash}, function (directory) {
     directory = JSON.parse(directory)
     appendDirectorySize(directory.totalSize)
     $.each($('.container .directory .list tbody *'), function (key, value) {
@@ -25,8 +25,8 @@ function listD () {
 }
 
 function listT () {
-  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : "/"
-  $.post('/list-t', function(torrents){
+  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
+  $.post('/list-t', function (torrents) {
     torrents = JSON.parse(torrents)
     $('.toremove').remove()
     $.each($('.container .torrent .list tbody *'), function (key, value) {
@@ -39,11 +39,10 @@ function listT () {
 }
 
 function listTorrent (torrents) {
-  for(key in torrents){
+  for (key in torrents) {
     appendTorrent(torrents[key])
   }
 }
-
 
 function listDirectory (directory) {
   var i = 0
@@ -83,8 +82,8 @@ function filAriane () {
         'file': file,
         'path': path,
         'folder': folder
-      }, function(file){
-        $('tr[data-file="'+file+'"]').remove()
+      }, function (file) {
+        $('tr[data-file="' + file + '"]').remove()
       })
     }
   })

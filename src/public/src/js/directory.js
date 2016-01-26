@@ -18,14 +18,14 @@ function appendDirectory (file) {
       drop: function (data) {
         var folder = $(this).attr('data-file')
         var file = $(data.toElement).attr('data-file')
-        var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : "/"
+        var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
 
         $.post('/mv-d', {
           'file': file,
           'path': path,
           'folder': folder
-        }, function(file){
-          $('tr[data-file="'+file+'"]').remove()
+        }, function (file) {
+          $('tr[data-file="' + file + '"]').remove()
         })
       }
     })
@@ -40,9 +40,9 @@ function appendDirectory (file) {
     })
   }
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
-    if (confirm('Confirmer la suppression de '+file.name+' ?'))
-      $.post('/remove-d', {file: document.location.hash.substring(1) + file.name}, function(file){
-        $('tr[data-file="'+file+'"]').remove()
+    if (confirm('Confirmer la suppression de ' + file.name + ' ?'))
+      $.post('/remove-d', {file: document.location.hash.substring(1) + file.name}, function (file) {
+        $('tr[data-file="' + file + '"]').remove()
       })
   })
 
@@ -51,27 +51,27 @@ function appendDirectory (file) {
     var extension = oldname.pop()
     var name = prompt('New Name', oldname.join(' '))
     if (name) {
-      name = name.split('\/').pop() + "." + extension
+      name = name.split('\/').pop() + '.' + extension
       $.post('/rename-d', {
-        'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : "/",
+        'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
         'oldname': file.name,
         'newname': name
-      }, function(data){
+      }, function (data) {
         data = JSON.parse(data)
         file.name = data.newname
-        $('tr[data-file="'+data.oldname+'"] td.name').attr('data-file', data.newname).html(
+        $('tr[data-file="' + data.oldname + '"] td.name').attr('data-file', data.newname).html(
           file.isdir ?
             $('<a>').attr('href', '#' + document.location.hash.substring(1) + data.newname + '/').text(data.newname.substring(0, 50)) :
             data.newname.substring(0, 30)
-          )
-        $('tr[data-file="'+data.oldname+'"]').attr('data-file', data.newname)
+        )
+        $('tr[data-file="' + data.oldname + '"]').attr('data-file', data.newname)
       })
     }
   })
 
   if (file.isfile) {
     var $infoBut = $('<i>').addClass('but fa fa-info').attr('id', 'info').text('infos').appendTo($actions).click(function () {
-      mediaInfoGet( file.name)
+      mediaInfoGet(file.name)
     })
   }
 
@@ -88,9 +88,9 @@ $('.but#mkdir i').click(function () {
   var name = prompt('Nom du nouveau dossier ?')
   if (name)
     $.post('/mkdir-d', {
-      'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : "/",
+      'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
       'name': name
-    }, function(name){
-      appendDirectory ({alter: 0, name: name, isdir: true, isfile: false, size: 0, ctime: new Date()})
+    }, function (name) {
+      appendDirectory({alter: 0, name: name, isdir: true, isfile: false, size: 0, ctime: new Date()})
     })
 })
