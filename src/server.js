@@ -8,6 +8,7 @@ var express = require('express')
 var compression = require('compression')
 var http = require('http')
 var bodyParser = require('body-parser')
+var browserify = require('browserify-middleware');
 
 http.globalAgent.maxSockets = Infinity
 
