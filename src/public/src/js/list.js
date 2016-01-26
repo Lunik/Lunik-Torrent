@@ -1,10 +1,12 @@
 $(window).bind('hashchange', initList).trigger('hashchange')
 
 var DTimer
+var TTimer
 
 function initList () {
   filAriane()
   listD()
+  listT()
 }
 
 function listD () {
@@ -22,9 +24,22 @@ function listD () {
   DTimer = setTimeout(listD, 30000)
 }
 
-function listTorrent (torrent) {
-  appendTorrent(torrent)
+function listT () {
+  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : "/"
+  $.post('/list-t', function(torrents){
+    torrents = JSON.parse(torrents)
+    listTorrent(torrents)
+  })
+  clearTimeout(TTimer)
+  TTimer = setTimeout(listT, 3000)
 }
+
+function listTorrent (torrents) {
+  for(key in torrents){
+    appendTorrent(torrents[key])
+  }
+}
+
 
 function listDirectory (directory) {
   var i = 0
