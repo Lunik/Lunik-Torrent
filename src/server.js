@@ -56,6 +56,10 @@ function Server () {
     }
   })
 
+  this.app.post('/list-t', function (req, res) {
+    res.end(JSON.stringify(Torrent.info))
+  })
+
   this.app.post('/list-d', function (req, res) {
     if (req.body.dir) {
       res.end(JSON.stringify(Directory.list(req.body.dir)))
