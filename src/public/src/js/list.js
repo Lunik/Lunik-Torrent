@@ -28,6 +28,10 @@ function listT () {
   var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : "/"
   $.post('/list-t', function(torrents){
     torrents = JSON.parse(torrents)
+    $('.toremove').remove()
+    $.each($('.container .torrent .list tbody *'), function (key, value) {
+      $(value).addClass('toremove')
+    })
     listTorrent(torrents)
   })
   clearTimeout(TTimer)
