@@ -8,8 +8,16 @@ function initList () {
 }
 
 function listD () {
-  var hash = document.location.hash.substring(1)
-  socket.emit('list-d', hash)
+  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : "/"
+  $.post('/list-d', {dir: hash}, function(directory){
+    directory = JSON.parse(directory)
+    appendDirectorySize(directory.totalSize)
+    $.each($('.container .directory .list tbody *'), function (key, value) {
+      $(value).addClass('toremove')
+    })
+    listDirectory(directory.files)
+    $('.toremove').remove()
+  })
   clearTimeout(DTimer)
   DTimer = setTimeout(listD, 30000)
 }

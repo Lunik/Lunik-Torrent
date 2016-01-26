@@ -1,4 +1,6 @@
 var Log = require('./log.js')
+var Torrent = require('./torrent.js')
+var Directory = require('./directory.js')
 
 var fs = require('fs')
 var auth = require('http-auth')
@@ -23,12 +25,17 @@ function Server () {
   this.app.use(bodyParser.json())
   this.app.use(bodyParser.urlencoded({ extended: true }))
 
+  this.server = http.createServer(this.basic, this.app)
+  this.server.listen(this.config.server.port, function () {
+    Log.print('Server listening at port ' + instServer.config.server.port)
+  })
+
   this.app.get('/files', function (req, res) {
     var filename = instServer.config.directory.path + req.query.f
-    Log.print(req.user + ' download: ' + req.query.f)
+    Log.print(req.user + ' download file: ' + req.query.f)
     fs.stat(filename, function (err, stats) {
       if (stats) {
-        res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split("\/").pop() + '"')
+        res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('\/').pop() + '"')
         res.setHeader('Content-Length', stats.size)
         res.setHeader('Content-type', 'application/octet-stream')
         var fReadStream = fs.createReadStream(filename)
@@ -39,10 +46,62 @@ function Server () {
     })
   })
 
-  this.server = http.createServer(this.basic, this.app)
-  this.server.listen(this.config.server.port, function () {
-    Log.print('Server listening at port ' + instServer.config.server.port)
+  this.app.post('/download-t', function (req, res) {
+    if (req.body.url) {
+      Log.print(req.user + ' download torrent: ' + req.body.url)
+      Torrent.start(req.body.url)
+      res.end()
+    } else {
+      res.end()
+    }
   })
+
+  this.app.post('/list-d', function (req, res) {
+    if (req.body.dir) {
+      res.end(JSON.stringify(Directory.list(req.body.dir)))
+    } else {
+      res.end()
+    }
+  })
+
+  this.app.post('/remove-t', function (req, res) {
+    if (req.body.hash) {
+      Log.print(req.user + ' remove torrent: ' + req.body.hash)
+      Torrent.remove(req.body.hash)
+      res.end(req.body.hash)
+    } else {
+      res.end()
+    }
+  })
+
+  this.app.post('/remove-d', function (req, res) {
+    if (req.body.file) {
+      Log.print(req.user + ' remove file: ' + req.body.file)
+      Directory.remove(req.body.file)
+      res.end(req.body.file)
+    } else {
+      res.end()
+    }
+  })
+
+  this.app.post('/rename-d', function (req, res) {
+    if (req.body.path && req.body.oldname && req.body.newname) {
+      Directory.rename(req.body.path, req.body.oldname, req.body.newname)
+      res.end(JSON.stringify({path:req.body.path, oldname:req.body.oldname, newname:req.body.newname}))
+    } else {
+      res.end()
+    }
+  })
+
+  this.app.post('/mkdir-d', function (req, res) {
+    if (req.body.path && req.body.name) {
+      Directory.mkdir(req.body.path, req.body.name)
+      res.end(JSON.stringify({path: req.body.path, name: req.body.name}))
+    } else {
+      res.end()
+    }
+  })
+
 }
 
 var instServer = new Server()

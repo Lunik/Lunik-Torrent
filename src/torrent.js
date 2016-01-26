@@ -5,7 +5,6 @@ var fs = require('fs')
 
 function Torrent () {
   this.config = require('./config.json')
-  this.io
 
   this.urlToChild = {}
   this.hashToChild = {}
@@ -34,11 +33,11 @@ Torrent.prototype.start = function (url) {
     if (Object.keys(this.urlToChild).length < this.config.torrent.max) {
       var n = cp.fork(__dirname + '/tclient.js')
       this.urlToChild[url] = n
-      this.io.sockets.emit('start-t')
+      //this.io.sockets.emit('start-t')
       n.on('message', function (data) {
         switch (data.type) {
           case 'finish':
-            instTorrent.io.sockets.emit('finish-t', data.hash)
+            //instTorrent.io.sockets.emit('finish-t', data.hash)
             n.kill('SIGHUP')
             delete instTorrent.urlToChild[url]
             delete instTorrent.urlToHash[url]
@@ -51,12 +50,12 @@ Torrent.prototype.start = function (url) {
             }
             break
           case 'info':
-            instTorrent.io.sockets.emit('list-t', data.torrent)
+            //instTorrent.io.sockets.emit('list-t', data.torrent)
             instTorrent.hashToChild[data.torrent.hash] = n
             instTorrent.urlToHash[url] = data.torrent.hash
             break
           case 'remove':
-            instTorrent.io.sockets.emit('finish-t', data.hash)
+            //instTorrent.io.sockets.emit('finish-t', data.hash)
             n.kill('SIGHUP')
             delete instTorrent.urlToChild[url]
             delete instTorrent.urlToHash[url]
@@ -73,7 +72,7 @@ Torrent.prototype.start = function (url) {
       n.on('exit', function (code, signal) {
         if (signal !== 'SIGHUP') {
           Log.print('Child: ' + url + ' \n exit with code: ' + code)
-          instTorrent.io.sockets.emit('error-t', instTorrent.urlToHash[url])
+          //instTorrent.io.sockets.emit('error-t', instTorrent.urlToHash[url])
           delete instTorrent.urlToChild[url]
           delete instTorrent.hashToChild[instTorrent.urlToHash[url]]
           delete instTorrent.urlToHash[url]

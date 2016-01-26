@@ -54,7 +54,6 @@ Directory.prototype.getDir = function(dir) {
 }
 
 Directory.prototype.remove = function(file) {
-  Log.print('Remove file: ' + file)
   fs.stat(this.path + file, function(err, stats) {
     if (err) Log.print(err)
     if (stats.isDirectory()) {
@@ -69,21 +68,18 @@ Directory.prototype.remove = function(file) {
 }
 
 Directory.prototype.rename = function(path, oldname, newname) {
-  Log.print('Rename: ' + oldname + ' In: ' + newname)
   fs.rename(this.path + path + '/' + oldname, this.path + path + '/' + newname, function(err) {
     if (err) Log.print(err)
   })
 }
 
 Directory.prototype.mkdir = function(path, name) {
-  Log.print('Mkdir: ' + path + '/' + name)
   fs.mkdir(this.path + path + '/' + name, function(err) {
     if (err) Log.print(err)
   })
 }
 
 Directory.prototype.mv = function(path, file, folder) {
-  Log.print('Move: ' + file + ' into ' + path + folder)
   fs.rename(this.path + path + file, this.path + path + folder + '/' + file, function(err) {
     if (err) Log.print(err)
   })

@@ -20,7 +20,7 @@ $torrentInput.keyup(function () {
 
 $startTorrentBut.click(function () {
   if ($torrentInput.val()) {
-    socket.emit('download-t', $torrentInput.val())
+    $.post('/download-t', {url: $torrentInput.val()}, function(){})
     $torrentInput.val('')
     $torrentInput.trigger('keyup')
   }
