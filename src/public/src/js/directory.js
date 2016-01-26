@@ -89,8 +89,7 @@ $('.but#mkdir i').click(function () {
     $.post('/mkdir-d', {
       'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : "/",
       'name': name
-    }, function(data){
-      data = JSON.parse(data)
-      appendDirectory ({alter: 0, name: data.name})
+    }, function(name){
+      appendDirectory ({alter: 0, name: name, isdir: true, isfile: false, size: 0, ctime: new Date()})
     })
 })

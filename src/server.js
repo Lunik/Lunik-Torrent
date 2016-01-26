@@ -96,7 +96,7 @@ function Server () {
   this.app.post('/mkdir-d', function (req, res) {
     if (req.body.path && req.body.name) {
       Directory.mkdir(req.body.path, req.body.name)
-      res.end(JSON.stringify({path: req.body.path, name: req.body.name}))
+      res.end(req.body.name)
     } else {
       res.end()
     }
