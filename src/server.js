@@ -5,6 +5,7 @@ var auth = require('http-auth')
 var express = require('express')
 var compression = require('compression')
 var http = require('http')
+var bodyParser = require('body-parser')
 
 http.globalAgent.maxSockets = Infinity
 
@@ -19,8 +20,10 @@ function Server () {
   this.app = express()
   this.app.use(compression())
   this.app.use(express.static(__dirname + '/public'))
+  this.app.use(bodyParser.json())
+  this.app.use(bodyParser.urlencoded({ extended: true }))
 
-  this.app.get('/files/', function (req, res) {
+  this.app.get('/files', function (req, res) {
     var filename = instServer.config.directory.path + req.query.f
     Log.print(req.user + ' download: ' + req.query.f)
     fs.stat(filename, function (err, stats) {
