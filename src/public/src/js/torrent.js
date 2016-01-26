@@ -27,12 +27,7 @@ $startTorrentBut.click(function () {
 })
 
 $searchTorrentBut.click(function () {
-  $.post('/search-t', {query: $torrentInput.val()}, function(data){
-    data = JSON.parse(data)
-    for (var key in data){
-      afficheSearchTorrent(data[key])
-    }
-  })
+  searchTorrent($torrentInput.val())
   $torrentInput.val('')
   $searchResultTable.html('')
 })

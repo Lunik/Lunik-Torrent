@@ -1,3 +1,12 @@
+function searchTorrent(query){
+  $.post('/search-t', {query: query}, function(data){
+    data = JSON.parse(data)
+    for (var key in data){
+      afficheSearchTorrent(data[key])
+    }
+  })
+}
+
 function afficheSearchTorrent(data){
   var $searchDiv = $('.menu .search-result')
 
