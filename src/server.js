@@ -25,7 +25,7 @@ function Server () {
     Log.print(req.user + ' download: ' + req.query.f)
     fs.stat(filename, function (err, stats) {
       if (stats) {
-        res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f + '"')
+        res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split("\/").pop() + '"')
         res.setHeader('Content-Length', stats.size)
         res.setHeader('Content-type', 'application/octet-stream')
         var fReadStream = fs.createReadStream(filename)
