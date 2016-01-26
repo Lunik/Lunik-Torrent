@@ -124,6 +124,19 @@ function Server () {
     }
   })
 
+  this.app.post('/search-t', function(req, res){
+    if(req.body.query != ""){
+      var searchEngine = require('./searchT.js')
+      searchEngine.search(req.body.query, function(data){
+        res.end(JSON.stringify(data))
+      })
+    } else {
+      var searchEngine = require('./searchT.js')
+      searchEngine.latest(function(data){
+        res.end(JSON.stringify(data))
+      })
+    }
+  })
 }
 
 var instServer = new Server()

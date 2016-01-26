@@ -27,11 +27,12 @@ $startTorrentBut.click(function () {
 })
 
 $searchTorrentBut.click(function () {
-  if ($torrentInput.val()) {
-    var result = searchTorrent($torrentInput.val())
-  } else {
-    var result = latestTorrent()
-  }
+  $.post('/search-t', {query: $torrentInput.val()}, function(data){
+    data = JSON.parse(data)
+    for (var key in data){
+      afficheSearchTorrent(data[key])
+    }
+  })
   $torrentInput.val('')
   $searchResultTable.html('')
 })

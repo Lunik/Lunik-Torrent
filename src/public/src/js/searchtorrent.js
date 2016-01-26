@@ -17,7 +17,7 @@ function afficheSearchTorrent(data){
   }
   var $series = $('.search-result .series')
 
-  data.data.items.forEach(function (element, index) {
+  data.items.forEach(function (element, index) {
     var $item = $('<tr>').addClass('search-item').attr('torrent-link', element.torrent)
     $('<td>').text(element.title).appendTo($item)
     $('<td>').text(element.size).appendTo($item)
