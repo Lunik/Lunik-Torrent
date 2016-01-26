@@ -10,6 +10,7 @@ function Torrent () {
   this.hashToChild = {}
   this.urlToHash = {}
 
+  this.info = {}
   this.waitList = {}
   this.countTry = {}
 
@@ -37,8 +38,9 @@ Torrent.prototype.start = function (url) {
       n.on('message', function (data) {
         switch (data.type) {
           case 'finish':
-            //instTorrent.io.sockets.emit('finish-t', data.hash)
             n.kill('SIGHUP')
+            delete instTorrent.info[data.hash]
+
             delete instTorrent.urlToChild[url]
             delete instTorrent.urlToHash[url]
             delete instTorrent.hashToChild[data.hash]
@@ -50,13 +52,14 @@ Torrent.prototype.start = function (url) {
             }
             break
           case 'info':
-            //instTorrent.io.sockets.emit('list-t', data.torrent)
+            instTorrent.info[data.torrent.hash] = data.torrent
             instTorrent.hashToChild[data.torrent.hash] = n
             instTorrent.urlToHash[url] = data.torrent.hash
             break
           case 'remove':
-            //instTorrent.io.sockets.emit('finish-t', data.hash)
             n.kill('SIGHUP')
+            delete instTorrent.info[data.hash]
+
             delete instTorrent.urlToChild[url]
             delete instTorrent.urlToHash[url]
             delete instTorrent.hashToChild[data.hash]
@@ -72,7 +75,8 @@ Torrent.prototype.start = function (url) {
       n.on('exit', function (code, signal) {
         if (signal !== 'SIGHUP') {
           Log.print('Child: ' + url + ' \n exit with code: ' + code)
-          //instTorrent.io.sockets.emit('error-t', instTorrent.urlToHash[url])
+          delete instTorrent.info[data.hash]
+
           delete instTorrent.urlToChild[url]
           delete instTorrent.hashToChild[instTorrent.urlToHash[url]]
           delete instTorrent.urlToHash[url]
