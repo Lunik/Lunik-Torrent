@@ -28,11 +28,15 @@ $startTorrentBut.click(function () {
 
 $searchTorrentBut.click(function () {
   if ($torrentInput.val()) {
-    socket.emit('search-t', $torrentInput.val())
+    $.post('/search-t', {query:$torrentInput.val()}, function(data){
+      console.log(data)
+    })
     $torrentInput.val('')
     $searchResultTable.html('')
   } else {
-    socket.emit('last-t')
+    $.post('/last-t', function(data){
+      console.log(data)
+    })
     $searchResultTable.html('')
   }
 })
@@ -71,7 +75,9 @@ function appendTorrent (torrent) {
 
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
     if (confirm('Confirmer la suppression ?')) {
-      socket.emit('remove-t', $(this).parent().parent().attr('hash'))
+      $.post('/remove-t', {hash: torrent.hash}, function(hash){
+        $('.torrent[hash=' + hash + ']').remove()
+      })
     }
   })
   $actions.appendTo($torrent)
