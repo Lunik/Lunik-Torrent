@@ -6,7 +6,7 @@ $searchResultTable = $('.menu .search-result')
 
 $torrentInput.keyup(function () {
   var value = $(this).val()
-  if (value.search('.torrent') != -1 || value.search('http://') != -1) {
+  if (value.search('.torrent') != -1 || value.search('http://') != -1 || value.search('magnet') != -1) {
     $startTorrentBut.show()
     $searchTorrentBut.hide()
     $currentSubmit = $startTorrentBut
