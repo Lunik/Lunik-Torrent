@@ -40,6 +40,9 @@ function Server () {
         res.setHeader('Content-type', 'application/octet-stream')
         var fReadStream = fs.createReadStream(filename)
         fReadStream.pipe(res)
+        fReadStream.on('end', function () {
+          Log.print(req.user + ' finish download file: ' + req.query.f)
+        });
       } else {
         res.end("Le fichier n'existe pas")
       }
