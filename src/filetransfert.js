@@ -1,4 +1,5 @@
 var config = require('./config.json')
+var Log = require('./log.js')
 
 var fs = require('fs')
 var portscanner = require('portscanner')
