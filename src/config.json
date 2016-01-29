@@ -21,9 +21,8 @@
     "max":3
   },
   "nginx":{
-    "active": false,
+    "active": true,
     "port": 8080,
-    "domain": "http://localhost",
     "path": "/"
   }
 }
