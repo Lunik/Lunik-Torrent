@@ -36,6 +36,6 @@ FileTransfert.prototype.transfertNode = function(req, res){
 }
 
 FileTransfert.prototype.transfertNginx = function(req, res){
-  res.redirect(config.nginx.domain+":"+config.nginx.port+"/"+config.nginx.path+"/"+req.query.f)
+  res.redirect("http://"+req.headers['host']+":"+config.nginx.port+"/"+config.nginx.path+"/"+req.query.f)
 }
 module.exports = FileTransfert
