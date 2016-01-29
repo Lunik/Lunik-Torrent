@@ -21,7 +21,7 @@
     "max":3
   },
   "nginx":{
-    "active": true,
+    "active": false,
     "port": 8080,
     "path": "/"
   }
