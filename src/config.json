@@ -23,6 +23,7 @@
   "nginx":{
     "active": false,
     "port": 8080,
+    "domain": "http://localhost",
     "path": "/"
   }
 }
