@@ -19,5 +19,10 @@
     "downloads": "downloads/",
     "scanTorrent": "torrents.txt",
     "max":3
+  },
+  "nginx":{
+    "active": false,
+    "port": 8080,
+    "path": "/"
   }
 }

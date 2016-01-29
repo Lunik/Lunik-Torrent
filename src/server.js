@@ -33,20 +33,25 @@ function Server () {
   this.app.get('/files', function (req, res) {
     var filename = config.directory.path + req.query.f
     Log.print(req.user + ' download file: ' + req.query.f)
-    fs.stat(filename, function (err, stats) {
-      if (stats) {
-        res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('\/').pop() + '"')
-        res.setHeader('Content-Length', stats.size)
-        res.setHeader('Content-type', 'application/octet-stream')
-        var fReadStream = fs.createReadStream(filename)
-        fReadStream.pipe(res)
-        fReadStream.on('end', function () {
-          Log.print(req.user + ' finish download file: ' + req.query.f)
-        });
-      } else {
-        res.end("Le fichier n'existe pas")
-      }
-    })
+    if(config.nginx.active){
+      res.redirect("http://localhost:"+config.nginx.port+"/"+config.nginx.path+"/"+req.query.f)
+    } else {
+      fs.stat(filename, function (err, stats) {
+        if (stats) {
+          res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('\/').pop() + '"')
+          res.setHeader('Content-Length', stats.size)
+          res.setHeader('Content-type', 'application/octet-stream')
+
+          var fReadStream = fs.createReadStream(filename)
+          fReadStream.pipe(res)
+          fReadStream.on('end', function () {
+            Log.print(req.user + ' finish download file: ' + req.query.f)
+          })
+        } else {
+          res.end("Le fichier n'existe pas")
+        }
+      })
+    }
   })
 
   // client start torrent
