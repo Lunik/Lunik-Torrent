@@ -47,6 +47,12 @@ function Server () {
           fReadStream.on('end', function () {
             Log.print(req.user + ' finish download file: ' + req.query.f)
           })
+          fReadStream.on('end', function () {
+            Log.print(req.user + ' stop download file: ' + req.query.f)
+          })
+          fReadStream.on('error', function (err) {
+            Log.print(req.user + ' error during download file: ' + req.query.f + '\n err: '+err)
+          })
         } else {
           res.end("Le fichier n'existe pas")
         }
