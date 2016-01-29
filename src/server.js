@@ -2,6 +2,7 @@ var Log = require('./log.js')
 var Torrent = require('./torrent.js')
 var Directory = require('./directory.js')
 var config = require('./config.json')
+var FileTransfert = require('./filetransfert.js')
 
 var fs = require('fs')
 var auth = require('http-auth')
@@ -31,32 +32,11 @@ function Server () {
 
   // Client Download file
   this.app.get('/files', function (req, res) {
-    var filename = config.directory.path + req.query.f
-    Log.print(req.user + ' download file: ' + req.query.f)
-    if(config.nginx.active){
-      res.redirect("http://localhost:"+config.nginx.port+"/"+config.nginx.path+"/"+req.query.f)
+    if(req.query.f){
+      Log.print(req.user + ' download file: ' + req.query.f)
+      var transfert = new FileTransfert(req, res)
     } else {
-      fs.stat(filename, function (err, stats) {
-        if (stats) {
-          res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('\/').pop() + '"')
-          res.setHeader('Content-Length', stats.size)
-          res.setHeader('Content-type', 'application/octet-stream')
-
-          var fReadStream = fs.createReadStream(filename)
-          fReadStream.pipe(res)
-          fReadStream.on('end', function () {
-            Log.print(req.user + ' finish download file: ' + req.query.f)
-          })
-          fReadStream.on('end', function () {
-            Log.print(req.user + ' stop download file: ' + req.query.f)
-          })
-          fReadStream.on('error', function (err) {
-            Log.print(req.user + ' error during download file: ' + req.query.f + '\n err: '+err)
-          })
-        } else {
-          res.end("Le fichier n'existe pas")
-        }
-      })
+      res.end("Le fichier n'existe pas")
     }
   })
 
