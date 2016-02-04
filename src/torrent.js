@@ -74,7 +74,7 @@ Torrent.prototype.start = function (url) {
       n.on('exit', function (code, signal) {
         if (signal !== 'SIGHUP') {
           Log.print('Child: ' + url + ' \n exit with code: ' + code)
-          delete instTorrent.info[data.hash]
+          delete instTorrent.info[instTorrent.urlToHash[url]]
 
           delete instTorrent.urlToChild[url]
           delete instTorrent.hashToChild[instTorrent.urlToHash[url]]
