@@ -46,13 +46,21 @@ function listTorrent (torrents) {
 
 function listDirectory (directory) {
   var i = 0
+  var kownFiles = readData('directory') ? readData('directory') : []//array
   for (var key in directory) {
     var file = directory[key]
     file.alter = i
     file.name = key
+    if(kownFiles.indexOf(file.name) == -1){
+      file.new = true
+      kownFiles.push(file.name)
+    } else {
+      file.new = false
+    }
     appendDirectory(file)
     i = (i + 1) % 2
   }
+  storeData('directory', kownFiles)
 }
 
 function filAriane () {

@@ -156,7 +156,7 @@ a:hover, .container .but#mkdir i:hover {
 .container {
   margin-top: 20px;
 }
-.container .torrent, .container .directory {
+.container .torrent, .container .ory {
   margin: 50px 0px 50px 0px;
 }
 .directory .but#mkdir {
@@ -214,6 +214,9 @@ a:hover, .container .but#mkdir i:hover {
 .directory .list td.name {
   width: 40%;
   min-width: 55px;
+}
+.directory .new {
+  background-color: rgba(0, 255, 0, 0.2);
 }
 .list td.size {
   width: 50px;

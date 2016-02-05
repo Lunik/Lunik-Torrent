@@ -1,5 +1,5 @@
 function appendDirectory (file) {
-  var $file = $('<tr>').addClass('file').attr('data-file', file.name)
+  var $file = $('<tr>').addClass(file.new ? 'file new' : 'file').attr('data-file', file.name)
   if (file.alter == 1) {
     $file.addClass('alter')
   }
@@ -95,6 +95,6 @@ $('.but#mkdir i').click(function () {
       'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
       'name': name
     }, function (name) {
-      appendDirectory({alter: 0, name: name, isdir: true, isfile: false, size: 0, ctime: new Date()})
+      appendDirectory({alter: 0, name: name, isdir: true, isfile: false, size: 0, ctime: new Date(), new: true})
     })
 })
