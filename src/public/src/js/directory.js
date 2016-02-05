@@ -50,12 +50,13 @@ function appendDirectory (file) {
     var oldname = file.name.split('.')
     if(oldname.length > 1){
       var extension = oldname.pop()
+      extension = extension.length > 0 ? '.' + extension : ''
     } else {
       var extension = ""
     }
     var name = prompt('New Name', oldname.join(' '))
     if (name) {
-      name = name.split('\/').pop() + '.' + extension
+      name = name.split('\/').pop() + extension
       $.post('/rename-d', {
         'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
         'oldname': file.name,
