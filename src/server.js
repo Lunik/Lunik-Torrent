@@ -82,9 +82,12 @@ function Server () {
   // client remove directory / file
   this.app.post('/remove-d', function (req, res) {
     if (req.body.file) {
-      Log.print(req.user + ' remove file: ' + req.body.file)
-      Directory.remove(req.body.file)
-      res.end(req.body.file)
+      if(Directory.remove(req.body.file) != -1){
+        Log.print(req.user + ' remove file: ' + req.body.file)
+        res.end(req.body.file)
+      } else {
+        res.end(JSON.stringify({err:"Cannot remove, file is downloading."}))
+      }
     } else {
       res.end()
     }
@@ -93,9 +96,12 @@ function Server () {
   // client rename file
   this.app.post('/rename-d', function (req, res) {
     if (req.body.path && req.body.oldname && req.body.newname) {
-      Log.print(req.user + ' rename file: ' + req.body.path + req.body.oldname + ' in: ' + req.body.newname)
-      Directory.rename(req.body.path, req.body.oldname, req.body.newname)
-      res.end(JSON.stringify({path: req.body.path, oldname: req.body.oldname, newname: req.body.newname}))
+      if(Directory.rename(req.body.path, req.body.oldname, req.body.newname) != -1){
+        Log.print(req.user + ' rename file: ' + req.body.path + req.body.oldname + ' in: ' + req.body.newname)
+        res.end(JSON.stringify({path: req.body.path, oldname: req.body.oldname, newname: req.body.newname}))
+      } else {
+        res.end(JSON.stringify({err:"Cannot rename, file is downloading."}))
+      }
     } else {
       res.end()
     }
@@ -115,9 +121,12 @@ function Server () {
   // client move directory
   this.app.post('/mv-d', function (req, res) {
     if (req.body.path && req.body.file && req.body.folder) {
-      Log.print(req.user + ' move: ' + req.body.path + req.body.file + ' in: ' + req.body.path + req.body.folder)
-      Directory.mv(req.body.path, req.body.file, req.body.folder)
-      res.end(req.body.file)
+      if(Directory.mv(req.body.path, req.body.file, req.body.folder) != -1){
+        Log.print(req.user + ' move: ' + req.body.path + req.body.file + ' in: ' + req.body.path + req.body.folder)
+        res.end(req.body.file)
+      } else {
+        res.end(JSON.stringify({err:"Cannot move, file is downloading."}))
+      }
     } else {
       res.end()
     }
