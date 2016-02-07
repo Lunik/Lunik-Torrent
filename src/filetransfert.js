@@ -42,7 +42,7 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
           fReadStream.destroy()
           callback()
         }
-      }, 100)
+      }, 1000)
 
       fReadStream.pipe(res)
       fReadStream.on('end', function () {
