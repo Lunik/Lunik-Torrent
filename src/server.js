@@ -39,7 +39,7 @@ function Server () {
         Directory.finishDownloading(req.query.f)
       })
     } else {
-      res.end(JSON.stringify({err:"Le fichier n'existe pas"}))
+      res.end(JSON.stringify({err:"File doesn't exist."}))
     }
   })
 
@@ -86,7 +86,7 @@ function Server () {
         Log.print(req.user + ' remove file: ' + req.body.file)
         res.end(JSON.stringify({file:req.body.file}))
       } else {
-        res.end(JSON.stringify({err:"Cannot remove, file is downloading."}))
+        res.end(JSON.stringify({err:"Cannot remove, someone is downloading the file."}))
       }
     } else {
       res.end(JSON.stringify({err:"Wrong file."}))
@@ -100,7 +100,7 @@ function Server () {
         Log.print(req.user + ' rename file: ' + req.body.path + req.body.oldname + ' in: ' + req.body.newname)
         res.end(JSON.stringify({path: req.body.path, oldname: req.body.oldname, newname: req.body.newname}))
       } else {
-        res.end(JSON.stringify({err:"Cannot rename, file is downloading."}))
+        res.end(JSON.stringify({err:"Cannot rename, someone is downloading the file."}))
       }
     } else {
       res.end(JSON.stringify({err:"Wrong name."}))
@@ -125,7 +125,7 @@ function Server () {
         Log.print(req.user + ' move: ' + req.body.path + req.body.file + ' in: ' + req.body.path + req.body.folder)
         res.end(JSON.stringify({file:req.body.file}))
       } else {
-        res.end(JSON.stringify({err:"Cannot move, file is downloading."}))
+        res.end(JSON.stringify({err:"Cannot move, someone is downloading the file."}))
       }
     } else {
       res.end(JSON.stringify({err:"Wrong name."}))
