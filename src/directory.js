@@ -89,7 +89,7 @@ Directory.prototype.remove = function (file) {
 }
 
 Directory.prototype.rename = function (path, oldname, newname) {
-  if(this.isDownloading(file)) return -1
+  if(this.isDownloading(oldname)) return -1
   fs.rename(config.directory.path + path + '/' + oldname, config.directory.path + path + '/' + newname, function (err) {
     if (err) Log.print(err)
   })
