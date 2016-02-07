@@ -36,7 +36,6 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
 
       // If in pause since more than 1m kill the stream
       var interval = setInterval(function(){
-        console.log(self.timeout)
         self.timeout = fReadStream.isPaused() ? self.timeout+1 : self.timeout-1
         if(self.timeout > 60){
           clearInterval(this)
