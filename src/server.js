@@ -34,7 +34,10 @@ function Server () {
   this.app.get('/files', function (req, res) {
     if(req.query.f){
       Log.print(req.user + ' download file: ' + req.query.f)
-      var transfert = new FileTransfert(req, res)
+      Directory.setDownloading(req.query.f)
+      var transfert = new FileTransfert(req, res, function(){
+        Directory.finishDownloading(req.query.f)
+      })
     } else {
       res.end("Le fichier n'existe pas")
     }
