@@ -38,7 +38,6 @@ function Server () {
       var transfert = new FileTransfert(req, res, function(){
         Directory.finishDownloading(req.query.f)
       })
-      res.end()
     } else {
       res.end(JSON.stringify({err:"Le fichier n'existe pas"}))
     }

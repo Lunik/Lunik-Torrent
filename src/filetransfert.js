@@ -49,16 +49,19 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
         Log.print(req.user + ' finish download file: ' + req.query.f)
         callback()
         clearInterval(interval)
+        res.end()
       })
       fReadStream.on('close', function () {
         Log.print(req.user + ' stop download file: ' + req.query.f)
         callback()
         clearInterval(interval)
+        res.end()
       })
       fReadStream.on('error', function (err) {
         Log.print(req.user + ' error during download file: ' + req.query.f + '\n err: ' + err)
         callback()
         clearInterval(interval)
+        res.end()
       })
     } else {
       res.end("Le fichier n'existe pas")
