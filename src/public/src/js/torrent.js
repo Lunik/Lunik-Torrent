@@ -22,7 +22,9 @@ $startTorrentBut.click(function () {
   if ($torrentInput.val()) {
     $.post('/download-t', {url: $torrentInput.val()}, function (data) {
       if(data.err){
-
+        var notif = new Pnotif()
+        notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+data.err+"</p>", 10000)
+        notif.draw()
       } else {
         var notif = new Pnotif()
         notif.init('top-right', "<p style='padding: 10px; margin: 0px;'>Le torrent va commencer dans quelques instants.</p>", 10000)
@@ -77,7 +79,9 @@ function appendTorrent (torrent) {
       $.post('/remove-t', {hash: torrent.hash}, function (hash) {
         hash = JSON.parse(hash)
         if(hash.err){
-          //TODO
+          var notif = new Pnotif()
+          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+hash.err+"</p>", 10000)
+          notif.draw()
         } else {
           $('.torrent[hash=' + hash.hash + ']').remove()
         }

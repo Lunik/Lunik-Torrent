@@ -14,7 +14,9 @@ function listD () {
   $.post('/list-d', {dir: hash}, function (directory) {
     directory = JSON.parse(directory)
     if (directory.err) {
-      // TODO
+      var notif = new Pnotif()
+      notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+directory.err+"</p>", 10000)
+      notif.draw()
     } else {
       appendDirectorySize(directory.totalSize)
       $.each($('.container .directory .list tbody *'), function (key, value) {
@@ -33,7 +35,9 @@ function listT () {
   $.post('/list-t', function (torrents) {
     torrents = JSON.parse(torrents)
     if (torrents.err) {
-      //TODO
+      var notif = new Pnotif()
+      notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+torrents.err+"</p>", 10000)
+      notif.draw()
     } else {
       $('.toremove').remove()
       $.each($('.container .torrent .list tbody *'), function (key, value) {
@@ -100,7 +104,14 @@ function filAriane () {
         'path': path,
         'folder': folder
       }, function (file) {
-        $('tr[data-file="' + file + '"]').remove()
+        file = JSON.parse(file)
+        if (file.err) {
+          var notif = new Pnotif()
+          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+file.err+"</p>", 10000)
+          notif.draw()
+        } else {
+          $('tr[data-file="' + file.file + '"]').remove()
+        }
       })
     }
   })

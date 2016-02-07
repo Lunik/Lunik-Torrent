@@ -27,7 +27,9 @@ function appendDirectory (file) {
         }, function (file) {
           file = JSON.parse(file)
           if (file.err) {
-            //TODO
+            var notif = new Pnotif()
+            notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+file.err+"</p>", 10000)
+            notif.draw()
           } else {
             $('tr[data-file="' + file.file + '"]').remove()
           }
@@ -49,7 +51,9 @@ function appendDirectory (file) {
       $.post('/remove-d', {file: document.location.hash.substring(1) + file.name}, function (file) {
         file = JSON.parse(file)
         if (file.err) {
-          // TODO
+          var notif = new Pnotif()
+          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+file.err+"</p>", 10000)
+          notif.draw()
         } else {
           $('tr[data-file="' + file.file + '"]').remove()
         }
@@ -74,7 +78,9 @@ function appendDirectory (file) {
       }, function (data) {
         data = JSON.parse(data)
         if (data.err) {
-          // TODO
+          var notif = new Pnotif()
+          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+data.err+"</p>", 10000)
+          notif.draw()
         } else {
           file.name = data.newname
           $('tr[data-file="' + data.oldname + '"] td.name').attr('data-file', data.newname).html(
@@ -111,6 +117,12 @@ $('.but#mkdir i').click(function () {
       'name': name
     }, function (name) {
       name = JSON.parse(name)
-      appendDirectory({alter: 0, name: name.name, isdir: true, isfile: false, size: 0, ctime: new Date(), new: true})
+      if(name.err){
+        var notif = new Pnotif()
+        notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+file.err+"</p>", 10000)
+        notif.draw()
+      } else {
+        appendDirectory({alter: 0, name: name.name, isdir: true, isfile: false, size: 0, ctime: new Date(), new: true})
+      }
     })
 })
