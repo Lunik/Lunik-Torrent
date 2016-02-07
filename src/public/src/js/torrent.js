@@ -20,10 +20,15 @@ $torrentInput.keyup(function () {
 
 $startTorrentBut.click(function () {
   if ($torrentInput.val()) {
-    var notif = new Pnotif()
-    notif.init('top-right', "<p style='padding: 10px; margin: 0px;'>Le torrent va commencer dans quelques instants.</p>", 10000)
-    notif.draw()
-    $.post('/download-t', {url: $torrentInput.val()}, function () {})
+    $.post('/download-t', {url: $torrentInput.val()}, function (data) {
+      if(data.err){
+
+      } else {
+        var notif = new Pnotif()
+        notif.init('top-right', "<p style='padding: 10px; margin: 0px;'>Le torrent va commencer dans quelques instants.</p>", 10000)
+        notif.draw()
+      }
+    })
     $torrentInput.val('')
     $torrentInput.trigger('keyup')
   }
@@ -70,7 +75,12 @@ function appendTorrent (torrent) {
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
     if (confirm('Confirmer la suppression ?')) {
       $.post('/remove-t', {hash: torrent.hash}, function (hash) {
-        $('.torrent[hash=' + hash + ']').remove()
+        hash = JSON.parse(hash)
+        if(hash.err){
+          //TODO
+        } else {
+          $('.torrent[hash=' + hash.hash + ']').remove()
+        }
       })
     }
   })
