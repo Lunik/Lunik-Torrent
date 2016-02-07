@@ -89,20 +89,20 @@ Directory.prototype.remove = function (file) {
 }
 
 Directory.prototype.rename = function (path, oldname, newname) {
-  if(this.isDownloading(oldname)) return -1
-  fs.rename(config.directory.path + path + '/' + oldname, config.directory.path + path + '/' + newname, function (err) {
+  if(this.isDownloading(path + oldname)) return -1
+  fs.rename(config.directory.path + path + oldname, config.directory.path + path + '/' + newname, function (err) {
     if (err) Log.print(err)
   })
 }
 
 Directory.prototype.mkdir = function (path, name) {
-  fs.mkdir(config.directory.path + path + '/' + name, function (err) {
+  fs.mkdir(config.directory.path + path + name, function (err) {
     if (err) Log.print(err)
   })
 }
 
 Directory.prototype.mv = function (path, file, folder) {
-  if(this.isDownloading(file)) return -1
+  if(this.isDownloading(path + file)) return -1
   fs.rename(config.directory.path + path + file, config.directory.path + path + folder + '/' + file, function (err) {
     if (err) Log.print(err)
   })
