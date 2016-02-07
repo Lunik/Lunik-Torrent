@@ -4,6 +4,11 @@ var fs = require('fs')
 
 function Directory () {
   this.dir = {}
+  this.downloading = {}
+
+  setInterval(function(){
+    console.log(instDirectory.downloading)
+  }, 1000)
 }
 
 Directory.prototype.list = function (dir) {
@@ -53,8 +58,22 @@ Directory.prototype.getInfo = function (file) {
   }
   sfile.isfile = stats.isFile()
   sfile.isdir = stats.isDirectory()
-
   return sfile
+}
+
+Directory.prototype.setDownlaoding = function(file){
+  this.downloading[file] = this.downloading[file] ? this.downloading[file]+1 : 1
+}
+
+Directory.prototype.finishDownloading = function(file){
+  this.downloading[file] = this.downloading[file] ? this.downloading[file]-1 : 0
+  if(this.downloading[file] >= 0){
+    delete this.downloading[file]
+  }
+}
+
+Directory.prototype.isDownloading = function (file) {
+  return this.downloading[file] ? true : false
 }
 
 Directory.prototype.remove = function (file) {
