@@ -6,9 +6,6 @@ function Directory () {
   this.dir = {}
   this.downloading = {}
 
-  setInterval(function(){
-    console.log(instDirectory.downloading)
-  }, 1000)
 }
 
 Directory.prototype.list = function (dir) {
