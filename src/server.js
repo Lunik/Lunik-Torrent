@@ -26,8 +26,9 @@ function Server () {
   this.app.use(bodyParser.urlencoded({ extended: true }))
 
   this.server = http.createServer(this.basic, this.app)
-  this.server.listen(config.server.port, function () {
-    Log.print('Server listening at port ' + config.server.port)
+  var port = process.env.PORT || config.server.port
+  this.server.listen(port, function () {
+    Log.print('Server listening at port ' + port)
   })
 
   // Client Download file
