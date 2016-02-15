@@ -26,7 +26,7 @@ Torrent.prototype.start = function (url) {
     return -1
   }
 
-  Log.print('Try nb ' + this.countTry[url] + ' to download: ' + url)
+  Log.echo('Try nb ' + this.countTry[url] + ' to download: ' + url)
   // evite de lancer deux fois le meme torrent
   if (this.urlToChild[url] == null) {
     // Si trop de torrent en cours

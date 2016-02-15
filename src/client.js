@@ -14,7 +14,7 @@ function Client () {
 
 Client.prototype.download = function (torrentLink) {
   this.torrent = torrentLink
-  Log.print('Start: ' + torrentLink)
+  Log.echo('Start: ' + torrentLink)
 
   this.client.add(torrentLink, {
     path: config.torrent.downloads

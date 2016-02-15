@@ -4,7 +4,7 @@ var Client = require('./client.js')
 process.on('message', function (data) {
   switch (data.type) {
     case 'download':
-      Log.print('Child pid: ' + process.pid + ' start: ' + data.torrent)
+      Log.echo('Child pid: ' + process.pid + ' start: ' + data.torrent)
       Client.download(data.torrent)
       Client.on('download', function (torrent) {
         process.send({
