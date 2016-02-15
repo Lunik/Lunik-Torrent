@@ -12,6 +12,10 @@ Log.prototype.print = function (text) {
   })
 }
 
+Log.prototype.echo = function (text) {
+  console.log(text)
+}
+
 function getDate () {
   var date = new Date()
   return date.getDate() + '/' + (date.getMonth() + 1) + ' ' + (date.getHours() + 1) + ':' + (date.getMinutes() + 1) + ':' + (date.getSeconds() + 1)
