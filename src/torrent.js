@@ -10,7 +10,7 @@ function Torrent () {
   this.urlToHash = {}
 
   this.info = {}
-  this.waitList = {}
+  this.waitList = []
   this.countTry = {}
 
   setInterval(this.startPointTorrent, 30000)
@@ -37,6 +37,7 @@ Torrent.prototype.start = function (url) {
       n.on('message', function (data) {
         switch (data.type) {
           case 'finish':
+          console.log('===== ok =====');
             n.kill('SIGHUP')
             delete instTorrent.info[data.hash]
 
@@ -46,8 +47,8 @@ Torrent.prototype.start = function (url) {
             fs.renameSync(config.torrent.downloads + data.name, config.directory.path + data.name)
             // Relance un torrent si il y en a en attente
             if (instTorrent.waitList.length > 0) {
-              instTorrent.start(instTorrent.waitList[0])
-              instTorrent.waitList.shift()
+              Log.print('Start torrent into waitList (left: '+instTorrent.waitList.length-1+')')
+              instTorrent.start(instTorrent.waitList.shift())
             }
             break
           case 'info':
@@ -65,8 +66,8 @@ Torrent.prototype.start = function (url) {
             fs.unlinkSync(config.torrent.downloads + data.name)
             // Relance un torrent si il y en a en attente
             if (instTorrent.waitList.length > 0) {
-              instTorrent.start(this.waitList[0])
-              instTorrent.waitList.shift()
+              Log.print('Start torrent into waitList (left: '+instTorrent.waitList.length-1+')')
+              instTorrent.start(instTorrent.waitList.shift())
             }
         }
       })
@@ -83,8 +84,8 @@ Torrent.prototype.start = function (url) {
         } else {
           // Relance un torrent si il y en a en attente
           if (instTorrent.waitList.length > 0) {
-            instTorrent.start(this.waitList[0])
-            instTorrent.waitList.shift()
+            Log.print('Start torrent into waitList (left: '+instTorrent.waitList.length-1+')')
+            instTorrent.start(instTorrent.waitList.shift())
           }
         }
       })
