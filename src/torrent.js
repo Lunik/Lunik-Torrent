@@ -80,6 +80,12 @@ Torrent.prototype.start = function (url) {
           delete instTorrent.hashToChild[instTorrent.urlToHash[url]]
           delete instTorrent.urlToHash[url]
           instTorrent.start(url)
+        } else {
+          // Relance un torrent si il y en a en attente
+          if (instTorrent.waitList.length > 0) {
+            instTorrent.start(this.waitList[0])
+            instTorrent.waitList.shift()
+          }
         }
       })
 
