@@ -46,7 +46,7 @@ Torrent.prototype.start = function (url) {
             fs.renameSync(config.torrent.downloads + data.name, config.directory.path + data.name)
             // Relance un torrent si il y en a en attente
             if (instTorrent.waitList.length > 0) {
-              Log.print('Start torrent into waitList (left: '+(instTorrent.waitList.length-1)+')')
+              Log.print('Start torrent into waitList (left: ' + (instTorrent.waitList.length - 1) + ')')
               instTorrent.start(instTorrent.waitList.shift())
             }
             break
@@ -65,7 +65,7 @@ Torrent.prototype.start = function (url) {
             fs.unlinkSync(config.torrent.downloads + data.name)
             // Relance un torrent si il y en a en attente
             if (instTorrent.waitList.length > 0) {
-              Log.print('Start torrent into waitList (left: '+(instTorrent.waitList.length-1)+')')
+              Log.print('Start torrent into waitList (left: ' + (instTorrent.waitList.length - 1) + ')')
               instTorrent.start(instTorrent.waitList.shift())
             }
         }
@@ -83,7 +83,7 @@ Torrent.prototype.start = function (url) {
         } else {
           // Relance un torrent si il y en a en attente
           if (instTorrent.waitList.length > 0) {
-            Log.print('Start torrent into waitList (left: '+(instTorrent.waitList.length-1)+')')
+            Log.print('Start torrent into waitList (left: ' + (instTorrent.waitList.length - 1) + ')')
             instTorrent.start(instTorrent.waitList.shift())
           }
         }
