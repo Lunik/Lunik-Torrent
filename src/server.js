@@ -34,6 +34,7 @@ function Server () {
   // Client Download file
   this.app.get('/files', function (req, res) {
     if(req.query.f){
+      req.query.f = req.query.f.split('..').join('')
       Log.print(req.user + ' download file: ' + req.query.f)
       Directory.setDownloading(req.query.f)
       var transfert = new FileTransfert(req, res, function(){
