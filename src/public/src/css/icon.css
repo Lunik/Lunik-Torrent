@@ -4,16 +4,16 @@ i.fa::before {
 i.fa {
   padding: 5px;
 }
-.actions .but#download {
+.actions .but#download, .actions .but#download *{
   color: #01DFD7;
 }
-.actions .but#delete {
+.actions .but#delete, .actions .but#delete * {
   color: #DF0101;
 }
-.actions .but#rename {
+.actions .but#rename, .actions .but#rename * {
   color: #DF7401;
 }
-.actions .but#info {
+.actions .but#info, .actions .but#info * {
   color: #86c351;
 }
 .directory .name {
