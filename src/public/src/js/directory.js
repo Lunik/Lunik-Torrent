@@ -42,9 +42,9 @@ function appendDirectory (file) {
   var $actions = $('<td>').addClass('actions')
 
   if (file.isfile) {
-    var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id', 'download').text('download').appendTo($actions).click(function () {
-      window.open('files/?f=' + document.location.hash.substring(1) + file.name)
-    })
+    var $downloadBut = $('<i>').addClass('but fa fa-download').attr('id', 'download').append(
+      $('<a target="_blank">').attr('href', 'files/?f=' + document.location.hash.substring(1) + file.name).text('download')
+    ).appendTo($actions)
   }
   var $deleteBut = $('<i>').addClass('but fa fa-remove').attr('id', 'delete').text('delete').appendTo($actions).click(function () {
     if (confirm('Confirmer la suppression de ' + file.name + ' ?'))
