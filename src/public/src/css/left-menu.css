@@ -1,65 +1,48 @@
-.left-menu{
+.left-menu {
   position: relative;
   display: table-cell;
-
   min-width: 200px;
-
   /* 100% de la taille de l'ecran - taille du menu du haut */
   height: calc(100vh - 80px);
-
   z-index: 100;
 }
-
-.left-menu .menu{
+.left-menu .menu {
   display: none;
-
   margin-right: -33px;
   text-align: right;
 }
-
 @media only screen and (max-width: 750px) {
-  .left-menu{
+  .left-menu {
     position: fixed;
     left: -200px;
   }
-  .left-menu .menu{
+  .left-menu .menu {
     display: block;
   }
 }
-
-.left-menu .menu i#close{
+.left-menu .menu i#close {
   display: inline-block;
 }
-
-.left-menu .menu i#open{
+.left-menu .menu i#open {
   display: inline-block;
 }
-
-.left-menu .menu i{
+.left-menu .menu i {
   visibility: hidden;
 }
-
-.left-menu .menu i.show{
+.left-menu .menu i.show {
   visibility: visible;
 }
-
-.left-menu .action{
+.left-menu .action {
   margin-top: 20px;
   text-align: center;
 }
-
-.left-menu .action > *{
+.left-menu .action > * {
   margin: 0px 25% 0px 25%;
 }
-
-.left-menu .nav-bar{
-
-}
-
-.left-menu .nav-bar ul{
+.left-menu .nav-bar {}
+.left-menu .nav-bar ul {
   list-style-type: none;
 }
-
-.left-menu .nav-bar li{
+.left-menu .nav-bar li {
   padding: 5px;
 }

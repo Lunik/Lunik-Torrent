@@ -1,51 +1,35 @@
-.top-menu{
+.top-menu {
   display: block;
-
   height: 80px;
   width: 100%;
-
   z-index: 100;
 }
-
-.top-menu .container{
+.top-menu .container {
   padding: 0px 15px 0px 15px;
   height: 80px;
   margin: auto;
 }
-
 .top-menu .container > * {
   display: inline-block;
   padding: 25px 0px 25px 0px;
-
-    height: 20px;
+  height: 20px;
 }
-
-.top-menu .logo{
+.top-menu .logo {
   margin-left: 0px;
-
   width: 80px;
-
   background-size: 100%;
 }
-
-.top-menu .ariane{
-
-}
-
-.top-menu .action{
+.top-menu .ariane {}
+.top-menu .action {
   float: right;
-
   margin-right: 2%;
 }
-
-.top-menu .action i{
+.top-menu .action i {
   display: none;
 }
-
-.top-menu .action i.show{
+.top-menu .action i.show {
   display: inline;
 }
-
-.top-menu .parameter{
+.top-menu .parameter {
   float: right;
 }

@@ -2,14 +2,11 @@
 @import url(left-menu.css);
 @import url(list.css);
 @import url(theme.css);
-
-html{
-  height:100%;
+html {
+  height: 100%;
 }
-
-body{
+body {
   margin: 0px;
   padding: 0px;
-
-  height:100%;
+  height: 100%;
 }

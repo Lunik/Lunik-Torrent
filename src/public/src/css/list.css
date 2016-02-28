@@ -6,7 +6,6 @@
 .list table {
   width: 100%;
   min-width: 300px;
-
   table-layout: fixed;
   border-collapse: collapse;
 }
@@ -30,34 +29,25 @@
 }
 
 /* remove some columns when screen is to little */
+
 @media only screen and (max-width: 470px) {
-  .list table td:nth-child(3),
-  .list table th:nth-child(3),
-  .list table td:nth-child(5),
-  .list table th:nth-child(5),
-  .list table td:nth-child(6),
-  .list table th:nth-child(6) {
+  .list table td:nth-child(3), .list table th:nth-child(3), .list table td:nth-child(5), .list table th:nth-child(5), .list table td:nth-child(6), .list table th:nth-child(6) {
     display: none;
   }
-
   .list table th#name {
     width: 80%;
   }
 }
-
-.list th{
+.list th {
   text-align: left;
 }
-
-.list tr{
+.list tr {
   height: 30px;
 }
 .list td, .list th {
   display: none;
-
   overflow: hidden;
 }
-
-.list td.show, .list th.show{
+.list td.show, .list th.show {
   display: table-cell;
 }
