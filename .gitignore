@@ -6,3 +6,4 @@ torrents.txt
 .htpasswd
 files
 downloads
+npm-debug.log
