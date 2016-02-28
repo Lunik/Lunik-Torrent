@@ -1,0 +1,21 @@
+.list progress[value] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 95%;
+  height: 15px;
+}
+.list progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+  background-color: #222;
+}
+.list progress[value]::-webkit-progress-value {
+  border-radius: 2px;
+  background-size: 35px 20px, 100% 100%, 100% 100%;
+  background-color: #DF7401;
+}
+#progress .remaining-time, #progress .percent {
+  display: inline-block;
+  margin-right: 20px;
+}

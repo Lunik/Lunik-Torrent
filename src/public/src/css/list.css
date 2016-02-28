@@ -1,3 +1,5 @@
+@import url('../css/torrent.css');
+
 .list {
   display: table-cell;
   vertical-align: top;
@@ -33,7 +35,7 @@
 /* remove some columns when screen is to little */
 
 @media only screen and (max-width: 470px) {
-  .list table td:nth-child(3), .list table th:nth-child(3), .list table td:nth-child(5), .list table th:nth-child(5), .list table td:nth-child(6), .list table th:nth-child(6) {
+  .list table #date, .list table #down, .list table #up{
     display: none;
   }
   .list table th#name {
@@ -41,8 +43,6 @@
   }
 }
 .list th {
-  padding-left: 10px;
-
   height: 40px;
 
   text-align: left;
@@ -54,6 +54,8 @@
 .list td, .list th {
   display: none;
   overflow: hidden;
+
+  padding-left: 10px;
 }
 .list td.show, .list th.show {
   display: table-cell;

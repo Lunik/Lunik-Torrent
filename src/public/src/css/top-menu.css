@@ -33,3 +33,9 @@
 .top-menu .parameter {
   float: right;
 }
+.top-menu .ariane a{
+  padding: 10px;
+}
+.top-menu .folder-size{
+  font-size: 15px;
+}

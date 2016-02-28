@@ -13,6 +13,11 @@
   color: #f7a253 !important;
 }
 
+a{
+  text-decoration: none;
+
+  color: #FFF;
+}
 /************/
 
 
