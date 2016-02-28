@@ -2,10 +2,12 @@
   display: table-cell;
   vertical-align: top;
   z-index: 10;
+
+  overflow: auto;
 }
 .list table {
   width: 100%;
-  min-width: 300px;
+  /*min-width: 300px;*/
   table-layout: fixed;
   border-collapse: collapse;
 }
@@ -55,4 +57,13 @@
 }
 .list td.show, .list th.show {
   display: table-cell;
+}
+
+.scrollTop{
+  position: fixed;
+
+  bottom: 20px;
+  right: 20px;
+
+  font-size: 30px;
 }
