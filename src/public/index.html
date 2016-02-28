@@ -1,68 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 	<title>Lunik - Torrent</title>
 
-	<meta charset="UTF-8">
+  <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="icon" href="src/image/favicon.ico">
 	<link rel="stylesheet" href="src/css/style.css">
-	<link rel="icon" href="src/image/favicon.ico">
-
-	<script src="src/js/jquery.min.js"></script>
-	<script src="src/js/jquery-ui.min.js"></script>
-	<script src="src/js/jquery-ui.touch-punch.min.js"></script>
 </head>
 
 <body>
-	<div class="title">
-		<img src="src/image/logo.png">
-	</div>
-	<div class="menu">
-		<input type="text" name="torrent-link" placeholder="Torrent link or Search....">
-		<br/>
-		<div class="search-result"></div>
-		<a href="http://cpasbien.io" target="_blank" class="external-torrent-link" id="cpasbien"></a>
-		<a href="http://www.torrent9.me" target="_blank" class="external-torrent-link" id="torrent9"></a>
-		<input type="submit" name="torrent-start" value="Start Torrent">
-		<input type="submit" name="torrent-search" value="Search Torrent">
-		<a href="http://zetorrents.com" target="_blank" class="external-torrent-link" id="zetorrent"></a>
-		<a href="http://kat.cr" target="_blank" class="external-torrent-link" id="katcr"></a>
-	</div>
+  <div class="top-menu">
+		<div class="container">
+	    <div class="logo"></div>
+	    <div class="ariane"></div>
+			<div class="parameter">
+				<i class="fa fa-gear"></i>
+			</div>
+	    <div class="action">
+				<i class="fa fa-download"></i>
+				<i class="fa fa-pencil"></i>
+				<i class="fa fa-times"></i>
+				<i class="fa fa-info"></i>
+			</div>
+		</div>
+  </div>
 	<div class="container">
-		<div class="torrent">
-			<table class="list">
-				<thead>
-					<tr>
-						<th>Nom</th>
-						<th>Taille</th>
-						<th>Progression</th>
-						<th>Down (Seeds)</th>
-						<th>Up</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-			</table>
-		</div>
-		<div class="directory">
-			<div class="fil-ariane">
-			</div>
-			<div class="folder-size">
-			</div>
-			<table class="list directory">
-				<thead>
-					<tr>
-						<th>Nom</th>
-						<th>Taille</th>
-						<th>Date</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-			</table>
-			<div class="but" id="mkdir"><i class="fa fa-plus"></i></div>
-		</div>
-	</div>
-	<script src="src/js/app.js"></script>
-</body>
+	  <div class="left-menu">
+	    <div class="action">
+	    </div>
+	    <div class="nav-bar">
+	    </div>
+	  </div>
+    <table class="list">
+    </table>
+  </div>
 
+	<script src="src/js/jquery/jquery.min.js"></script>
+  <script src="src/js/require.js"></script>
+</body>
 </html>
