@@ -1,0 +1,58 @@
+.top-menu{
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 50px;
+  width: 100%;
+
+  color: #FFF;
+  font-size: 25px;
+
+  background-color: #111;
+}
+
+.top-menu .container{
+  padding: 0px 15px 0px 15px;
+  height: 50px;
+  margin: auto;
+}
+
+.top-menu .container > * {
+  display: inline-block;
+  padding: 8px 0px 8px 0px;
+
+    height: 20px;
+}
+
+.top-menu .logo{
+  margin-left: 0px;
+
+  width: 50px;
+
+  background-image: url(../image/logo.png);
+  background-size: 100%;
+}
+
+.top-menu .ariane{
+
+}
+
+.top-menu .action{
+  float: right;
+
+  margin-right: 2%;
+}
+
+.top-menu .action i{
+  display: none;
+}
+
+.top-menu .action i.show{
+  display: inline;
+}
+
+.top-menu .parameter{
+  float: right;
+}

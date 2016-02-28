@@ -1,54 +1,19 @@
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
+
 i.fa::before {
   margin: 2px;
 }
 i.fa {
-  padding: 5px;
+  padding: 4px;
+
+  border-radius: 100%;
+  cursor: pointer;
 }
-.actions .but#download, .actions .but#download *{
-  color: #01DFD7;
+
+i.fa:hover{
+  background-color: rgba(255, 255, 255, 0.2);
 }
-.actions .but#delete, .actions .but#delete * {
-  color: #DF0101;
-}
-.actions .but#rename, .actions .but#rename * {
-  color: #DF7401;
-}
-.actions .but#info, .actions .but#info * {
-  color: #86c351;
-}
-.directory .name {
-  background-repeat: no-repeat;
-  background-image: url("../image/file/file.png");
-  background-size: 25px;
-  padding: 5px 0px 0px 30px !important;
-}
-.directory .name#dir {
-  background-image: url("../image/file/dir.png");
-}
-.directory .name#avi {
-  background-image: url("../image/file/avi.png");
-}
-.directory .name#mkv {
-  background-image: url("../image/file/mkv.png");
-}
-.directory .name#html {
-  background-image: url("../image/file/html.png");
-}
-.directory .name#jpg {
-  background-image: url("../image/file/jpg.png");
-}
-.directory .name#mp3 {
-  background-image: url("../image/file/mp3.png");
-}
-.directory .name#mp4 {
-  background-image: url("../image/file/mp4.png");
-}
-.directory .name#pdf {
-  background-image: url("../image/file/pdf.png");
-}
-.directory .name#png {
-  background-image: url("../image/file/png.png");
-}
-.directory .name#txt {
-  background-image: url("../image/file/txt.png");
+
+i.fa:active, i.fa:focus{
+  background-color: rgba(255, 128, 0, 0.7);
 }
