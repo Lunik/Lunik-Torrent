@@ -77,12 +77,14 @@ Directory.prototype.remove = function (file) {
   if(this.isDownloading(file)) return -1
   fs.stat(config.directory.path + file, function (err, stats) {
     if (err) Log.print(err)
-    if (stats.isDirectory()) {
-      removeRecursif(config.directory.path + file)
-    } else {
-      fs.unlink(config.directory.path + file, function (err) {
-        if (err) Log.print(err)
-      })
+    if(stats){
+      if (stats.isDirectory()) {
+        removeRecursif(config.directory.path + file)
+      } else {
+        fs.unlink(config.directory.path + file, function (err) {
+          if (err) Log.print(err)
+        })
+      }
     }
   })
 
