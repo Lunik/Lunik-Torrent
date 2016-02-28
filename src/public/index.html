@@ -14,28 +14,70 @@
 <body>
   <div class="top-menu">
 		<div class="container">
-	    <div class="logo"></div>
+	    <div class="logo button"></div>
 	    <div class="ariane"></div>
 			<div class="parameter">
-				<i class="fa fa-gear"></i>
+				<i class="fa fa-gear button" id="parameter"></i>
 			</div>
 	    <div class="action">
-				<i class="fa fa-download"></i>
-				<i class="fa fa-pencil"></i>
-				<i class="fa fa-times"></i>
-				<i class="fa fa-info"></i>
+				<i class="fa fa-download button" id="download"></i>
+				<i class="fa fa-pencil button" id="rename"></i>
+				<i class="fa fa-times button" id="remove"></i>
+				<i class="fa fa-info button" id="info"></i>
 			</div>
 		</div>
   </div>
 	<div class="container">
 	  <div class="left-menu">
-	    <div class="action">
-	    </div>
-	    <div class="nav-bar">
-	    </div>
+			<div class="container">
+				<div class="menu">
+					<i class="fa fa-arrow-left button" id="close"></i>
+					<i class="fa fa-bars show button" id="open"></i>
+				</div>
+		    <div class="action">
+					<div class="new button">New</div>
+		    </div>
+		    <div class="nav-bar">
+					<ul>
+						<li class="active button" id="torrents">Torrents</li>
+						<li class="button" id="directories">Directories</li>
+					</ul>
+		    </div>
+			</div>
 	  </div>
-    <table class="list">
-    </table>
+		<div class="list">
+	    <table>
+				<thead>
+					<tr>
+						<th id="name">Name</th>
+						<th id="size">Size</th>
+						<th id="date">Date</th>
+						<th id="progress">Progress</th>
+						<th id="down">Down (Seeds)</th>
+						<th id="up">Up</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr class="selected">
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+					</tr>
+					<tr>
+						<td>111111111111111111111111111</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+						<td>1</td>
+					</tr>
+				</tbody>
+	    </table>
+		</div>
   </div>
 
 	<script src="src/js/jquery/jquery.min.js"></script>

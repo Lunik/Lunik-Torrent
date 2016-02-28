@@ -1,27 +1,21 @@
 .top-menu{
   display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
 
-  height: 50px;
+  height: 80px;
   width: 100%;
 
-  color: #FFF;
-  font-size: 25px;
-
-  background-color: #111;
+  z-index: 100;
 }
 
 .top-menu .container{
   padding: 0px 15px 0px 15px;
-  height: 50px;
+  height: 80px;
   margin: auto;
 }
 
 .top-menu .container > * {
   display: inline-block;
-  padding: 8px 0px 8px 0px;
+  padding: 25px 0px 25px 0px;
 
     height: 20px;
 }
@@ -29,9 +23,8 @@
 .top-menu .logo{
   margin-left: 0px;
 
-  width: 50px;
+  width: 80px;
 
-  background-image: url(../image/logo.png);
   background-size: 100%;
 }
 

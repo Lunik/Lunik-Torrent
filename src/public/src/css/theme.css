@@ -1,1 +1,97 @@
 @import url(icon.css);
+*::selection {
+  background: #f7a253; /* WebKit/Blink Browsers */
+}
+
+.button{
+  cursor: pointer !important;
+}
+
+.button:hover{
+  color: #675f5f !important;
+}
+
+.button:active, .button:focus{
+  color: #f7a253 !important;
+}
+/************/
+/* Top Menu */
+/************/
+.top-menu{
+  color: #FFF;
+
+  background-color: #111;
+
+  font-size: 25px;
+}
+
+.top-menu .logo{
+  background-image: url(../image/logo.png);
+}
+
+.top-menu i.fa{
+  border-radius: 100%;
+}
+
+/*************/
+/* Left Menu */
+/*************/
+
+.left-menu {
+  color: #FFF;
+
+  background-color: #151515;
+
+  font-size: 25px;
+}
+
+.left-menu .menu i#open{
+  background-color: #151515;
+}
+
+.left-menu .menu i.fa{
+}
+
+.left-menu .action > *{
+  border-radius: 10px;
+}
+
+.left-menu .action .new{
+  background-color: #f75353;
+}
+
+.left-menu .nav-bar li{
+
+}
+
+.left-menu .nav-bar li.active{
+  background-color: #f7a253;
+
+  color: #151515;
+  font-weight: bold;
+}
+
+/*********/
+/* Liste */
+/*********/
+
+.list{
+  background-color: #1C1C1C;
+
+  color: #FFF;
+}
+
+.list th{
+  background: #2E2E2E;
+}
+
+.list tr.selected{
+  background-color: #f7a253;
+
+  color: #1C1C1C;
+}
+
+.list td{
+  border-top: 1px solid #2E2E2E;
+  border-bottom: 1px solid #2E2E2E;
+}

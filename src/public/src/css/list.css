@@ -1,0 +1,59 @@
+.list {
+  display: table-cell;
+  vertical-align: top;
+  z-index: 10;
+}
+.list table {
+  width: 100%;
+  min-width: 300px;
+
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.list table th#name {
+  width: 40%;
+}
+.list table th#size {
+  width: 10%;
+}
+.list table th#date {
+  width: 15%;
+}
+.list table th#progress {
+  width: 50%;
+}
+.list table th#down {
+  width: 10%;
+}
+.list table th#up {
+  width: 10%;
+}
+
+/* remove some columns when screen is to little */
+@media only screen and (max-width: 470px) {
+  .list table td:nth-child(3),
+  .list table th:nth-child(3),
+  .list table td:nth-child(5),
+  .list table th:nth-child(5),
+  .list table td:nth-child(6),
+  .list table th:nth-child(6) {
+    display: none;
+  }
+
+  .list table th#name {
+    width: 80%;
+  }
+}
+
+.list th{
+  text-align: left;
+}
+
+.list tr{
+  height: 30px;
+}
+.list td {
+  display: table-cell;
+
+  overflow: hidden;
+}

@@ -1,4 +1,15 @@
 @import url(top-menu.css);
 @import url(left-menu.css);
-@import url(container.css);
+@import url(list.css);
 @import url(theme.css);
+
+html{
+  height:100%;
+}
+
+body{
+  margin: 0px;
+  padding: 0px;
+
+  height:100%;
+}
