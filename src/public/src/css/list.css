@@ -52,8 +52,12 @@
 .list tr{
   height: 30px;
 }
-.list td {
-  display: table-cell;
+.list td, .list th {
+  display: none;
 
   overflow: hidden;
+}
+
+.list td.show, .list th.show{
+  display: table-cell;
 }
