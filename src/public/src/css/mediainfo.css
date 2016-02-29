@@ -1,0 +1,18 @@
+.popupHtml .Content img, .popupHtml .Content .infos{
+	display: inline-block;
+	margin: 10px;
+
+	width: 45%;
+
+	vertical-align: top;
+}
+
+.popupHtml .Content .infos *{
+	vertical-align: top;
+	margin: 5px;
+}
+
+.popupHtml .Content .infos .rating{
+	font-size: 200%;
+	font-weight: bold;
+}

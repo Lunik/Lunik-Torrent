@@ -93,7 +93,7 @@ _Directory.prototype.append = function (file) {
     })
   })
 
-  var $name = $('<td>').attr('id', 'name').attr('extention', Format.extention(file)).attr('data-file', file.name).html(
+  var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
     file.isdir ?
       $('<a>').addClass('button').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name.substring(0, 50)) :
       file.name.substring(0, 30)).appendTo($raw)
@@ -150,7 +150,7 @@ _Directory.prototype.setActions = function (file, actions) {
     } else {
       var extension = ''
     }
-    var name = prompt('New name for: '+oldname.join(' '))
+    var name = prompt('New name for: '+oldname.join(' '), oldname.join(' '))
     if (name) {
       name = name.split('\/').pop() + extension
       $.post('/rename-d', {
@@ -194,6 +194,9 @@ _Directory.prototype.setActions = function (file, actions) {
       })
   }
   if (actions.info) {
-    this.actions.info.removeClass('hide')
+    this.actions.info.removeClass('hide').click(function(){
+      var info = new _MediaInfo()
+      info.get(file.name)
+    })
   }
 }

@@ -3,7 +3,8 @@ require('src/js/popup/popup.js')
 
 var Storage = new _Storage()
 
-function _MediaInfo () {}
+function _MediaInfo () {
+}
 
 _MediaInfo.prototype.get = function (title) {
   var self = this
@@ -50,7 +51,7 @@ _MediaInfo.prototype.html = function (data) {
 }
 
 _MediaInfo.prototype.popup = function (data) {
-  var p = new Popup()
+  var p = new _Popup()
   var html = this.html(data)
   p.init(null, null, null, null, html.title, html.content, true)
   p.draw()
