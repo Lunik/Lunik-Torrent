@@ -5,39 +5,39 @@ i.fa::before {
 i.fa {
   padding: 4px;
 }
-.list td#name {
+.list .file td#name {
   background-repeat: no-repeat;
   background-image: url("../image/file/file.png");
   background-size: 25px;
   padding: 5px 0px 0px 30px !important;
 }
-.list td#name[extension=dir] {
+.list .file td#name[extension=dir] {
   background-image: url("../image/file/dir.png");
 }
-.list td#name[extension=avi] {
+.list .file td#name[extension=avi] {
   background-image: url("../image/file/avi.png");
 }
-.list td#name[extension=mkv] {
+.list .file td#name[extension=mkv] {
   background-image: url("../image/file/mkv.png");
 }
-.list td#name[extension=html] {
+.list .file td#name[extension=html] {
   background-image: url("../image/file/html.png");
 }
-.list td#name[extension=jpg] {
+.list .file td#name[extension=jpg] {
   background-image: url("../image/file/jpg.png");
 }
-.list td#name[extension=mp3] {
+.list .file td#name[extension=mp3] {
   background-image: url("../image/file/mp3.png");
 }
-.list td#name[extension=mp4] {
+.list .file td#name[extension=mp4] {
   background-image: url("../image/file/mp4.png");
 }
-.list td#name[extension=pdf] {
+.list .file td#name[extension=pdf] {
   background-image: url("../image/file/pdf.png");
 }
-.list td#name[extension=png] {
+.list .file td#name[extension=png] {
   background-image: url("../image/file/png.png");
 }
-.list td#name[extension=txt] {
+.list .file td#name[extension=txt] {
   background-image: url("../image/file/txt.png");
 }
