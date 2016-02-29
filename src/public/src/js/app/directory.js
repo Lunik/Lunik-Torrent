@@ -95,8 +95,8 @@ _Directory.prototype.append = function (file) {
 
   var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
     file.isdir ?
-      $('<a>').addClass('button').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name.substring(0, 100)) :
-      file.name.substring(0, 30)).appendTo($raw)
+      $('<a>').addClass('button').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name) :
+      file.name).appendTo($raw)
   if (file.isfile)
     $name.draggable({
       revert: true
