@@ -5,14 +5,12 @@ i.fa::before {
 i.fa {
   padding: 4px;
 }
-
 .list td#name {
   background-repeat: no-repeat;
   background-image: url("../image/file/file.png");
   background-size: 25px;
   padding: 5px 0px 0px 30px !important;
 }
-
 .list td#name[extension=dir] {
   background-image: url("../image/file/dir.png");
 }

@@ -1,25 +1,27 @@
 require('src/js/popup/popup.js')
 
-function _SearchTorrent(){
+function _SearchTorrent () {
   this.popup = new _Popup()
 
   this.torrentInput = $('.left-menu .torrent-input input')
 }
 
-_SearchTorrent.prototype.search = function(query){
+_SearchTorrent.prototype.search = function (query) {
   var self = this
-  $.post('/search-t', {query: query}, function (data) {
+  $.post('/search-t', {
+    query: query
+  }, function (data) {
     data = JSON.parse(data)
     self.show(data)
   })
 }
 
-_SearchTorrent.prototype.show = function(data){
-  this.popup.init(null, "5%", null, "90%", "Search", this.getHtml(data), true)
+_SearchTorrent.prototype.show = function (data) {
+  this.popup.init(null, '5%', null, '90%', 'Search', this.getHtml(data), true)
   this.popup.draw()
 }
 
-_SearchTorrent.prototype.getHtml = function(data){
+_SearchTorrent.prototype.getHtml = function (data) {
   var self = this
   var $searchDiv = $('<div>').addClass('search-result')
 
@@ -27,10 +29,10 @@ _SearchTorrent.prototype.getHtml = function(data){
 
   var $series = $('<table>').addClass('series').html('<thead><th class="search-header">Series</th></thead>')
 
-  for(var key in data){
+  for (var key in data) {
     data[key].items.forEach(function (element, index) {
-      var $item = $('<tr>').addClass('search-item button').attr('torrent-link', element.torrent).click(function(){
-        console.log(self.torrentInput);
+      var $item = $('<tr>').addClass('search-item button').attr('torrent-link', element.torrent).click(function () {
+        console.log(self.torrentInput)
         self.popup.remove()
         self.torrentInput.val($(this).attr('torrent-link'))
         self.torrentInput.trigger('keyup')

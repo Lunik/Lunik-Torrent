@@ -1,7 +1,7 @@
 require('src/js/app/format.js')
 var Format = new _Format()
 
-function _Torrent(){
+function _Torrent () {
   this.body = $('.list table tbody')
   this.table = $('.list').click(function () {
     $('.list .file').removeClass('selected')
@@ -12,20 +12,20 @@ function _Torrent(){
   }
 
   this.timer = null
-  this.refresh = 3000;
+  this.refresh = 3000
 }
 
-_Torrent.prototype.getList = function(){
+_Torrent.prototype.getList = function () {
   var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
   var self = this
   $.post('/list-t', function (torrents) {
     torrents = JSON.parse(torrents)
     if (torrents.err) {
       var notif = new Pnotif()
-      notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+torrents.err+"</p>", 10000)
+      notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrents.err + '</p>', 10000)
       notif.draw()
     } else {
-      //TODO
+      // TODO
       /*$('.toremove').remove()
       $.each($('.container .torrent .list tbody *'), function (key, value) {
         $(value).addClass('toremove')
@@ -36,16 +36,18 @@ _Torrent.prototype.getList = function(){
 
   })
   clearTimeout(this.timer)
-  this.timer = setTimeout(function(){ self.getList() }, this.refresh)
+  this.timer = setTimeout(function () {
+    self.getList()
+  }, this.refresh)
 }
 
-_Torrent.prototype.list = function(torrents){
+_Torrent.prototype.list = function (torrents) {
   for (key in torrents) {
     this.append(torrents[key])
   }
 }
 
-_Torrent.prototype.append = function(torrent) {
+_Torrent.prototype.append = function (torrent) {
   var self = this
   if ($('.list  .torrent[hash=' + torrent.hash + ']').length > 0) {
     var $torrent = $('.torrent[hash=' + torrent.hash + ']')
@@ -74,7 +76,7 @@ _Torrent.prototype.append = function(torrent) {
     $('<p>').addClass('remaining-time').text(Format.time(torrent.timeRemaining))
   ).appendTo($torrent)
   var $downspeed = $('<td>').attr('id', 'sdown').text(Format.speed(torrent.sdown)).appendTo($torrent)
-  var $upspeed = $('<td>').attr('id','sup').text(Format.speed(torrent.sup)).appendTo($torrent)
+  var $upspeed = $('<td>').attr('id', 'sup').text(Format.speed(torrent.sup)).appendTo($torrent)
 
   if (needToAppend) {
     this.body.append($torrent)
@@ -83,23 +85,25 @@ _Torrent.prototype.append = function(torrent) {
 
 _Torrent.prototype.setActions = function (torrent, actions) {
   for (var key in this.actions) {
-    this.actions[key].addClass('hide').unbind();
+    this.actions[key].addClass('hide').unbind()
   }
 
   if (actions.remove) {
     this.actions.remove.removeClass('hide').click(function () {
-        if (confirm('Confirmer la suppression de ' + torrent.name + ' ?'))
-          $.post('/remove-t', {hash: torrent.hash}, function (file) {
-            file = JSON.parse(file)
-            if (torrent.err) {
-              var notif = new Pnotif()
-              notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrent.err + '</p>', 10000)
-              notif.draw()
-            } else {
-              $('tr[hash="' + torrent.hash + '"]').remove()
-            }
-          })
-      })
+      if (confirm('Confirmer la suppression de ' + torrent.name + ' ?'))
+        $.post('/remove-t', {
+          hash: torrent.hash
+        }, function (file) {
+          file = JSON.parse(file)
+          if (torrent.err) {
+            var notif = new Pnotif()
+            notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrent.err + '</p>', 10000)
+            notif.draw()
+          } else {
+            $('tr[hash="' + torrent.hash + '"]').remove()
+          }
+        })
+    })
   }
   if (actions.info) {
     this.actions.info.removeClass('hide')

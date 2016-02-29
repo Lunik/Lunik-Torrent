@@ -3,8 +3,7 @@ var Log = require('./log.js')
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 
-function SearchT () {
-}
+function SearchT () {}
 
 SearchT.prototype.search = function (query, callback) {
   Log.print('Search: ' + query)
@@ -20,7 +19,11 @@ SearchT.prototype.search = function (query, callback) {
       data2.type = 'series'
       CpasbienApi.Search(query).then(function (data3) {
         data3.type = 'films'
-        callback({tven: data1, tvfr: data2, mv: data3})
+        callback({
+          tven: data1,
+          tvfr: data2,
+          mv: data3
+        })
       })
     })
   })
@@ -35,7 +38,10 @@ SearchT.prototype.latest = function (callback) {
     CpasbienApi.Latest().then(function (data2) {
       data2.type = 'films'
       data2.items = data2.items.slice(0, 10)
-      callback({tv: data1, mv: data2})
+      callback({
+        tv: data1,
+        mv: data2
+      })
     })
   })
 }

@@ -20,11 +20,11 @@ function _LeftMenu () {
     open: $('.left-menu .menu #open')
   }
 
-  this.but.open.click(function(){
+  this.but.open.click(function () {
     self.body.attr('id', 'open')
   })
 
-  this.but.close.click(function(){
+  this.but.close.click(function () {
     self.body.attr('id', 'close')
   })
 
@@ -42,7 +42,7 @@ function _LeftMenu () {
     self.List.switchTable('directory')
   })
 
-  this.but.new.click(function(){
+  this.but.new.click(function () {
     var name = prompt('Nom du nouveau dossier ?')
     if (name)
       $.post('/mkdir-d', {
@@ -50,19 +50,28 @@ function _LeftMenu () {
         'name': name
       }, function (name) {
         name = JSON.parse(name)
-        if(name.err){
+        if (name.err) {
           var notif = new _Pnotif()
-          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: "+file.err+"</p>", 10000)
+          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
           notif.draw()
         } else {
-          self.List.Directory.append({name: name.name, isdir: true, isfile: false, size: 0, ctime: new Date(), new: true})
+          self.List.Directory.append({
+            name: name.name,
+            isdir: true,
+            isfile: false,
+            size: 0,
+            ctime: new Date(),
+            new: true
+          })
         }
       })
   })
 
   this.but.start.click(function () {
     if (self.but.input.val()) {
-      $.post('/download-t', {url: self.but.input.val()}, function (data) {
+      $.post('/download-t', {
+        url: self.but.input.val()
+      }, function (data) {
         if (data.err) {
           var notif = new Pnotif()
           notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + data.err + '</p>', 10000)
@@ -78,7 +87,7 @@ function _LeftMenu () {
     }
   })
 
-  this.but.search.click(function(){
+  this.but.search.click(function () {
     var s = new _SearchTorrent()
     s.search(self.but.input.val())
     self.but.input.val('')

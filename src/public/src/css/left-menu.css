@@ -6,7 +6,6 @@
   height: calc(100vh - 80px);
   z-index: 100;
 }
-
 .left-menu .menu {
   display: none;
   margin-right: -33px;
@@ -16,10 +15,10 @@
   .left-menu {
     position: fixed;
   }
-  .left-menu#close{
+  .left-menu#close {
     left: -200px;
   }
-  .left-menu#open{
+  .left-menu#open {
     left: 0px;
   }
   .left-menu .menu {

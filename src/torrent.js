@@ -106,7 +106,7 @@ Torrent.prototype.start = function (url) {
 }
 
 Torrent.prototype.remove = function (hash) {
-  if(this.hashToChild[hash]){
+  if (this.hashToChild[hash]) {
     this.hashToChild[hash].send({
       'type': 'remove'
     })

@@ -5,24 +5,39 @@
 ![Nodejs-Torrent](http://puu.sh/mzZN4/948767c37f.png)
 
 ## ===== Installation =====
-
 ## Npm
-    $ npm install lunik-torrent
-##### Exemple
-    require('lunik-torrent')
+
+```
+$ npm install lunik-torrent
+```
+
+### Exemple
+
+```
+require('lunik-torrent')
+```
 
 ## Git
-    $ git clone https://github.com/Lunik/Lunik-Torrent.git
-    $ cd Lunik-Torrent
-    $ npm install
-    $ nano src/config.json
-##### Run
-    $ npm start
+
+```
+$ git clone https://github.com/Lunik/Lunik-Torrent.git
+$ cd Lunik-Torrent
+$ npm install
+$ nano src/config.json
+```
+
+### Run
+
+```
+$ npm start
+```
 
 ## Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lunik/Lunik-Torrent)
 
 ## ===== Infos =====
-##### Default password:
+### Default password:
 
-    admin:admin
+```
+admin:admin
+```

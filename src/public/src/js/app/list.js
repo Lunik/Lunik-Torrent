@@ -21,9 +21,9 @@ function _List () {
     dateCol: $('.list #date')
   }
   this.torrentElements = {
-    input:$('.left-menu .torrent-input'),
-    startBut:$('.left-menu .start'),
-    searchBut:$('.left-menu .search'),
+    input: $('.left-menu .torrent-input'),
+    startBut: $('.left-menu .start'),
+    searchBut: $('.left-menu .search'),
 
     nameCol: $('.list #name'),
     sizeCol: $('.list #size'),
@@ -50,8 +50,8 @@ function _List () {
 
   this.scrollTop = $('.scrollTop').click(function () {
     $('body').animate({
-			scrollTop: 0
-    }, 1000);
+      scrollTop: 0
+    }, 1000)
   })
   this.switchTable('directory')
 }
@@ -64,14 +64,14 @@ _List.prototype.switchTable = function (nav) {
       clearTimeout(this.Directory.timer)
       this.Torrent.getList()
 
-      //hide directory elements
-      for(var key in this.directoryElements){
+      // hide directory elements
+      for (var key in this.directoryElements) {
         this.directoryElements[key].addClass('hide')
       }
 
-      //show torrents elements
-      for(var key in this.torrentElements){
-        if(key == "startBut") continue;
+      // show torrents elements
+      for (var key in this.torrentElements) {
+        if (key == 'startBut') continue
         this.torrentElements[key].removeClass('hide')
       }
 
@@ -81,13 +81,13 @@ _List.prototype.switchTable = function (nav) {
       clearTimeout(this.Torrent.timer)
       this.Directory.getList()
 
-      //hide torrents elements
-      for(var key in this.torrentElements){
+      // hide torrents elements
+      for (var key in this.torrentElements) {
         this.torrentElements[key].addClass('hide')
       }
 
-      //show directory elements
-      for(var key in this.directoryElements){
+      // show directory elements
+      for (var key in this.directoryElements) {
         this.directoryElements[key].removeClass('hide')
       }
 

@@ -23,7 +23,9 @@ function Server () {
   this.app.use(compression())
   this.app.use(express.static(__dirname + '/public'))
   this.app.use(bodyParser.json())
-  this.app.use(bodyParser.urlencoded({ extended: true }))
+  this.app.use(bodyParser.urlencoded({
+    extended: true
+  }))
 
   this.server = http.createServer(this.basic, this.app)
   var port = process.env.PORT || config.server.port
@@ -33,15 +35,17 @@ function Server () {
 
   // Client Download file
   this.app.get('/files', function (req, res) {
-    if(req.query.f){
+    if (req.query.f) {
       req.query.f = req.query.f.split('..').join('')
       Log.print(req.user + ' download file: ' + req.query.f)
       Directory.setDownloading(req.query.f)
-      var transfert = new FileTransfert(req, res, function(){
+      var transfert = new FileTransfert(req, res, function () {
         Directory.finishDownloading(req.query.f)
       })
     } else {
-      res.end(JSON.stringify({err:"File doesn't exist."}))
+      res.end(JSON.stringify({
+        err: "File doesn't exist."
+      }))
     }
   })
 
@@ -52,7 +56,9 @@ function Server () {
       Torrent.start(req.body.url)
       res.end()
     } else {
-      res.end(JSON.stringify({err:"Wrong url."}))
+      res.end(JSON.stringify({
+        err: 'Wrong url.'
+      }))
     }
   })
 
@@ -66,7 +72,9 @@ function Server () {
     if (req.body.dir) {
       res.end(JSON.stringify(Directory.list(req.body.dir)))
     } else {
-      res.end(JSON.stringify({err:"Undefined directory."}))
+      res.end(JSON.stringify({
+        err: 'Undefined directory.'
+      }))
     }
   })
 
@@ -75,37 +83,55 @@ function Server () {
     if (req.body.hash) {
       Log.print(req.user + ' remove torrent: ' + req.body.hash)
       Torrent.remove(req.body.hash)
-      res.end(JSON.stringify({hash:req.body.hash}))
+      res.end(JSON.stringify({
+        hash: req.body.hash
+      }))
     } else {
-      res.end(JSON.stringify({err:"Wrong hash."}))
+      res.end(JSON.stringify({
+        err: 'Wrong hash.'
+      }))
     }
   })
 
   // client remove directory / file
   this.app.post('/remove-d', function (req, res) {
     if (req.body.file) {
-      if(Directory.remove(req.body.file) != -1){
+      if (Directory.remove(req.body.file) != -1) {
         Log.print(req.user + ' remove file: ' + req.body.file)
-        res.end(JSON.stringify({file:req.body.file}))
+        res.end(JSON.stringify({
+          file: req.body.file
+        }))
       } else {
-        res.end(JSON.stringify({err:"Cannot remove, someone is downloading the file."}))
+        res.end(JSON.stringify({
+          err: 'Cannot remove, someone is downloading the file.'
+        }))
       }
     } else {
-      res.end(JSON.stringify({err:"Wrong file."}))
+      res.end(JSON.stringify({
+        err: 'Wrong file.'
+      }))
     }
   })
 
   // client rename file
   this.app.post('/rename-d', function (req, res) {
     if (req.body.path && req.body.oldname && req.body.newname) {
-      if(Directory.rename(req.body.path, req.body.oldname, req.body.newname) != -1){
+      if (Directory.rename(req.body.path, req.body.oldname, req.body.newname) != -1) {
         Log.print(req.user + ' rename file: ' + req.body.path + req.body.oldname + ' in: ' + req.body.newname)
-        res.end(JSON.stringify({path: req.body.path, oldname: req.body.oldname, newname: req.body.newname}))
+        res.end(JSON.stringify({
+          path: req.body.path,
+          oldname: req.body.oldname,
+          newname: req.body.newname
+        }))
       } else {
-        res.end(JSON.stringify({err:"Cannot rename, someone is downloading the file."}))
+        res.end(JSON.stringify({
+          err: 'Cannot rename, someone is downloading the file.'
+        }))
       }
     } else {
-      res.end(JSON.stringify({err:"Wrong name."}))
+      res.end(JSON.stringify({
+        err: 'Wrong name.'
+      }))
     }
   })
 
@@ -114,23 +140,33 @@ function Server () {
     if (req.body.path && req.body.name) {
       Log.print(req.user + ' create directory: ' + req.body.path + req.body.name)
       Directory.mkdir(req.body.path, req.body.name)
-      res.end(JSON.stringify({name:req.body.name}))
+      res.end(JSON.stringify({
+        name: req.body.name
+      }))
     } else {
-      res.end(JSON.stringify({err:"Wrong name."}))
+      res.end(JSON.stringify({
+        err: 'Wrong name.'
+      }))
     }
   })
 
   // client move directory
   this.app.post('/mv-d', function (req, res) {
     if (req.body.path && req.body.file && req.body.folder) {
-      if(Directory.mv(req.body.path, req.body.file, req.body.folder) != -1){
+      if (Directory.mv(req.body.path, req.body.file, req.body.folder) != -1) {
         Log.print(req.user + ' move: ' + req.body.path + req.body.file + ' in: ' + req.body.path + req.body.folder)
-        res.end(JSON.stringify({file:req.body.file}))
+        res.end(JSON.stringify({
+          file: req.body.file
+        }))
       } else {
-        res.end(JSON.stringify({err:"Cannot move, someone is downloading the file."}))
+        res.end(JSON.stringify({
+          err: 'Cannot move, someone is downloading the file.'
+        }))
       }
     } else {
-      res.end(JSON.stringify({err:"Wrong name."}))
+      res.end(JSON.stringify({
+        err: 'Wrong name.'
+      }))
     }
   })
 

@@ -2,8 +2,7 @@ var config = require('./config.json')
 
 var fs = require('fs')
 
-function Log () {
-}
+function Log () {}
 
 Log.prototype.print = function (text) {
   console.log(text)

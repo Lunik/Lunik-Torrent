@@ -1,13 +1,11 @@
-.search-result{
+.search-result {
   display: table-cell;
   text-align: left !important;
 }
-
-.search-result .search-header{
+.search-result .search-header {
   padding: 10px;
   font-size: 20px;
 }
-
-.search-result table{
+.search-result table {
   border-collapse: collapse;
 }

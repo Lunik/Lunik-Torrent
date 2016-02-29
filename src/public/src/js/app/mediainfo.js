@@ -3,8 +3,7 @@ require('src/js/popup/popup.js')
 
 var Storage = new _Storage()
 
-function _MediaInfo () {
-}
+function _MediaInfo () {}
 
 _MediaInfo.prototype.get = function (title) {
   var self = this

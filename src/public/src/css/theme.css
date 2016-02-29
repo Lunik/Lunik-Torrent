@@ -8,7 +8,6 @@
 }
 .button:hover {
   color: #675f5f !important;
-
   transition: color 0.1s ease-out;
 }
 .button:active, .button:focus {
@@ -51,34 +50,31 @@ a {
   color: #FFF;
   background-color: #151515;
   font-size: 25px;
-
   transition: left 0.3s ease-out;
 }
 .left-menu .menu i#open {
   background-color: #151515;
 }
-
 .left-menu .nav-bar li.active {
   background-color: #f7a253;
   color: #151515;
   font-weight: bold;
 }
-.left-menu .action .button{
+.left-menu .action .button {
   border-radius: 10px;
   background-color: #f75353;
 }
-
-.left-menu .torrent-input input{
+.left-menu .torrent-input input {
   color: grey;
   background-color: #FFF;
   border: 1px solid #D8E1E4;
   font-size: 15px;
   border-radius: 3px;
 }
-
-.left-menu .torrent-input input[type=text]{
+.left-menu .torrent-input input[type=text] {
   transition: width 0.5s ease-out;
 }
+
 /*********/
 
 
@@ -94,7 +90,7 @@ a {
 .list th {
   background: #2E2E2E;
 }
-.list tr.selected, .list tr.selected a{
+.list tr.selected, .list tr.selected a {
   background-color: #f7a253;
   color: #1C1C1C;
 }
@@ -115,19 +111,17 @@ a {
 
 
 /******************/
-.search-result tr.search-item:hover{
+
+.search-result tr.search-item:hover {
   background-color: #f7a253;
 }
-
 .search-result .search-item {
   border-top: 1px solid #2E2E2E;
   border-bottom: 1px solid #2E2E2E;
 }
-
-.search-result .search-item .seed{
+.search-result .search-item .seed {
   color: #27AE60;
 }
-
-.search-result .search-item .peer{
+.search-result .search-item .peer {
   color: #f75353;
 }

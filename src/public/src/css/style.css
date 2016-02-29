@@ -2,7 +2,7 @@
 @import url(left-menu.css);
 @import url(list.css);
 @import url(theme.css);
-*{
+* {
   outline: none;
 }
 html {
@@ -13,8 +13,7 @@ body {
   padding: 0px;
   height: 100%;
 }
-
-.hide{
+.hide {
   visibility: hidden;
   opacity: 0;
   display: none !important;

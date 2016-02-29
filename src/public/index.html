@@ -1,75 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<title>Lunik - Torrent</title>
+  <head>
+    <title>Lunik - Torrent</title>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <link rel="icon" href="src/image/favicon.ico">
-	<link rel="stylesheet" href="src/css/style.css">
-</head>
+    <link rel="icon" href="src/image/favicon.ico">
+    <link rel="stylesheet" href="src/css/style.css">
+  </head>
 
-<body>
-  <div class="top-menu">
-		<div class="container">
-	    <div class="logo button"></div>
-	    <div class="ariane"></div>
-			<div class="folder-size"></div>
-			<div class="parameter">
-				<i class="fa fa-gear button hide" id="parameter"></i>
-			</div>
-	    <div class="action">
-				<i class="fa fa-download button hide" id="download"></i>
-				<i class="fa fa-pencil button hide" id="rename"></i>
-				<i class="fa fa-times button hide" id="remove"></i>
-				<i class="fa fa-info button hide" id="info"></i>
-			</div>
-		</div>
-  </div>
-	<div class="container">
-	  <div class="left-menu" id="close">
-			<div class="container">
-				<div class="menu">
-					<i class="fa fa-arrow-left button" id="close"></i>
-					<i class="fa fa-bars button" id="open"></i>
-				</div>
-		    <div class="nav-bar">
-					<ul>
-						<li class="button" id="torrents">Torrents</li>
-						<li class="button active" id="directories">Directories</li>
-					</ul>
-		    </div>
-				<div class="action">
-					<div class="new button">New</div>
-					<div class="torrent-input hide"><input type="text" placeholder="Search or Torrent Link..."></div>
-					<div class="start button hide">Start</div>
-					<div class="search button hide">Search</div>
-		    </div>
-			</div>
-	  </div>
-		<div class="list">
-	    <table>
-				<thead>
-					<tr>
-						<th id="name">Name</th>
-						<th id="size">Size</th>
-						<th id="date">Date</th>
-						<th class="hide" id="progress">Progress</th>
-						<th class="hide" id="down">Down</th>
-						<th class="hide" id="up">Up</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr><td>1</td></tr>
-				</tbody>
-	    </table>
-		</div>
-		<div class="scrollTop"><i class="fa fa-arrow-up button"></i></div>
-  </div>
+  <body>
+    <div class="top-menu">
+      <div class="container">
+        <div class="logo button"></div>
+        <div class="ariane"></div>
+        <div class="folder-size"></div>
+        <div class="parameter">
+          <i class="fa fa-gear button hide" id="parameter"></i>
+        </div>
+        <div class="action">
+          <i class="fa fa-download button hide" id="download"></i>
+          <i class="fa fa-pencil button hide" id="rename"></i>
+          <i class="fa fa-times button hide" id="remove"></i>
+          <i class="fa fa-info button hide" id="info"></i>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="left-menu" id="close">
+        <div class="container">
+          <div class="menu">
+            <i class="fa fa-arrow-left button" id="close"></i>
+            <i class="fa fa-bars button" id="open"></i>
+          </div>
+          <div class="nav-bar">
+            <ul>
+              <li class="button" id="torrents">Torrents</li>
+              <li class="button active" id="directories">Directories</li>
+            </ul>
+          </div>
+          <div class="action">
+            <div class="new button">New</div>
+            <div class="torrent-input hide"><input type="text" placeholder="Search or Torrent Link..."></div>
+            <div class="start button hide">Start</div>
+            <div class="search button hide">Search</div>
+          </div>
+        </div>
+      </div>
+      <div class="list">
+        <table>
+          <thead>
+            <tr>
+              <th id="name">Name</th>
+              <th id="size">Size</th>
+              <th id="date">Date</th>
+              <th class="hide" id="progress">Progress</th>
+              <th class="hide" id="down">Down</th>
+              <th class="hide" id="up">Up</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="scrollTop">
+        <i class="fa fa-arrow-up button"></i>
+      </div>
+    </div>
 
-	<script src="src/js/jquery/jquery.min.js"></script>
-  <script src="src/js/require.js"></script>
-	<script src="src/js/app/app.js"></script>
-</body>
+    <script src="src/js/jquery/jquery.min.js"></script>
+    <script src="src/js/require.js"></script>
+    <script src="src/js/app/app.js"></script>
+  </body>
 </html>
