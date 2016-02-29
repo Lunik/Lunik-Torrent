@@ -40,7 +40,7 @@ _MediaInfo.prototype.html = function (data) {
   $infos.append($rating)
 
   $synopsis = $('<div/>').addClass('synopsis').html(data.description)
-  $lirelasuite = $('<br><a/>').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...')
+  $lirelasuite = $('<br><a/>').addClass('button').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...')
   $synopsis.append($lirelasuite)
   $infos.append($synopsis)
 
