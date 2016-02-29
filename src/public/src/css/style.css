@@ -2,6 +2,9 @@
 @import url(left-menu.css);
 @import url(list.css);
 @import url(theme.css);
+*{
+  outline: none;
+}
 html {
   height: 100%;
 }
@@ -9,4 +12,10 @@ body {
   margin: 0px;
   padding: 0px;
   height: 100%;
+}
+
+.hide{
+  visibility: hidden;
+  opacity: 0;
+  display: none !important;
 }

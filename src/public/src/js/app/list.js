@@ -1,51 +1,95 @@
 require('src/js/app/directory.js')
 require('src/js/app/torrent.js')
+require('src/js/app/top-menu.js')
 
 function _List () {
-  this.Directory = new Directory()
+  var self = this
+  this.Directory = new _Directory()
   this.Torrent = new _Torrent()
+  this.TopMenu = new _TopMenu()
 
   this.body = $('.list table tbody')
-  this.col = {
-    name: $('.list #name'),
-    size: $('.list #size'),
-    date: $('.list #date'),
-    progress: $('.list #progress'),
-    down: $('.list #down'),
-    up: $('.list #up')
+
+  this.directoryElements = {
+    ariane: $('.top-menu .ariane'),
+    size: $('.top-menu .folder-size'),
+
+    newBut: $('.left-menu .new'),
+
+    nameCol: $('.list #name'),
+    sizeCol: $('.list #size'),
+    dateCol: $('.list #date')
+  }
+  this.torrentElements = {
+    input:$('.left-menu .torrent-input'),
+    startBut:$('.left-menu .start'),
+    searchBut:$('.left-menu .search'),
+
+    nameCol: $('.list #name'),
+    sizeCol: $('.list #size'),
+    progressCol: $('.list #progress'),
+    downCol: $('.list #down'),
+    upCol: $('.list #up')
   }
 
-  this.scrollTop = $('.scrollTop').click(function(){
+  // click en dehors d'une ligne du table pour la deselectionner
+  $('html').click(function () {
+    $('.list .file').removeClass('selected')
+    self.Directory.setActions('', {
+      download: false,
+      rename: false,
+      remove: false,
+      info: false
+    })
+    $('.list .torrent').removeClass('selected')
+    self.Torrent.setActions('', {
+      remove: false,
+      info: false
+    })
+  })
+
+  this.scrollTop = $('.scrollTop').click(function () {
     $('body').scrollTop(0)
   })
-  this.Directory.getList()
+  this.switchTable('directory')
 }
 
 _List.prototype.switchTable = function (nav) {
-  this.body.html("")
+  this.body.html('')
   window.location = '#'
   switch (nav) {
     case 'torrent':
       clearTimeout(this.Directory.timer)
       this.Torrent.getList()
-      this.col.name.addClass('show')
-      this.col.size.addClass('show')
-      this.col.date.removeClass('show')
-      this.col.progress.addClass('show')
-      this.col.down.addClass('show')
-      this.col.up.addClass('show')
+
+      //hide directory elements
+      for(var key in this.directoryElements){
+        this.directoryElements[key].addClass('hide')
+      }
+
+      //show torrents elements
+      for(var key in this.torrentElements){
+        if(key == "startBut") continue;
+        this.torrentElements[key].removeClass('hide')
+      }
+
       break
     case 'directory':
+      this.TopMenu.setAriane()
       clearTimeout(this.Torrent.timer)
       this.Directory.getList()
-      this.col.name.addClass('show')
-      this.col.size.addClass('show')
-      this.col.date.addClass('show')
-      this.col.progress.removeClass('show')
-      this.col.down.removeClass('show')
-      this.col.up.removeClass('show')
+
+      //hide torrents elements
+      for(var key in this.torrentElements){
+        this.torrentElements[key].addClass('hide')
+      }
+
+      //show directory elements
+      for(var key in this.directoryElements){
+        this.directoryElements[key].removeClass('hide')
+      }
+
       break
     default:
-
   }
 }

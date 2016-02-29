@@ -20,28 +20,31 @@
 				<i class="fa fa-gear button" id="parameter"></i>
 			</div>
 	    <div class="action">
-				<i class="fa fa-download button" id="download"></i>
-				<i class="fa fa-pencil button" id="rename"></i>
-				<i class="fa fa-times button" id="remove"></i>
-				<i class="fa fa-info button" id="info"></i>
+				<i class="fa fa-download button hide" id="download"></i>
+				<i class="fa fa-pencil button hide" id="rename"></i>
+				<i class="fa fa-times button hide" id="remove"></i>
+				<i class="fa fa-info button hide" id="info"></i>
 			</div>
 		</div>
   </div>
 	<div class="container">
-	  <div class="left-menu">
+	  <div class="left-menu" id="close">
 			<div class="container">
 				<div class="menu">
 					<i class="fa fa-arrow-left button" id="close"></i>
-					<i class="fa fa-bars button show" id="open"></i>
+					<i class="fa fa-bars button" id="open"></i>
 				</div>
-		    <div class="action">
-					<div class="new button">New</div>
-		    </div>
 		    <div class="nav-bar">
 					<ul>
 						<li class="button" id="torrents">Torrents</li>
 						<li class="button active" id="directories">Directories</li>
 					</ul>
+		    </div>
+				<div class="action">
+					<div class="new button">New</div>
+					<div class="torrent-input hide"><input type="text" placeholder="Search or Torrent Link..."></div>
+					<div class="start button hide">Start</div>
+					<div class="search button hide">Search</div>
 		    </div>
 			</div>
 	  </div>
@@ -49,15 +52,16 @@
 	    <table>
 				<thead>
 					<tr>
-						<th class="show" id="name">Name</th>
-						<th class="show" id="size">Size</th>
-						<th class="show" id="date">Date</th>
-						<th id="progress">Progress</th>
-						<th id="down">Down</th>
-						<th id="up">Up</th>
+						<th id="name">Name</th>
+						<th id="size">Size</th>
+						<th id="date">Date</th>
+						<th class="hide" id="progress">Progress</th>
+						<th class="hide" id="down">Down</th>
+						<th class="hide" id="up">Up</th>
 					</tr>
 				</thead>
 				<tbody>
+					<tr><td>1</td></tr>
 				</tbody>
 	    </table>
 		</div>

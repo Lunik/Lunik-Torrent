@@ -24,12 +24,6 @@
   float: right;
   margin-right: 2%;
 }
-.top-menu .action i {
-  display: none;
-}
-.top-menu .action i.show {
-  display: inline;
-}
 .top-menu .parameter {
   float: right;
 }
@@ -37,5 +31,6 @@
   padding: 10px;
 }
 .top-menu .folder-size{
+  margin-top: 20px;
   font-size: 15px;
 }

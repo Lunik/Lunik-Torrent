@@ -8,19 +8,11 @@ require('src/js/jquery/jquery-ui.touch-punch.min.js')
 var Format = new _Format()
 var Storage = new _Storage()
 
-function Directory () {
+function _Directory () {
   var self = this
   this.body = $('.list table tbody')
   this.size = $('.top-menu .folder-size')
-  this.table = $('.list').click(function () {
-    $('.list .file').removeClass('selected')
-    self.setActions('',{
-      download: false,
-      rename: false,
-      remove: false,
-      info: false
-    })
-  })
+  this.table = $('.list')
   this.actions = {
     download: $('.top-menu .action #download'),
     rename: $('.top-menu .action #rename'),
@@ -42,11 +34,11 @@ function Directory () {
   }).trigger('hashchange')
 }
 
-Directory.prototype.appendSize = function (size) {
+_Directory.prototype.appendSize = function (size) {
   this.size.text(Format.size(size))
 }
 
-Directory.prototype.getList = function () {
+_Directory.prototype.getList = function () {
   var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
   var self = this
   $.post('/list-d', {dir: hash}, function (directory) {
@@ -70,7 +62,7 @@ Directory.prototype.getList = function () {
   this.timer = setTimeout(function () { self.getList() }, this.refresh)
 }
 
-Directory.prototype.list = function (directory) {
+_Directory.prototype.list = function (directory) {
   var kownFiles = Storage.readData('directory') ? Storage.readData('directory') : [] // array
   for (var key in directory) {
     var file = directory[key]
@@ -86,7 +78,7 @@ Directory.prototype.list = function (directory) {
   Storage.storeData('directory', kownFiles)
 }
 
-Directory.prototype.append = function (file) {
+_Directory.prototype.append = function (file) {
   var self = this
   var $raw = $('<tr>').addClass(file.new ? 'file button new' : 'file button').attr('data-file', file.name).click(function (event) {
     event.stopPropagation()
@@ -101,7 +93,7 @@ Directory.prototype.append = function (file) {
     })
   })
 
-  var $name = $('<td>').addClass('show').attr('id', 'name').attr('extention', Format.extention(file)).attr('data-file', file.name).html(
+  var $name = $('<td>').attr('id', 'name').attr('extention', Format.extention(file)).attr('data-file', file.name).html(
     file.isdir ?
       $('<a>').addClass('button').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name.substring(0, 50)) :
       file.name.substring(0, 30)).appendTo($raw)
@@ -134,23 +126,23 @@ Directory.prototype.append = function (file) {
       }
     })
 
-  var $size = $('<td>').addClass('show').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
-  var $date = $('<td>').addClass('show').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
+  var $size = $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
+  var $date = $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
 
   this.body.append($raw)
 }
 
-Directory.prototype.setActions = function (file, actions) {
+_Directory.prototype.setActions = function (file, actions) {
   for (var key in this.actions) {
-    this.actions[key].removeClass('show').unbind();
+    this.actions[key].addClass('hide').unbind();
   }
   if (actions.download) {
-    this.actions.download.addClass('show').click(function () {
+    this.actions.download.removeClass('hide').click(function () {
       window.open('files/?f=' + document.location.hash.substring(1) + file.name)
     })
   }
   if (actions.rename) {
-    this.actions.rename.addClass('show').click(function () {
+    this.actions.rename.removeClass('hide').click(function () {
     var oldname = file.name.split('.')
     if (oldname.length > 1) {
       var extension = oldname.pop()
@@ -187,7 +179,7 @@ Directory.prototype.setActions = function (file, actions) {
 
   }
   if (actions.remove) {
-    this.actions.remove.addClass('show').click(function () {
+    this.actions.remove.removeClass('hide').click(function () {
         if (confirm('Confirmer la suppression de ' + file.name + ' ?'))
           $.post('/remove-d', {file: document.location.hash.substring(1) + file.name}, function (file) {
             file = JSON.parse(file)
@@ -202,6 +194,6 @@ Directory.prototype.setActions = function (file, actions) {
       })
   }
   if (actions.info) {
-    this.actions.info.addClass('show')
+    this.actions.info.removeClass('hide')
   }
 }

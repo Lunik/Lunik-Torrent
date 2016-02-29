@@ -6,6 +6,7 @@
   z-index: 10;
 
   overflow: auto;
+  height: calc(100vh - 80px);
 }
 .list table {
   width: 100%;
@@ -52,13 +53,10 @@
   height: 30px;
 }
 .list td, .list th {
-  display: none;
+  display: table-cell;
   overflow: hidden;
 
   padding-left: 10px;
-}
-.list td.show, .list th.show {
-  display: table-cell;
 }
 
 .scrollTop{

@@ -1,3 +1,5 @@
+@import url('searchtorrent.css');
+
 .list progress[value] {
   -webkit-appearance: none;
   appearance: none;

@@ -1,11 +1,11 @@
-var Popup = function () {
+var _Popup = function () {
   // Initialisation du popup
   this.init = function (posX, posY, width, height, title, html, closeBut) {
     this.posX = formatPosX(posX)
     this.posY = formatPosY(posY)
     this.width = formatWidth(width)
-    if (this.width > 500)
-      this.width = 500
+    if(this.width > 500)
+      this.whidth = 500
     this.height = formatHeight(height)
     this.title = title
     this.html = html
@@ -16,7 +16,7 @@ var Popup = function () {
   this.draw = function () {
     // Creation de l'ombre
     var $shadow = $('<div>').addClass('popupShadow')
-
+    this.selector = $shadow
     // Creation du contenu du popup
     var $container = $('<div>').addClass('popupContainer')
       .css('width', this.width + 'px')
@@ -51,7 +51,7 @@ var Popup = function () {
 
   // Fermer le popup
   this.remove = function () {
-    popupClose()
+    this.selector.remove()
   }
 
   function formatWidth (width) {

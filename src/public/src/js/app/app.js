@@ -1,5 +1,3 @@
-require('src/js/app/top-menu.js')
-var TopMenu = new _TopMenu()
 require('src/js/app/left-menu.js')
 var LeftMenu = new _LeftMenu()
 require('src/js/app/mediainfo.js')
