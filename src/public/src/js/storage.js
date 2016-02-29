@@ -2,30 +2,31 @@
 //  localStorage
 // ///////////////
 
+function _Storage () {}
 // Sauvgarder des donnes dans le localStorage
-function storeData (key, data) {
+_Storage.prototype.storeData = function (key, data) {
   data = JSON.stringify(data)
   localStorage.setItem(key, data)
 }
 
 // Lire des donnes dans le localStorage
-function readData (key) {
+_Storage.prototype.readData = function (key) {
   var data = localStorage.getItem(key)
   return JSON.parse(data)
 }
 
 // Effacer le localStorage
-function clearData () {
+_Storage.prototype.clearData = function () {
   localStorage.clear()
 }
 
 // Affacer un localStorage precis
-function clearKey (key) {
+_Storage.prototype.clearKey = function (key) {
   localStorage.setItem(key, null)
 }
 
 // Recupere toutes les clefs
-function getAllKey () {
+_Storage.prototype.getAllKey = function () {
   var keys = []
   for (var key in localStorage) {
     keys.push(key)
@@ -34,7 +35,7 @@ function getAllKey () {
 }
 
 // Recup toutes les datas
-function getAllData () {
+_Storage.prototype.getAllData = function () {
   var keys = getAllKey()
   var data = {}
   for (var key in keys) {

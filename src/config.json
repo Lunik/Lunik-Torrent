@@ -5,7 +5,7 @@
   "client": {
     "downloads": "downloads/",
     "timeout": 3000,
-    "maxTry":3
+    "maxTry": 3
   },
   "server": {
     "port": 80,
@@ -18,9 +18,9 @@
   "torrent": {
     "downloads": "downloads/",
     "scanTorrent": "torrents.txt",
-    "max":3
+    "max": 3
   },
-  "nginx":{
+  "nginx": {
     "active": false,
     "port": 8080,
     "path": "/"

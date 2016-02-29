@@ -58,13 +58,13 @@ Directory.prototype.getInfo = function (file) {
   return sfile
 }
 
-Directory.prototype.setDownloading = function(file){
-  this.downloading[file] = this.downloading[file] ? this.downloading[file]+1 : 1
+Directory.prototype.setDownloading = function (file) {
+  this.downloading[file] = this.downloading[file] ? this.downloading[file] + 1 : 1
 }
 
-Directory.prototype.finishDownloading = function(file){
-  this.downloading[file] = this.downloading[file] ? this.downloading[file]-1 : 0
-  if(this.downloading[file] >= 0){
+Directory.prototype.finishDownloading = function (file) {
+  this.downloading[file] = this.downloading[file] ? this.downloading[file] - 1 : 0
+  if (this.downloading[file] >= 0) {
     delete this.downloading[file]
   }
 }
@@ -74,22 +74,24 @@ Directory.prototype.isDownloading = function (file) {
 }
 
 Directory.prototype.remove = function (file) {
-  if(this.isDownloading(file)) return -1
+  if (this.isDownloading(file)) return -1
   fs.stat(config.directory.path + file, function (err, stats) {
     if (err) Log.print(err)
-    if (stats.isDirectory()) {
-      removeRecursif(config.directory.path + file)
-    } else {
-      fs.unlink(config.directory.path + file, function (err) {
-        if (err) Log.print(err)
-      })
+    if (stats) {
+      if (stats.isDirectory()) {
+        removeRecursif(config.directory.path + file)
+      } else {
+        fs.unlink(config.directory.path + file, function (err) {
+          if (err) Log.print(err)
+        })
+      }
     }
   })
 
 }
 
 Directory.prototype.rename = function (path, oldname, newname) {
-  if(this.isDownloading(path + oldname)) return -1
+  if (this.isDownloading(path + oldname)) return -1
   fs.rename(config.directory.path + path + oldname, config.directory.path + path + '/' + newname, function (err) {
     if (err) Log.print(err)
   })
@@ -102,7 +104,7 @@ Directory.prototype.mkdir = function (path, name) {
 }
 
 Directory.prototype.mv = function (path, file, folder) {
-  if(this.isDownloading(path + file)) return -1
+  if (this.isDownloading(path + file)) return -1
   fs.rename(config.directory.path + path + file, config.directory.path + path + folder + '/' + file, function (err) {
     if (err) Log.print(err)
   })

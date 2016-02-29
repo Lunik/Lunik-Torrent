@@ -1,0 +1,6 @@
+require('src/js/app/left-menu.js')
+var LeftMenu = new _LeftMenu()
+require('src/js/app/mediainfo.js')
+var MediaInfo = new _MediaInfo()
+require('src/js/app/searchtorrent.js')
+var SearchTorrent = new _SearchTorrent()

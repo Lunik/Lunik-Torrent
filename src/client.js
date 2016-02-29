@@ -2,6 +2,7 @@ var Log = require('./log.js')
 var config = require('./config.json')
 
 var WebTorrent = require('webtorrent')
+
 function Client () {
   this.client = new WebTorrent()
   this.torrentLink = ''

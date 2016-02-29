@@ -1,22 +1,30 @@
-function mediaInfoGet (title) {
+require('src/js/storage.js')
+require('src/js/popup/popup.js')
+
+var Storage = new _Storage()
+
+function _MediaInfo () {}
+
+_MediaInfo.prototype.get = function (title) {
+  var self = this
   title = title.toLowerCase()
-  var type = getMediaType(title)
-  title = cleanTitle(title)
-  if (readData(title) != null) {
-    mediaInfoPopup(readData(title))
+  var type = this.getType(title)
+  title = this.cleanTitle(title)
+  if (Storage.readData(title) != null) {
+    this.popup(Storage.readData(title))
   } else {
     $.post('/info-d', {
       type: type,
       query: title
     }, function (data) {
       data = JSON.parse(data)
-      mediaInfoPopup(data)
-      storeData(data.query.toLowerCase(), data)
+      self.popup(data)
+      Storage.storeData(data.query.toLowerCase(), data)
     })
   }
 }
 
-function mediaInfoHtml (data) {
+_MediaInfo.prototype.html = function (data) {
   var html = {}
   html.title = $('<a/>').attr('href', data.link).text(data.title)
 
@@ -31,7 +39,7 @@ function mediaInfoHtml (data) {
   $infos.append($rating)
 
   $synopsis = $('<div/>').addClass('synopsis').html(data.description)
-  $lirelasuite = $('<br><a/>').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...')
+  $lirelasuite = $('<br><a/>').addClass('button').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...')
   $synopsis.append($lirelasuite)
   $infos.append($synopsis)
 
@@ -41,14 +49,14 @@ function mediaInfoHtml (data) {
   return html
 }
 
-function mediaInfoPopup (data) {
-  var p = new Popup()
-  var html = mediaInfoHtml(data)
+_MediaInfo.prototype.popup = function (data) {
+  var p = new _Popup()
+  var html = this.html(data)
   p.init(null, null, null, null, html.title, html.content, true)
   p.draw()
 }
 
-function cleanTitle (title) {
+_MediaInfo.prototype.cleanTitle = function (title) {
   title = title.replace(/\.[A-Za-z0-9]*$/, '') // remove extension
     .replace(/[Ss][0-9][0-9][Ee][0-9][0-9]/g, '') // numero d'episode
     .replace(/[ \.]((french)|(dvdrip)|(xvid-trs)|(fr)|(vo)|(vostfr)|(fastub)|(hdtv)|(xvid-ark01))/g, '') // remove useless stuff
@@ -58,7 +66,7 @@ function cleanTitle (title) {
   return title
 }
 
-function getMediaType (title) {
+_MediaInfo.prototype.getType = function (title) {
   var regex = /[Ss][0-9^E^e]*[Ee][0-9]/
   if (title.search(regex) == -1) {
     return 'films'

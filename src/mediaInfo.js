@@ -1,7 +1,6 @@
 var allocine = require('allocine-api')
 
-function MediaInfo () {
-}
+function MediaInfo () {}
 
 MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
   if (type == 'tvseries') {
@@ -43,7 +42,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
     }, function (err, data) {
       if (data.feed.totalResults > 0) {
         // Maybe Change that
-        while(data.feed.tvseries[0].length > 0 || data.feed.tvseries[0].yearStart < 2000){
+        while (data.feed.tvseries[0].length > 0 || data.feed.tvseries[0].yearStart < 2000) {
           data.feed.tvseries.shift()
         }
         instMediaInfo.getMediaInfo(query, type, data.feed.tvseries[0].code, callback)

@@ -1,21 +1,22 @@
-function formatSize (bytes) {
+function _Format () {}
+
+_Format.prototype.size = function (bytes) {
   var sizes = ['b', 'kb', 'mb', 'gb', 'tb']
   if (bytes == 0) return '0 b'
   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
 }
 
-function formatSpeed (bytes) {
-  return formatSize(bytes) + '/s'
+_Format.prototype.speed = function (bytes) {
+  return this.size(bytes) + '/s'
 }
 
-function formatDate (date) {
-  // return date
+_Format.prototype.date = function (date) {
   var date = new Date(date)
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getMinutes()
 }
 
-function formatTime (time) {
+_Format.prototype.time = function (time) {
   var x = time / 1000
   var seconds = Math.round(x % 60)
   x /= 60
@@ -35,14 +36,14 @@ function formatTime (time) {
   return returnString
 }
 
-function getExtention (file) {
+_Format.prototype.extention = function (file) {
   if (file.isfile)
     return file.name.split('.')[file.name.split('.').length - 1]
   else
     return 'dir'
 }
 
-function formatName (name) {
+_Format.prototype.name = function (name) {
   name = name.replace(/\.[A-Za-z0-9]*$/, '')
     .replace(/\[[^\]]*]/, '')
     .replace(/[ \.](([Ff][Rr])|([Vv][Oo])|(VOSTFR)|(FASTSUB)|(HDTV)|(XviD-ARK01)|(FRENCH))/g, '')

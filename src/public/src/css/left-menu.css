@@ -1,0 +1,57 @@
+.left-menu {
+  position: relative;
+  display: table-cell;
+  min-width: 200px;
+  /* 100% de la taille de l'ecran - taille du menu du haut */
+  height: calc(100vh - 80px);
+  z-index: 100;
+}
+.left-menu .menu {
+  display: none;
+  margin-right: -33px;
+  text-align: right;
+}
+@media only screen and (max-width: 750px) {
+  .left-menu {
+    position: fixed;
+  }
+  .left-menu#close {
+    left: -200px;
+  }
+  .left-menu#open {
+    left: 0px;
+  }
+  .left-menu .menu {
+    display: block;
+  }
+}
+.left-menu .menu i#close {
+  display: inline-block;
+}
+.left-menu .menu i#open {
+  display: inline-block;
+}
+.left-menu .nav-bar {}
+.left-menu .nav-bar ul {
+  list-style-type: none;
+}
+.left-menu .nav-bar li {
+  padding: 5px;
+}
+.left-menu .action {
+  margin-top: 20px;
+  text-align: center;
+}
+.left-menu .action > * {
+  margin: 10px 25% 10px 25%;
+}
+.left-menu .torrent-input input {
+  padding: 5px;
+  margin: 5px auto -5px auto;
+}
+.left-menu .torrent-input input[type=text] {
+  width: 100%;
+}
+.left-menu .torrent-input input[type=text]:active, .left-menu .torrent-input input[type=text]:focus, .left-menu .torrent-input input[type=text]:hover {
+  width: 300%;
+}

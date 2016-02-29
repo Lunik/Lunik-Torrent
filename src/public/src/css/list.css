@@ -1,0 +1,63 @@
+@import url('torrent.css');
+@import url('mediainfo.css');
+.list {
+  display: table-cell;
+  vertical-align: top;
+  z-index: 10;
+  overflow: auto;
+  height: calc(100vh - 80px);
+}
+.list table {
+  width: 100%;
+  /*min-width: 300px;*/
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.list table th#name {
+  width: 40%;
+}
+.list table th#size {
+  width: 10%;
+}
+.list table th#date {
+  width: 15%;
+}
+.list table th#progress {
+  width: 50%;
+}
+.list table th#down {
+  width: 10%;
+}
+.list table th#up {
+  width: 10%;
+}
+
+/* remove some columns when screen is to little */
+
+@media only screen and (max-width: 470px) {
+  .list table #date, .list table #down, .list table #up {
+    display: none;
+  }
+  .list table th#name {
+    width: 80%;
+  }
+}
+.list th {
+  height: 40px;
+  text-align: left;
+  font-size: 20px;
+}
+.list tr {
+  height: 35px;
+}
+.list td, .list th {
+  display: table-cell;
+  overflow: hidden;
+  padding-left: 10px;
+}
+.scrollTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 30px;
+}
