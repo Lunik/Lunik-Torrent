@@ -49,7 +49,9 @@ function _List () {
   })
 
   this.scrollTop = $('.scrollTop').click(function () {
-    $('body').scrollTop(0)
+    $('body').animate({
+			scrollTop: 0
+    }, 1000);
   })
   this.switchTable('directory')
 }
