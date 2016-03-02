@@ -1,3 +1,5 @@
+var LeftMenu = new _LeftMenu()
+
 function _LeftMenu () {
   var self = this
 
