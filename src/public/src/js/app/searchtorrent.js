@@ -1,5 +1,3 @@
-require('src/js/popup/popup.js')
-
 function _SearchTorrent () {
   this.popup = new _Popup()
 

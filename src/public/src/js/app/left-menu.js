@@ -1,7 +1,3 @@
-require('src/js/app/list.js')
-require('src/js/app/searchtorrent.js')
-require('src/js/pnotif/pnotif.js')
-
 function _LeftMenu () {
   var self = this
 

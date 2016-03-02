@@ -1,13 +1,10 @@
-require('src/js/app/directory.js')
-require('src/js/app/torrent.js')
-require('src/js/app/top-menu.js')
-
 function _List () {
   var self = this
   this.Directory = new _Directory()
   this.Torrent = new _Torrent()
   this.TopMenu = new _TopMenu()
 
+  this.table = $('.list table')
   this.body = $('.list table tbody')
 
   this.directoryElements = {

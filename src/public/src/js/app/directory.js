@@ -1,10 +1,3 @@
-require('src/js/app/format.js')
-require('src/js/pnotif/pnotif.js')
-require('src/js/storage.js')
-require('src/js/app/mediainfo.js')
-require('src/js/jquery/jquery-ui.min.js')
-require('src/js/jquery/jquery-ui.touch-punch.min.js')
-
 var Format = new _Format()
 var Storage = new _Storage()
 
@@ -95,6 +88,9 @@ _Directory.prototype.append = function (file) {
       remove: true,
       info: file.isfile ? true : false
     })
+
+    console.log($(this))
+
   })
 
   var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(

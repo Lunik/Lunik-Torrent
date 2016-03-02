@@ -1,4 +1,3 @@
-require('src/js/app/format.js')
 var Format = new _Format()
 
 function _Torrent () {

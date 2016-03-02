@@ -1,6 +1,3 @@
-require('src/js/jquery/jquery-ui.min.js')
-require('src/js/jquery/jquery-ui.touch-punch.min.js')
-
 function _TopMenu () {
   var self = this
   this.ariane = $('.top-menu .ariane')

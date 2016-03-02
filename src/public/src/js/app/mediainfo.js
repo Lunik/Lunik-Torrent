@@ -1,5 +1,4 @@
-require('src/js/storage.js')
-require('src/js/popup/popup.js')
+
 
 var Storage = new _Storage()
 
