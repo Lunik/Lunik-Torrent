@@ -17,7 +17,7 @@ $.when(
   $.getScript('src/js/app/searchtorrent.js'),
   $.getScript('src/js/storage.js'),
   $.getScript('src/js/popup/popup.js')
-).then(function(){
+).then(function () {
   var LeftMenu = new _LeftMenu()
   var MediaInfo = new _MediaInfo()
   var SearchTorrent = new _SearchTorrent()
