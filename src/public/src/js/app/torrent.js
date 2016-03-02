@@ -24,13 +24,12 @@ _Torrent.prototype.getList = function () {
       notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrents.err + '</p>', 10000)
       notif.draw()
     } else {
-      // TODO
-      /*$('.toremove').remove()
-      $.each($('.container .torrent .list tbody *'), function (key, value) {
-        $(value).addClass('toremove')
-      })*/
+      var current_scroll = $('body').scrollTop()
+
       self.body.html('')
       self.list(torrents)
+
+      $('body').scrollTop(current_scroll)
     }
 
   })

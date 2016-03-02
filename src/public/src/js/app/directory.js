@@ -44,13 +44,14 @@ _Directory.prototype.getList = function () {
       notif.draw()
     } else {
       self.appendSize(directory.totalSize)
+
+      var current_scroll = $('body').scrollTop()
+
       self.body.html('')
-      // TODO
-      /*$.each($('.container .directory .list tbody *'), function (key, value) {
-        $(value).addClass('toremove')
-      })*/
       self.list(directory.files)
-    // $('.toremove').remove()
+
+      $('body').scrollTop(current_scroll)
+
     }
   })
   clearTimeout(this.timer)
@@ -89,7 +90,7 @@ _Directory.prototype.append = function (file) {
       info: file.isfile ? true : false
     })
 
-    $(this).children("#name").draggable({
+    $(this).children('#name').draggable({
       revert: true
     })
   })
@@ -105,7 +106,7 @@ _Directory.prototype.append = function (file) {
         var folder = $(this).attr('data-file')
         var file = $(data.toElement).attr('data-file') || $(data.toElement).parent().attr('data-file')
         var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
-        
+
         $.post('/mv-d', {
           'file': file,
           'path': path,
@@ -123,9 +124,7 @@ _Directory.prototype.append = function (file) {
       }
     })
 
-
-    //drag and drop
-
+  // drag and drop
 
   var $size = $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
   var $date = $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
