@@ -89,26 +89,23 @@ _Directory.prototype.append = function (file) {
       info: file.isfile ? true : false
     })
 
-    console.log($(this))
-
+    $(this).children("#name").draggable({
+      revert: true
+    })
   })
 
   var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
     file.isdir ?
       $('<a>').addClass('button').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name) :
       file.name).appendTo($raw)
-  if (file.isfile)
-    $name.draggable({
-      revert: true
-    })
-  else
+  if (file.isdir)
     $name.droppable({
       greedy: true,
       drop: function (data) {
         var folder = $(this).attr('data-file')
-        var file = $(data.toElement).attr('data-file')
+        var file = $(data.toElement).attr('data-file') || $(data.toElement).parent().attr('data-file')
         var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
-
+        
         $.post('/mv-d', {
           'file': file,
           'path': path,
@@ -125,6 +122,10 @@ _Directory.prototype.append = function (file) {
         })
       }
     })
+
+
+    //drag and drop
+
 
   var $size = $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
   var $date = $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
