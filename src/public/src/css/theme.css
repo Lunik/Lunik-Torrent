@@ -1,4 +1,9 @@
 @import url(icon.css);
+
+body{
+    background: #1C1C1C;
+}
+
 *::selection {
   background: #f7a253;
   /* WebKit/Blink Browsers */

@@ -1,5 +1,6 @@
 .top-menu {
-  display: block;
+  position: fixed;
+  top: 0px;
   height: 80px;
   width: 100%;
   z-index: 100;
@@ -19,9 +20,13 @@
   width: 80px;
   background-size: 100%;
 }
-.top-menu .ariane {}
+.top-menu .ariane {
+  display: none;
+}
 .top-menu .action {
-  float: right;
+  position: absolute;
+  top: 0;
+  right: 2%;
   margin-right: 2%;
 }
 .top-menu .parameter {

@@ -1,10 +1,11 @@
 .left-menu {
   position: relative;
+  top: 80px;
   display: table-cell;
   min-width: 200px;
   /* 100% de la taille de l'ecran - taille du menu du haut */
   height: calc(100vh - 80px);
-  z-index: 100;
+  z-index: 99;
 }
 .left-menu .menu {
   display: none;

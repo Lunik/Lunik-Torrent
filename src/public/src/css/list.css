@@ -1,6 +1,8 @@
 @import url('torrent.css');
 @import url('mediainfo.css');
 .list {
+  position: relative;
+  top: 80px;
   display: table-cell;
   vertical-align: top;
   z-index: 10;
