@@ -147,9 +147,8 @@ _Directory.prototype.setActions = function (file, actions) {
     this.actions[key].addClass('hide').unbind()
   }
   if (actions.download) {
-    this.actions.download.removeClass('hide').click(function () {
-      window.open('files/?f=' + document.location.hash.substring(1) + file.name)
-    })
+    this.actions.download.removeClass('hide')
+    this.actions.download.parent().attr('href', 'files/?f=' + document.location.hash.substring(1) + file.name)
   }
   if (actions.rename) {
     this.actions.rename.removeClass('hide').click(function () {
