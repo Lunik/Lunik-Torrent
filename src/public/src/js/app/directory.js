@@ -89,6 +89,7 @@ _Directory.prototype.append = function (file) {
   var self = this
   var $raw = $('<tr>').addClass(file.new ? 'file button new' : 'file button').attr('data-file', file.name).click(function (event) {
     event.stopPropagation()
+    $('.list .selected').children('#name').draggable('disable')
     $('.list .file').removeClass('selected')
     $(this).addClass('selected')
 
@@ -99,15 +100,15 @@ _Directory.prototype.append = function (file) {
       info: file.isfile ? true : false
     })
 
-    $(this).children('#name').draggable({
-      revert: true
-    })
+    $(this).children('#name').draggable('enable')
   })
 
   var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
     file.isdir ?
       $('<a>').addClass('button').attr('href', '#' + file.href).text(file.name) :
-      file.name).appendTo($raw)
+      file.name).appendTo($raw).draggable({
+        revert: true
+      }).draggable('disable')
   if (file.isdir)
     $name.droppable({
       greedy: true,

@@ -38,6 +38,7 @@ function _List () {
 
   // click en dehors d'une ligne du table pour la deselectionner
   $('html').click(function () {
+    $('.list .selected').children('#name').draggable('disable')
     $('.list .file').removeClass('selected')
     self.Directory.setActions('', {
       download: false,
