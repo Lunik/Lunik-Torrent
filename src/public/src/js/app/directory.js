@@ -62,9 +62,17 @@ _Directory.prototype.getList = function () {
 
 _Directory.prototype.list = function (directory) {
   var kownFiles = Storage.readData('directory') ? Storage.readData('directory') : [] // array
+
+  //...
+  var href = document.location.hash.substring(1).split('\/')
+  href.splice(href.length-2 || 0, 1)
+  href = href.join('\/')
+  this.append({new: false, name: "..", href: href, isfile: false, isdir: true, })
+
   for (var key in directory) {
     var file = directory[key]
     file.name = key
+    file.href = document.location.hash.substring(1) + file.name + '/';
     if (kownFiles.indexOf(file.name) == -1) {
       file.new = true
       kownFiles.push(file.name)
@@ -97,7 +105,7 @@ _Directory.prototype.append = function (file) {
 
   var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
     file.isdir ?
-      $('<a>').addClass('button').attr('href', '#' + document.location.hash.substring(1) + file.name + '/').text(file.name) :
+      $('<a>').addClass('button').attr('href', '#' + file.href).text(file.name) :
       file.name).appendTo($raw)
   if (file.isdir)
     $name.droppable({
@@ -164,7 +172,6 @@ _Directory.prototype.setActions = function (file, actions) {
             notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + data.err + '</p>', 10000)
             notif.draw()
           } else {
-            console.log(data)
             file.name = data.newname
             $('tr[data-file="' + data.oldname + '"] td#name').attr('data-file', data.newname).html(
               file.isdir ?
