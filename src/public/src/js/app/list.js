@@ -7,6 +7,11 @@ function _List () {
   this.table = $('.list table')
   this.body = $('.list table tbody')
 
+  this.col = $('.list th').click(function(){
+    self.table.tablesorter({
+      sortList: [[parseInt($(this).attr("number")),1]]
+    })
+  })
   this.directoryElements = {
     ariane: $('.top-menu .ariane'),
     size: $('.top-menu .folder-size'),
@@ -17,6 +22,7 @@ function _List () {
     sizeCol: $('.list #size'),
     dateCol: $('.list #date')
   }
+
   this.torrentElements = {
     input: $('.left-menu .torrent-input'),
     startBut: $('.left-menu .start'),
