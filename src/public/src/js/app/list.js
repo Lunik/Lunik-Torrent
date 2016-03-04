@@ -61,7 +61,6 @@ function _List () {
 
 _List.prototype.switchTable = function (nav) {
   this.body.html('')
-  window.location = '#'
   switch (nav) {
     case 'torrent':
       clearTimeout(this.Directory.timer)
@@ -80,6 +79,7 @@ _List.prototype.switchTable = function (nav) {
 
       break
     case 'directory':
+      window.location = '#'
       this.TopMenu.setAriane()
       clearTimeout(this.Torrent.timer)
       this.Directory.getList()
