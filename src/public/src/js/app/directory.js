@@ -4,6 +4,7 @@ var Storage = new _Storage()
 function _Directory () {
   var self = this
   this.body = $('.list table tbody')
+  this.table = $('.list table')
   this.size = $('.top-menu .folder-size')
   this.table = $('.list')
   this.actions = {
@@ -138,6 +139,7 @@ _Directory.prototype.append = function (file) {
   var $date = $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
 
   this.body.append($raw)
+  $('.list table').trigger('update')
 }
 
 _Directory.prototype.setActions = function (file, actions) {
