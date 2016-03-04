@@ -7,11 +7,12 @@ function _List () {
   this.table = $('.list table')
   this.body = $('.list table tbody')
 
-  this.col = $('.list th').click(function(){
-    self.table.tablesorter({
-      sortList: [[parseInt($(this).attr("number")),1]]
-    })
+  self.table.tablesorter({
+    headers: {
+      0: { sorter: 'text' }
+    }
   })
+
   this.directoryElements = {
     ariane: $('.top-menu .ariane'),
     size: $('.top-menu .folder-size'),
