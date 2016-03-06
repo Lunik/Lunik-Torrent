@@ -50,7 +50,7 @@ function _List () {
           format: function(s) {
             s = s.split("\/")
 
-            return parseInt(s[0])+parseInt(s[1])+parseInt(s[2])
+            return parseInt(s[0])+parseInt(s[1])*30+parseInt(s[2])*12
           },
           type: 'numeric'
       });
