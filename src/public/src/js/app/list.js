@@ -47,7 +47,7 @@ function _List () {
     headers: {
       0: { sorter: 'text' },
       1: { sorter: 'size'},
-      2: { sorter: "shortDate", dateFormat: "ddmmyyyy" }
+      2: { sorter: "shortDate", dateFormat: "dd/mm/yyyy" }
     }
   })
 
