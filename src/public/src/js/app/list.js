@@ -43,11 +43,23 @@ function _List () {
         type: 'numeric'
     });
 
+    $.tablesorter.addParser({
+          // set a unique id
+          id: 'date',
+          is: function(s) {return false;},
+          format: function(s) {
+            s = s.split("\/")
+
+            return parseInt(s[0])+parseInt(s[1])+parseInt(s[2])
+          },
+          type: 'numeric'
+      });
+
   self.table.tablesorter({
     headers: {
       0: { sorter: 'text' },
       1: { sorter: 'size'},
-      2: { sorter: "shortDate", dateFormat: "dd/mm/yyyy" }
+      2: { sorter: "date"}
     }
   })
 
