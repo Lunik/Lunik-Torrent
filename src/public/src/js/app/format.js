@@ -13,7 +13,7 @@ _Format.prototype.speed = function (bytes) {
 
 _Format.prototype.date = function (date) {
   var date = new Date(date)
-  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getMinutes()
+  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() /*+ ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()*/
 }
 
 _Format.prototype.time = function (time) {
