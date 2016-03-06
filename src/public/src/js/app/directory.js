@@ -48,7 +48,6 @@ _Directory.prototype.getList = function () {
 
       var current_scroll = $('body').scrollTop()
 
-      self.body.html('')
       self.list(directory.files)
 
       $('body').scrollTop(current_scroll)
@@ -64,16 +63,16 @@ _Directory.prototype.getList = function () {
 _Directory.prototype.list = function (directory) {
   var kownFiles = Storage.readData('directory') ? Storage.readData('directory') : [] // array
 
-  //...
+  // ...
   var href = document.location.hash.substring(1).split('\/')
-  href.splice(href.length-2 || 0, 1)
+  href.splice(href.length - 2 || 0, 1)
   href = href.join('\/')
-  this.append({new: false, name: "..", href: href, isfile: false, isdir: true, })
+  this.append({new: false, name: '..', href: href, isfile: false, isdir: true, })
 
   for (var key in directory) {
     var file = directory[key]
     file.name = key
-    file.href = document.location.hash.substring(1) + file.name + '/';
+    file.href = document.location.hash.substring(1) + file.name + '/'
     if (kownFiles.indexOf(file.name) == -1) {
       file.new = true
       kownFiles.push(file.name)
@@ -87,60 +86,65 @@ _Directory.prototype.list = function (directory) {
 
 _Directory.prototype.append = function (file) {
   var self = this
-  var $raw = $('<tr>').addClass(file.new ? 'file button new' : 'file button').attr('data-file', file.name).click(function (event) {
-    event.stopPropagation()
-    $('.list .selected').children('#name').draggable('disable')
-    $('.list .file').removeClass('selected')
-    $(this).addClass('selected')
+  console.log($('.list  .file[data-file="' + file.name + '"]').length)
+  if ($('.list  .file[data-file="' + file.name + '"]').length > 0) {
+    return 0
+  } else {
+    var $raw = $('<tr>').addClass(file.new ? 'file button new' : 'file button').attr('data-file', file.name).click(function (event) {
+      event.stopPropagation()
+      $('.list .selected').children('#name').draggable('disable')
+      $('.list .file').removeClass('selected')
+      $(this).addClass('selected')
 
-    self.setActions(file, {
-      download: file.isfile ? true : false,
-      rename: true,
-      remove: true,
-      info: file.isfile ? true : false
+      self.setActions(file, {
+        download: file.isfile ? true : false,
+        rename: true,
+        remove: true,
+        info: file.isfile ? true : false
+      })
+
+      $(this).children('#name').draggable('enable')
     })
 
-    $(this).children('#name').draggable('enable')
-  })
+    var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
+      file.isdir ?
+        $('<a>').addClass('button').attr('href', '#' + file.href).text(file.name) :
+        file.name).appendTo($raw).draggable({
+      revert: true
+    }).draggable('disable')
+    if (file.isdir)
+      $name.droppable({
+        greedy: true,
+        drop: function (data) {
+          var folder = $(this).attr('data-file')
+          var file = $(data.toElement).attr('data-file') || $(data.toElement).parent().attr('data-file')
+          var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
 
-  var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
-    file.isdir ?
-      $('<a>').addClass('button').attr('href', '#' + file.href).text(file.name) :
-      file.name).appendTo($raw).draggable({
-        revert: true
-      }).draggable('disable')
-  if (file.isdir)
-    $name.droppable({
-      greedy: true,
-      drop: function (data) {
-        var folder = $(this).attr('data-file')
-        var file = $(data.toElement).attr('data-file') || $(data.toElement).parent().attr('data-file')
-        var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
+          $.post('/mv-d', {
+            'file': file,
+            'path': path,
+            'folder': folder
+          }, function (file) {
+            file = JSON.parse(file)
+            if (file.err) {
+              var notif = new Pnotif()
+              notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
+              notif.draw()
+            } else {
+              $('tr[data-file="' + file.file + '"]').remove()
+            }
+          })
+        }
+      })
 
-        $.post('/mv-d', {
-          'file': file,
-          'path': path,
-          'folder': folder
-        }, function (file) {
-          file = JSON.parse(file)
-          if (file.err) {
-            var notif = new Pnotif()
-            notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
-            notif.draw()
-          } else {
-            $('tr[data-file="' + file.file + '"]').remove()
-          }
-        })
-      }
-    })
+    // drag and drop
 
-  // drag and drop
+    var $size = $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
+    var $date = $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
 
-  var $size = $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
-  var $date = $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
-
-  this.body.append($raw)
-  $('.list table').trigger('update')
+    this.body.append($raw)
+    $('.list table').trigger('update')
+  }
 }
 
 _Directory.prototype.setActions = function (file, actions) {

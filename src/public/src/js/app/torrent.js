@@ -26,7 +26,6 @@ _Torrent.prototype.getList = function () {
     } else {
       var current_scroll = $('body').scrollTop()
 
-      self.body.html('')
       self.list(torrents)
 
       $('body').scrollTop(current_scroll)
@@ -48,7 +47,7 @@ _Torrent.prototype.list = function (torrents) {
 _Torrent.prototype.append = function (torrent) {
   var self = this
   if ($('.list  .torrent[hash=' + torrent.hash + ']').length > 0) {
-    var $torrent = $('.torrent[hash=' + torrent.hash + ']')
+    var $torrent = $('.list .torrent[hash=' + torrent.hash + ']')
     $torrent.html('')
     var needToAppend = 0
   } else {
