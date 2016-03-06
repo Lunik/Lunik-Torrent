@@ -86,7 +86,7 @@ _Directory.prototype.list = function (directory) {
 
 _Directory.prototype.append = function (file) {
   var self = this
-  console.log($('.list  .file[data-file="' + file.name + '"]').length)
+  
   if ($('.list  .file[data-file="' + file.name + '"]').length > 0) {
     return 0
   } else {
