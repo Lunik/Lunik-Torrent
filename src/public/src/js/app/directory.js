@@ -116,9 +116,9 @@ _Directory.prototype.append = function (file) {
     if (file.isdir)
       $name.droppable({
         greedy: true,
-        drop: function (data) {
+        drop: function (data, element) {
           var folder = $(this).attr('data-file')
-          var file = $(data.toElement).attr('data-file') || $(data.toElement).parent().attr('data-file')
+          var file = element.draggable.attr('data-file')
           var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
 
           $.post('/mv-d', {
