@@ -108,7 +108,7 @@ function _List () {
       scrollTop: 0
     }, 1000)
   })
-  this.switchTable('directory')
+
 }
 
 _List.prototype.switchTable = function (nav) {
