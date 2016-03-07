@@ -18,7 +18,7 @@ function _Directory () {
   this.refresh = 30000
 
   $(window).bind('hashchange', function () {
-    this.body.html('')
+    self.body.html('')
     self.getList()
     self.setActions('', {
       download: false,
