@@ -6,7 +6,6 @@ var CpasbienApi = new CPBAPI()
 function SearchT () {}
 
 SearchT.prototype.search = function (query, callback) {
-  Log.print('Search: ' + query)
   CpasbienApi.Search(query, {
     scope: 'tvshow',
     language: 'EN'

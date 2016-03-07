@@ -172,6 +172,7 @@ function Server () {
 
   this.app.post('/search-t', function (req, res) {
     if (req.body.query != '') {
+      Log.print(req.user + ' create directory: ' + req.body.query)
       var searchEngine = require('./searchT.js')
       searchEngine.search(req.body.query, function (data) {
         res.end(JSON.stringify(data))
