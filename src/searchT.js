@@ -34,10 +34,10 @@ SearchT.prototype.latest = function (callback) {
     scope: 'tvshow'
   }).then(function (data1) {
     data1.type = 'series'
-    data1.items = data1.items.slice(0, 10)
+    data1.items = data1.items.slice(0, 20)
     CpasbienApi.Latest().then(function (data2) {
       data2.type = 'films'
-      data2.items = data2.items.slice(0, 10)
+      data2.items = data2.items.slice(0, 20)
       callback({
         tv: data1,
         mv: data2
