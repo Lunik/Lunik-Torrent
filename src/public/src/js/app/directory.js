@@ -18,6 +18,7 @@ function _Directory () {
   this.refresh = 30000
 
   $(window).bind('hashchange', function () {
+    this.table.html(' ')
     self.getList()
     self.setActions('', {
       download: false,
@@ -86,7 +87,7 @@ _Directory.prototype.list = function (directory) {
 
 _Directory.prototype.append = function (file) {
   var self = this
-  
+
   if ($('.list  .file[data-file="' + file.name + '"]').length > 0) {
     return 0
   } else {
