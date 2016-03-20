@@ -8,6 +8,7 @@
   border-radius: 3px;
   color: #FFF;
   text-align: center;
+  z-index: 1000;
 }
 .pnotif-but {
   padding: 1px;
