@@ -3,9 +3,13 @@ var config = require('./config.json')
 var fs = require('fs')
 
 function Directory () {
+  var self = this
   this.dir = {}
   this.downloading = {}
 
+  setInterval(function(){
+    self.updateDownloads()
+  }, 30000)
 }
 
 Directory.prototype.list = function (dir) {
@@ -73,6 +77,17 @@ Directory.prototype.finishDownloading = function (file) {
 
   if (this.downloading[file] >= 0) {
     delete this.downloading[file]
+  }
+}
+
+Directory.prototype.updateDownloads = function(){
+  var curDate = new Date();
+  for(var key in this.downloading){
+    //if downloading for more than 1 hour remove
+    if(curDate - this.downloading[key].date > 3600000){
+      console.log(key)
+      delete this.downloading[key]
+    }
   }
 }
 
