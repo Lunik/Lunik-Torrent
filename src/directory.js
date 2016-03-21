@@ -61,17 +61,23 @@ Directory.prototype.getInfo = function (file) {
 }
 
 Directory.prototype.setDownloading = function (file) {
-  this.downloading[file] = this.downloading[file] ? this.downloading[file] + 1 : 1
+  this.downloading[file] = this.downloading[file] ?
+    {date: new  Date(), count: this.downloading[file].count + 1} :
+    {date: new Date(), count: 1}
 }
 
 Directory.prototype.finishDownloading = function (file) {
-  this.downloading[file] = this.downloading[file] ? this.downloading[file] - 1 : 0
+  this.downloading[file] = this.downloading[file] ?
+    {date: this.downloading[file].date, count: this.downloading[file].count + 1} :
+    {date: this.downloading[file].date, count: 0}
+
   if (this.downloading[file] >= 0) {
     delete this.downloading[file]
   }
 }
 
 Directory.prototype.isDownloading = function (file) {
+  file = file[0] == '/' ? file.substring(1) : file;
   return this.downloading[file] ? true : false
 }
 
