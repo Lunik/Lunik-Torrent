@@ -6,18 +6,6 @@
 ![torrent-view](http://puu.sh/nq8PZ/8f7d037025.png)
 
 ## ===== Installation =====
-## Npm
-
-```
-$ npm install lunik-torrent
-```
-
-### Exemple
-
-```
-require('lunik-torrent')
-```
-
 ## Git
 
 ```
@@ -25,6 +13,7 @@ $ git clone https://github.com/Lunik/Lunik-Torrent.git
 $ cd Lunik-Torrent
 $ npm install
 $ nano src/config.json
+$ cp src/config.default src/config.json
 ```
 
 ### Run
