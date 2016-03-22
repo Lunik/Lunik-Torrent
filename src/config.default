@@ -1,6 +1,6 @@
 {
   "log": {
-    "path": "log.txt"
+    "path": "logs/"
   },
   "client": {
     "downloads": "downloads/",

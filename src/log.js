@@ -6,7 +6,7 @@ function Log () {}
 
 Log.prototype.print = function (text) {
   console.log(text)
-  fs.appendFile(config.log.path, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
+  fs.appendFile(config.log.path+'log-'+(new Date()).getDate()+"-"+(new Date()).getMonth(), '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
     if (err) throw err
   })
 }
