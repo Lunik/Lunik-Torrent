@@ -1,0 +1,28 @@
+{
+  "log": {
+    "path": "log.txt"
+  },
+  "client": {
+    "downloads": "downloads/",
+    "timeout": 3000,
+    "maxTry": 3
+  },
+  "server": {
+    "port": 80,
+    "message": "Protected area. Please disperse !",
+    "htpasswd": ".htpasswd"
+  },
+  "directory": {
+    "path": "files/"
+  },
+  "torrent": {
+    "downloads": "downloads/",
+    "scanTorrent": "torrents.txt",
+    "max": 3
+  },
+  "nginx": {
+    "active": false,
+    "port": 8080,
+    "path": "/"
+  }
+}
