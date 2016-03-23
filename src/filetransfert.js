@@ -34,33 +34,26 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
 
       var fReadStream = fs.createReadStream(filename)
 
-      // If in pause since more than 1m kill the stream
-      /*var interval = setInterval(function(){
-        self.timeout = fReadStream.isPaused() ? self.timeout+1 : self.timeout-1
-        if(self.timeout > 60){
-          clearInterval(this)
-          fReadStream.destroy()
-          callback()
-        }
-      }, 1000)*/
-
       fReadStream.pipe(res)
       fReadStream.on('end', function () {
         Log.print(req.user + ' finish download file: ' + req.query.f)
         callback()
-        // clearInterval(interval)
+
+        this.emit('end')
         res.end()
       })
       fReadStream.on('close', function () {
         Log.print(req.user + ' stop download file: ' + req.query.f)
         callback()
-        // clearInterval(interval)
+
+        this.emit('end')
         res.end()
       })
       fReadStream.on('error', function (err) {
         Log.print(req.user + ' error during download file: ' + req.query.f + '\n err: ' + err)
         callback()
-        // clearInterval(interval)
+
+        this.emit('end')
         res.end()
       })
     } else {
