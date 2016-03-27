@@ -102,8 +102,8 @@ _Directory.prototype.append = function (file) {
 
       self.setActions(file, {
         download: file.isfile ? true : false,
-        rename: true,
-        remove: true,
+        rename: file.locked ? false : true,
+        remove: file.locked ? false : true,
         info: file.isfile ? true : false
       })
 
