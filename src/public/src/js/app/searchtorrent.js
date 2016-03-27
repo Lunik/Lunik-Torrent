@@ -30,7 +30,6 @@ _SearchTorrent.prototype.getHtml = function (data) {
   for (var key in data) {
     data[key].items.forEach(function (element, index) {
       var $item = $('<tr>').addClass('search-item button').attr('torrent-link', element.torrent).click(function () {
-        console.log(self.torrentInput)
         self.popup.remove()
         self.torrentInput.val($(this).attr('torrent-link'))
         self.torrentInput.trigger('keyup')

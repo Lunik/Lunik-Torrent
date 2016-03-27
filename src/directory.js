@@ -85,7 +85,6 @@ Directory.prototype.updateDownloads = function(){
   for(var key in this.downloading){
     //if downloading for more than 1 hour remove
     if(curDate - this.downloading[key].date > 3600000){
-      console.log(key)
       delete this.downloading[key]
     }
   }
