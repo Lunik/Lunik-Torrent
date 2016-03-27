@@ -22,6 +22,6 @@
     "fs": "^0.0.2",
     "http-auth": "^2.2.8",
     "portscanner": "^1.0.0",
-    "webtorrent": "^0.72.2"
+    "webtorrent": "^0.87.1"
   }
 }
