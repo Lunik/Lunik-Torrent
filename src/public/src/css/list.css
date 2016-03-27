@@ -19,7 +19,7 @@
   width: 40%;
 }
 .list table th#size {
-  width: 10%;
+  width: 15%;
 }
 .list table th#date {
   width: 15%;
@@ -37,7 +37,7 @@
 /* remove some columns when screen is to little */
 
 @media only screen and (max-width: 470px) {
-  .list table #date, .list table #down, .list table #up {
+  .list table #down, .list table #up {
     display: none;
   }
   .list table th#name {
