@@ -157,7 +157,7 @@ _Directory.prototype.append = function (file) {
 _Directory.prototype.setActions = function (file, actions) {
   for (var key in this.actions) {
     this.actions[key].addClass('hide').unbind()
-    this.actions.download.removeClass('unactive')
+    this.actions[key].removeClass('unactive')
   }
 
   // DOWNLOAD
