@@ -15,7 +15,10 @@ var _Popup = function () {
   // Ouvrir le popup
   this.draw = function () {
     // Creation de l'ombre
-    var $shadow = $('<div>').addClass('popupShadow')
+    var $shadow = $('<div>').addClass('popupShadow').click(function(){
+      this.remove()
+    })
+
     this.selector = $shadow
     // Creation du contenu du popup
     var $container = $('<div>').addClass('popupContainer')
