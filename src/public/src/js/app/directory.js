@@ -21,10 +21,10 @@ function _Directory () {
     self.body.html('')
     self.getList()
     self.setActions('', {
-      download: false,
-      rename: false,
-      remove: false,
-      info: false
+      download: null,
+      rename: null,
+      remove: null,
+      info: null
     })
   }).trigger('hashchange')
 }
@@ -157,11 +157,20 @@ _Directory.prototype.append = function (file) {
 _Directory.prototype.setActions = function (file, actions) {
   for (var key in this.actions) {
     this.actions[key].addClass('hide').unbind()
+    this.actions.download.removeClass('unactive')
   }
+
+
+  //DOWNLOAD
   if (actions.download) {
     this.actions.download.removeClass('hide')
     this.actions.download.parent().attr('href', 'files/?f=' + document.location.hash.substring(1) + file.name)
+  } else if(actions.download == false){
+    this.actions.download.removeClass('hide')
+    this.actions.download.addClass('unactive')
   }
+
+  //RENAME
   if (actions.rename) {
     this.actions.rename.removeClass('hide').click(function () {
       var oldname = file.name.split('.')
@@ -197,7 +206,12 @@ _Directory.prototype.setActions = function (file, actions) {
       }
     })
 
+  } else if(actions.rename == false){
+    this.actions.rename.removeClass('hide')
+    this.actions.rename.addClass('unactive')
   }
+
+  //REMOVE
   if (actions.remove) {
     this.actions.remove.removeClass('hide').click(function () {
       if (confirm('Confirmer la suppression de ' + file.name + ' ?'))
@@ -214,11 +228,19 @@ _Directory.prototype.setActions = function (file, actions) {
           }
         })
     })
+  } else if(actions.remove == false){
+    this.actions.remove.removeClass('hide')
+    this.actions.remove.addClass('unactive')
   }
+
+  //INFOS
   if (actions.info) {
     this.actions.info.removeClass('hide').click(function () {
       var info = new _MediaInfo()
       info.get(file.name)
     })
+  } else if(actions.info == false){
+    this.actions.info.removeClass('hide')
+    this.actions.info.addClass('unactive')
   }
 }

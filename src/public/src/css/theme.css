@@ -43,6 +43,9 @@ a {
   border-radius: 100%;
 }
 
+.top-menu .unactive{
+  color: #675f5f;
+}
 /*************/
 
 
@@ -70,7 +73,7 @@ a {
   background-color: #f75353;
 }
 .left-menu .torrent-input input {
-  color: grey;
+  color: #675f5f;
   background-color: #FFF;
   border: 1px solid #D8E1E4;
   font-size: 15px;

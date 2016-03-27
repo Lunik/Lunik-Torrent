@@ -91,15 +91,15 @@ function _List () {
     $('.list .selected').children('#name').draggable('disable')
     $('.list .file').removeClass('selected')
     self.Directory.setActions('', {
-      download: false,
-      rename: false,
-      remove: false,
-      info: false
+      download: null,
+      rename: null,
+      remove: null,
+      info: null
     })
     $('.list .torrent').removeClass('selected')
     self.Torrent.setActions('', {
-      remove: false,
-      info: false
+      remove: null,
+      info: null
     })
   })
 
