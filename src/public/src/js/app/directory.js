@@ -49,7 +49,7 @@ _Directory.prototype.getList = function () {
 
       var current_scroll = $('body').scrollTop()
 
-      self.list(directory.files)
+      self.list(directory.files, directory.downloading)
 
       $('body').scrollTop(current_scroll)
 
@@ -61,7 +61,7 @@ _Directory.prototype.getList = function () {
   }, this.refresh)
 }
 
-_Directory.prototype.list = function (directory) {
+_Directory.prototype.list = function (directory, locked) {
   var kownFiles = Storage.readData('directory') ? Storage.readData('directory') : [] // array
 
   // ...
@@ -80,6 +80,9 @@ _Directory.prototype.list = function (directory) {
     } else {
       file.new = false
     }
+
+    file.locked = locked[file.href.slice(0,-1)] ? true : false;
+
     this.append(file)
   }
   Storage.storeData('directory', kownFiles)
@@ -137,6 +140,9 @@ _Directory.prototype.append = function (file) {
           })
         }
       })
+      if(file.locked){
+        $('<i>').addClass('fa fa-lock locked').appendTo($name)
+      }
 
     // drag and drop
 

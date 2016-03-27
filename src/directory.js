@@ -24,7 +24,8 @@ Directory.prototype.list = function (dir) {
 
   return {
     'totalSize': this.dir[dir].totalSize,
-    'files': this.dir[dir].files
+    'files': this.dir[dir].files,
+    'downloading':this.downloading
   }
 }
 
@@ -37,7 +38,6 @@ Directory.prototype.getDir = function (dir) {
     files.forEach(function (file) {
       var stats = instDirectory.getInfo(config.directory.path + dir + file)
       list[file] = stats
-
       totalSize += stats.size
     })
   }
