@@ -8,58 +8,58 @@ function _List () {
   this.body = $('.list table tbody')
 
   $.tablesorter.addParser({
-        // set a unique id
-        id: 'size',
-        is: function(s) {return false;},
-        format: function(s) {
-          s = s.split(" ")
-          s[0] = parseInt(s[0])
-          if(s[1] == "b"){
+    // set a unique id
+    id: 'size',
+    is: function (s) {return false;},
+    format: function (s) {
+      s = s.split(' ')
+      s[0] = parseInt(s[0])
+      if (s[1] == 'b') {
+        return s[0]
+      } else {
+        s[0] *= 1024
+        if (s[1] == 'kb') {
+          return s[0]
+        } else {
+          s[0] *= 1024
+          if (s[1] == 'mb') {
             return s[0]
           } else {
             s[0] *= 1024
-            if(s[1] == "kb"){
+            if (s[1] == 'gb') {
               return s[0]
             } else {
               s[0] *= 1024
-              if(s[1] == "mb"){
+              if (s[1] == 'tb') {
                 return s[0]
-              } else {
-                s[0] *= 1024
-                if(s[1] == "gb"){
-                  return s[0]
-                } else {
-                  s[0] *= 1024
-                  if(s[1] == "tb"){
-                    return s[0]
-                  }
-                }
               }
             }
           }
-          //['b', 'kb', 'mb', 'gb', 'tb']
-          return 1
-        },
-        type: 'numeric'
-    });
+        }
+      }
+      // ['b', 'kb', 'mb', 'gb', 'tb']
+      return 1
+    },
+    type: 'numeric'
+  })
 
-    $.tablesorter.addParser({
-          // set a unique id
-          id: 'date',
-          is: function(s) {return false;},
-          format: function(s) {
-            s = s.split("\/")
+  $.tablesorter.addParser({
+    // set a unique id
+    id: 'date',
+    is: function (s) {return false;},
+    format: function (s) {
+      s = s.split('\/')
 
-            return parseInt(s[0])+parseInt(s[1])*30+parseInt(s[2])*12
-          },
-          type: 'numeric'
-      });
+      return parseInt(s[0]) + parseInt(s[1]) * 30 + parseInt(s[2]) * 12
+    },
+    type: 'numeric'
+  })
 
   self.table.tablesorter({
     headers: {
       0: { sorter: 'text' },
       1: { sorter: 'size'},
-      2: { sorter: "date"}
+      2: { sorter: 'date'}
     }
   })
 

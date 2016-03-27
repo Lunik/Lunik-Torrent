@@ -1,5 +1,3 @@
-
-
 var Storage = new _Storage()
 
 function _MediaInfo () {}

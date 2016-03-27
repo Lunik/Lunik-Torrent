@@ -7,7 +7,7 @@ function Directory () {
   this.dir = {}
   this.downloading = {}
 
-  setInterval(function(){
+  setInterval(function () {
     self.updateDownloads()
   }, 30000)
 }
@@ -25,7 +25,7 @@ Directory.prototype.list = function (dir) {
   return {
     'totalSize': this.dir[dir].totalSize,
     'files': this.dir[dir].files,
-    'downloading':this.downloading
+    'downloading': this.downloading
   }
 }
 
@@ -66,7 +66,7 @@ Directory.prototype.getInfo = function (file) {
 
 Directory.prototype.setDownloading = function (file) {
   this.downloading[file] = this.downloading[file] ?
-    {date: new  Date(), count: this.downloading[file].count + 1} :
+    {date: new Date(), count: this.downloading[file].count + 1} :
     {date: new Date(), count: 1}
 }
 
@@ -80,18 +80,18 @@ Directory.prototype.finishDownloading = function (file) {
   }
 }
 
-Directory.prototype.updateDownloads = function(){
-  var curDate = new Date();
-  for(var key in this.downloading){
-    //if downloading for more than 1 hour remove
-    if(curDate - this.downloading[key].date > 3600000){
+Directory.prototype.updateDownloads = function () {
+  var curDate = new Date()
+  for (var key in this.downloading) {
+    // if downloading for more than 1 hour remove
+    if (curDate - this.downloading[key].date > 3600000) {
       delete this.downloading[key]
     }
   }
 }
 
 Directory.prototype.isDownloading = function (file) {
-  file = file[0] == '/' ? file.substring(1) : file;
+  file = file[0] == '/' ? file.substring(1) : file
   return this.downloading[file] ? true : false
 }
 
