@@ -39,21 +39,18 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
         Log.print(req.user + ' finish download file: ' + req.query.f)
         callback()
 
-        this.emit('end')
         res.end()
       })
       fReadStream.on('close', function () {
         Log.print(req.user + ' stop download file: ' + req.query.f)
         callback()
 
-        this.emit('end')
         res.end()
       })
       fReadStream.on('error', function (err) {
         Log.print(req.user + ' error during download file: ' + req.query.f + '\n err: ' + err)
         callback()
 
-        this.emit('end')
         res.end()
       })
     } else {
