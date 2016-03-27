@@ -83,6 +83,14 @@ a {
   transition: width 0.5s ease-out;
 }
 
+.left-menu .footer{
+  color: #675f5f;
+  font-size: 15px;
+}
+
+.left-menu .footer a:hover{
+  color: #f7a253;
+}
 /*********/
 
 
