@@ -1,7 +1,7 @@
 function _TopMenu () {
   var self = this
   this.ariane = $('.top-menu .ariane')
-  this.config = new Config()
+  this.Config = new Config()
 
   $(window).bind('hashchange', function () {
     self.setAriane()
