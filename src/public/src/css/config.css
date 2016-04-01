@@ -1,0 +1,13 @@
+.config-pop{
+  text-align: left;
+  margin: 15px 0px 0px 15px;
+}
+
+.config-pop * {
+  display: block;
+  margin: 10px;
+}
+
+.config-pop .theme{
+  width: 35%;
+}

@@ -43,6 +43,23 @@ a {
 .top-menu .unactive{
   color: #675f5f;
 }
+
+/*************/
+
+
+/*   Config  */
+
+
+/*************/
+
+.config-pop input, .config-pop select{
+  color: #675f5f;
+  background-color: #FFF;
+  border: 1px solid #D8E1E4;
+  font-size: 15px;
+  border-radius: 3px;
+}
+
 /*************/
 
 
