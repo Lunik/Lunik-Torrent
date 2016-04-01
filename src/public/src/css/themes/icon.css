@@ -1,0 +1,43 @@
+@import url(font-awesome/css/font-awesome.min.css);
+i.fa::before {
+  margin: 2px;
+}
+i.fa {
+  padding: 4px;
+}
+.list .file td#name {
+  background-repeat: no-repeat;
+  background-image: url("../../image/file/file.png");
+  background-size: 25px;
+  padding: 5px 0px 0px 30px !important;
+}
+.list .file td#name[extension=dir] {
+  background-image: url("../../image/file/dir.png");
+}
+.list .file td#name[extension=avi] {
+  background-image: url("../../image/file/avi.png");
+}
+.list .file td#name[extension=mkv] {
+  background-image: url("../../image/file/mkv.png");
+}
+.list .file td#name[extension=html] {
+  background-image: url("../../image/file/html.png");
+}
+.list .file td#name[extension=jpg] {
+  background-image: url("../../image/file/jpg.png");
+}
+.list .file td#name[extension=mp3] {
+  background-image: url("../../image/file/mp3.png");
+}
+.list .file td#name[extension=mp4] {
+  background-image: url("../../image/file/mp4.png");
+}
+.list .file td#name[extension=pdf] {
+  background-image: url("../../image/file/pdf.png");
+}
+.list .file td#name[extension=png] {
+  background-image: url("../../image/file/png.png");
+}
+.list .file td#name[extension=txt] {
+  background-image: url("../../image/file/txt.png");
+}

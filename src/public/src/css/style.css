@@ -1,7 +1,7 @@
 @import url(top-menu.css);
 @import url(left-menu.css);
 @import url(list.css);
-@import url(theme.css);
+@import url(themes/default/theme.css);
 * {
   outline: none;
 }

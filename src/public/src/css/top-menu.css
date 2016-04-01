@@ -20,6 +20,9 @@
   width: 80px;
   background-size: 100%;
 }
+.top-menu .logo {
+  background-image: url(../image/logo.png);
+}
 .top-menu .ariane {
   display: none;
 }
