@@ -13,6 +13,7 @@ function Config(){
 
   this.setConfig(Storage.readData('config'))
   this.applyConfig(this.config)
+  this.configReady()
 }
 
 Config.prototype.getHtml = function(){
@@ -66,4 +67,8 @@ Config.prototype.applyTheme = function(theme){
   } else {
     var $themeLink = $('<link>').addClass('theme').attr('rel','stylesheet').attr('href','src/css/themes/'+theme+'/theme.css').appendTo($('head'))
   }
+}
+
+Config.prototype.configReady = function(){
+  $('.loading').remove()
 }
