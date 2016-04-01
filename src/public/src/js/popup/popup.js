@@ -21,7 +21,9 @@ var _Popup = function () {
 
     this.selector = $shadow
     // Creation du contenu du popup
-    var $container = $('<div>').addClass('popupContainer')
+    var $container = $('<div>').addClass('popupContainer').click(function(event){
+      event.stopPropagation()
+    })
       .css('width', this.width + 'px')
       .css('height', this.height + 'px')
       .css('margin-top', this.posY + 'px')
