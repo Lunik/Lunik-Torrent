@@ -1,0 +1,162 @@
+/****** MONOKAI THEME *****/
+@import url(../icon.css);
+
+body{
+    background: #272822;
+}
+
+*::selection {
+  background: #FD971F;
+  /* WebKit/Blink Browsers */
+}
+.button {
+  cursor: pointer !important;
+}
+.button:hover {
+  color: #675f5f !important;
+  transition: color 0.1s ease-out;
+}
+.button:active, .button:focus {
+  color: #FD971F !important;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/************/
+
+
+/* Top Menu */
+
+
+/************/
+
+.top-menu {
+  color: #FFF;
+  background-color: #1A1B17;
+  font-size: 25px;
+}
+.top-menu i.fa {
+  border-radius: 100%;
+}
+
+.top-menu .unactive{
+  color: #675f5f;
+}
+
+/*************/
+
+
+/*   Config  */
+
+
+/*************/
+
+.config-pop input, .config-pop select{
+  color: #675f5f;
+  background-color: #FFF;
+  border: 1px solid #D8E1E4;
+  font-size: 15px;
+  border-radius: 3px;
+}
+
+/*************/
+
+
+/* Left Menu */
+
+
+/*************/
+
+.left-menu {
+  color: #FFF;
+  background-color: #20211C;
+  font-size: 25px;
+  transition: left 0.3s ease-out;
+}
+.left-menu .menu i#open {
+  background-color: #20211C;
+}
+.left-menu .nav-bar li.active {
+  background-color: #FD971F;
+  color: #272822;
+  font-weight: bold;
+}
+.left-menu .action .button {
+  border-radius: 10px;
+  background-color: #F92672;
+}
+.left-menu .torrent-input input {
+  color: #675f5f;
+  background-color: #FFF;
+  border: 1px solid #D8E1E4;
+  font-size: 15px;
+  border-radius: 3px;
+}
+.left-menu .torrent-input input[type=text] {
+  transition: width 0.5s ease-out;
+}
+
+.left-menu .footer{
+  color: #675f5f;
+  font-size: 15px;
+}
+
+.left-menu .footer a:hover{
+  color: #FD971F;
+}
+/*********/
+
+
+/* Liste */
+
+
+/*********/
+
+.list {
+  background-color: #272822;
+  color: #FFF;
+}
+.list th {
+  background: #2E2E2E;
+}
+.list tr.selected, .list tr.selected a {
+  background-color: #FD971F;
+  color: #272822;
+}
+.list tr {
+  border-top: 1px solid #2E2E2E;
+  border-bottom: 1px solid #2E2E2E;
+}
+.scrollTop {
+  border-radius: 5px;
+  background-color: #272822;
+  color: #FFF;
+}
+
+.list .file td#name .locked{
+  color: #F92672;
+}
+
+/******************/
+
+
+/* Search Torrent */
+
+
+/******************/
+
+.search-result tr.search-item:hover {
+  background-color: #FD971F;
+}
+.search-result .search-item {
+  border-top: 1px solid #2E2E2E;
+  border-bottom: 1px solid #2E2E2E;
+}
+.search-result .search-item .seed {
+  color: #A6E22E;
+}
+.search-result .search-item .peer {
+  color: #F92672;
+}

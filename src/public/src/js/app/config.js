@@ -3,7 +3,9 @@ var Storage = new _Storage()
 function Config(){
   var self = this
   this.config = {}
+  this.themeList = ['default', 'monokai']
   this.popup = new _Popup()
+
   this.but = $('.parameter .button').click(function(){
     self.popup.init(null, '5%', null, '90%', 'Configuration', self.getHtml(self.config), true)
     self.popup.draw()
@@ -19,9 +21,16 @@ Config.prototype.getHtml = function(){
     event.stopPropagation()
   })
 
-  $theme = $('<select>').addClass('theme').append(
-    $('<option>').attr('value','default').text('default')
-  ).appendTo($html)
+  var $theme = $('<select>').addClass('theme')
+
+  for(var theme in this.themeList){
+    var $option = $('<option>').attr('value',themeList[theme]).text(themeList[theme])
+    if(this.config.theme == themeList[theme]){
+      $option.attr('selected','true')
+    }
+    $option.appendTo($theme)
+  }
+  $theme.appendTo($html)
 
   $submit = $('<input>').addClass('submit button').attr('type', 'submit').attr('value', 'Save').appendTo($html).click(function(){
     self.submit()
@@ -52,5 +61,9 @@ Config.prototype.applyConfig = function(config){
 }
 
 Config.prototype.applyTheme = function(theme){
-
+  if($('head .theme').length > 0){
+    var $themeLink = $('head .theme').attr('href','src/css/themes/'+theme+'/theme.css')
+  } else {
+    var $themeLink = $('<link>').addClass('theme').attr('rel','stylesheet').attr('href','src/css/themes/'+theme+'/theme.css').appendTo($('head'))
+  }
 }
