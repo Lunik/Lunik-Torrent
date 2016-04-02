@@ -3,7 +3,7 @@ var Storage = new _Storage()
 function Config(){
   var self = this
   this.config = {theme: 'default'}
-  this.themeList = ['default', 'monokai']
+  this.themeList = ['default', 'monokai','giant_goldfish']
   this.popup = new _Popup()
 
   this.but = $('.parameter .button').click(function(){
