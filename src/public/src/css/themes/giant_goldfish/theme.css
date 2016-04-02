@@ -42,8 +42,8 @@ body{
 /*************/
 
 .config-pop input, .config-pop select{
-  color: #D4D8C6;
-  background-color: #111;
+  color: #111;
+  background-color: #E0E4CC;
   border: 1px solid #D8E1E4;
 }
 
@@ -70,8 +70,7 @@ body{
   background-color: #FA6900;
 }
 .left-menu .torrent-input input {
-  color: #D4D8C6;
-  background-color: #FFF;
+  color: #111;
   border: 1px solid #D8E1E4;
 }
 .left-menu .footer{
@@ -98,7 +97,7 @@ body{
 }
 .list tr.selected, .list tr.selected a {
   background-color: #F38630;
-  color: #E0E4CC;
+  color: #111;
 }
 .list tr {
   border-top: 1px solid #E4E9CF;
