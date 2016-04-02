@@ -31,7 +31,7 @@ body {
 }
 
 .loading .logo{
-  background-image: url(../image/logo.png);
+  background-image: url(../image/logo.svg);
 
   width: 100%;
   height: 100%;
