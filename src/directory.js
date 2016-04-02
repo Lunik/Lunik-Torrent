@@ -73,7 +73,7 @@ Directory.prototype.setDownloading = function (file) {
 Directory.prototype.finishDownloading = function (file) {
   this.downloading[file] = this.downloading[file] ?
     {date: this.downloading[file].date, count: this.downloading[file].count + 1} :
-    {date: this.downloading[file].date, count: 0}
+    {date: new Date(), count: 0}
 
   if (this.downloading[file] >= 0) {
     delete this.downloading[file]
