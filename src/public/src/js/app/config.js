@@ -2,8 +2,8 @@ var Storage = new _Storage()
 
 function Config(){
   var self = this
-  this.config = {theme: 'default'}
-  this.themeList = ['default', 'monokai','giant_goldfish']
+  this.config = {}
+  this.themeList = ['default', 'monokai','giant_goldfish', 'emo']
   this.popup = new _Popup()
 
   this.but = $('.parameter .button').click(function(){
@@ -22,7 +22,9 @@ Config.prototype.getHtml = function(){
     event.stopPropagation()
   })
 
-  var $theme = $('<select>').addClass('theme')
+  var $theme = $('<select>').addClass('theme').on('change', function(data){
+    self.applyTheme($(this).val())
+  })
 
   for(var theme in this.themeList){
     var $option = $('<option>').attr('value',this.themeList[theme]).text(this.themeList[theme])
@@ -43,6 +45,7 @@ Config.prototype.submit = function(){
   var config = {}
   config.theme = $('.config-pop .theme').val()
   this.setConfig(config)
+  this.applyConfig(config)
   this.popup.remove()
 }
 
