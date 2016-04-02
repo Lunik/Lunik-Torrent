@@ -13,7 +13,7 @@ function Config(){
 
   this.setConfig(Storage.readData('config'))
   this.applyConfig(this.config)
-  //this.configReady()
+  this.configReady()
 }
 
 Config.prototype.getHtml = function(){
