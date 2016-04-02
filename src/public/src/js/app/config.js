@@ -25,8 +25,8 @@ Config.prototype.getHtml = function(){
   var $theme = $('<select>').addClass('theme')
 
   for(var theme in this.themeList){
-    var $option = $('<option>').attr('value',themeList[theme]).text(themeList[theme])
-    if(this.config.theme == themeList[theme]){
+    var $option = $('<option>').attr('value',this.themeList[theme]).text(this.themeList[theme])
+    if(this.config.theme == this.themeList[theme]){
       $option.attr('selected','true')
     }
     $option.appendTo($theme)
