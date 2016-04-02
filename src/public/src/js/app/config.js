@@ -2,7 +2,7 @@ var Storage = new _Storage()
 
 function Config(){
   var self = this
-  this.config = {}
+  this.config = {theme: 'default'}
   this.themeList = ['default', 'monokai']
   this.popup = new _Popup()
 
