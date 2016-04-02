@@ -1,0 +1,138 @@
+/****** DEFAULT THEME *****/
+@import url(../icon.css);
+
+body{
+    background: #1C1C1C;
+}
+
+*::selection {
+  background: #C7F464;
+}
+.button:hover {
+  color: #675f5f !important;
+}
+.button:active, .button:focus {
+  color: #C7F464 !important;
+}
+.loading{
+  background-color: #1C1C1C;
+}
+/************/
+
+
+/* Top Menu */
+
+
+/************/
+
+.top-menu {
+  color: #FFF;
+  background-color: #111;
+}
+
+.top-menu .unactive{
+  color: #675f5f;
+}
+
+/*************/
+
+
+/*   Config  */
+
+
+/*************/
+
+.config-pop input, .config-pop select{
+  color: #675f5f;
+  background-color: #FFF;
+  border: 1px solid #D8E1E4;
+}
+
+/*************/
+
+
+/* Left Menu */
+
+
+/*************/
+
+.left-menu {
+  color: #FFF;
+  background-color: #151515;
+}
+.left-menu .menu i#open {
+  background-color: #151515;
+}
+.left-menu .nav-bar li.active {
+  background-color: #C7F464;
+  color: #151515;
+}
+.left-menu .action .button {
+  background-color: #FF6B6B;
+}
+.left-menu .torrent-input input {
+  color: #675f5f;
+  background-color: #FFF;
+  border: 1px solid #D8E1E4;
+}
+
+.left-menu .footer{
+  color: #675f5f;
+}
+
+.left-menu .footer a:hover{
+  color: #C7F464;
+}
+/*********/
+
+
+/* Liste */
+
+
+/*********/
+
+.list {
+  background-color: #1C1C1C;
+  color: #FFF;
+}
+.list th {
+  background: #2E2E2E;
+}
+.list tr.selected, .list tr.selected a {
+  background-color: #C7F464;
+  color: #1C1C1C;
+}
+.list tr {
+  border-top: 1px solid #2E2E2E;
+  border-bottom: 1px solid #2E2E2E;
+}
+.scrollTop {
+  background-color: #151515;
+  color: #FFF;
+}
+
+.list .file td#name .locked{
+  color: #C44D58;
+}
+
+/******************/
+
+
+/* Search Torrent */
+
+
+/******************/
+
+.search-result tr.search-item:hover {
+  background-color: #C7F464;
+}
+.search-result .search-item {
+  border-top: 1px solid #2E2E2E;
+  border-bottom: 1px solid #2E2E2E;
+}
+.search-result .search-item .seed {
+  color: #4ECDC4;
+}
+.search-result .search-item .peer {
+  color: #FF6B6B;
+}
