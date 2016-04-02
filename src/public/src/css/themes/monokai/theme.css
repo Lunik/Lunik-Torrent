@@ -7,7 +7,6 @@ body{
 
 *::selection {
   background: #FD971F;
-  /* WebKit/Blink Browsers */
 }
 .button {
   cursor: pointer !important;
