@@ -8,19 +8,11 @@ body{
 *::selection {
   background: #FD971F;
 }
-.button {
-  cursor: pointer !important;
-}
 .button:hover {
   color: #675f5f !important;
-  transition: color 0.1s ease-out;
 }
 .button:active, .button:focus {
   color: #FD971F !important;
-}
-a {
-  text-decoration: none;
-  color: inherit;
 }
 .loading{
   background-color: #272822;
@@ -34,12 +26,7 @@ a {
 /************/
 
 .top-menu {
-  color: #FFF;
   background-color: #1A1B17;
-  font-size: 25px;
-}
-.top-menu i.fa {
-  border-radius: 100%;
 }
 
 .top-menu .unactive{
@@ -56,10 +43,7 @@ a {
 
 .config-pop input, .config-pop select{
   color: #675f5f;
-  background-color: #FFF;
   border: 1px solid #D8E1E4;
-  font-size: 15px;
-  border-radius: 3px;
 }
 
 /*************/
@@ -71,10 +55,7 @@ a {
 /*************/
 
 .left-menu {
-  color: #FFF;
   background-color: #20211C;
-  font-size: 25px;
-  transition: left 0.3s ease-out;
 }
 .left-menu .menu i#open {
   background-color: #20211C;
@@ -82,7 +63,6 @@ a {
 .left-menu .nav-bar li.active {
   background-color: #FD971F;
   color: #272822;
-  font-weight: bold;
 }
 .left-menu .action .button {
   border-radius: 10px;
@@ -90,18 +70,11 @@ a {
 }
 .left-menu .torrent-input input {
   color: #675f5f;
-  background-color: #FFF;
   border: 1px solid #D8E1E4;
-  font-size: 15px;
-  border-radius: 3px;
-}
-.left-menu .torrent-input input[type=text] {
-  transition: width 0.5s ease-out;
 }
 
 .left-menu .footer{
   color: #675f5f;
-  font-size: 15px;
 }
 
 .left-menu .footer a:hover{
@@ -117,7 +90,6 @@ a {
 
 .list {
   background-color: #272822;
-  color: #FFF;
 }
 .list th {
   background: #2E2E2E;
@@ -131,9 +103,7 @@ a {
   border-bottom: 1px solid #2E2E2E;
 }
 .scrollTop {
-  border-radius: 5px;
   background-color: #272822;
-  color: #FFF;
 }
 
 .list .file td#name .locked{
