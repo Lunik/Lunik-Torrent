@@ -1,10 +1,9 @@
 /****** MONOKAI THEME *****/
+
 @import url(../icon.css);
-
-body{
-    background: #272822;
+body {
+  background: #272822;
 }
-
 *::selection {
   background: #FD971F;
 }
@@ -14,9 +13,10 @@ body{
 .button:active, .button:focus {
   color: #FD971F !important;
 }
-.loading{
+.loading {
   background-color: #272822;
 }
+
 /************/
 
 
@@ -28,8 +28,7 @@ body{
 .top-menu {
   background-color: #1A1B17;
 }
-
-.top-menu .unactive{
+.top-menu .unactive {
   color: #675f5f;
 }
 
@@ -41,7 +40,7 @@ body{
 
 /*************/
 
-.config-pop input, .config-pop select{
+.config-pop input, .config-pop select {
   color: #675f5f;
   border: 1px solid #D8E1E4;
 }
@@ -72,14 +71,13 @@ body{
   color: #675f5f;
   border: 1px solid #D8E1E4;
 }
-
-.left-menu .footer{
+.left-menu .footer {
   color: #675f5f;
 }
-
-.left-menu .footer a:hover{
+.left-menu .footer a:hover {
   color: #FD971F;
 }
+
 /*********/
 
 
@@ -105,8 +103,7 @@ body{
 .scrollTop {
   background-color: #272822;
 }
-
-.list .file td#name .locked{
+.list .file td#name .locked {
   color: #F92672;
 }
 

@@ -26,7 +26,6 @@ Directory.prototype.list = function (dir) {
     'totalSize': this.dir[dir].totalSize,
     'files': this.dir[dir].files,
     'downloading': this.downloading
-  }
 }
 
 Directory.prototype.getDir = function (dir) {

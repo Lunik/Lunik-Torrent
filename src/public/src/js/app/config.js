@@ -1,12 +1,12 @@
 var Storage = new _Storage()
 
-function Config(){
+function Config () {
   var self = this
   this.config = {}
-  this.themeList = ['default', 'monokai','giant_goldfish', 'lunik']
+  this.themeList = ['default', 'monokai', 'giant_goldfish', 'lunik']
   this.popup = new _Popup()
 
-  this.but = $('.parameter .button').click(function(){
+  this.but = $('.parameter .button').click(function () {
     self.popup.init(null, '5%', null, '90%', 'Configuration', self.getHtml(self.config), true)
     self.popup.draw()
   })
@@ -16,32 +16,32 @@ function Config(){
   this.configReady()
 }
 
-Config.prototype.getHtml = function(){
+Config.prototype.getHtml = function () {
   var self = this
-  $html = $('<div/>').addClass('config-pop').click(function(){
+  $html = $('<div/>').addClass('config-pop').click(function () {
     event.stopPropagation()
   })
 
-  var $theme = $('<select>').addClass('theme').on('change', function(data){
+  var $theme = $('<select>').addClass('theme').on('change', function (data) {
     self.applyTheme($(this).val())
   })
 
-  for(var theme in this.themeList){
-    var $option = $('<option>').attr('value',this.themeList[theme]).text(this.themeList[theme])
-    if(this.config.theme == this.themeList[theme]){
-      $option.attr('selected','true')
+  for (var theme in this.themeList) {
+    var $option = $('<option>').attr('value', this.themeList[theme]).text(this.themeList[theme])
+    if (this.config.theme == this.themeList[theme]) {
+      $option.attr('selected', 'true')
     }
     $option.appendTo($theme)
   }
   $theme.appendTo($html)
 
-  $submit = $('<input>').addClass('submit button').attr('type', 'submit').attr('value', 'Save').appendTo($html).click(function(){
+  $submit = $('<input>').addClass('submit button').attr('type', 'submit').attr('value', 'Save').appendTo($html).click(function () {
     self.submit()
   })
   return $html
 }
 
-Config.prototype.submit = function(){
+Config.prototype.submit = function () {
   var config = {}
   config.theme = $('.config-pop .theme').val()
   this.setConfig(config)
@@ -49,29 +49,29 @@ Config.prototype.submit = function(){
   this.popup.remove()
 }
 
-Config.prototype.setConfig = function(config){
-  if(config){
-    for(var key in config){
+Config.prototype.setConfig = function (config) {
+  if (config) {
+    for (var key in config) {
       this.config[key] = config[key]
     }
     Storage.storeData('config', this.config)
   }
 }
 
-Config.prototype.applyConfig = function(config){
-  if(config){
+Config.prototype.applyConfig = function (config) {
+  if (config) {
     this.applyTheme(config.theme)
   }
 }
 
-Config.prototype.applyTheme = function(theme){
-  if($('head .theme').length > 0){
-    var $themeLink = $('head .theme').attr('href','src/css/themes/'+theme+'/theme.css')
+Config.prototype.applyTheme = function (theme) {
+  if ($('head .theme').length > 0) {
+    var $themeLink = $('head .theme').attr('href', 'src/css/themes/' + theme + '/theme.css')
   } else {
-    var $themeLink = $('<link>').addClass('theme').attr('rel','stylesheet').attr('href','src/css/themes/'+theme+'/theme.css').appendTo($('head'))
+    var $themeLink = $('<link>').addClass('theme').attr('rel', 'stylesheet').attr('href', 'src/css/themes/' + theme + '/theme.css').appendTo($('head'))
   }
 }
 
-Config.prototype.configReady = function(){
+Config.prototype.configReady = function () {
   $('.loading').remove()
 }

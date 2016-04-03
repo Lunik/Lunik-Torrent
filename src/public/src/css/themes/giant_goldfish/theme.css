@@ -1,10 +1,9 @@
 /****** GIANT GOLD FISH THEME *****/
+
 @import url(../icon.css);
-
-body{
-    background: #E0E4CC;
+body {
+  background: #E0E4CC;
 }
-
 *::selection {
   background: #F38630;
 }
@@ -14,9 +13,10 @@ body{
 .button:active, .button:focus {
   color: #F38630 !important;
 }
-.loading{
+.loading {
   background-color: #E0E4CC;
 }
+
 /************/
 
 
@@ -29,7 +29,7 @@ body{
   color: #111;
   background-color: #CFD3BC;
 }
-.top-menu .unactive{
+.top-menu .unactive {
   color: #D4D8C6;
 }
 
@@ -41,7 +41,7 @@ body{
 
 /*************/
 
-.config-pop input, .config-pop select{
+.config-pop input, .config-pop select {
   color: #111;
   background-color: #E0E4CC;
   border: 1px solid #D8E1E4;
@@ -73,13 +73,13 @@ body{
   color: #111;
   border: 1px solid #D8E1E4;
 }
-.left-menu .footer{
+.left-menu .footer {
   color: #D4D8C6;
 }
-
-.left-menu .footer a:hover{
+.left-menu .footer a:hover {
   color: #F38630;
 }
+
 /*********/
 
 
@@ -107,8 +107,7 @@ body{
   background-color: #D6DAC2;
   color: #111;
 }
-
-.list .file td#name .locked{
+.list .file td#name .locked {
   color: #FA6900;
 }
 

@@ -1,10 +1,9 @@
 /****** DEFAULT THEME *****/
+
 @import url(../icon.css);
-
-body{
-    background: #1C1C1C;
+body {
+  background: #1C1C1C;
 }
-
 *::selection {
   background: #C7F464;
 }
@@ -14,9 +13,10 @@ body{
 .button:active, .button:focus {
   color: #C7F464 !important;
 }
-.loading{
+.loading {
   background-color: #1C1C1C;
 }
+
 /************/
 
 
@@ -29,8 +29,7 @@ body{
   color: #FFF;
   background-color: #111;
 }
-
-.top-menu .unactive{
+.top-menu .unactive {
   color: #675f5f;
 }
 
@@ -42,7 +41,7 @@ body{
 
 /*************/
 
-.config-pop input, .config-pop select{
+.config-pop input, .config-pop select {
   color: #675f5f;
   background-color: #FFF;
   border: 1px solid #D8E1E4;
@@ -75,14 +74,13 @@ body{
   background-color: #FFF;
   border: 1px solid #D8E1E4;
 }
-
-.left-menu .footer{
+.left-menu .footer {
   color: #675f5f;
 }
-
-.left-menu .footer a:hover{
+.left-menu .footer a:hover {
   color: #C7F464;
 }
+
 /*********/
 
 
@@ -110,8 +108,7 @@ body{
   background-color: #151515;
   color: #FFF;
 }
-
-.list .file td#name .locked{
+.list .file td#name .locked {
   color: #C44D58;
 }
 
