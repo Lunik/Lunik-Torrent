@@ -26,6 +26,7 @@ Directory.prototype.list = function (dir) {
     'totalSize': this.dir[dir].totalSize,
     'files': this.dir[dir].files,
     'downloading': this.downloading
+  }
 }
 
 Directory.prototype.getDir = function (dir) {
@@ -108,7 +109,6 @@ Directory.prototype.remove = function (file) {
       }
     }
   })
-
 }
 
 Directory.prototype.rename = function (path, oldname, newname) {
