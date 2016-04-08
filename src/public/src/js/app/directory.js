@@ -197,8 +197,8 @@ _Directory.prototype.setActions = function (file, actions) {
             file.name = data.newname
             $('tr[data-file="' + data.oldname + '"] td#name').attr('data-file', data.newname).html(
               file.isdir ?
-                $('<a>').attr('href', '#' + document.location.hash.substring(1) + data.newname + '/').text(data.newname.substring(0, 50)) :
-                data.newname.substring(0, 30)
+                $('<a>').attr('href', '#' + document.location.hash.substring(1) + data.newname + '/').text(data.newname) :
+                data.newname
             )
             $('tr[data-file="' + data.oldname + '"]').attr('data-file', data.newname)
           }
