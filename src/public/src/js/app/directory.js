@@ -173,7 +173,7 @@ _Directory.prototype.setActions = function (file, actions) {
   if (actions.rename) {
     this.actions.rename.removeClass('hide').click(function () {
       var oldname = file.name.split('.')
-      if (oldname.length > 1) {
+      if (oldname.length > 1 && file.isfile) {
         var extension = oldname.pop()
         extension = extension.length > 0 ? '.' + extension : ''
       } else {
