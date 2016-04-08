@@ -9,38 +9,50 @@ function Client () {
   this.torrent = {}
   this.timeout = new Date().getTime()
 
+  this.startFunction = function(){}
   this.updateFunction = function () {}
   this.doneFunction = function () {}
 }
 
 Client.prototype.download = function (torrentLink) {
-  this.torrent = torrentLink
-  Log.echo('Start: ' + torrentLink)
+  var self = this
 
-  this.client.add(torrentLink, {
-    path: config.torrent.downloads
-  }, function (torrent) {
-    instClient.torrent = torrent
-    Log.print('Start torrent: ' + instClient.torrent.name)
-    instClient.updateFunction(instClient.getTorrent())
+  setTimeout(function(){
+    self.torrent = torrentLink
+    Log.echo('Start: ' + torrentLink)
 
-    instClient.torrent.on('download', function (chunkSize) {
-      var currentTime = new Date().getTime()
-      if ((currentTime - instClient.timeout) > config.client.timeout) {
-        instClient.updateFunction(instClient.getTorrent())
-        instClient.timeout = currentTime
-      }
+    self.client.add(torrentLink, {
+      path: config.torrent.downloads
+    }, function (torrent) {
+      self.torrent = torrent
+      Log.print('Start torrent: ' + self.torrent.name)
+      self.startFunction(torrent.infoHash)
+
+      self.torrent.on('download', function (chunkSize) {
+        var currentTime = new Date().getTime()
+        if ((currentTime - self.timeout) > config.client.timeout) {
+          self.updateFunction(self.getTorrent())
+          self.timeout = currentTime
+        }
+      })
+
+      self.torrent.on('done', function () {
+        Log.print('Finish torrent: ' + self.torrent.name)
+        self.doneFunction(self.torrent.infoHash, self.torrent.name)
+      })
     })
-
-    instClient.torrent.on('done', function () {
-      Log.print('Finish torrent: ' + instClient.torrent.name)
-      instClient.doneFunction(instClient.torrent.infoHash, instClient.torrent.name)
-      instClient.torrent.destroy()
-    })
-  })
+  }, 1)
 }
 
-Client.prototype.stop = function () {}
+Client.prototype.stop = function () {
+  var self = this
+  if(self.torrent){
+    self.torrent.pause()
+    setTimeout(function(){
+      self.torrent.destroy()
+    }, 1000)
+  }
+}
 
 Client.prototype.getTorrent = function () {
   var t = {}
@@ -64,6 +76,9 @@ Client.prototype.getTorrent = function () {
 // callBack when update
 Client.prototype.on = function (what, f) {
   switch (what) {
+    case 'start':
+      this.startFunction = f
+      break
     case 'download':
       // function(download){}
       this.updateFunction = f
@@ -75,5 +90,4 @@ Client.prototype.on = function (what, f) {
   }
 }
 
-var instClient = new Client()
-module.exports = instClient
+module.exports = Client
