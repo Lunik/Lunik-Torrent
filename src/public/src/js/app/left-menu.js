@@ -20,7 +20,8 @@ function _LeftMenu () {
 
   this.but.open.click(function () {
     self.body.attr('id', 'open')
-  
+  })
+
 
   this.but.close.click(function () {
     self.body.attr('id', 'close')
