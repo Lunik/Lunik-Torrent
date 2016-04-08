@@ -9,6 +9,7 @@ function Client () {
   this.torrent = {}
   this.timeout = new Date().getTime()
 
+  this.startFunction = function(){}
   this.updateFunction = function () {}
   this.doneFunction = function () {}
 }
@@ -25,7 +26,7 @@ Client.prototype.download = function (torrentLink) {
     }, function (torrent) {
       self.torrent = torrent
       Log.print('Start torrent: ' + self.torrent.name)
-      self.updateFunction(self.getTorrent())
+      self.startFunction(torrent.infoHash)
 
       self.torrent.on('download', function (chunkSize) {
         var currentTime = new Date().getTime()
@@ -38,13 +39,20 @@ Client.prototype.download = function (torrentLink) {
       self.torrent.on('done', function () {
         Log.print('Finish torrent: ' + self.torrent.name)
         self.doneFunction(self.torrent.infoHash, self.torrent.name)
-        self.torrent.destroy()
       })
     })
   }, 1)
 }
 
-Client.prototype.stop = function () {}
+Client.prototype.stop = function () {
+  var self = this
+  if(self.torrent){
+    self.torrent.pause()
+    setTimeout(function(){
+      self.torrent.destroy()
+    }, 1000)
+  }
+}
 
 Client.prototype.getTorrent = function () {
   var t = {}
@@ -68,6 +76,9 @@ Client.prototype.getTorrent = function () {
 // callBack when update
 Client.prototype.on = function (what, f) {
   switch (what) {
+    case 'start':
+      this.startFunction = f
+      break
     case 'download':
       // function(download){}
       this.updateFunction = f
@@ -79,4 +90,4 @@ Client.prototype.on = function (what, f) {
   }
 }
 
-module.exports = new Client()
+module.exports = Client

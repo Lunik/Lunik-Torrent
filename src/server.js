@@ -64,7 +64,7 @@ function Server () {
 
   // client ask list of torrent active
   this.app.post('/list-t', function (req, res) {
-    res.end(JSON.stringify(Torrent.info))
+    res.end(JSON.stringify(Torrent.getInfo()))
   })
 
   // client ask list of directory
