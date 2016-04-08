@@ -45,5 +45,4 @@ SearchT.prototype.latest = function (callback) {
   })
 }
 
-var instaSearchT = new SearchT()
-module.exports = instaSearchT
+module.exports = new SearchT()

@@ -14,28 +14,30 @@ function Client () {
 }
 
 Client.prototype.download = function (torrentLink) {
+  var self = this
+
   this.torrent = torrentLink
   Log.echo('Start: ' + torrentLink)
 
   this.client.add(torrentLink, {
     path: config.torrent.downloads
   }, function (torrent) {
-    instClient.torrent = torrent
-    Log.print('Start torrent: ' + instClient.torrent.name)
-    instClient.updateFunction(instClient.getTorrent())
+    self.torrent = torrent
+    Log.print('Start torrent: ' + self.torrent.name)
+    self.updateFunction(self.getTorrent())
 
-    instClient.torrent.on('download', function (chunkSize) {
+    self.torrent.on('download', function (chunkSize) {
       var currentTime = new Date().getTime()
-      if ((currentTime - instClient.timeout) > config.client.timeout) {
-        instClient.updateFunction(instClient.getTorrent())
-        instClient.timeout = currentTime
+      if ((currentTime - self.timeout) > config.client.timeout) {
+        self.updateFunction(instClient.getTorrent())
+        self.timeout = currentTime
       }
     })
 
-    instClient.torrent.on('done', function () {
-      Log.print('Finish torrent: ' + instClient.torrent.name)
-      instClient.doneFunction(instClient.torrent.infoHash, instClient.torrent.name)
-      instClient.torrent.destroy()
+    self.torrent.on('done', function () {
+      Log.print('Finish torrent: ' + self.torrent.name)
+      self.doneFunction(self.torrent.infoHash, self.torrent.name)
+      self.torrent.destroy()
     })
   })
 }
@@ -75,5 +77,4 @@ Client.prototype.on = function (what, f) {
   }
 }
 
-var instClient = new Client()
-module.exports = instClient
+module.exports = new Client()

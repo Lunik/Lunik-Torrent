@@ -17,6 +17,8 @@ function Torrent () {
 }
 
 Torrent.prototype.start = function (url) {
+  var self = this
+
   if (this.countTry[url] == null) {
     this.countTry[url] = 1
   } else {
@@ -38,35 +40,35 @@ Torrent.prototype.start = function (url) {
         switch (data.type) {
           case 'finish':
             n.kill('SIGHUP')
-            delete instTorrent.info[data.hash]
+            delete self.info[data.hash]
 
-            delete instTorrent.urlToChild[url]
-            delete instTorrent.urlToHash[url]
-            delete instTorrent.hashToChild[data.hash]
+            delete self.urlToChild[url]
+            delete self.urlToHash[url]
+            delete self.hashToChild[data.hash]
             fs.renameSync(config.torrent.downloads + data.name, config.directory.path + data.name)
             // Relance un torrent si il y en a en attente
-            if (instTorrent.waitList.length > 0) {
-              Log.print('Start torrent into waitList (left: ' + (instTorrent.waitList.length - 1) + ')')
-              instTorrent.start(instTorrent.waitList.shift())
+            if (self.waitList.length > 0) {
+              Log.print('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
+              self.start(self.waitList.shift())
             }
             break
           case 'info':
-            instTorrent.info[data.torrent.hash] = data.torrent
-            instTorrent.hashToChild[data.torrent.hash] = n
-            instTorrent.urlToHash[url] = data.torrent.hash
+            self.info[data.torrent.hash] = data.torrent
+            self.hashToChild[data.torrent.hash] = n
+            self.urlToHash[url] = data.torrent.hash
             break
           case 'remove':
             n.kill('SIGHUP')
-            delete instTorrent.info[data.hash]
+            delete self.info[data.hash]
 
-            delete instTorrent.urlToChild[url]
-            delete instTorrent.urlToHash[url]
-            delete instTorrent.hashToChild[data.hash]
+            delete self.urlToChild[url]
+            delete self.urlToHash[url]
+            delete self.hashToChild[data.hash]
             fs.unlinkSync(config.torrent.downloads + data.name)
             // Relance un torrent si il y en a en attente
-            if (instTorrent.waitList.length > 0) {
-              Log.print('Start torrent into waitList (left: ' + (instTorrent.waitList.length - 1) + ')')
-              instTorrent.start(instTorrent.waitList.shift())
+            if (self.waitList.length > 0) {
+              Log.print('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
+              self.start(self.waitList.shift())
             }
         }
       })
@@ -74,17 +76,17 @@ Torrent.prototype.start = function (url) {
       n.on('exit', function (code, signal) {
         if (signal !== 'SIGHUP') {
           Log.print('Child: ' + url + ' \n exit with code: ' + code)
-          delete instTorrent.info[instTorrent.urlToHash[url]]
+          delete self.info[self.urlToHash[url]]
 
-          delete instTorrent.urlToChild[url]
-          delete instTorrent.hashToChild[instTorrent.urlToHash[url]]
-          delete instTorrent.urlToHash[url]
-          instTorrent.start(url)
+          delete self.urlToChild[url]
+          delete self.hashToChild[self.urlToHash[url]]
+          delete self.urlToHash[url]
+          self.start(url)
         } else {
           // Relance un torrent si il y en a en attente
-          if (instTorrent.waitList.length > 0) {
-            Log.print('Start torrent into waitList (left: ' + (instTorrent.waitList.length - 1) + ')')
-            instTorrent.start(instTorrent.waitList.shift())
+          if (self.waitList.length > 0) {
+            Log.print('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
+            self.start(self.waitList.shift())
           }
         }
       })
@@ -124,15 +126,16 @@ Torrent.prototype.on = function (what, f) {
 }
 
 Torrent.prototype.startPointTorrent = function () {
+  var self = this
+
   var data = fs.readFileSync(config.torrent.scanTorrent, 'utf-8')
   var torrents = data.split('\n')
   fs.writeFileSync(config.torrent.scanTorrent, '', 'utf-8')
   torrents.forEach(function (element) {
     if (element !== '') {
-      instTorrent.start(element)
+      self.start(element)
     }
   })
 }
 
-var instTorrent = new Torrent()
-module.exports = instTorrent
+module.exports = new Torrent()

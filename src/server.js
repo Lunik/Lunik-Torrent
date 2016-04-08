@@ -198,5 +198,4 @@ function Server () {
   })
 }
 
-var instServer = new Server()
-module.exports = instServer
+module.exports = new Server()

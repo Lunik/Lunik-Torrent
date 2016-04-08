@@ -35,6 +35,7 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
 }
 
 MediaInfo.prototype.search = function (type, query, callback) {
+  var self = this
   if (type == 'tvseries') {
     allocine.api('search', {
       q: query,
@@ -45,7 +46,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
         while (data.feed.tvseries[0].length > 0 || data.feed.tvseries[0].yearStart < 2000) {
           data.feed.tvseries.shift()
         }
-        instMediaInfo.getMediaInfo(query, type, data.feed.tvseries[0].code, callback)
+        self.getMediaInfo(query, type, data.feed.tvseries[0].code, callback)
       }
     })
   } else if (type == 'movie') {
@@ -54,7 +55,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
       filter: 'movie'
     }, function (err, data) {
       if (data.feed.totalResults > 0) {
-        instMediaInfo.getMediaInfo(query, type, data.feed.movie[0].code, callback)
+        self.getMediaInfo(query, type, data.feed.movie[0].code, callback)
       }
     })
   }
@@ -67,5 +68,4 @@ MediaInfo.prototype.getInfo = function (type, query, callback) {
   }
 }
 
-var instMediaInfo = new MediaInfo()
-module.exports = instMediaInfo
+module.exports = new MediaInfo()

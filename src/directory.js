@@ -30,13 +30,15 @@ Directory.prototype.list = function (dir) {
 }
 
 Directory.prototype.getDir = function (dir) {
+  var self = this
+
   var list = {}
   var totalSize = 0
   var files = fs.readdirSync(config.directory.path + dir)
 
   if (files.length > 0) {
     files.forEach(function (file) {
-      var stats = instDirectory.getInfo(config.directory.path + dir + file)
+      var stats = self.getInfo(config.directory.path + dir + file)
       list[file] = stats
       totalSize += stats.size
     })
@@ -51,6 +53,8 @@ Directory.prototype.getDir = function (dir) {
 }
 
 Directory.prototype.getInfo = function (file) {
+  var self = this
+
   var stats = fs.statSync(file)
   var sfile = {}
   if (stats.isFile()) {
@@ -160,5 +164,4 @@ function sizeRecursif (path) {
   }
 }
 
-var instDirectory = new Directory()
-module.exports = instDirectory
+module.exports = new Directory()
