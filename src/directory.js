@@ -69,7 +69,7 @@ Directory.prototype.getInfo = function (file) {
 }
 
 Directory.prototype.setDownloading = function (file) {
-  var selft = this
+  var self = this
   setTimeout(function(){
     self.downloading[file] = self.downloading[file] ?
       {date: new Date(), count: self.downloading[file].count + 1} :
