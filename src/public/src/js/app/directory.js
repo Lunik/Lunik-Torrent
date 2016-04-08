@@ -182,6 +182,7 @@ _Directory.prototype.setActions = function (file, actions) {
       var name = prompt('New name for: ' + oldname.join(' '), oldname.join(' '))
       if (name) {
         name = name.split('\/').pop() + extension
+        name = name.trim()
         $.post('/rename-d', {
           'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
           'oldname': file.name,
