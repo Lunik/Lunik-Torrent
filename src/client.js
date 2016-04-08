@@ -16,30 +16,32 @@ function Client () {
 Client.prototype.download = function (torrentLink) {
   var self = this
 
-  this.torrent = torrentLink
-  Log.echo('Start: ' + torrentLink)
+  setTimeout(function(){
+    self.torrent = torrentLink
+    Log.echo('Start: ' + torrentLink)
 
-  this.client.add(torrentLink, {
-    path: config.torrent.downloads
-  }, function (torrent) {
-    self.torrent = torrent
-    Log.print('Start torrent: ' + self.torrent.name)
-    self.updateFunction(self.getTorrent())
+    self.client.add(torrentLink, {
+      path: config.torrent.downloads
+    }, function (torrent) {
+      self.torrent = torrent
+      Log.print('Start torrent: ' + self.torrent.name)
+      self.updateFunction(self.getTorrent())
 
-    self.torrent.on('download', function (chunkSize) {
-      var currentTime = new Date().getTime()
-      if ((currentTime - self.timeout) > config.client.timeout) {
-        self.updateFunction(instClient.getTorrent())
-        self.timeout = currentTime
-      }
+      self.torrent.on('download', function (chunkSize) {
+        var currentTime = new Date().getTime()
+        if ((currentTime - self.timeout) > config.client.timeout) {
+          self.updateFunction(self.getTorrent())
+          self.timeout = currentTime
+        }
+      })
+
+      self.torrent.on('done', function () {
+        Log.print('Finish torrent: ' + self.torrent.name)
+        self.doneFunction(self.torrent.infoHash, self.torrent.name)
+        self.torrent.destroy()
+      })
     })
-
-    self.torrent.on('done', function () {
-      Log.print('Finish torrent: ' + self.torrent.name)
-      self.doneFunction(self.torrent.infoHash, self.torrent.name)
-      self.torrent.destroy()
-    })
-  })
+  }, 1)
 }
 
 Client.prototype.stop = function () {}

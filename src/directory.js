@@ -69,29 +69,38 @@ Directory.prototype.getInfo = function (file) {
 }
 
 Directory.prototype.setDownloading = function (file) {
-  this.downloading[file] = this.downloading[file] ?
-    {date: new Date(), count: this.downloading[file].count + 1} :
-    {date: new Date(), count: 1}
+  var selft = this
+  setTimeout(function(){
+    self.downloading[file] = self.downloading[file] ?
+      {date: new Date(), count: self.downloading[file].count + 1} :
+      {date: new Date(), count: 1}
+  }, 1)
 }
 
 Directory.prototype.finishDownloading = function (file) {
-  this.downloading[file] = this.downloading[file] ?
-    {date: this.downloading[file].date, count: this.downloading[file].count + 1} :
-    {date: new Date(), count: 0}
+  var self = this
+  setTimeout(function(){
+    self.downloading[file] = self.downloading[file] ?
+      {date: self.downloading[file].date, count: self.downloading[file].count + 1} :
+      {date: new Date(), count: 0}
 
-  if (this.downloading[file] >= 0) {
-    delete this.downloading[file]
-  }
+    if (self.downloading[file] >= 0) {
+      delete self.downloading[file]
+    }
+  }, 1)
 }
 
 Directory.prototype.updateDownloads = function () {
-  var curDate = new Date()
-  for (var key in this.downloading) {
-    // if downloading for more than 1 hour remove
-    if (curDate - this.downloading[key].date > 3600000) {
-      delete this.downloading[key]
+  var self = this
+  setTimeout(function(){
+    var curDate = new Date()
+    for (var key in self.downloading) {
+      // if downloading for more than 1 hour remove
+      if (curDate - self.downloading[key].date > 3600000) {
+        delete self.downloading[key]
+      }
     }
-  }
+  }, 1)
 }
 
 Directory.prototype.isDownloading = function (file) {
@@ -101,52 +110,62 @@ Directory.prototype.isDownloading = function (file) {
 
 Directory.prototype.remove = function (file) {
   if (this.isDownloading(file)) return -1
-  fs.stat(config.directory.path + file, function (err, stats) {
-    if (err) Log.print(err)
-    if (stats) {
-      if (stats.isDirectory()) {
-        removeRecursif(config.directory.path + file)
-      } else {
-        fs.unlink(config.directory.path + file, function (err) {
-          if (err) Log.print(err)
-        })
+  setTimeout(function(){
+    fs.stat(config.directory.path + file, function (err, stats) {
+      if (err) Log.print(err)
+      if (stats) {
+        if (stats.isDirectory()) {
+          removeRecursif(config.directory.path + file)
+        } else {
+          fs.unlink(config.directory.path + file, function (err) {
+            if (err) Log.print(err)
+          })
+        }
       }
-    }
-  })
+    })
+  }, 1)
 }
 
 Directory.prototype.rename = function (path, oldname, newname) {
   if (this.isDownloading(path + oldname)) return -1
-  fs.rename(config.directory.path + path + oldname, config.directory.path + path + '/' + newname, function (err) {
-    if (err) Log.print(err)
-  })
+  setTimeout(function(){
+    fs.rename(config.directory.path + path + oldname, config.directory.path + path + '/' + newname, function (err) {
+      if (err) Log.print(err)
+    })
+  }, 1)
 }
 
 Directory.prototype.mkdir = function (path, name) {
-  fs.mkdir(config.directory.path + path + name, function (err) {
-    if (err) Log.print(err)
-  })
+  setTimeout(function(){
+    fs.mkdir(config.directory.path + path + name, function (err) {
+      if (err) Log.print(err)
+    })
+  }, 1)
 }
 
 Directory.prototype.mv = function (path, file, folder) {
   if (this.isDownloading(path + file)) return -1
-  fs.rename(config.directory.path + path + file, config.directory.path + path + folder + '/' + file, function (err) {
-    if (err) Log.print(err)
-  })
+  setTimeout(function(){
+    fs.rename(config.directory.path + path + file, config.directory.path + path + folder + '/' + file, function (err) {
+      if (err) Log.print(err)
+    })
+  }, 1)
 }
 
 function removeRecursif (path) {
-  if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function (file, index) {
-      var curPath = path + '/' + file
-      if (fs.lstatSync(curPath).isDirectory()) { // recurse
-        removeRecursif(curPath)
-      } else { // delete file
-        fs.unlinkSync(curPath)
-      }
-    })
-    fs.rmdirSync(path)
-  }
+  setTimeout(function(){
+    if (fs.existsSync(path)) {
+      fs.readdirSync(path).forEach(function (file, index) {
+        var curPath = path + '/' + file
+        if (fs.lstatSync(curPath).isDirectory()) { // recurse
+          removeRecursif(curPath)
+        } else { // delete file
+          fs.unlinkSync(curPath)
+        }
+      })
+      fs.rmdirSync(path)
+    }
+  }, 1)
 }
 
 function sizeRecursif (path) {
