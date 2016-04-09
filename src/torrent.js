@@ -6,12 +6,15 @@ var cp = require('child_process')
 var fs = require('fs')
 
 function Torrent () {
+  var self = this
   this.client = {}
 
   this.info = {}
   this.waitList = []
 
-  setInterval(this.startPointTorrent, 30000)
+  setInterval(function(){
+    self.startPointTorrent(self)
+  }, 30000)
 }
 
 Torrent.prototype.start = function (url) {
@@ -85,9 +88,7 @@ Torrent.prototype.getUrlFromHash = function(hash){
   return null
 }
 
-Torrent.prototype.startPointTorrent = function () {
-  var self = this
-
+Torrent.prototype.startPointTorrent = function (self) {
   var data = fs.readFileSync(config.torrent.scanTorrent, 'utf-8')
   var torrents = data.split('\n')
   fs.writeFileSync(config.torrent.scanTorrent, '', 'utf-8')
