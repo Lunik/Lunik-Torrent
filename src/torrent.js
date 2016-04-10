@@ -37,11 +37,15 @@ Torrent.prototype.start = function (url) {
         c.download(url)
 
         c.on('start', function(hash){
-          self.client[url].hash = hash
+          if(self.client[url]){
+            self.client[url].hash = hash
+          }
         })
 
         c.on('download', function(infos){
-          self.client[url].infos = infos
+          if(self.client[url]){
+            self.client[url].infos = infos
+          }
         })
 
         c.on('done', function(hash, name){
@@ -73,7 +77,7 @@ Torrent.prototype.start = function (url) {
 
 Torrent.prototype.remove = function (hash) {
   var url = getUrlFromHash(hash)
-  if(url){
+  if(url && this.client[url]){
     this.client[url].peer.stop()
     delete this.client[url];
   }
