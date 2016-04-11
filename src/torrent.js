@@ -65,8 +65,8 @@ Torrent.prototype.start = function (url) {
       } else {
         Log.print('Too much client. Adding torrent to the waitlist.')
         // On push dans la liste d'attente
-        if (this.waitList.indexOf(url) === -1) {
-          this.waitList.push(url)
+        if (self.waitList.indexOf(url) === -1) {
+          self.waitList.push(url)
         }
       }
     }  else {
