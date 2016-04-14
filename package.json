@@ -15,7 +15,7 @@
   "dependencies": {
     "allocine-api": "^0.1.9",
     "body-parser": "^1.15.0",
-    "check-update-github": "^0.0.3",
+    "check-update-github": "^0.0.4",
     "compression": "^1.6.1",
     "cpasbien-api": "^1.1.0",
     "express": "^4.13.4",
