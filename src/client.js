@@ -56,16 +56,16 @@ Client.prototype.stop = function () {
 
 Client.prototype.getTorrent = function () {
   var t = {}
-  if (!this.torrent.client.destroyed) {
-    t.name = this.torrent.name
-    t.size = this.torrent.length
-    if (this.torrent.swarm) {
+  if (this.torrent) {
+    if (!this.torrent.client.destroyed) {
+      t.name = this.torrent.name
+      t.size = this.torrent.length
       t.hash = this.torrent.infoHash
-      t.sdown = this.torrent.swarm.downloadSpeed()
-      t.sup = this.torrent.swarm.uploadSpeed()
-      t.down = this.torrent.swarm.downloaded
-      t.up = this.torrent.swarm.uploaded
-      t.seed = this.torrent.swarm._peersLength
+      t.sdown = this.torrent.downloadSpeed
+      t.sup = this.torrent.uploadSpeed
+      t.down = this.torrent.downloaded
+      t.up = this.torrent.uploaded
+      t.seed = this.torrent._peersLength
       t.progress = this.torrent.progress
       t.timeRemaining = this.torrent.timeRemaining
     }
