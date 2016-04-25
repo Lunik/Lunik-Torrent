@@ -13,7 +13,6 @@ function Directory () {
 }
 
 Directory.prototype.list = function (dir) {
-  console.log(this.downloading)
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else {
