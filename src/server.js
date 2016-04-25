@@ -194,7 +194,12 @@ function Server () {
     } else (
       res.end()
       )
+  })
 
+  this.app.get('/lock-d', function (req, res) {
+    if (req.query.f) {
+      res.end(Directory.isDownloading(req.query.f).toString())
+    }
   })
 }
 
