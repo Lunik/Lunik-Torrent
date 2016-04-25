@@ -13,6 +13,7 @@ function Directory () {
 }
 
 Directory.prototype.list = function (dir) {
+  console.log(this.downloading)
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else {
@@ -81,10 +82,10 @@ Directory.prototype.finishDownloading = function (file) {
   var self = this
   setTimeout(function(){
     self.downloading[file] = self.downloading[file] ?
-      {date: self.downloading[file].date, count: self.downloading[file].count + 1} :
+      {date: self.downloading[file].date, count: self.downloading[file].count - 1} :
       {date: new Date(), count: 0}
 
-    if (self.downloading[file] >= 0) {
+    if (self.downloading[file].count >= 0) {
       delete self.downloading[file]
     }
   }, 1)
