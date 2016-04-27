@@ -23,7 +23,7 @@ _Torrent.prototype.getList = function () {
     torrents = JSON.parse(torrents)
     if (torrents.err) {
       self.notif.remove()
-      self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrents.err + '</p>', 10000)
+      self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + torrents.err + '</p>', 10000)
       self.notif.draw()
     } else {
       var current_scroll = $('body').scrollTop()
@@ -100,7 +100,7 @@ _Torrent.prototype.setActions = function (torrent, actions) {
           file = JSON.parse(file)
           if (torrent.err) {
             self.notif.remove()
-            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrent.err + '</p>', 10000)
+            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + torrent.err + '</p>', 10000)
             self.notif.draw()
           } else {
             $('tr[hash="' + torrent.hash + '"]').remove()
