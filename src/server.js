@@ -99,7 +99,7 @@ function Server () {
       if (Directory.remove(req.body.file) != -1) {
         Log.print(req.user + ' remove file: ' + req.body.file)
         res.end(JSON.stringify({
-          file: req.body.file
+          file: req.body.file.split('/')[req.body.file.split('/').length -1]
         }))
       } else {
         res.end(JSON.stringify({
