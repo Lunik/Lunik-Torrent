@@ -70,6 +70,8 @@ _Directory.prototype.list = function (directory, locked) {
   href = href.join('\/')
   this.append({new: false, name: '..', href: href, isfile: false, isdir: true, })
 
+  $('.file.button').addClass('toremove')
+
   for (var key in directory) {
     var file = directory[key]
     file.name = key
@@ -85,6 +87,8 @@ _Directory.prototype.list = function (directory, locked) {
 
     this.append(file)
   }
+
+  $('.file.toremove').remove()
   Storage.storeData('directory', kownFiles)
 }
 
@@ -92,6 +96,8 @@ _Directory.prototype.append = function (file) {
   var self = this
 
   if ($('.list  .file[data-file="' + file.name + '"]').length > 0) {
+    var $raw = $('.list  .file[data-file="' + file.name + '"]')
+    $raw.removeClass('toremove')
     return 0
   } else {
     var $raw = $('<tr>').addClass(file.new ? 'file button new' : 'file button').attr('data-file', file.name).click(function (event) {
