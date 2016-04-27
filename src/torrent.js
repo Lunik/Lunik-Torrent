@@ -32,7 +32,7 @@ Torrent.prototype.start = function (url) {
     // evite de lancer deux fois le meme torrent
     if (self.client[url].peer == null) {
       // Si trop de torrent en cours
-      if (Object.keys(self.client).length < config.torrent.max) {
+      if (Object.keys(self.client).length <= config.torrent.max) {
         var c = new Client()
         c.download(url)
 
