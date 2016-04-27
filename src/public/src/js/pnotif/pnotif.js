@@ -5,8 +5,11 @@ var Pnotif = function () {
     this.timeOut = timeOut
   }
 
+  this.container = null
+
   this.draw = function () {
     $container = $('<div>').addClass('pnotif-container')
+    this.container = $container
     for (var key in this.pos) {
       $container.css(key, this.pos[key])
     }
@@ -18,6 +21,12 @@ var Pnotif = function () {
     setTimeout(function () {
       $container.remove()
     }, this.timeOut + 1000)
+  }
+
+  this.remove = function(){
+    if(this.container){
+      this.container.remove()
+    }
   }
 }
 
