@@ -5,6 +5,8 @@ function _LeftMenu () {
 
   this.List = new _List()
 
+  this.notif = new Pnotif()
+
   this.body = $('.left-menu')
 
   this.but = {
@@ -49,9 +51,9 @@ function _LeftMenu () {
       }, function (name) {
         name = JSON.parse(name)
         if (name.err) {
-          var notif = new _Pnotif()
-          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
-          notif.draw()
+          self.notif.remove()
+          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
+          self.notif.draw()
         } else {
           self.List.Directory.append({
             name: name.name,
@@ -71,13 +73,13 @@ function _LeftMenu () {
         url: self.but.input.val()
       }, function (data) {
         if (data.err) {
-          var notif = new Pnotif()
-          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + data.err + '</p>', 10000)
-          notif.draw()
+          self.notif.remove()
+          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + data.err + '</p>', 10000)
+          self.notif.draw()
         } else {
-          var notif = new Pnotif()
-          notif.init('top-right', "<p style='padding: 10px; margin: 0px;'>Le torrent va commencer dans quelques instants.</p>", 10000)
-          notif.draw()
+          self.notif.remove()
+          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px;'>Le torrent va commencer dans quelques instants.</p>", 10000)
+          self.notif.draw()
         }
       })
       self.but.input.val('')
