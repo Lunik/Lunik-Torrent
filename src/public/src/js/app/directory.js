@@ -44,7 +44,7 @@ _Directory.prototype.getList = function () {
     directory = JSON.parse(directory)
     if (directory.err) {
       self.notif.remove()
-      self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + directory.err + '</p>', 10000)
+      self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + directory.err + '</p>', 10000)
       self.notif.draw()
     } else {
       self.appendSize(directory.totalSize)
@@ -140,7 +140,7 @@ _Directory.prototype.append = function (file) {
             file = JSON.parse(file)
             if (file.err) {
               self.notif.remove()
-              self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
+              self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + file.err + '</p>', 10000)
               self.notif.draw()
             } else {
               $('tr[data-file="' + file.file + '"]').remove()
@@ -201,7 +201,7 @@ _Directory.prototype.setActions = function (file, actions) {
           data = JSON.parse(data)
           if (data.err) {
             self.notif.remove()
-            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + data.err + '</p>', 10000)
+            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + data.err + '</p>', 10000)
             self.notif.draw()
           } else {
             file.name = data.newname
@@ -231,7 +231,7 @@ _Directory.prototype.setActions = function (file, actions) {
           file = JSON.parse(file)
           if (file.err) {
             self.notif.remove()
-            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
+            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + file.err + '</p>', 10000)
             self.notif.draw()
           } else {
             $('tr[data-file="' + file.file + '"]').remove()
