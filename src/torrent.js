@@ -76,7 +76,7 @@ Torrent.prototype.start = function (url) {
 }
 
 Torrent.prototype.remove = function (hash) {
-  var url = getUrlFromHash(hash)
+  var url = this.getUrlFromHash(hash)
   if (url && this.client[url]) {
     this.client[url].peer.stop()
     delete this.client[url]
