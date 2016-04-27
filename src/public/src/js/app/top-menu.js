@@ -52,7 +52,7 @@ _TopMenu.prototype.setAriane = function () {
         file = JSON.parse(file)
         if (file.err) {
           self.notif.remove()
-          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
+          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + file.err + '</p>', 10000)
           self.notif.draw()
         } else {
           $('tr[data-file="' + file.file + '"]').remove()
