@@ -3,6 +3,8 @@ function _TopMenu () {
   this.ariane = $('.top-menu .ariane')
   this.Config = new Config()
 
+  this.notif = new Pnotif()
+
   $(window).bind('hashchange', function () {
     self.setAriane()
   })
@@ -49,9 +51,9 @@ _TopMenu.prototype.setAriane = function () {
       }, function (file) {
         file = JSON.parse(file)
         if (file.err) {
-          var notif = new Pnotif()
-          notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
-          notif.draw()
+          self.notif.remove()
+          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
+          self.notif.draw()
         } else {
           $('tr[data-file="' + file.file + '"]').remove()
         }
