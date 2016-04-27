@@ -6,7 +6,7 @@ var CpasbienApi = new CPBAPI()
 function SearchT () {}
 
 SearchT.prototype.search = function (query, callback) {
-  setTimeout(function(){
+  setTimeout(function () {
     CpasbienApi.Search(query, {
       scope: 'tvshow',
       language: 'EN'
@@ -31,7 +31,7 @@ SearchT.prototype.search = function (query, callback) {
 }
 
 SearchT.prototype.latest = function (callback) {
-  setTimeout(function(){
+  setTimeout(function () {
     CpasbienApi.Latest({
       scope: 'tvshow'
     }).then(function (data1) {

@@ -9,7 +9,7 @@ function Client () {
   this.torrent = {}
   this.timeout = new Date().getTime()
 
-  this.startFunction = function(){}
+  this.startFunction = function () {}
   this.updateFunction = function () {}
   this.doneFunction = function () {}
 }
@@ -17,7 +17,7 @@ function Client () {
 Client.prototype.download = function (torrentLink) {
   var self = this
 
-  setTimeout(function(){
+  setTimeout(function () {
     self.torrent = torrentLink
     Log.echo('Start: ' + torrentLink)
 
@@ -46,9 +46,9 @@ Client.prototype.download = function (torrentLink) {
 
 Client.prototype.stop = function () {
   var self = this
-  if(self.torrent){
+  if (self.torrent) {
     self.torrent.pause()
-    setTimeout(function(){
+    setTimeout(function () {
       self.torrent.destroy()
     }, 1000)
   }

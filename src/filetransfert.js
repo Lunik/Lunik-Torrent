@@ -6,7 +6,7 @@ var portscanner = require('portscanner')
 
 function FileTransfert (req, res, callback) {
   var self = this
-  setTimeout(function(){
+  setTimeout(function () {
     if (config.nginx.active) {
       portscanner.checkPortStatus(config.nginx.port, 'localhost', function (error, status) {
         // Nginx aviable
@@ -28,7 +28,7 @@ function FileTransfert (req, res, callback) {
 
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
   var self = this
-  setTimeout(function(){
+  setTimeout(function () {
     var filename = config.directory.path + req.query.f
     fs.stat(filename, function (err, stats) {
       if (stats) {

@@ -70,7 +70,7 @@ Directory.prototype.getInfo = function (file) {
 
 Directory.prototype.setDownloading = function (file) {
   var self = this
-  setTimeout(function(){
+  setTimeout(function () {
     self.downloading[file] = self.downloading[file] ?
       {date: new Date(), count: self.downloading[file].count + 1} :
       {date: new Date(), count: 1}
@@ -79,7 +79,7 @@ Directory.prototype.setDownloading = function (file) {
 
 Directory.prototype.finishDownloading = function (file) {
   var self = this
-  setTimeout(function(){
+  setTimeout(function () {
     self.downloading[file] = self.downloading[file] ?
       {date: self.downloading[file].date, count: self.downloading[file].count - 1} :
       {date: new Date(), count: 0}
@@ -92,7 +92,7 @@ Directory.prototype.finishDownloading = function (file) {
 
 Directory.prototype.updateDownloads = function () {
   var self = this
-  setTimeout(function(){
+  setTimeout(function () {
     var curDate = new Date()
     for (var key in self.downloading) {
       // if downloading for more than 1 hour remove
@@ -110,7 +110,7 @@ Directory.prototype.isDownloading = function (file) {
 
 Directory.prototype.remove = function (file) {
   if (this.isDownloading(file)) return -1
-  setTimeout(function(){
+  setTimeout(function () {
     fs.stat(config.directory.path + file, function (err, stats) {
       if (err) Log.print(err)
       if (stats) {
@@ -128,7 +128,7 @@ Directory.prototype.remove = function (file) {
 
 Directory.prototype.rename = function (path, oldname, newname) {
   if (this.isDownloading(path + oldname)) return -1
-  setTimeout(function(){
+  setTimeout(function () {
     fs.rename(config.directory.path + path + oldname, config.directory.path + path + '/' + newname, function (err) {
       if (err) Log.print(err)
     })
@@ -136,7 +136,7 @@ Directory.prototype.rename = function (path, oldname, newname) {
 }
 
 Directory.prototype.mkdir = function (path, name) {
-  setTimeout(function(){
+  setTimeout(function () {
     fs.mkdir(config.directory.path + path + name, function (err) {
       if (err) Log.print(err)
     })
@@ -145,7 +145,7 @@ Directory.prototype.mkdir = function (path, name) {
 
 Directory.prototype.mv = function (path, file, folder) {
   if (this.isDownloading(path + file)) return -1
-  setTimeout(function(){
+  setTimeout(function () {
     fs.rename(config.directory.path + path + file, config.directory.path + path + folder + '/' + file, function (err) {
       if (err) Log.print(err)
     })
@@ -153,7 +153,7 @@ Directory.prototype.mv = function (path, file, folder) {
 }
 
 function removeRecursif (path) {
-  setTimeout(function(){
+  setTimeout(function () {
     if (fs.existsSync(path)) {
       fs.readdirSync(path).forEach(function (file, index) {
         var curPath = path + '/' + file
