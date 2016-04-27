@@ -17,6 +17,8 @@ function _Directory () {
   this.timer = null
   this.refresh = 30000
 
+  this.notif = new Pnotif()
+
   $(window).bind('hashchange', function () {
     self.body.html('')
     self.getList()
@@ -41,9 +43,9 @@ _Directory.prototype.getList = function () {
   }, function (directory) {
     directory = JSON.parse(directory)
     if (directory.err) {
-      var notif = new Pnotif()
-      notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + directory.err + '</p>', 10000)
-      notif.draw()
+      self.notif.remove()
+      self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + directory.err + '</p>', 10000)
+      self.notif.draw()
     } else {
       self.appendSize(directory.totalSize)
 
@@ -137,9 +139,9 @@ _Directory.prototype.append = function (file) {
           }, function (file) {
             file = JSON.parse(file)
             if (file.err) {
-              var notif = new Pnotif()
-              notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
-              notif.draw()
+              self.notif.remove()
+              self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
+              self.notif.draw()
             } else {
               $('tr[data-file="' + file.file + '"]').remove()
             }
@@ -161,6 +163,8 @@ _Directory.prototype.append = function (file) {
 }
 
 _Directory.prototype.setActions = function (file, actions) {
+  var self = this
+
   for (var key in this.actions) {
     this.actions[key].addClass('hide').unbind()
     this.actions[key].removeClass('unactive')
@@ -196,9 +200,9 @@ _Directory.prototype.setActions = function (file, actions) {
         }, function (data) {
           data = JSON.parse(data)
           if (data.err) {
-            var notif = new Pnotif()
-            notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + data.err + '</p>', 10000)
-            notif.draw()
+            self.notif.remove()
+            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + data.err + '</p>', 10000)
+            self.notif.draw()
           } else {
             file.name = data.newname
             $('tr[data-file="' + data.oldname + '"] td#name').attr('data-file', data.newname).html(
@@ -226,9 +230,9 @@ _Directory.prototype.setActions = function (file, actions) {
         }, function (file) {
           file = JSON.parse(file)
           if (file.err) {
-            var notif = new Pnotif()
-            notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
-            notif.draw()
+            self.notif.remove()
+            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + file.err + '</p>', 10000)
+            self.notif.draw()
           } else {
             $('tr[data-file="' + file.file + '"]').remove()
           }
