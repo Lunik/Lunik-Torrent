@@ -12,6 +12,8 @@ function _Torrent () {
 
   this.timer = null
   this.refresh = 3000
+
+  this.notif = new Pnotif()
 }
 
 _Torrent.prototype.getList = function () {
@@ -20,9 +22,9 @@ _Torrent.prototype.getList = function () {
   $.post('/list-t', function (torrents) {
     torrents = JSON.parse(torrents)
     if (torrents.err) {
-      var notif = new Pnotif()
-      notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrents.err + '</p>', 10000)
-      notif.draw()
+      self.notif.remove()
+      self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrents.err + '</p>', 10000)
+      self.notif.draw()
     } else {
       var current_scroll = $('body').scrollTop()
 
@@ -84,6 +86,7 @@ _Torrent.prototype.append = function (torrent) {
 }
 
 _Torrent.prototype.setActions = function (torrent, actions) {
+  var self = this
   for (var key in this.actions) {
     this.actions[key].addClass('hide').unbind()
   }
@@ -96,9 +99,9 @@ _Torrent.prototype.setActions = function (torrent, actions) {
         }, function (file) {
           file = JSON.parse(file)
           if (torrent.err) {
-            var notif = new Pnotif()
-            notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrent.err + '</p>', 10000)
-            notif.draw()
+            self.notif.remove()
+            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Action impossible: " + torrent.err + '</p>', 10000)
+            self.notif.draw()
           } else {
             $('tr[hash="' + torrent.hash + '"]').remove()
           }
