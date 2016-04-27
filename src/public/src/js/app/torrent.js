@@ -39,9 +39,11 @@ _Torrent.prototype.getList = function () {
 }
 
 _Torrent.prototype.list = function (torrents) {
+  $('.torrent.button').addClass('toremove')
   for (key in torrents) {
     this.append(torrents[key])
   }
+  $('.torrent.toremove').remove()
 }
 
 _Torrent.prototype.append = function (torrent) {
@@ -49,6 +51,7 @@ _Torrent.prototype.append = function (torrent) {
   if ($('.list  .torrent[hash=' + torrent.hash + ']').length > 0) {
     var $torrent = $('.list .torrent[hash=' + torrent.hash + ']')
     $torrent.html('')
+    $torrent.removeClass('toremove')
     var needToAppend = 0
   } else {
     var $torrent = $('<tr>').addClass('torrent button').attr('hash', torrent.hash)
