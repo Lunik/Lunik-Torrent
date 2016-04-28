@@ -57,6 +57,7 @@ function _LeftMenu () {
         } else {
           self.List.Directory.append({
             name: name.name,
+            href: document.location.hash.substring(1) + name.name + '/',
             isdir: true,
             isfile: false,
             size: 0,
