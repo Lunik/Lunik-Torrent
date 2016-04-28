@@ -72,7 +72,7 @@ _Directory.prototype.list = function (directory, locked) {
   href = href.join('\/')
   this.append({new: false, name: '..', href: href, isfile: false, isdir: true, })
 
-  $('.file.button').addClass('toremove')
+  $('.file.button[data-file!=".."]').addClass('toremove')
 
   for (var key in directory) {
     var file = directory[key]
