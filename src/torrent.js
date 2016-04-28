@@ -19,20 +19,20 @@ function Torrent () {
 
 Torrent.prototype.start = function (url) {
   var self = this
-  if (self.client[url] == null) {
-    self.client[url] = {count: 1}
-  } else {
-    self.client[url].count++
-  }
-
-  if (self.client[url].count > config.client.maxTry) {
-    return -1
-  }
   setTimeout(function () {
     // evite de lancer deux fois le meme torrent
-    if (self.client[url].peer == null) {
+    if (self.client[url] == null) {
       // Si trop de torrent en cours
-      if (Object.keys(self.client).length <= config.torrent.max) {
+      if (Object.keys(self.client).length < config.torrent.max) {
+        if (self.client[url] == null) {
+          self.client[url] = {count: 1}
+        } else {
+          self.client[url].count++
+        }
+
+        if (self.client[url].count > config.client.maxTry) {
+          return -1
+        }
         var c = new Client()
         c.download(url)
 
