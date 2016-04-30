@@ -47,7 +47,7 @@ Client.prototype.download = function (torrentLink) {
 Client.prototype.stop = function () {
   var self = this
   if (self.torrent) {
-    self.torrent.pause()
+    //self.torrent.pause()
     setTimeout(function () {
       self.torrent.destroy()
     }, 1000)
