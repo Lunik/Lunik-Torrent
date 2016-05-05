@@ -40,6 +40,12 @@ Client.prototype.download = function (torrentLink) {
         Log.print('Finish torrent: ' + self.torrent.name)
         self.doneFunction(self.torrent.infoHash, self.torrent.name)
       })
+
+      self.torrent.on('noPeers', function () {
+        Log.print('No peers: ' + self.torrent.name)
+        self.doneFunction(self.torrent.infoHash, self.torrent.name)
+      })
+      
     })
   }, 1)
 }
