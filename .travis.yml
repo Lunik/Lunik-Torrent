@@ -5,6 +5,9 @@ node_js:
   - "5"
   - "4"
 
+env:
+  - PORT=5000
+
 before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
