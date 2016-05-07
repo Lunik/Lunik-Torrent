@@ -1,0 +1,91 @@
+---
+notifications:
+  email: false
+  
+language: node_js
+node_js:
+  - "6"
+  - "5"
+  - "4"
+
+env:
+  - PORT="5000" DIRNAME="ok" DIRNAME2="ok2" FILENAME="thefile" MAGNET="magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4" HASH="6a9759bffd5c0af65319979fb7832189f4f3c35d"
+
+before_install:
+  # Make sure everything's up to date.
+  - sudo apt-get update -qq
+  - sudo apt-get install curl
+
+script:
+  # Start app
+  - "npm start &"
+
+  # Wait for server start
+  - "sleep 20"
+
+  # Check if app is lauched
+  - "curl http://localhost:$PORT"
+
+  # Check list-d POST
+  - "curl -u admin:admin --data \"dir=/\" http://localhost:$PORT/list-d"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check list-t POST
+  - "curl -u admin:admin http://localhost:$PORT/list-t"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check mkdir-d POST
+  - "curl -u admin:admin --data \"name=$DIRNAME&path=/\" http://localhost:$PORT/mkdir-d"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check rename-d POST
+  - "curl -u admin:admin --data \"path=/&oldname=$DIRNAME&newname=$DIRNAME2\" http://localhost:$PORT/rename-d"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check mkdir-d POST
+  - "curl -u admin:admin --data \"name=$DIRNAME&path=/\" http://localhost:$PORT/mkdir-d"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check mv-d POST
+  - "curl -u admin:admin --data \"path=/&file=$DIRNAME2&folder=$DIRNAME\" http://localhost:$PORT/mv-d"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # add file
+  - "echo date > files/$FILENAME"
+
+  # Check remove-d POST
+  # Error with rm dir
+  #- "curl -u admin:admin --data "file=$DIRNAME" http://localhost:$PORT/remove-d"
+  # Check if app still running
+  #- "curl http://localhost:$PORT"
+
+  # Check files GET
+  - "curl -u admin:admin http://localhost:$PORT/files?f=$FILENAME"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check download-d POST
+  - "curl -u admin:admin --data \"url=$MAGNET\" http://localhost:$PORT/download-t"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check list-t POST
+  - "curl -u admin:admin --data \"\" http://localhost:$PORT/list-t"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check remove-t POST
+  - "curl -u admin:admin --data \"hash=$HASH\" http://localhost:$PORT/remove-t"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
+
+  # Check lock-d POST
+  - "curl -u admin:admin http://localhost:$PORT/lock-d?f=$FILENAME"
+  # Check if app still running
+  - "curl http://localhost:$PORT"
