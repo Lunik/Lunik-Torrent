@@ -17,5 +17,8 @@ script:
   # Start app
   - "npm start &"
 
+  # Wait for server start
+  - "sleep 20"
+
   # Check if app is lauched
   - "curl http://localhost"
