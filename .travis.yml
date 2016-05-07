@@ -29,7 +29,7 @@ script:
   - "curl http://localhost:$PORT"
 
   # Check list-d POST
-  - "curl -u admin:admin --data "dir=/" http://localhost:$PORT/list-d"
+  - "curl -u admin:admin --data \"dir=/\" http://localhost:$PORT/list-d"
   # Check if app still running
   - "curl http://localhost:$PORT"
 
@@ -39,22 +39,22 @@ script:
   - "curl http://localhost:$PORT"
 
   # Check mkdir-d POST
-  - "curl -u admin:admin --data "name=$DIRNAME&path=/" http://localhost:$PORT/mkdir-d"
+  - "curl -u admin:admin --data \"name=$DIRNAME&path=/\" http://localhost:$PORT/mkdir-d"
   # Check if app still running
   - "curl http://localhost:$PORT"
 
   # Check rename-d POST
-  - "curl -u admin:admin --data "path=/&oldname=$DIRNAME&newname=$DIRNAME2" http://localhost:$PORT/rename-d"
+  - "curl -u admin:admin --data \"path=/&oldname=$DIRNAME&newname=$DIRNAME2\" http://localhost:$PORT/rename-d"
   # Check if app still running
   - "curl http://localhost:$PORT"
 
   # Check mkdir-d POST
-  - "curl -u admin:admin --data "name=$DIRNAME&path=/" http://localhost:$PORT/mkdir-d"
+  - "curl -u admin:admin --data \"name=$DIRNAME&path=/\" http://localhost:$PORT/mkdir-d"
   # Check if app still running
   - "curl http://localhost:$PORT"
 
   # Check mv-d POST
-  - "curl -u admin:admin --data "path=/&file=$DIRNAME2&folder=$DIRNAME" http://localhost:$PORT/mv-d"
+  - "curl -u admin:admin --data \"path=/&file=$DIRNAME2&folder=$DIRNAME\" http://localhost:$PORT/mv-d"
   # Check if app still running
   - "curl http://localhost:$PORT"
 
@@ -73,17 +73,17 @@ script:
   - "curl http://localhost:$PORT"
 
   # Check download-d POST
-  - "curl -u admin:admin --data "url=$MAGNET" http://localhost:$PORT/download-t"
+  - "curl -u admin:admin --data \"url=$MAGNET\" http://localhost:$PORT/download-t"
   # Check if app still running
   - "curl http://localhost:$PORT"
 
   # Check list-t POST
-  - "curl -u admin:admin --data "" http://localhost:$PORT/list-t"
+  - "curl -u admin:admin --data \"\" http://localhost:$PORT/list-t"
   # Check if app still running
   - "curl http://localhost:$PORT"
 
   # Check remove-t POST
-  - "curl -u admin:admin --data "hash=$HASH" http://localhost:$PORT/remove-t"
+  - "curl -u admin:admin --data \"hash=$HASH\" http://localhost:$PORT/remove-t"
   # Check if app still running
   - "curl http://localhost:$PORT"
 
