@@ -12,7 +12,7 @@ before_install:
 
 script:
   # Start app
-  - "sudo npm start"
+  - "npm start"
 
   # Check if app is lauched
   - "curl http://localhost"
