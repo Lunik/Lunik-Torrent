@@ -27,7 +27,9 @@ function Server () {
     extended: true
   }))
 
-  this.server = http.createServer(this.basic, this.app)
+  this.app.use(auth.connect(this.basic));
+
+  this.server = http.createServer(this.app)
   var port = process.env.PORT || config.server.port
   this.server.listen(port, function () {
     Log.print('Server listening at port ' + port)
