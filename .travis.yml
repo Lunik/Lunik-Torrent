@@ -15,7 +15,7 @@ before_install:
 
 script:
   # Start app
-  - "npm start"
+  - "npm start &"
 
   # Check if app is lauched
   - "curl http://localhost"
