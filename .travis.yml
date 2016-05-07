@@ -13,7 +13,7 @@ before_install:
 - sudo apt-get install curl
 script:
 - npm start &
-- sleep 20
+- sleep 10
 - curl http://localhost:$PORT
 - curl -u admin:admin --data "dir=/" http://localhost:$PORT/list-d
 - curl http://localhost:$PORT
@@ -32,6 +32,7 @@ script:
 - curl http://localhost:$PORT
 - curl -u admin:admin --data "url=$MAGNET" http://localhost:$PORT/download-t
 - curl http://localhost:$PORT
+- sleep 30
 - curl -u admin:admin --data "" http://localhost:$PORT/list-t
 - curl http://localhost:$PORT
 - curl -u admin:admin --data "hash=$HASH" http://localhost:$PORT/remove-t
