@@ -39,5 +39,7 @@ script:
 - curl -u admin:admin http://localhost:$PORT/lock-d?f=$FILENAME
 - curl http://localhost:$PORT
 deploy:
+  provider: npm
+  email: guillaume.lunik@gmail.com
   api_key:
     secure: TDsu3+bhCoCpCLovZHSco71BlGWL4jHdKu/GlMsqKcy8ZADK+7XO+qVJPst5MR/OG0QgjKa9meClBqaHaSJaGjDTyf+2xn/NqnBF7tZTW7XW39G6TMlkchQFsb2tso+cIZHG5I72SwY67vnwwcdbozgJB4moHEPTLC64VvA+wndCuN7+YsMmbrSwZeTjxgj4PCyRSTghcfOqCU8gDQiI+Hr+75H44GlWQyTM9565s+9B74i3IZMGrdR002MMHC8+VDg1LEAZABwTX86yp/WYNHfu3/nOz+JB9J3zE7lbiSeedLuzX4iw5FlOGWnEIJcuozcF7NOKmP9EtV70KL+vG9SrxivYgXpdH/Cv3NJlmIvKNbqAoqPAviaRikuKyQ9pJGQa02h/i7hWvXssxO4KiP3c2v4r3qba1ZDDb6gE16WViHXQmPmq9aWmjHBK6YJXEfDg8c0FQ40BBQ5q8mXhk2Sk4hDBWoaUtJ/ZTQV8gI/UK6A+YA3gWEoCZigszlKKfBg12EqgyDsjN5xQmXDnTAX9a9wWJk+3rQNZ1a8IpKc/Tsy/osQ9zfdNwngMuIdasBSm2TwTBVc32EpdcXqDfH8fgiqiNOxnWGIYZP3kU+kLZvgMJsDmOsi4uMA185lx6jiHmfJUDnigsAQeI6A+tuNHCrC+NEabid1ErJfPU4M=
