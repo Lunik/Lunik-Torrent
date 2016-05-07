@@ -1,0 +1,14 @@
+---
+language: node_js
+node_js:
+  - "6"
+  - "5"
+  - "4"
+
+before_install:
+  # Make sure everything's up to date.
+  - sudo apt-get update -qq
+  - sudo apt-get install curl
+
+script:
+  - "curl http://localhost"
