@@ -21,4 +21,4 @@ script:
   - "sleep 20"
 
   # Check if app is lauched
-  - "curl http://localhost"
+  - "curl http://localhost:$PORT"
