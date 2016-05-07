@@ -11,4 +11,8 @@ before_install:
   - sudo apt-get install curl
 
 script:
+  # Start app
+  - "sudo npm start"
+
+  # Check if app is lauched
   - "curl http://localhost"
