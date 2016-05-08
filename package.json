@@ -23,5 +23,9 @@
     "http-auth": "^2.3.3",
     "portscanner": "^1.0.0",
     "webtorrent": "^0.92.0"
+  },
+  "standard": {
+    "ignore": [ "require.js" ],
+    "globals": [ "$", "readData", "getAllKey", "localStorage", "confirm", "prompt" ]
   }
 }
