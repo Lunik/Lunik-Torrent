@@ -4,7 +4,6 @@ var Directory = require('./directory.js')
 var config = require('./config.json')
 var FileTransfert = require('./filetransfert.js')
 
-var fs = require('fs')
 var auth = require('http-auth')
 var express = require('express')
 var compression = require('compression')
@@ -27,7 +26,7 @@ function Server () {
     extended: true
   }))
 
-  this.app.use(auth.connect(this.basic));
+  this.app.use(auth.connect(this.basic))
 
   this.server = http.createServer(this.app)
   var port = process.env.PORT || config.server.port
@@ -44,6 +43,7 @@ function Server () {
       var transfert = new FileTransfert(req, res, function () {
         Directory.finishDownloading(req.query.f)
       })
+      console.log(transfert)
     } else {
       res.end(JSON.stringify({
         err: "File doesn't exist."
@@ -98,10 +98,10 @@ function Server () {
   // client remove directory / file
   this.app.post('/remove-d', function (req, res) {
     if (req.body.file) {
-      if (Directory.remove(req.body.file) != -1) {
+      if (Directory.remove(req.body.file) !== -1) {
         Log.print(req.user + ' remove file: ' + req.body.file)
         res.end(JSON.stringify({
-          file: req.body.file.split('/')[req.body.file.split('/').length -1]
+          file: req.body.file.split('/')[req.body.file.split('/').length - 1]
         }))
       } else {
         res.end(JSON.stringify({
@@ -118,7 +118,7 @@ function Server () {
   // client rename file
   this.app.post('/rename-d', function (req, res) {
     if (req.body.path && req.body.oldname && req.body.newname) {
-      if (Directory.rename(req.body.path, req.body.oldname, req.body.newname) != -1) {
+      if (Directory.rename(req.body.path, req.body.oldname, req.body.newname) !== -1) {
         Log.print(req.user + ' rename file: ' + req.body.path + req.body.oldname + ' in: ' + req.body.newname)
         res.end(JSON.stringify({
           path: req.body.path,
@@ -155,7 +155,7 @@ function Server () {
   // client move directory
   this.app.post('/mv-d', function (req, res) {
     if (req.body.path && req.body.file && req.body.folder) {
-      if (Directory.mv(req.body.path, req.body.file, req.body.folder) != -1) {
+      if (Directory.mv(req.body.path, req.body.file, req.body.folder) !== -1) {
         Log.print(req.user + ' move: ' + req.body.path + req.body.file + ' in: ' + req.body.path + req.body.folder)
         res.end(JSON.stringify({
           file: req.body.file
@@ -173,14 +173,13 @@ function Server () {
   })
 
   this.app.post('/search-t', function (req, res) {
-    if (req.body.query != '') {
+    var searchEngine = require('./searchT.js')
+    if (req.body.query !== '') {
       Log.print(req.user + ' search: ' + req.body.query)
-      var searchEngine = require('./searchT.js')
       searchEngine.search(req.body.query, function (data) {
         res.end(JSON.stringify(data))
       })
     } else {
-      var searchEngine = require('./searchT.js')
       searchEngine.latest(function (data) {
         res.end(JSON.stringify(data))
       })
@@ -193,9 +192,9 @@ function Server () {
       infoEngine.getInfo(req.body.type, req.body.query, function (data) {
         res.end(JSON.stringify(data))
       })
-    } else (
+    } else {
       res.end()
-      )
+    }
   })
 
   this.app.get('/lock-d', function (req, res) {

@@ -1,4 +1,4 @@
-var Pnotif = function () {
+function Pnotif () {
   this.init = function (pos, html, timeOut) {
     this.pos = getXYFromPos(pos)
     this.html = html
@@ -8,7 +8,7 @@ var Pnotif = function () {
   this.container = null
 
   this.draw = function () {
-    $container = $('<div>').addClass('pnotif-container')
+    var $container = $('<div>').addClass('pnotif-container')
     this.container = $container
     for (var key in this.pos) {
       $container.css(key, this.pos[key])
@@ -23,15 +23,11 @@ var Pnotif = function () {
     }, this.timeOut + 1000)
   }
 
-  this.remove = function(){
-    if(this.container){
+  this.remove = function () {
+    if (this.container) {
       this.container.remove()
     }
   }
-}
-
-function pnotifClose () {
-  $('.pnotif-container').remove()
 }
 
 function getXYFromPos (pos) {

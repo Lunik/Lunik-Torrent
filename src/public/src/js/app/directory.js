@@ -54,7 +54,6 @@ _Directory.prototype.getList = function () {
       self.list(directory.files, directory.downloading)
 
       $('body').scrollTop(current_scroll)
-
     }
   })
   clearTimeout(this.timer)
@@ -70,7 +69,7 @@ _Directory.prototype.list = function (directory, locked) {
   var href = document.location.hash.substring(1).split('\/')
   href.splice(href.length - 2 || 0, 1)
   href = href.join('\/')
-  this.append({new: false, name: '..', href: href, isfile: false, isdir: true, })
+  this.append({ new: false, name: '..', href: href, isfile: false, isdir: true })
 
   $('.file.button[data-file!=".."]').addClass('toremove')
 
@@ -78,14 +77,14 @@ _Directory.prototype.list = function (directory, locked) {
     var file = directory[key]
     file.name = key
     file.href = document.location.hash.substring(1) + file.name + '/'
-    if (kownFiles.indexOf(file.name) == -1) {
+    if (kownFiles.indexOf(file.name) === -1) {
       file.new = true
       kownFiles.push(file.name)
     } else {
       file.new = false
     }
 
-    file.locked = locked[file.href.slice(0, -1)] ? true : false
+    file.locked = locked[file.href.slice(0, -1)]
 
     this.append(file)
   }
@@ -96,35 +95,35 @@ _Directory.prototype.list = function (directory, locked) {
 
 _Directory.prototype.append = function (file) {
   var self = this
-
+  var $raw
   if ($('.list  .file[data-file="' + file.name + '"]').length > 0) {
-    var $raw = $('.list  .file[data-file="' + file.name + '"]')
+    $raw = $('.list  .file[data-file="' + file.name + '"]')
     $raw.removeClass('toremove')
     return 0
   } else {
-    var $raw = $('<tr>').addClass(file.new ? 'file button new' : 'file button').attr('data-file', file.name).click(function (event) {
+    $raw = $('<tr>').addClass(file.new ? 'file button new' : 'file button').attr('data-file', file.name).click(function (event) {
       event.stopPropagation()
       $('.list .selected').children('#name').draggable('disable')
       $('.list .file').removeClass('selected')
       $(this).addClass('selected')
 
       self.setActions(file, {
-        download: file.isfile ? true : false,
-        rename: file.locked ? false : true,
-        remove: file.locked ? false : true,
-        info: file.isfile ? true : false
+        download: file.isfile,
+        rename: file.locked,
+        remove: file.locked,
+        info: file.isfile
       })
 
       $(this).children('#name').draggable('enable')
     })
 
     var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
-      file.isdir ?
-        $('<a>').addClass('button').attr('href', '#' + file.href).text(file.name) :
-        file.name).appendTo($raw).draggable({
-      revert: true
-    }).draggable('disable')
-    if (file.isdir)
+      file.isdir
+        ? $('<a>').addClass('button').attr('href', '#' + file.href).text(file.name)
+        : file.name).appendTo($raw).draggable({
+          revert: true
+        }).draggable('disable')
+    if (file.isdir) {
       $name.droppable({
         greedy: true,
         drop: function (data, element) {
@@ -148,6 +147,7 @@ _Directory.prototype.append = function (file) {
           })
         }
       })
+    }
     if (file.locked) {
       $('<i>').addClass('fa fa-lock locked').appendTo($name)
     }
@@ -174,7 +174,7 @@ _Directory.prototype.setActions = function (file, actions) {
   if (actions.download) {
     this.actions.download.removeClass('hide')
     this.actions.download.parent().attr('href', 'files/?f=' + document.location.hash.substring(1) + file.name)
-  } else if (actions.download == false) {
+  } else if (actions.download === false) {
     this.actions.download.removeClass('hide')
     this.actions.download.addClass('unactive')
   }
@@ -183,11 +183,12 @@ _Directory.prototype.setActions = function (file, actions) {
   if (actions.rename) {
     this.actions.rename.removeClass('hide').click(function () {
       var oldname = file.name.split('.')
+      var extension
       if (oldname.length > 1 && file.isfile) {
-        var extension = oldname.pop()
+        extension = oldname.pop()
         extension = extension.length > 0 ? '.' + extension : ''
       } else {
-        var extension = ''
+        extension = ''
       }
       var name = prompt('New name for: ' + oldname.join(' '), oldname.join(' '))
       if (name) {
@@ -206,17 +207,16 @@ _Directory.prototype.setActions = function (file, actions) {
           } else {
             file.name = data.newname
             $('tr[data-file="' + data.oldname + '"] td#name').attr('data-file', data.newname).html(
-              file.isdir ?
-                $('<a>').attr('href', '#' + document.location.hash.substring(1) + data.newname + '/').text(data.newname) :
-                data.newname
+              file.isdir
+                ? $('<a>').attr('href', '#' + document.location.hash.substring(1) + data.newname + '/').text(data.newname)
+                : data.newname
             )
             $('tr[data-file="' + data.oldname + '"]').attr('data-file', data.newname)
           }
         })
       }
     })
-
-  } else if (actions.rename == false) {
+  } else if (actions.rename === false) {
     this.actions.rename.removeClass('hide')
     this.actions.rename.addClass('unactive')
   }
@@ -224,7 +224,7 @@ _Directory.prototype.setActions = function (file, actions) {
   // REMOVE
   if (actions.remove) {
     this.actions.remove.removeClass('hide').click(function () {
-      if (confirm('Confirmer la suppression de ' + file.name + ' ?'))
+      if (confirm('Confirmer la suppression de ' + file.name + ' ?')) {
         $.post('/remove-d', {
           file: document.location.hash.substring(1) + file.name
         }, function (file) {
@@ -237,8 +237,9 @@ _Directory.prototype.setActions = function (file, actions) {
             $('tr[data-file="' + file.file + '"]').remove()
           }
         })
+      }
     })
-  } else if (actions.remove == false) {
+  } else if (actions.remove === false) {
     this.actions.remove.removeClass('hide')
     this.actions.remove.addClass('unactive')
   }
@@ -249,7 +250,7 @@ _Directory.prototype.setActions = function (file, actions) {
       var info = new _MediaInfo()
       info.get(file.name)
     })
-  } else if (actions.info == false) {
+  } else if (actions.info === false) {
     this.actions.info.removeClass('hide')
     this.actions.info.addClass('unactive')
   }

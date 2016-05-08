@@ -1,5 +1,3 @@
-var Log = require('./log.js')
-
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 

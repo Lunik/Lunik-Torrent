@@ -39,9 +39,9 @@ _SearchTorrent.prototype.getHtml = function (data) {
       $('<td>').addClass('seed').html($('<i>').addClass('fa fa-arrow-up').text(element.seeds)).appendTo($item)
       $('<td>').addClass('peer').html($('<i>').addClass('fa fa-arrow-down').text(element.leechs)).appendTo($item)
 
-      if (data[key].type == 'films') {
+      if (data[key].type === 'films') {
         $item.appendTo($films)
-      } else if (data[key].type == 'series') {
+      } else if (data[key].type === 'series') {
         $item.appendTo($series)
       }
     })

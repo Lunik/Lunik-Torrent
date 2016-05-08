@@ -18,7 +18,7 @@ function Config () {
 
 Config.prototype.getHtml = function () {
   var self = this
-  $html = $('<div/>').addClass('config-pop').click(function () {
+  var $html = $('<div/>').addClass('config-pop').click(function (event) {
     event.stopPropagation()
   })
 
@@ -28,7 +28,7 @@ Config.prototype.getHtml = function () {
 
   for (var theme in this.themeList) {
     var $option = $('<option>').attr('value', this.themeList[theme]).text(this.themeList[theme])
-    if (this.config.theme == this.themeList[theme]) {
+    if (this.config.theme === this.themeList[theme]) {
       $option.attr('selected', 'true')
     }
     $option.appendTo($theme)
@@ -65,10 +65,11 @@ Config.prototype.applyConfig = function (config) {
 }
 
 Config.prototype.applyTheme = function (theme) {
+  var $themeLink
   if ($('head .theme').length > 0) {
-    var $themeLink = $('head .theme').attr('href', 'src/css/themes/' + theme + '/theme.css')
+    $themeLink = $('head .theme').attr('href', 'src/css/themes/' + theme + '/theme.css')
   } else {
-    var $themeLink = $('<link>').addClass('theme').attr('rel', 'stylesheet').attr('href', 'src/css/themes/' + theme + '/theme.css').appendTo($('head'))
+    $themeLink = $('<link>').addClass('theme').attr('rel', 'stylesheet').attr('href', 'src/css/themes/' + theme + '/theme.css').appendTo($('head'))
   }
 }
 

@@ -44,7 +44,7 @@ function _LeftMenu () {
 
   this.but.new.click(function () {
     var name = prompt('Nom du nouveau dossier ?')
-    if (name)
+    if (name) {
       $.post('/mkdir-d', {
         'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
         'name': name
@@ -52,7 +52,7 @@ function _LeftMenu () {
         name = JSON.parse(name)
         if (name.err) {
           self.notif.remove()
-          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + file.err + '</p>', 10000)
+          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + name.err + '</p>', 10000)
           self.notif.draw()
         } else {
           self.List.Directory.append({
@@ -66,6 +66,7 @@ function _LeftMenu () {
           })
         }
       })
+    }
   })
 
   this.but.start.click(function () {
@@ -97,7 +98,7 @@ function _LeftMenu () {
 
   this.but.input.keyup(function () {
     var value = $(this).val()
-    if (value.search('.torrent') != -1 || value.search('http://') != -1 || value.search('magnet') != -1) {
+    if (value.search('.torrent') !== -1 || value.search('http://') !== -1 || value.search('magnet') !== -1) {
       self.but.start.removeClass('hide')
       self.but.search.addClass('hide')
     } else {

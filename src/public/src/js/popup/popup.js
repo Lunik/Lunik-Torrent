@@ -1,11 +1,12 @@
-var _Popup = function () {
+function _Popup () {
   // Initialisation du popup
   this.init = function (posX, posY, width, height, title, html, closeBut) {
     this.posX = formatPosX(posX)
     this.posY = formatPosY(posY)
     this.width = formatWidth(width)
-    if (this.width > 500)
+    if (this.width > 500) {
       this.whidth = 500
+    }
     this.height = formatHeight(height)
     this.title = title
     this.html = html
@@ -45,7 +46,6 @@ var _Popup = function () {
       $('<p>').addClass('popupHtml').append(this.html)
     ).appendTo($shadow)
     $shadow.appendTo($('body'))
-
   }
 
   this.center = function () {
@@ -62,9 +62,9 @@ var _Popup = function () {
   function formatWidth (width) {
     if (width) {
       width = width.toString()
-      if (width.indexOf('%') != -1) {
+      if (width.indexOf('%') !== -1) {
         width = width.split('%')[0]
-        width = parseInt((width * $(window).width()) / 100)
+        width = parseInt((width * $(window).width()) / 100, 10)
       }
     }
     return width
@@ -73,9 +73,9 @@ var _Popup = function () {
   function formatHeight (height) {
     if (height) {
       height = height.toString()
-      if (height.indexOf('%') != -1) {
+      if (height.indexOf('%') !== -1) {
         height = height.split('%')[0]
-        height = parseInt((height * $(window).height()) / 100)
+        height = parseInt((height * $(window).height()) / 100, 10)
       }
     }
     return height
@@ -84,9 +84,9 @@ var _Popup = function () {
   function formatPosX (posX) {
     if (posX) {
       posX = posX.toString()
-      if (posX.indexOf('%') != -1) {
+      if (posX.indexOf('%') !== -1) {
         posX = posX.split('%')[0]
-        posX = parseInt((posX * $(window).height()) / 100)
+        posX = parseInt((posX * $(window).height()) / 100, 10)
       }
     }
     return posX
@@ -95,9 +95,9 @@ var _Popup = function () {
   function formatPosY (posY) {
     if (posY) {
       posY = posY.toString()
-      if (posY.indexOf('%') != -1) {
+      if (posY.indexOf('%') !== -1) {
         posY = posY.split('%')[0]
-        posY = parseInt((posY * $(window).height()) / 100)
+        posY = parseInt((posY * $(window).height()) / 100, 10)
       }
     }
     return posY
