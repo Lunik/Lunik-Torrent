@@ -1,4 +1,4 @@
-var Log = require('./log.js')
+	var Log = require('./log.js')
 var Torrent = require('./torrent.js')
 var Directory = require('./directory.js')
 var config = require('./config.json')
@@ -199,7 +199,11 @@ function Server () {
 
   this.app.get('/lock-d', function (req, res) {
     if (req.query.f) {
-      res.end(Directory.isDownloading(req.query.f).toString())
+      if (Directory.isDownloading(req.query.f)) {
+      	res.end(Directory.isDownloading(req.query.f).toString())
+      } else {
+	res.end('false')
+      }
     } else {
       res.end()
     }
