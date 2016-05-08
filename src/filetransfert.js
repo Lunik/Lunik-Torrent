@@ -9,6 +9,9 @@ function FileTransfert (req, res, callback) {
   setTimeout(function () {
     if (config.nginx.active) {
       portscanner.checkPortStatus(config.nginx.port, 'localhost', function (error, status) {
+        if (error) {
+          console.log(error)
+        }
         // Nginx aviable
         if (status === 'open') {
           self.transfertNginx(req, res, callback)
@@ -23,14 +26,15 @@ function FileTransfert (req, res, callback) {
 
     self.timeout = 0
   }, 1)
-
 }
 
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
-  var self = this
   setTimeout(function () {
     var filename = config.directory.path + req.query.f
     fs.stat(filename, function (err, stats) {
+      if (err) {
+        console.log(err)
+      }
       if (stats) {
         res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('\/').pop() + '"')
         res.setHeader('Content-Length', stats.size)

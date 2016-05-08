@@ -27,7 +27,7 @@ _TopMenu.prototype.setAriane = function () {
   var profDir = ''
   var i = 0
   directories.forEach(function (dir) {
-    if (dir != '') {
+    if (dir !== '') {
       profDir += dir + '/'
       if (i >= begin) {
         self.ariane.append($delimiter.clone())

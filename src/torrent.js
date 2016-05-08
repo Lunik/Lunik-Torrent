@@ -2,7 +2,6 @@ var Log = require('./log.js')
 var config = require('./config.json')
 var Client = require('./client.js')
 
-var cp = require('child_process')
 var fs = require('fs')
 
 function Torrent () {
@@ -49,7 +48,7 @@ Torrent.prototype.start = function (url) {
         })
 
         c.on('done', function (hash, name) {
-          if(self.client[url]){
+          if (self.client[url]) {
             self.client[url].peer.stop()
             delete self.client[url]
             // Deplace les fichies
@@ -87,7 +86,7 @@ Torrent.prototype.remove = function (hash) {
 
 Torrent.prototype.getUrlFromHash = function (hash) {
   for (var key in this.client) {
-    if (this.client[key].hash == hash) {
+    if (this.client[key].hash === hash) {
       return key
     }
   }

@@ -17,7 +17,6 @@ function _Torrent () {
 }
 
 _Torrent.prototype.getList = function () {
-  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
   var self = this
   $.post('/list-t', function (torrents) {
     torrents = JSON.parse(torrents)
@@ -32,7 +31,6 @@ _Torrent.prototype.getList = function () {
 
       $('body').scrollTop(current_scroll)
     }
-
   })
   clearTimeout(this.timer)
   this.timer = setTimeout(function () {
@@ -42,7 +40,7 @@ _Torrent.prototype.getList = function () {
 
 _Torrent.prototype.list = function (torrents) {
   $('.torrent.button').addClass('toremove')
-  for (key in torrents) {
+  for (var key in torrents) {
     this.append(torrents[key])
   }
   $('.torrent.toremove').remove()
@@ -50,14 +48,16 @@ _Torrent.prototype.list = function (torrents) {
 
 _Torrent.prototype.append = function (torrent) {
   var self = this
+  var needToAppend
+  var $torrent
   if ($('.list  .torrent[hash=' + torrent.hash + ']').length > 0) {
-    var $torrent = $('.list .torrent[hash=' + torrent.hash + ']')
+    $torrent = $('.list .torrent[hash=' + torrent.hash + ']')
     $torrent.html('')
     $torrent.removeClass('toremove')
-    var needToAppend = 0
+    needToAppend = 0
   } else {
-    var $torrent = $('<tr>').addClass('torrent button').attr('hash', torrent.hash)
-    var needToAppend = 1
+    $torrent = $('<tr>').addClass('torrent button').attr('hash', torrent.hash)
+    needToAppend = 1
   }
   $torrent.click(function (event) {
     event.stopPropagation()
@@ -93,7 +93,7 @@ _Torrent.prototype.setActions = function (torrent, actions) {
 
   if (actions.remove) {
     this.actions.remove.removeClass('hide').click(function () {
-      if (confirm('Confirmer la suppression de ' + torrent.name + ' ?'))
+      if (confirm('Confirmer la suppression de ' + torrent.name + ' ?')) {
         $.post('/remove-t', {
           hash: torrent.hash
         }, function (file) {
@@ -106,6 +106,7 @@ _Torrent.prototype.setActions = function (torrent, actions) {
             $('tr[hash="' + torrent.hash + '"]').remove()
           }
         })
+      }
     })
   }
   if (actions.info) {

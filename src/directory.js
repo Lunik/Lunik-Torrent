@@ -53,8 +53,6 @@ Directory.prototype.getDir = function (dir) {
 }
 
 Directory.prototype.getInfo = function (file) {
-  var self = this
-
   var stats = fs.statSync(file)
   var sfile = {}
   if (stats.isFile()) {
@@ -71,18 +69,18 @@ Directory.prototype.getInfo = function (file) {
 Directory.prototype.setDownloading = function (file) {
   var self = this
   setTimeout(function () {
-    self.downloading[file] = self.downloading[file] ?
-      {date: new Date(), count: self.downloading[file].count + 1} :
-      {date: new Date(), count: 1}
+    self.downloading[file] = self.downloading[file]
+      ? {date: new Date(), count: self.downloading[file].count + 1}
+      : {date: new Date(), count: 1}
   }, 1)
 }
 
 Directory.prototype.finishDownloading = function (file) {
   var self = this
   setTimeout(function () {
-    self.downloading[file] = self.downloading[file] ?
-      {date: self.downloading[file].date, count: self.downloading[file].count - 1} :
-      {date: new Date(), count: 0}
+    self.downloading[file] = self.downloading[file]
+      ? {date: self.downloading[file].date, count: self.downloading[file].count - 1}
+      : {date: new Date(), count: 0}
 
     if (self.downloading[file].count >= 0) {
       delete self.downloading[file]
@@ -104,8 +102,8 @@ Directory.prototype.updateDownloads = function () {
 }
 
 Directory.prototype.isDownloading = function (file) {
-  file = file[0] == '/' ? file.substring(1) : file
-  return this.downloading[file] ? true : false
+  file = file[0] === '/' ? file.substring(1) : file
+  return this.downloading[file]
 }
 
 Directory.prototype.remove = function (file) {

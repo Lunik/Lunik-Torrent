@@ -12,27 +12,27 @@ function _List () {
   $.tablesorter.addParser({
     // set a unique id
     id: 'size',
-    is: function (s) {return false;},
+    is: function (s) { return false },
     format: function (s) {
       s = s.split(' ')
-      s[0] = parseInt(s[0])
-      if (s[1] == 'b') {
+      s[0] = parseInt(s[0], 10)
+      if (s[1] === 'b') {
         return s[0]
       } else {
         s[0] *= 1024
-        if (s[1] == 'kb') {
+        if (s[1] === 'kb') {
           return s[0]
         } else {
           s[0] *= 1024
-          if (s[1] == 'mb') {
+          if (s[1] === 'mb') {
             return s[0]
           } else {
             s[0] *= 1024
-            if (s[1] == 'gb') {
+            if (s[1] === 'gb') {
               return s[0]
             } else {
               s[0] *= 1024
-              if (s[1] == 'tb') {
+              if (s[1] === 'tb') {
                 return s[0]
               }
             }
@@ -48,11 +48,11 @@ function _List () {
   $.tablesorter.addParser({
     // set a unique id
     id: 'date',
-    is: function (s) {return false;},
+    is: function (s) { return false },
     format: function (s) {
       s = s.split('\/')
 
-      return parseInt(s[0]) + parseInt(s[1]) * 30 + parseInt(s[2]) * 12
+      return parseInt(s[0], 10) + parseInt(s[1], 10) * 30 + parseInt(s[2], 10) * 12
     },
     type: 'numeric'
   })
@@ -60,8 +60,8 @@ function _List () {
   self.table.tablesorter({
     headers: {
       0: { sorter: 'text' },
-      1: { sorter: 'size'},
-      2: { sorter: 'date'}
+      1: { sorter: 'size' },
+      2: { sorter: 'date' }
     }
   })
 
@@ -110,24 +110,24 @@ function _List () {
       scrollTop: 0
     }, 1000)
   })
-
 }
 
 _List.prototype.switchTable = function (nav) {
   this.body.html('')
+  var key
   switch (nav) {
     case 'torrent':
       clearTimeout(this.Directory.timer)
       this.Torrent.getList()
 
       // hide directory elements
-      for (var key in this.directoryElements) {
+      for (key in this.directoryElements) {
         this.directoryElements[key].addClass('hide')
       }
 
       // show torrents elements
-      for (var key in this.torrentElements) {
-        if (key == 'startBut') continue
+      for (key in this.torrentElements) {
+        if (key === 'startBut') continue
         this.torrentElements[key].removeClass('hide')
       }
 
@@ -143,12 +143,12 @@ _List.prototype.switchTable = function (nav) {
       this.Directory.getList()
 
       // hide torrents elements
-      for (var key in this.torrentElements) {
+      for (key in this.torrentElements) {
         this.torrentElements[key].addClass('hide')
       }
 
       // show directory elements
-      for (var key in this.directoryElements) {
+      for (key in this.directoryElements) {
         this.directoryElements[key].removeClass('hide')
       }
 
