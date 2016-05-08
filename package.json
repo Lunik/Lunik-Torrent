@@ -22,10 +22,19 @@
     "fs": "^0.0.2",
     "http-auth": "^2.3.3",
     "portscanner": "^1.0.0",
-    "webtorrent": "^0.92.0"
+    "webtorrent": "^0.93.1"
   },
   "standard": {
-    "ignore": [ "require.js" ],
-    "globals": [ "$", "readData", "getAllKey", "localStorage", "confirm", "prompt" ]
+    "ignore": [
+      "require.js"
+    ],
+    "globals": [
+      "$",
+      "readData",
+      "getAllKey",
+      "localStorage",
+      "confirm",
+      "prompt"
+    ]
   }
 }
