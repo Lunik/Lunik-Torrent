@@ -1,4 +1,4 @@
-	var Log = require('./log.js')
+var Log = require('./log.js')
 var Torrent = require('./torrent.js')
 var Directory = require('./directory.js')
 var config = require('./config.json')
