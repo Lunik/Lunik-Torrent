@@ -103,7 +103,7 @@ Directory.prototype.updateDownloads = function () {
 
 Directory.prototype.isDownloading = function (file) {
   file = file[0] === '/' ? file.substring(1) : file
-  return this.downloading[file]
+  return this.downloading[file] ? true : false
 }
 
 Directory.prototype.remove = function (file) {
