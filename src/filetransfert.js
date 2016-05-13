@@ -36,7 +36,7 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
         console.log(err)
       }
       if (stats) {
-        res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('\/').pop() + '"')
+        res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('/').pop() + '"')
         res.setHeader('Content-Length', stats.size)
         res.setHeader('Content-type', 'application/octet-stream')
 

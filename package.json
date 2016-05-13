@@ -22,7 +22,7 @@
     "fs": "^0.0.2",
     "http-auth": "^2.3.3",
     "portscanner": "^1.0.0",
-    "webtorrent": "^0.93.1"
+    "webtorrent": "^0.93.2"
   },
   "standard": {
     "ignore": [

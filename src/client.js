@@ -18,7 +18,7 @@ Client.prototype.download = function (torrentLink) {
   var self = this
 
   setTimeout(function () {
-    self.torrent = torrentLink
+    self.torrentLink = torrentLink
     Log.echo('Start: ' + torrentLink)
 
     self.client.add(torrentLink, {

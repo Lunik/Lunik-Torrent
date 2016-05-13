@@ -72,7 +72,7 @@ function Server () {
   // client ask list of directory
   this.app.post('/list-d', function (req, res) {
     if (req.body.dir) {
-      req.body.dir = req.body.dir.replace(/\%20/g, ' ')
+      req.body.dir = req.body.dir.replace(/%20/g, ' ')
       res.end(JSON.stringify(Directory.list(req.body.dir)))
     } else {
       res.end(JSON.stringify({
@@ -99,6 +99,7 @@ function Server () {
   // client remove directory / file
   this.app.post('/remove-d', function (req, res) {
     if (req.body.file) {
+      req.body.file = req.body.file.replace(/%20/g, ' ')
       if (Directory.remove(req.body.file) !== -1) {
         Log.print(req.user + ' remove file: ' + req.body.file)
         res.end(JSON.stringify({
@@ -119,6 +120,9 @@ function Server () {
   // client rename file
   this.app.post('/rename-d', function (req, res) {
     if (req.body.path && req.body.oldname && req.body.newname) {
+      req.body.path = req.body.path.replace(/%20/g, ' ')
+      req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
+      req.body.newname = req.body.newname.replace(/%20/g, ' ')
       if (Directory.rename(req.body.path, req.body.oldname, req.body.newname) !== -1) {
         Log.print(req.user + ' rename file: ' + req.body.path + req.body.oldname + ' in: ' + req.body.newname)
         res.end(JSON.stringify({
@@ -141,6 +145,8 @@ function Server () {
   // client create directory
   this.app.post('/mkdir-d', function (req, res) {
     if (req.body.path && req.body.name) {
+      req.body.path = req.body.path.replace(/%20/g, ' ')
+      req.body.name = req.body.name.replace(/%20/g, ' ')
       Log.print(req.user + ' create directory: ' + req.body.path + req.body.name)
       Directory.mkdir(req.body.path, req.body.name)
       res.end(JSON.stringify({
@@ -156,6 +162,9 @@ function Server () {
   // client move directory
   this.app.post('/mv-d', function (req, res) {
     if (req.body.path && req.body.file && req.body.folder) {
+      req.body.path = req.body.path.replace(/%20/g, ' ')
+      req.body.file = req.body.file.replace(/%20/g, ' ')
+      req.body.folder = req.body.folder.replace(/%20/g, ' ')
       if (Directory.mv(req.body.path, req.body.file, req.body.folder) !== -1) {
         Log.print(req.user + ' move: ' + req.body.path + req.body.file + ' in: ' + req.body.path + req.body.folder)
         res.end(JSON.stringify({
@@ -176,6 +185,7 @@ function Server () {
   this.app.post('/search-t', function (req, res) {
     var searchEngine = require('./searchT.js')
     if (req.body.query !== '') {
+      req.body.query = req.body.query.replace(/%20/g, ' ')
       Log.print(req.user + ' search: ' + req.body.query)
       searchEngine.search(req.body.query, function (data) {
         res.end(JSON.stringify(data))
@@ -189,6 +199,8 @@ function Server () {
 
   this.app.post('/info-d', function (req, res) {
     if (req.body.type && req.body.query) {
+      req.body.type = req.body.type.replace(/%20/g, ' ')
+      req.body.query = req.body.query.replace(/%20/g, ' ')
       var infoEngine = require('./mediaInfo.js')
       infoEngine.getInfo(req.body.type, req.body.query, function (data) {
         res.end(JSON.stringify(data))
@@ -200,10 +212,11 @@ function Server () {
 
   this.app.get('/lock-d', function (req, res) {
     if (req.query.f) {
+      req.query.f = req.query.f.replace(/%20/g, ' ')
       if (Directory.isDownloading(req.query.f)) {
-      	res.end(Directory.isDownloading(req.query.f).toString())
+        res.end(Directory.isDownloading(req.query.f).toString())
       } else {
-	res.end('false')
+        res.end('false')
       }
     } else {
       res.end()
