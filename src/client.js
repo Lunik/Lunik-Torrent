@@ -45,6 +45,10 @@ Client.prototype.download = function (torrentLink) {
         Log.print('No peers: ' + self.torrent.name)
         self.doneFunction(self.torrent.infoHash, self.torrent.name)
       })
+
+      self.torrent.on('error', function (err) {
+        Log.print('Error: ' + err)
+      })
     })
   }, 1)
 }
