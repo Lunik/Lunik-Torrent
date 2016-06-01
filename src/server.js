@@ -13,11 +13,6 @@ var bodyParser = require('body-parser')
 http.globalAgent.maxSockets = Infinity
 
 function Server () {
-  this.basic = auth.basic({
-    realm: config.server.message,
-    file: config.server.htpasswd
-  })
-
   this.app = express()
   this.app.use(compression())
   this.app.use(express.static(__dirname + '/public'))
@@ -26,7 +21,13 @@ function Server () {
     extended: true
   }))
 
-  this.app.use(auth.connect(this.basic))
+  if(config.server.htpasswd && config.server.htpasswd.length > 0){
+    this.basic = auth.basic({
+      realm: config.server.message,
+      file: config.server.htpasswd
+    })
+    this.app.use(auth.connect(this.basic))
+  }
 
   this.server = http.createServer(this.app)
   var port = process.env.PORT || config.server.port
