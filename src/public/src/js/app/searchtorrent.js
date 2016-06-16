@@ -29,9 +29,9 @@ _SearchTorrent.prototype.getHtml = function (data) {
 
   for (var key in data) {
     data[key].items.forEach(function (element, index) {
-      var $item = $('<tr>').addClass('search-item button').attr('torrent-link', element.torrent).click(function () {
+      var $item = $('<tr>').addClass('search-item button').click(function () {
         self.popup.remove()
-        self.torrentInput.val($(this).attr('torrent-link'))
+        self.torrentInput.val(element.torrent)
         self.torrentInput.trigger('keyup')
       })
       $('<td>').text(element.title).appendTo($item)
