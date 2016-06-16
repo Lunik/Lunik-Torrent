@@ -7,7 +7,7 @@ function Config () {
   this.popup = new _Popup()
 
   this.but = $('.parameter .button').click(function () {
-    self.popup.init(null, '5%', null, '90%', 'Configuration', self.getHtml(self.config), true)
+    self.popup.init(null, '5%', '50%', '90%', 'Configuration', self.getHtml(self.config), true)
     self.popup.draw()
   })
 
