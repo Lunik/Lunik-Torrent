@@ -15,7 +15,7 @@ _SearchTorrent.prototype.search = function (query) {
 }
 
 _SearchTorrent.prototype.show = function (data) {
-  this.popup.init(null, '5%', null, '90%', 'Search', this.getHtml(data), true)
+  this.popup.init(null, '5%', '90%', '90%', 'Search', this.getHtml(data), true)
   this.popup.draw()
 }
 
@@ -34,6 +34,9 @@ _SearchTorrent.prototype.getHtml = function (data) {
         self.torrentInput.val(element.torrent)
         self.torrentInput.trigger('keyup')
       })
+      $('<td>').append(
+        $('<img>').attr('src', element.cover)
+      ).appendTo($item)
       $('<td>').text(element.title).appendTo($item)
       $('<td>').text(element.size).appendTo($item)
       $('<td>').addClass('seed').html($('<i>').addClass('fa fa-arrow-up').text(element.seeds)).appendTo($item)

@@ -1,6 +1,7 @@
 .search-result {
   display: table-cell;
   text-align: left !important;
+  width: 100%;
 }
 .search-result .search-header {
   padding: 10px;
@@ -8,4 +9,7 @@
 }
 .search-result table {
   border-collapse: collapse;
+}
+.search-result img {
+  width: 100px;
 }
