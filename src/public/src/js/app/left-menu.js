@@ -17,7 +17,8 @@ function _LeftMenu () {
     search: $('.left-menu .search'),
     input: $('.left-menu .torrent-input input'),
     close: $('.left-menu .menu #close'),
-    open: $('.left-menu .menu #open')
+    open: $('.left-menu .menu #open'),
+    current: null
   }
 
   this.but.open.click(function () {
@@ -33,6 +34,8 @@ function _LeftMenu () {
     self.but.torrent.addClass('active')
 
     self.List.switchTable('torrent')
+
+    self.but.current = self.but.search
   })
 
   this.but.directory.click(function () {
@@ -40,6 +43,8 @@ function _LeftMenu () {
     self.but.directory.addClass('active')
 
     self.List.switchTable('directory')
+
+    self.but.current = null
   })
 
   this.but.new.click(function () {
@@ -101,9 +106,21 @@ function _LeftMenu () {
     if (value.search('.torrent') !== -1 || value.search('http://') !== -1 || value.search('magnet') !== -1) {
       self.but.start.removeClass('hide')
       self.but.search.addClass('hide')
+
+      self.but.current = self.but.start
     } else {
       self.but.search.removeClass('hide')
       self.but.start.addClass('hide')
+
+      self.but.current = self.but.search
+    }
+  })
+
+  $(window).keydown(function(event){
+    switch(event.keyCode){
+      case 13:
+        self.but.current.trigger('click')
+        break;
     }
   })
 }
