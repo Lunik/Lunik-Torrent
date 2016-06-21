@@ -4,7 +4,14 @@ function logTestModule(module){
 function logTestProto(proto){
   console.log('==> ' + proto)
 }
+
 var MAGNET = "magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4"
+var OK = {
+  'log': false,
+  'client': false
+}
+
+var Sleep = require('sleep')
 
 /*
 * TEST LOG
@@ -18,6 +25,9 @@ Log.print('Print ok')
 logTestProto('echo')
 Log.echo('Echo ok')
 
+Sleep.sleep(1)
+
+OK.log = true
 delete Log
 /*
 * TEST CLIENT
@@ -52,8 +62,19 @@ c.on('done', function(hash, name){
   console.log('Client done trigger')
   console.log('Hash: ' + hash + '\nName: ' + name)
 
+  OK.client = true
   delete Client
   delete c
 })
 
 c.download(MAGNET)
+
+var end = true
+do {
+  end = true
+  for (var key in OK){
+    end = end && OK[key]
+  }
+} while (!end)
+
+process.exit(0)
