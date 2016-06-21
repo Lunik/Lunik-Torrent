@@ -25,9 +25,6 @@
     "portscanner": "^1.0.0",
     "webtorrent": "^0.95.1"
   },
-  "devDependencies": {
-    "sleep": "^3.0.1"
-  },
   "standard": {
     "ignore": [
       "require.js"

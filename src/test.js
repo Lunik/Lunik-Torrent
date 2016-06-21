@@ -11,8 +11,6 @@ var OK = {
   'client': false
 }
 
-var Sleep = require('sleep')
-
 /*
 * TEST LOG
 */
@@ -24,8 +22,6 @@ Log.print('Print ok')
 
 logTestProto('echo')
 Log.echo('Echo ok')
-
-Sleep.sleep(1)
 
 OK.log = true
 delete Log
