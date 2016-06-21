@@ -18,6 +18,7 @@ Log.print('Print ok')
 logTestProto('echo')
 Log.echo('Echo ok')
 
+delete Log
 /*
 * TEST CLIENT
 */
@@ -53,3 +54,6 @@ c.on('done', function(hash, name){
 })
 
 c.download(MAGNET)
+
+delete Client
+delete c
