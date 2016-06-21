@@ -14,56 +14,71 @@ var OK = {
 /*
 * TEST LOG
 */
-logTestModule('Log')
-var Log = require('./log.js')
+function testLog(cb){
+  logTestModule('Log')
+  var Log = require('./log.js')
 
-logTestProto('print')
-Log.print('Print ok')
+  logTestProto('print')
+  Log.print('Print ok')
 
-logTestProto('echo')
-Log.echo('Echo ok')
+  logTestProto('echo')
+  Log.echo('Echo ok')
 
-OK.log = true
-delete Log
+  setTimeout(function(){
+    delete Log
+    cb(true)
+  }, 1000)
+}
+
+testLog(function(value){
+  OK.log = value
+})
+
 /*
 * TEST CLIENT
 */
-logTestModule('Client')
-var Client = require('./client.js')
-var c = new Client()
+function testClient(cb){
+  logTestModule('Client')
+  var Client = require('./client.js')
+  var c = new Client()
 
-logTestProto('on start')
-c.on('start', function(hash){
-  console.log('Client start trigger')
-  console.log('Hash: ' + hash)
+  logTestProto('on start')
+  c.on('start', function(hash){
+    console.log('Client start trigger')
+    console.log('Hash: ' + hash)
 
-  logTestProto('getTorrent')
-  var torrent = c.getTorrent()
-  console.log('Torrent: ')
-  console.log(torrent)
+    logTestProto('getTorrent')
+    var torrent = c.getTorrent()
+    console.log('Torrent: ')
+    console.log(torrent)
+  })
+
+  logTestProto('on download')
+  c.on('download', function(torrent){
+    console.log('Client download trigger')
+    console.log('Torrent: ')
+    console.log(torrent)
+
+    logTestProto('stop')
+    c.stop()
+  })
+
+  logTestProto('on done')
+  c.on('done', function(hash, name){
+    console.log('Client done trigger')
+    console.log('Hash: ' + hash + '\nName: ' + name)
+
+    cb(true)
+    delete Client
+    delete c
+  })
+
+  c.download(MAGNET)
+}
+
+testClient(function(value){
+  OK.client = value
 })
-
-logTestProto('on download')
-c.on('download', function(torrent){
-  console.log('Client download trigger')
-  console.log('Torrent: ')
-  console.log(torrent)
-
-  logTestProto('stop')
-  c.stop()
-})
-
-logTestProto('on done')
-c.on('done', function(hash, name){
-  console.log('Client done trigger')
-  console.log('Hash: ' + hash + '\nName: ' + name)
-
-  OK.client = true
-  delete Client
-  delete c
-})
-
-c.download(MAGNET)
 
 var end = true
 do {
