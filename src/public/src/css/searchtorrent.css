@@ -9,6 +9,10 @@
 }
 .search-result table {
   border-collapse: collapse;
+  display: inline-block;
+
+  width: 50%;
+  vertical-align: top;
 }
 .search-result img {
   width: 100px;
