@@ -13,31 +13,31 @@ before_install:
 script:
 - npm start &
 - sleep 10
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "dir=/" http://localhost:$PORT/list-d
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "" http://localhost:$PORT/list-t
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "name=$DIRNAME&path=/" http://localhost:$PORT/mkdir-d
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "path=/&oldname=$DIRNAME&newname=$DIRNAME2" http://localhost:$PORT/rename-d
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "name=$DIRNAME&path=/" http://localhost:$PORT/mkdir-d
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "path=/&file=$DIRNAME2&folder=$DIRNAME" http://localhost:$PORT/mv-d
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - echo date > files/$FILENAME
 - curl -u admin:admin http://localhost:$PORT/files?f=$FILENAME
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "url=$MAGNET" http://localhost:$PORT/download-t
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - sleep 30
 - curl -u admin:admin --data "" http://localhost:$PORT/list-t
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "hash=$HASH" http://localhost:$PORT/remove-t
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin http://localhost:$PORT/lock-d?f=$FILENAME
-- curl http://localhost:$PORT >/dev/null
+- curl -s http://localhost:$PORT >/dev/null
 deploy:
   provider: npm
   email: guillaume.lunik@gmail.com
