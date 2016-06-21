@@ -31,7 +31,7 @@ script:
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "url=$MAGNET" http://localhost:$PORT/download-t
 - curl -s http://localhost:$PORT >/dev/null
-- sleep 30
+- sleep 15
 - curl -u admin:admin --data "" http://localhost:$PORT/list-t
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "hash=$HASH" http://localhost:$PORT/remove-t
