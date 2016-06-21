@@ -21,6 +21,7 @@ function finishTest(){
   }
 }
 
+var fs = require('fs')
 /*
 * TEST LOG
 */
@@ -101,51 +102,59 @@ function testDirectory(cb){
   var dir = "ok"
   var dir2 = "ok2"
   var dir3 = "ok3"
+  var dir4 = "ok4"
+  var file = "file.txt"
+  var file2 = "file2.txt"
 
   logTestProto('mkdir')
   Directory.mkdir('/', dir)
+  Directory.mkdir('/', dir2)
+  Directory.mkdir('/', dir4)
+  fs.writeFileSync('files/' + file, "Hello World !")
+  fs.writeFileSync('files/' + file2, "Hello World !")
 
-  logTestProto('list')
-  console.log(Directory.list(dir))
+  setTimeout(function(){
+    logTestProto('list')
+    console.log(Directory.list(dir))
 
-  logTestProto('getDir')
-  console.log(Directory.getDir(dir))
+    logTestProto('getDir')
+    console.log(Directory.getDir(dir))
 
-  logTestProto('getInfo')
-  console.log(Directory.getInfo(dir))
+    logTestProto('getInfo')
+    console.log(Directory.getInfo('files/' + file))
 
-  logTestProto('setDownloading')
-  Directory.setDownloading(dir)
+    logTestProto('setDownloading')
+    Directory.setDownloading(file)
 
-  logTestProto('isDownloading')
-  var isDl = Directory.isDownloading(dir)
-  console.log(isDl)
-  if(!isDl){
-    cb(false)
-  }
+    logTestProto('isDownloading')
+    var isDl = Directory.isDownloading(file)
+    console.log(isDl)
+    if(!isDl){
+      cb(false)
+    }
 
-  logTestProto('updateDownloads')
-  Directory.updateDownloads()
+    logTestProto('updateDownloads')
+    Directory.updateDownloads()
 
-  logTestProto('finishDownloading')
-  Directory.finishDownloading(dir)
+    logTestProto('finishDownloading')
+    Directory.finishDownloading(file)
 
-  logTestProto('isDownloading')
-  var isDl = Directory.isDownloading(dir)
-  console.log(isDl)
-  if(isDl){
-    cb(false)
-  }
+    logTestProto('isDownloading')
+    var isDl = Directory.isDownloading(file)
+    console.log(isDl)
+    if(isDl){
+      cb(false)
+    }
 
-  logTestProto('rename')
-  Directory.rename('/', dir, dir2)
+    logTestProto('rename')
+    Directory.rename('/', dir2, dir3)
 
-  logTestProto('mv')
-  Directory.mkdir(dir3)
-  Directory.mv('/', dir2, dir3)
+    logTestProto('mv')
+    Directory.mv('/', dir3, dir4)
 
-  logTestProto('remove')
-  Directory.remove(dir3)
+    logTestProto('remove')
+    Directory.remove(file2)
+  }, 1000)
 }
 
 testDirectory(function(value){
