@@ -103,7 +103,7 @@ function testDirectory(cb){
   var dir3 = "ok3"
 
   logTestProto('mkdir')
-  Directory.mkdir(dir)
+  Directory.mkdir('/', dir)
 
   logTestProto('list')
   console.log(Directory.list(dir))
@@ -118,7 +118,7 @@ function testDirectory(cb){
   Directory.setDownloading(dir)
 
   logTestProto('isDownloading')
-  var isDl = Directory.isDownloading(dir))
+  var isDl = Directory.isDownloading(dir)
   console.log(isDl)
   if(!isDl){
     cb(false)
@@ -131,7 +131,7 @@ function testDirectory(cb){
   Directory.finishDownloading(dir)
 
   logTestProto('isDownloading')
-  var isDl = Directory.isDownloading(dir))
+  var isDl = Directory.isDownloading(dir)
   console.log(isDl)
   if(isDl){
     cb(false)
