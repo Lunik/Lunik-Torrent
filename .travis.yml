@@ -9,7 +9,7 @@ env:
   HASH="6a9759bffd5c0af65319979fb7832189f4f3c35d"
 before_install:
 - sudo apt-get update -qq
-- sudo apt-get install curl g++ build-essential
+- sudo apt-get install curl
 script:
 - node src/test.js
 - npm start &
