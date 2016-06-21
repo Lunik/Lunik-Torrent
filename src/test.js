@@ -80,12 +80,14 @@ testClient(function(value){
   OK.client = value
 })
 
-var end = true
-do {
-  end = true
-  for (var key in OK){
-    end = end && OK[key]
-  }
-} while (!end)
+setTimeout(function(){
+  var end = true
+  do {
+    end = true
+    for (var key in OK){
+      end = end && OK[key]
+    }
+  } while (!end)
 
-process.exit(0)
+  process.exit(0)
+}, 1000)
