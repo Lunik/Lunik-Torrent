@@ -154,6 +154,8 @@ function testDirectory(cb){
 
     logTestProto('remove')
     Directory.remove(file2)
+
+    cb(true)
   }, 1000)
 }
 
