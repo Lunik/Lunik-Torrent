@@ -51,9 +51,9 @@ logTestProto('on done')
 c.on('done', function(hash, name){
   console.log('Client done trigger')
   console.log('Hash: ' + hash + '\nName: ' + name)
+
+  delete Client
+  delete c
 })
 
 c.download(MAGNET)
-
-delete Client
-delete c
