@@ -40,7 +40,8 @@ script:
 - curl -u admin:admin http://localhost:$PORT/lock-d?f=$FILENAME
 - curl -s http://localhost:$PORT >/dev/null
 cache:
-  - node_modules
+  directories:
+  - "$(pwd)/node_modules"
 deploy:
   provider: npm
   email: guillaume.lunik@gmail.com
