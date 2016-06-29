@@ -56,10 +56,12 @@ _MediaInfo.prototype.popup = function (data) {
 _MediaInfo.prototype.cleanTitle = function (title) {
   title = title.replace(/\.[A-Za-z0-9]*$/, '') // remove extension
     .replace(/[Ss][0-9][0-9][Ee][0-9][0-9]/g, '') // numero d'episode
-    .replace(/[ \.]((french)|(dvdrip)|(xvid-trs)|(fr)|(vo)|(vostfr)|(fastub)|(hdtv)|(xvid-ark01))/g, '') // remove useless stuff
+    .replace(/[ \.]((french)|(dvdrip)|(xvid-trs)|(fr)|(vo)|(vostfr)|(fastub)|(hdtv)|(xvid-ark01)|(webrip))/g, '') // remove useless stuff
     .replace(/\./g, ' ') // point
     .replace(/ $/, '') // espace en fin de chaine
+    .toLowerCase()
 
+  console.log(title)
   return title
 }
 
