@@ -49,7 +49,7 @@ _MediaInfo.prototype.html = function (data) {
 _MediaInfo.prototype.popup = function (data) {
   var p = new _Popup()
   var html = this.html(data)
-  p.init(null, null, null, null, html.title, html.content, true)
+  p.init(null, '5%', '90%', '90%', html.title, html.content, true)
   p.draw()
 }
 
