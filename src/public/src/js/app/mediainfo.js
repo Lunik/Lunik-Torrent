@@ -61,7 +61,6 @@ _MediaInfo.prototype.cleanTitle = function (title) {
     .replace(/ $/, '') // espace en fin de chaine
     .toLowerCase()
 
-  console.log(title)
   return title
 }
 
