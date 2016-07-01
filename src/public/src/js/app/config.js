@@ -65,6 +65,7 @@ Config.prototype.applyConfig = function (config) {
 }
 
 Config.prototype.applyTheme = function (theme) {
+  theme = theme ? theme : 'default'
   var $themeLink
   if ($('head .theme').length > 0) {
     $themeLink = $('head .theme').attr('href', 'src/css/themes/' + theme + '/theme.css')
