@@ -15,6 +15,10 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "^3.0.0"
+    "jquery": "^3.0.0",
+    "requirejs": "^2.2.0",
+    "jquery-ui": "^1.11.4",
+    "tablesorter": "*",
+    "jquery-ui-touch-punch-improved": "^0.3.1"
   }
 }
