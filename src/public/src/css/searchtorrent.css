@@ -14,7 +14,18 @@
   width: 50%;
   vertical-align: top;
 }
+@media only screen and (max-width: 750px) {
+  .search-result table {
+    display: block;
+    width: 100%;
+  }
+}
 .search-result img {
   width: 100px;
   padding: 0 20px;
+}
+@media only screen and (max-width: 750px) {
+  .search-result .img {
+    display: none;
+  }
 }
