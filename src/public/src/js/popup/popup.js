@@ -4,7 +4,6 @@ function _Popup () {
     this.posX = formatPosX(posX)
     this.posY = formatPosY(posY)
     this.width = formatWidth(width)
-    console.log(width)
     /*if (this.width > 500) {
       this.whidth = 500
     }*/
