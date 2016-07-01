@@ -4,7 +4,7 @@
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
   "scripts": {
-    "postinstall": "sh -c scripts/init.sh",
+    "postinstall": "sh -c scripts/init.sh && bower install",
     "start": "node src/index.js",
     "forever-start": "forever -a start src/index.js",
     "test": "node src/test.js"
@@ -17,6 +17,7 @@
   "dependencies": {
     "allocine-api": "^0.1.9",
     "body-parser": "^1.15.1",
+    "bower": "^1.7.9",
     "check-update-github": "^0.0.4",
     "compression": "^1.6.1",
     "cpasbien-api": "^1.1.0",
