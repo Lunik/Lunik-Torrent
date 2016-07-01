@@ -13,9 +13,10 @@
 $ git clone https://github.com/Lunik/Lunik-Torrent.git
 $ cd Lunik-Torrent
 $ npm install
-$ cp src/config.default src/config.json
-$ nano src/config.json
 ```
+
+Confiuration into: `src/config.json`
+
 
 ### Run
 
