@@ -52,8 +52,8 @@ Torrent.prototype.start = function (url) {
             self.client[url].peer.stop()
             delete self.client[url]
             // Deplace les fichies
-            console.log(config.torrent.downloads + name, config.directory.path + name)
-            fs.renameSync(config.torrent.downloads + name, config.directory.path + name)
+            console.log(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
+            fs.renameSync(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
             // Relance un torrent si il y en a en attente
             if (self.waitList.length > 0) {
               Log.print('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')

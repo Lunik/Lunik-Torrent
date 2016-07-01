@@ -1,6 +1,7 @@
 var Log = require('./log.js')
 var config = require('./config.json')
 var fs = require('fs')
+var Path = require('path')
 
 function Directory () {
   var self = this
@@ -16,7 +17,7 @@ Directory.prototype.list = function (dir) {
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else {
-    var s = fs.statSync(config.directory.path + dir)
+    var s = fs.statSync(Path.join(config.directory.path, dir))
     if (this.dir[dir].mtime < s.mtime) {
       this.dir[dir] = this.getDir(dir)
     }
@@ -34,17 +35,17 @@ Directory.prototype.getDir = function (dir) {
 
   var list = {}
   var totalSize = 0
-  var files = fs.readdirSync(config.directory.path + dir)
+  var files = fs.readdirSync(Path.join(config.directory.path, dir))
 
   if (files.length > 0) {
     files.forEach(function (file) {
-      var stats = self.getInfo(config.directory.path + dir + file)
+      var stats = self.getInfo(Path.join(config.directory.path, dir, file))
       list[file] = stats
       totalSize += stats.size
     })
   }
 
-  var s = fs.statSync(config.directory.path + dir)
+  var s = fs.statSync(Path.join(config.directory.path, dir))
   return {
     'mtime': s.mtime,
     'totalSize': totalSize,
@@ -109,13 +110,13 @@ Directory.prototype.isDownloading = function (file) {
 Directory.prototype.remove = function (file) {
   if (this.isDownloading(file)) return -1
   setTimeout(function () {
-    fs.stat(config.directory.path + file, function (err, stats) {
+    fs.stat(Path.join(config.directory.path, file), function (err, stats) {
       if (err) Log.print(err)
       if (stats) {
         if (stats.isDirectory()) {
-          removeRecursif(config.directory.path + file)
+          removeRecursif(Path.join(config.directory.path, file))
         } else {
-          fs.unlink(config.directory.path + file, function (err) {
+          fs.unlink(Path.join(config.directory.path, file), function (err) {
             if (err) Log.print(err)
           })
         }
@@ -127,7 +128,7 @@ Directory.prototype.remove = function (file) {
 Directory.prototype.rename = function (path, oldname, newname) {
   if (this.isDownloading(path + oldname)) return -1
   setTimeout(function () {
-    fs.rename(config.directory.path + path + oldname, config.directory.path + path + '/' + newname, function (err) {
+    fs.rename(Path.join(config.directory.path, path, oldname), Path.join(config.directory.path, path, newname), function (err) {
       if (err) Log.print(err)
     })
   }, 1)
@@ -135,16 +136,16 @@ Directory.prototype.rename = function (path, oldname, newname) {
 
 Directory.prototype.mkdir = function (path, name) {
   setTimeout(function () {
-    fs.mkdir(config.directory.path + path + name, function (err) {
+    fs.mkdir(Path.join(config.directory.path, path, name), function (err) {
       if (err) Log.print(err)
     })
   }, 1)
 }
 
 Directory.prototype.mv = function (path, file, folder) {
-  if (this.isDownloading(path + file)) return -1
+  if (this.isDownloading(Path.join(path, file))) return -1
   setTimeout(function () {
-    fs.rename(config.directory.path + path + file, config.directory.path + path + folder + '/' + file, function (err) {
+    fs.rename(Path.join(config.directory.path, path, file), Path.join(config.directory.path, path, folder, file), function (err) {
       if (err) Log.print(err)
     })
   }, 1)
@@ -154,7 +155,7 @@ function removeRecursif (path) {
   setTimeout(function () {
     if (fs.existsSync(path)) {
       fs.readdirSync(path).forEach(function (file, index) {
-        var curPath = path + '/' + file
+        var curPath = Path.join(path, file)
         if (fs.lstatSync(curPath).isDirectory()) { // recurse
           removeRecursif(curPath)
         } else { // delete file
@@ -170,7 +171,7 @@ function sizeRecursif (path) {
   var size = 0
   if (fs.existsSync(path)) {
     fs.readdirSync(path).forEach(function (file, index) {
-      var curPath = path + '/' + file
+      var curPath = Path.join(path, file)
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
         size += sizeRecursif(curPath)
       } else { // read size

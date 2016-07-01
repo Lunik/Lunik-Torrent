@@ -1,13 +1,14 @@
 var config = require('./config.json')
 
 var fs = require('fs')
+var Path = require('path')
 
 function Log () {}
 
 Log.prototype.print = function (text) {
   setTimeout(function () {
     console.log(text)
-    fs.appendFile(config.log.path + 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1), '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
+    fs.appendFile(Path.join(config.log.path, 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1)), '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
       if (err) throw err
     })
   })

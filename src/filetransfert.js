@@ -3,6 +3,7 @@ var Log = require('./log.js')
 
 var fs = require('fs')
 var portscanner = require('portscanner')
+var Path = require('path')
 
 function FileTransfert (req, res, callback) {
   var self = this
@@ -30,7 +31,7 @@ function FileTransfert (req, res, callback) {
 
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
   setTimeout(function () {
-    var filename = config.directory.path + req.query.f
+    var filename = Path.join(config.directory.path + req.query.f)
     fs.stat(filename, function (err, stats) {
       if (err) {
         console.log(err)
@@ -73,6 +74,6 @@ FileTransfert.prototype.transfertNginx = function (req, res, callback) {
   setTimeout(function () {
     callback()
   }, 3600000)
-  res.redirect('http://' + req.headers['host'] + ':' + config.nginx.port + '/' + config.nginx.path + '/' + req.query.f)
+  res.redirect(Path.join('http://', req.headers['host'], ':', config.nginx.port, config.nginx.path, req.query.f))
 }
 module.exports = FileTransfert

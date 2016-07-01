@@ -9,13 +9,14 @@ var express = require('express')
 var compression = require('compression')
 var http = require('http')
 var bodyParser = require('body-parser')
+var Path = require('path')
 
 http.globalAgent.maxSockets = Infinity
 
 function Server () {
   this.app = express()
   this.app.use(compression())
-  this.app.use(express.static(__dirname + '/public'))
+  this.app.use(express.static(Path.join(__dirname, '/public')))
   this.app.use(bodyParser.json())
   this.app.use(bodyParser.urlencoded({
     extended: true
@@ -124,7 +125,7 @@ function Server () {
       req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
       req.body.newname = req.body.newname.replace(/%20/g, ' ')
       if (Directory.rename(req.body.path, req.body.oldname, req.body.newname) !== -1) {
-        Log.print(req.user + ' rename file: ' + req.body.path + req.body.oldname + ' in: ' + req.body.newname)
+        Log.print(req.user + ' rename file: ' + Path.join(req.body.path, req.body.oldname) + ' in: ' + req.body.newname)
         res.end(JSON.stringify({
           path: req.body.path,
           oldname: req.body.oldname,
@@ -147,7 +148,7 @@ function Server () {
     if (req.body.path && req.body.name) {
       req.body.path = req.body.path.replace(/%20/g, ' ')
       req.body.name = req.body.name.replace(/%20/g, ' ')
-      Log.print(req.user + ' create directory: ' + req.body.path + req.body.name)
+      Log.print(req.user + ' create directory: ' + Path.join(req.body.path, req.body.name))
       Directory.mkdir(req.body.path, req.body.name)
       res.end(JSON.stringify({
         name: req.body.name
@@ -166,7 +167,7 @@ function Server () {
       req.body.file = req.body.file.replace(/%20/g, ' ')
       req.body.folder = req.body.folder.replace(/%20/g, ' ')
       if (Directory.mv(req.body.path, req.body.file, req.body.folder) !== -1) {
-        Log.print(req.user + ' move: ' + req.body.path + req.body.file + ' in: ' + req.body.path + req.body.folder)
+        Log.print(req.user + ' move: ' + Path.join(req.body.path, req.body.file) + ' in: ' + Path.join(req.body.path, req.body.folder))
         res.end(JSON.stringify({
           file: req.body.file
         }))
