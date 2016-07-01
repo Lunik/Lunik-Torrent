@@ -9,3 +9,4 @@ downloads
 npm-debug.log
 src/config.json
 logs/log*
+bower_components
