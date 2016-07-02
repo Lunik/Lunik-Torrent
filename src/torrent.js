@@ -3,6 +3,7 @@ var config = require('./config.json')
 var Client = require('./client.js')
 
 var fs = require('fs')
+var Path = require('path')
 
 function Torrent () {
   var self = this
