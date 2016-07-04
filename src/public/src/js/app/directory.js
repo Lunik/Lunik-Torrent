@@ -17,7 +17,6 @@ function _Directory () {
   this.timer = null
   this.refresh = 30000
 
-  this.notif = new Pnotif()
 
   $(window).bind('hashchange', function () {
     self.body.html('')
@@ -43,9 +42,10 @@ _Directory.prototype.getList = function () {
   }, function (directory) {
     directory = JSON.parse(directory)
     if (directory.err) {
-      self.notif.remove()
-      self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + directory.err + '</p>', 10000)
-      self.notif.draw()
+      $.notify.error({
+        title: 'Error',
+        text: directory.err
+      })
     } else {
       self.appendSize(directory.totalSize)
 
@@ -138,9 +138,10 @@ _Directory.prototype.append = function (file) {
           }, function (file) {
             file = JSON.parse(file)
             if (file.err) {
-              self.notif.remove()
-              self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + file.err + '</p>', 10000)
-              self.notif.draw()
+              $.notify.error({
+                title: 'Error',
+                text: file.err
+              })
             } else {
               $('tr[data-file="' + file.file + '"]').remove()
             }
@@ -201,9 +202,10 @@ _Directory.prototype.setActions = function (file, actions) {
         }, function (data) {
           data = JSON.parse(data)
           if (data.err) {
-            self.notif.remove()
-            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + data.err + '</p>', 10000)
-            self.notif.draw()
+            $.notify.error({
+              title: 'Error',
+              text: data.err
+            })
           } else {
             file.name = data.newname
             $('tr[data-file="' + data.oldname + '"] td#name').attr('data-file', data.newname).html(
@@ -230,9 +232,10 @@ _Directory.prototype.setActions = function (file, actions) {
         }, function (file) {
           file = JSON.parse(file)
           if (file.err) {
-            self.notif.remove()
-            self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + file.err + '</p>', 10000)
-            self.notif.draw()
+            $.notify.error({
+              title: 'Error',
+              text: file.err
+            })
           } else {
             $('tr[data-file="' + file.file + '"]').remove()
           }

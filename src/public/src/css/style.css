@@ -3,6 +3,8 @@
 @import url(list.css);
 @import url(config.css);
 @import url(themes/default/theme.css);
+@import url(../bower_components/notify.me/dist/css/notify-me.min.css);
+
 * {
   outline: none;
 }
@@ -39,6 +41,10 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
+}
+
+.notifyme-stack{
+  z-index: 100;
 }
 
 @media only screen and (max-width: 470px) {

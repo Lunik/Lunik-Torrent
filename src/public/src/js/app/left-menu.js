@@ -5,8 +5,6 @@ function _LeftMenu () {
 
   this.List = new _List()
 
-  this.notif = new Pnotif()
-
   this.body = $('.left-menu')
 
   this.but = {
@@ -56,9 +54,10 @@ function _LeftMenu () {
       }, function (name) {
         name = JSON.parse(name)
         if (name.err) {
-          self.notif.remove()
-          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + name.err + '</p>', 10000)
-          self.notif.draw()
+          $.notify.error({
+            title: 'Error',
+            text: name.err
+          })
         } else {
           self.List.Directory.append({
             name: name.name,
@@ -80,13 +79,14 @@ function _LeftMenu () {
         url: self.but.input.val()
       }, function (data) {
         if (data.err) {
-          self.notif.remove()
-          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Error: " + data.err + '</p>', 10000)
-          self.notif.draw()
+          $.notify.error({
+            title: 'Error',
+            text: data.err
+          })
         } else {
-          self.notif.remove()
-          self.notif.init('top-right', "<p style='padding: 10px; margin: 0px;'>The torrent will begin in a moment.</p>", 10000)
-          self.notif.draw()
+          $.notify.success({
+            text: 'The torrent will begin in a moment.'
+          })
         }
       })
       self.but.input.val('')

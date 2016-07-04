@@ -7,8 +7,6 @@ function _List () {
   this.table = $('.list table')
   this.body = $('.list table tbody')
 
-  this.notif = new Pnotif()
-
   $.tablesorter.addParser({
     // set a unique id
     id: 'size',
@@ -131,9 +129,9 @@ _List.prototype.switchTable = function (nav) {
         this.torrentElements[key].removeClass('hide')
       }
 
-      this.notif.remove()
-      this.notif.init('top-right', "<p style='padding: 10px; margin: 0px; color:red;'>Check that the file hasn't been downloaded before download.</p>", 5000)
-      this.notif.draw()
+      $.notify.warning({
+        text: 'Check that the file hasn\'t been downloaded before download.'
+      })
 
       break
     case 'directory':
