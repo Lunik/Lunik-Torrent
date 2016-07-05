@@ -6,6 +6,7 @@ function _TopMenu () {
   $(window).bind('hashchange', function () {
     self.setAriane()
   })
+  self.setAriane()
 }
 
 _TopMenu.prototype.setAriane = function () {
@@ -16,20 +17,28 @@ _TopMenu.prototype.setAriane = function () {
   var $home = $('<a>').addClass('button').attr('href', '#').attr('data-file', '/').text('Home').appendTo(this.ariane)
 
   var directories = document.location.hash.substring(1).split('/')
+  directories.pop()
+
   var begin = 0
   if (directories.length >= 5) {
     self.ariane.append($delimiter.clone())
     var $point = $('<a>').text('...').appendTo(this.ariane)
-    begin = directories.length - 6
+    begin = directories.length - 4
   }
+
   var profDir = ''
   var i = 0
-  directories.forEach(function (dir) {
+  directories.forEach(function (dir, index) {
     if (dir !== '') {
       profDir += dir + '/'
       if (i >= begin) {
         self.ariane.append($delimiter.clone())
-        $('<a>').addClass('button').attr('href', '#' + profDir).text(dir).appendTo(self.ariane)
+
+        var $dir = $('<a>').addClass('button').attr('href', '#' + profDir).text(dir)
+        if (directories.length - 1 === index) {
+          $dir.addClass('active')
+        }
+        self.ariane.append($dir)
       }
     }
     i++
