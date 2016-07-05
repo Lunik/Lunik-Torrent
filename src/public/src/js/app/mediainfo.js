@@ -65,7 +65,8 @@ _MediaInfo.prototype.cleanTitle = function (title) {
 }
 
 _MediaInfo.prototype.getType = function (title) {
-  var regex = /[Ss][0-9^E^e]*[Ee][0-9]/
+  title = title.toLowerCase()
+  var regex = /s[0-9^e]*e[0-9]/
   if (title.search(regex) === -1) {
     return 'films'
   } else {
