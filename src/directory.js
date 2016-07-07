@@ -106,7 +106,7 @@ Directory.prototype.updateDownloads = function () {
 
 Directory.prototype.isDownloading = function (file) {
   file = file[0] === '/' ? file.substring(1) : file
-  return self.fileInfo[file].downloading ? true : false
+  return this.fileInfo[file].downloading ? true : false
 }
 
 Directory.prototype.remove = function (file) {
