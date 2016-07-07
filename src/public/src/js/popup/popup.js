@@ -85,5 +85,3 @@ function _Popup () {
     return formatHeight(pos)
   }
 }
-
-$('head').append('<link rel="stylesheet" href="src/js/popup/popup.css">')
