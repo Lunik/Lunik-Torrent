@@ -1,6 +1,4 @@
 function _SearchTorrent () {
-  this.popup = new _Popup()
-
   this.torrentInput = $('.left-menu .torrent-input input')
 }
 
@@ -15,8 +13,18 @@ _SearchTorrent.prototype.search = function (query) {
 }
 
 _SearchTorrent.prototype.show = function (data) {
-  this.popup.init(null, '5%', '90%', '90%', 'Search', this.getHtml(data), true)
-  this.popup.draw()
+  $.popupjs.init({
+    pos: {
+      x: null,
+      y: '5%'
+    },
+    width: '90%',
+    height: '90%',
+    title: 'Search',
+    html: this.getHtml(data),
+    closeBut: true
+  })
+  $.popupjs.draw()
 }
 
 _SearchTorrent.prototype.getHtml = function (data) {
@@ -30,7 +38,7 @@ _SearchTorrent.prototype.getHtml = function (data) {
   for (var key in data) {
     data[key].items.forEach(function (element, index) {
       var $item = $('<tr>').addClass('search-item button').click(function () {
-        self.popup.remove()
+        $.popupjs.remove()
         self.torrentInput.val(element.torrent)
         self.torrentInput.trigger('keyup')
       })

@@ -4,11 +4,20 @@ function Config () {
   var self = this
   this.config = {}
   this.themeList = ['default', 'monokai', 'giant_goldfish', 'lunik']
-  this.popup = new _Popup()
 
   this.but = $('.parameter .button').click(function () {
-    self.popup.init(null, '5%', '50%', '90%', 'Configuration', self.getHtml(self.config), true)
-    self.popup.draw()
+    $.popupjs.init({
+      pos: {
+        x: null,
+        y: '5%'
+      },
+      width: '50%',
+      height: '90%',
+      title: 'Configuration',
+      html: self.getHtml(self.config),
+      closeBut: true
+    })
+    $.popupjs.draw()
   })
 
   this.setConfig(Storage.readData('config'))
@@ -46,7 +55,7 @@ Config.prototype.submit = function () {
   config.theme = $('.config-pop .theme').val()
   this.setConfig(config)
   this.applyConfig(config)
-  this.popup.remove()
+  $.popup.remove()
 }
 
 Config.prototype.setConfig = function (config) {
