@@ -26,6 +26,9 @@
 .list table th#date {
   width: 15%;
 }
+.list table th#owner {
+  width: 10%;
+}
 .list table th#progress {
   width: 50%;
 }
@@ -39,7 +42,7 @@
 /* remove some columns when screen is to little */
 
 @media only screen and (max-width: 470px) {
-  .list table #down, .list table #up {
+  .list table th#down, .list table th#up, .list table th#owner {
     display: none;
   }
   .list table th#name {

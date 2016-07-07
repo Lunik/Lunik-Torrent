@@ -41,6 +41,7 @@ _Directory.prototype.getList = function () {
     dir: hash
   }, function (directory) {
     directory = JSON.parse(directory)
+    console.log(directory)
     if (directory.err) {
       $.notify.error({
         title: 'Error',
@@ -53,8 +54,11 @@ _Directory.prototype.getList = function () {
 
       var locked = {}
       for(var key in directory.infos){
-        if(directory.infos[key]){
+        if(directory.infos[key] && directory.infos[key].downloading){
           locked[key] = directory.infos[key]
+        }
+        if(directory.infos[key] && directory.files[key]){
+          directory.files[key].owner = directory.infos[key].owner
         }
       }
       self.list(directory.files, locked)
@@ -163,6 +167,7 @@ _Directory.prototype.append = function (file) {
 
     var $size = $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
     var $date = $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
+    var $owner = $('<td>').attr('id', 'owner').text(file.owner || '-').appendTo($raw)
 
     this.body.append($raw)
     $('.list table').trigger('update')

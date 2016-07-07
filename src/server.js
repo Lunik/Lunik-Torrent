@@ -4,6 +4,8 @@ var Directory = require('./directory.js')
 var config = require('./config.json')
 var FileTransfert = require('./filetransfert.js')
 
+Torrent.Directory = Directory
+
 var auth = require('http-auth')
 var express = require('express')
 var compression = require('compression')
@@ -56,6 +58,7 @@ function Server () {
   this.app.post('/download-t', function (req, res) {
     if (req.body.url) {
       Log.print(req.user + ' download torrent: ' + req.body.url)
+      Torrent.setDownloader(req.user, req.body.url)
       Torrent.start(req.body.url)
       res.end()
     } else {

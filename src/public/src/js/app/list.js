@@ -71,7 +71,8 @@ function _List () {
 
     nameCol: $('.list #name'),
     sizeCol: $('.list #size'),
-    dateCol: $('.list #date')
+    dateCol: $('.list #date'),
+    ownerCol: $('.list #owner')
   }
 
   this.torrentElements = {

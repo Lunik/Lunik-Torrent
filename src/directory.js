@@ -14,7 +14,6 @@ function Directory () {
 }
 
 Directory.prototype.list = function (dir) {
-  console.log(this.fileInfo)
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else {
@@ -151,6 +150,14 @@ Directory.prototype.mv = function (path, file, folder) {
       if (err) Log.print(err)
     })
   }, 1)
+}
+
+Directory.prototype.setOwner = function(file, user){
+  var self = this
+  setTimeout(function () {
+    self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
+    self.fileInfo[file].owner = user
+  },1)
 }
 
 function removeRecursif (path) {
