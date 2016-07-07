@@ -15,7 +15,7 @@ $ cd Lunik-Torrent
 $ npm install
 ```
 
-Confiuration into: `src/config.json`
+Confiuration into: `configs/config.json`
 
 
 ### Run
