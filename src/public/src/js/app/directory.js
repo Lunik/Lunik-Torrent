@@ -51,7 +51,13 @@ _Directory.prototype.getList = function () {
 
       var current_scroll = $('body').scrollTop()
 
-      self.list(directory.files, directory.downloading)
+      var locked = {}
+      for(var key in directory.infos){
+        if(directory.infos[key]){
+          locked[key] = directory.infos[key]
+        }
+      }
+      self.list(directory.files, locked)
 
       $('body').scrollTop(current_scroll)
     }

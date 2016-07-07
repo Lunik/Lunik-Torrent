@@ -6,7 +6,7 @@ var Path = require('path')
 function Directory () {
   var self = this
   this.dir = {}
-  this.downloading = {}
+  this.fileInfo = {}
 
   setInterval(function () {
     self.updateDownloads()
@@ -14,6 +14,7 @@ function Directory () {
 }
 
 Directory.prototype.list = function (dir) {
+  console.log(this.fileInfo)
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else {
@@ -26,7 +27,7 @@ Directory.prototype.list = function (dir) {
   return {
     'totalSize': this.dir[dir].totalSize,
     'files': this.dir[dir].files,
-    'downloading': this.downloading
+    'infos': this.fileInfo
   }
 }
 
@@ -70,8 +71,9 @@ Directory.prototype.getInfo = function (file) {
 Directory.prototype.setDownloading = function (file) {
   var self = this
   setTimeout(function () {
-    self.downloading[file] = self.downloading[file]
-      ? {date: new Date(), count: self.downloading[file].count + 1}
+    self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
+    self.fileInfo[file].downloading = self.fileInfo[file].downloading
+      ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
       : {date: new Date(), count: 1}
   }, 1)
 }
@@ -79,12 +81,12 @@ Directory.prototype.setDownloading = function (file) {
 Directory.prototype.finishDownloading = function (file) {
   var self = this
   setTimeout(function () {
-    self.downloading[file] = self.downloading[file]
-      ? {date: self.downloading[file].date, count: self.downloading[file].count - 1}
+    self.fileInfo[file].downloading = self.fileInfo[file].downloading
+      ? {date: self.fileInfo[file].downloading.date, count: self.fileInfo[file].downloading.count - 1}
       : {date: new Date(), count: 0}
 
-    if (self.downloading[file].count >= 0) {
-      delete self.downloading[file]
+    if (self.fileInfo[file].downloading.count >= 0) {
+      delete self.fileInfo[file].downloading
     }
   }, 1)
 }
@@ -95,8 +97,8 @@ Directory.prototype.updateDownloads = function () {
     var curDate = new Date()
     for (var key in self.downloading) {
       // if downloading for more than 1 hour remove
-      if (curDate - self.downloading[key].date > 3600000) {
-        delete self.downloading[key]
+      if (curDate - self.fileInfo[key].downloading.date > 3600000) {
+        delete self.fileInfo[key].downloading
       }
     }
   }, 1)
@@ -104,7 +106,7 @@ Directory.prototype.updateDownloads = function () {
 
 Directory.prototype.isDownloading = function (file) {
   file = file[0] === '/' ? file.substring(1) : file
-  return this.downloading[file] ? true : false
+  return self.fileInfo[file].downloading ? true : false
 }
 
 Directory.prototype.remove = function (file) {
