@@ -160,7 +160,7 @@ Directory.prototype.setOwner = function(file, user){
     if(self.fileInfo[file].owner == null){
       self.fileInfo[file].owner = user
     }
-    saveFileInfo()
+    self.saveFileInfo()
   },1)
 }
 
