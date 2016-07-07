@@ -1,5 +1,5 @@
 var Log = require('./log.js')
-var config = require('./config.json')
+var config = require('../configs/config.json')
 
 var WebTorrent = require('webtorrent')
 

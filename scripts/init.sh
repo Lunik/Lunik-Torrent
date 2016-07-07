@@ -10,4 +10,4 @@ mkdir logs
 
 touch torrents.txt
 
-cp src/config.default src/config.json
+cp configs/config.default configs/config.json

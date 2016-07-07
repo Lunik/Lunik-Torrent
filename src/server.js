@@ -1,7 +1,7 @@
 var Log = require('./log.js')
 var Torrent = require('./torrent.js')
 var Directory = require('./directory.js')
-var config = require('./config.json')
+var config = require('../configs/config.json')
 var FileTransfert = require('./filetransfert.js')
 
 Torrent.Directory = Directory

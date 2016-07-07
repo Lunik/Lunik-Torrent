@@ -7,6 +7,6 @@ torrents.txt
 files
 downloads
 npm-debug.log
-src/config.json
+configs/*.json
 logs/log*
 bower_components

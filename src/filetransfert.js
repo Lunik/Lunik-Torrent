@@ -1,4 +1,4 @@
-var config = require('./config.json')
+var config = require('../configs/config.json')
 var Log = require('./log.js')
 
 var fs = require('fs')
