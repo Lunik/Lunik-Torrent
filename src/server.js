@@ -134,6 +134,7 @@ function Server () {
           oldname: req.body.oldname,
           newname: req.body.newname
         }))
+        Directory.setOwner(Path.join(req.body.path, req.body.newname), req.user)
       } else {
         res.end(JSON.stringify({
           err: 'Cannot rename, someone is downloading the file.'
@@ -156,6 +157,7 @@ function Server () {
       res.end(JSON.stringify({
         name: req.body.name
       }))
+      Directory.setOwner(Path.join(req.body.path, req.body.name), req.user)
     } else {
       res.end(JSON.stringify({
         err: 'Wrong name.'
@@ -174,6 +176,7 @@ function Server () {
         res.end(JSON.stringify({
           file: req.body.file
         }))
+        Directory.setOwner(Path.join(req.body.path, req.body.folder, req.body.file), req.user)
       } else {
         res.end(JSON.stringify({
           err: 'Cannot move, someone is downloading the file.'
