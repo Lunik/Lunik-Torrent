@@ -10,7 +10,7 @@
   "server": {
     "port": 80,
     "message": "Protected area. Please disperse !",
-    "htpasswd": ".htpasswd"
+    "htpasswd": "configs/.htpasswd"
   },
   "directory": {
     "path": "files/"
