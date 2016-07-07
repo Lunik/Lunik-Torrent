@@ -176,7 +176,6 @@ Directory.prototype.loadFileInfo = function(){
       } else {
         self.fileInfo = JSON.parse(data)
       }
-      console.log(self.fileInfo)
     })
   },1)
 }
