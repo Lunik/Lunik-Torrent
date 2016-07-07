@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if ! [ -f .htpasswd ]
-  then echo 'admin:admin' >> .htpasswd
+if ! [ -f configs/.htpasswd ]
+  then echo 'admin:admin' >> configs/.htpasswd
 fi
 
 mkdir files
