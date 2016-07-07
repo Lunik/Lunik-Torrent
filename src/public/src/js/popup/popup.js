@@ -1,8 +1,8 @@
 function _Popup () {
   // Initialisation du popup
   this.init = function (posX, posY, width, height, title, html, closeBut) {
-    this.posX = formatPosX(posX)
-    this.posY = formatPosY(posY)
+    this.posX = formatPos(posX)
+    this.posY = formatPos(posY)
     this.width = formatWidth(width)
     /*if (this.width > 500) {
       this.whidth = 500
@@ -81,26 +81,8 @@ function _Popup () {
     return height
   }
 
-  function formatPosX (posX) {
-    if (posX) {
-      posX = posX.toString()
-      if (posX.indexOf('%') !== -1) {
-        posX = posX.split('%')[0]
-        posX = parseInt((posX * $(window).height()) / 100, 10)
-      }
-    }
-    return posX
-  }
-
-  function formatPosY (posY) {
-    if (posY) {
-      posY = posY.toString()
-      if (posY.indexOf('%') !== -1) {
-        posY = posY.split('%')[0]
-        posY = parseInt((posY * $(window).height()) / 100, 10)
-      }
-    }
-    return posY
+  function formatPos (pos) {
+    return formatHeight(pos)
   }
 }
 
