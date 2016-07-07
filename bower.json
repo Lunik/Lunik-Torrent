@@ -21,6 +21,7 @@
     "tablesorter": "*",
     "jquery-ui-touch-punch-improved": "^0.3.1",
     "font-awesome": "^4.6.3",
-    "notify.me": "^0.6.2"
+    "notify.me": "^0.6.2",
+    "popupjs": "^1.1.0"
   }
 }
