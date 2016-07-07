@@ -5,7 +5,7 @@
 @import url(themes/default/theme.css);
 @import url(themes/icon.css);
 @import url(../bower_components/notify.me/dist/css/notify-me.min.css);
-@import url(../js/popup/popup.min.css);
+@import url(../bower_components/popupjs/dist/popup.min.css);
 
 * {
   outline: none;
