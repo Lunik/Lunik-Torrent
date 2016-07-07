@@ -157,7 +157,9 @@ Directory.prototype.setOwner = function(file, user){
   var self = this
   setTimeout(function () {
     self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
-    self.fileInfo[file].owner = user
+    if(self.fileInfo[file].owner == null){
+      self.fileInfo[file].owner = user
+    }
     saveFileInfo()
   },1)
 }
