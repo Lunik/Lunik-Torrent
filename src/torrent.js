@@ -56,7 +56,9 @@ Torrent.prototype.start = function (url) {
             console.log(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
             fs.renameSync(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
             // Defini l'owner
-            self.Directory.setOwner(name, self.dowloader[url])
+            if(self.dowloader[url]){
+              self.Directory.setOwner(name, self.dowloader[url])
+            }
             // Relance un torrent si il y en a en attente
             if (self.waitList.length > 0) {
               Log.print('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
