@@ -44,7 +44,6 @@ cache:
   directories:
   - "$(pwd)/node_modules"
   - "$(pwd)/src/public/src/bower_components"
-  - "/usr/lib/node_modules"
 deploy:
   provider: npm
   email: guillaume.lunik@gmail.com
