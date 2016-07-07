@@ -7,6 +7,7 @@ function Directory () {
   var self = this
   this.dir = {}
   this.fileInfo = {}
+  this.loadFileInfo()
 
   setInterval(function () {
     self.updateDownloads()
@@ -157,6 +158,32 @@ Directory.prototype.setOwner = function(file, user){
   setTimeout(function () {
     self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
     self.fileInfo[file].owner = user
+    saveFileInfo()
+  },1)
+}
+
+Directory.prototype.loadFileInfo = function(){
+  var self = this
+  setTimeout(function(){
+    fs.readFile('configs/fileInfo.json', function(err, data) {
+      if (err){
+        console.log(err)
+        self.fileInfo = {}
+        self.saveFileInfo()
+      } else {
+        self.fileInfo = JSON.parse(data)
+      }
+      console.log(self.fileInfo)
+    })
+  },1)
+}
+
+Directory.prototype.saveFileInfo = function(){
+  var self = this
+  setTimeout(function(){
+    fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function(err) {
+      if (err) console.log(err)
+    })
   },1)
 }
 
