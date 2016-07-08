@@ -6,8 +6,9 @@ var Path = require('path')
 function Log () {}
 
 Log.prototype.print = function (text) {
+  var self = this
   setTimeout(function () {
-    console.log(text)
+    self.echo(text)
     fs.appendFile(Path.join(config.log.path, 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1)), '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
       if (err) throw err
     })
