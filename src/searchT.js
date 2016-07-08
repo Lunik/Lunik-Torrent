@@ -1,8 +1,17 @@
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 
+/**
+ * Search torrent.
+ * @constructor
+*/
 function SearchT () {}
 
+/**
+ * Search a torrent.
+ * @param {string} query - Torrent name to search.
+ * @param {function} callback - Return function with informations.
+*/
 SearchT.prototype.search = function (query, callback) {
   setTimeout(function () {
     CpasbienApi.Search(query, {
@@ -28,6 +37,10 @@ SearchT.prototype.search = function (query, callback) {
   }, 1)
 }
 
+/**
+ * Search the latest torrents.
+ * @param {function} callback - Return function with informations.
+*/
 SearchT.prototype.latest = function (callback) {
   setTimeout(function () {
     CpasbienApi.Latest({
