@@ -10,7 +10,7 @@ i.fa {
   background-repeat: no-repeat;
   background-image: url("../../image/file/file.png");
   background-size: 25px;
-  padding: 5px 0px 0px 30px !important;
+  padding: 5px 0px 0px 30px;
 }
 .list .file td#name[extension=dir] {
   background-image: url("../../image/file/dir.png");

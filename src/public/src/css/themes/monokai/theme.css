@@ -7,10 +7,10 @@ body {
   background: #FD971F;
 }
 .button:hover {
-  color: #675f5f !important;
+  color: #675f5f;
 }
 .button:active, .button:focus {
-  color: #FD971F !important;
+  color: #FD971F;
 }
 .loading {
   background-color: #272822;
