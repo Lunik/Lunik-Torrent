@@ -71,8 +71,8 @@ Directory.prototype.getInfo = function (file) {
 Directory.prototype.setDownloading = function (file) {
   var self = this
   setTimeout(function () {
-    self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
-    self.fileInfo[file].download = self.fileInfo[file].download ? self.fileInfo[file].download + 1 : 1
+    self.fileInfo[file] = self.fileInfo[file] || {}
+    self.fileInfo[file].download = self.fileInfo[file].download || 1
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
       : {date: new Date(), count: 1}
@@ -160,7 +160,7 @@ Directory.prototype.setOwner = function (file, user) {
   var self = this
   setTimeout(function () {
     file = file[0] === '/' ? file.slice(1) : file
-    self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
+    self.fileInfo[file] = self.fileInfo[file] || {}
     if (self.fileInfo[file].owner == null) {
       self.fileInfo[file].owner = user
     }

@@ -34,7 +34,7 @@ _Directory.prototype.appendSize = function (size) {
 }
 
 _Directory.prototype.getList = function () {
-  var hash = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
+  var hash = document.location.hash.substring(1) || '/'
   var self = this
   $.post('/list-d', {
     dir: hash
@@ -74,7 +74,7 @@ _Directory.prototype.getList = function () {
 }
 
 _Directory.prototype.list = function (directory, locked) {
-  var kownFiles = Storage.readData('directory') ? Storage.readData('directory') : [] // array
+  var kownFiles = Storage.readData('directory') || [] // array
 
   // ...
   var href = document.location.hash.substring(1).split('/')
@@ -141,7 +141,7 @@ _Directory.prototype.append = function (file) {
         drop: function (data, element) {
           var folder = $(this).attr('data-file')
           var file = element.draggable.attr('data-file')
-          var path = document.location.hash.substring(1) ? document.location.hash.substring(1) : '/'
+          var path = document.location.hash.substring(1) || '/'
 
           $.post('/mv-d', {
             'file': file,
@@ -210,7 +210,7 @@ _Directory.prototype.setActions = function (file, actions) {
         name = name.split('/').pop() + extension
         name = name.trim()
         $.post('/rename-d', {
-          'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
+          'path': document.location.hash.substring(1) || '/',
           'oldname': file.name,
           'newname': name
         }, function (data) {

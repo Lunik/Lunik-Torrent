@@ -49,7 +49,7 @@ function _LeftMenu () {
     var name = prompt('Nom du nouveau dossier ?')
     if (name) {
       $.post('/mkdir-d', {
-        'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
+        'path': document.location.hash.substring(1) || '/',
         'name': name
       }, function (name) {
         name = JSON.parse(name)
