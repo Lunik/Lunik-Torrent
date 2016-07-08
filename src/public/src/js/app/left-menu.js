@@ -1,5 +1,8 @@
 var LeftMenu = new _LeftMenu()
-
+/**
+ * LeftMenu Manager
+ * @constructor
+*/
 function _LeftMenu () {
   var self = this
 
@@ -7,6 +10,7 @@ function _LeftMenu () {
 
   this.body = $('.left-menu')
 
+  //list of all left menu buttons
   this.but = {
     torrent: $('.left-menu .nav-bar #torrents'),
     directory: $('.left-menu .nav-bar #directories'),
@@ -19,6 +23,7 @@ function _LeftMenu () {
     current: null
   }
 
+  // event to open / close menu on mobile
   this.but.open.click(function () {
     self.body.attr('id', 'open')
   })
@@ -27,6 +32,7 @@ function _LeftMenu () {
     self.body.attr('id', 'close')
   })
 
+  // switchTable to torrent
   this.but.torrent.click(function () {
     self.but.directory.removeClass('active')
     self.but.torrent.addClass('active')
@@ -36,6 +42,7 @@ function _LeftMenu () {
     self.but.current = self.but.search
   })
 
+  //switch table to directory
   this.but.directory.click(function () {
     self.but.torrent.removeClass('active')
     self.but.directory.addClass('active')
@@ -45,6 +52,7 @@ function _LeftMenu () {
     self.but.current = null
   })
 
+  // create new folder
   this.but.new.click(function () {
     var name = prompt('Nom du nouveau dossier ?')
     if (name) {
@@ -73,6 +81,7 @@ function _LeftMenu () {
     }
   })
 
+  // start torrent
   this.but.start.click(function () {
     if (self.but.input.val()) {
       $.post('/download-t', {
@@ -94,6 +103,7 @@ function _LeftMenu () {
     }
   })
 
+  // search torrent
   this.but.search.click(function () {
     var s = new _SearchTorrent()
     s.search(self.but.input.val())
@@ -101,6 +111,7 @@ function _LeftMenu () {
     self.but.input.trigger('keyup')
   })
 
+  // update start / search button in function of input value
   this.but.input.keyup(function () {
     var value = $(this).val()
     if (value.search('.torrent') !== -1 || value.search('http://') !== -1 || value.search('magnet') !== -1) {
@@ -116,6 +127,7 @@ function _LeftMenu () {
     }
   })
 
+  // auto trigger but start / search on press ENTER 
   $(window).keydown(function (event) {
     switch (event.keyCode) {
       case 13:

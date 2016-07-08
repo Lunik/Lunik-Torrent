@@ -1,6 +1,10 @@
 var Format = new _Format()
 var Storage = new _Storage()
 
+/**
+ * Directory mamanger.
+ * @constructor
+*/
 function _Directory () {
   var self = this
   this.body = $('.list table tbody')
@@ -17,6 +21,7 @@ function _Directory () {
   this.timer = null
   this.refresh = 30000
 
+  // load new directory on hash change
   $(window).bind('hashchange', function () {
     self.body.html('')
     self.getList()
@@ -29,10 +34,17 @@ function _Directory () {
   }).trigger('hashchange')
 }
 
+/**
+ * Append the size of the current directory.
+ * @param {float} size - Size of the directory
+*/
 _Directory.prototype.appendSize = function (size) {
   this.size.text(Format.size(size))
 }
 
+/**
+ * Get the list of the directory's files from the server.
+*/
 _Directory.prototype.getList = function () {
   var hash = document.location.hash.substring(1) || '/'
   var self = this
@@ -73,6 +85,11 @@ _Directory.prototype.getList = function () {
   }, this.refresh)
 }
 
+/**
+ * Setup files list.
+ * @param {object} directory - Directory infos.
+ * @param {object} locked - List of locked files.
+*/
 _Directory.prototype.list = function (directory, locked) {
   var kownFiles = Storage.readData('directory') || [] // array
 
@@ -104,6 +121,10 @@ _Directory.prototype.list = function (directory, locked) {
   Storage.storeData('directory', kownFiles)
 }
 
+/**
+ * Append a file to the html table.
+ * @param {object} file - File infos.
+*/
 _Directory.prototype.append = function (file) {
   var self = this
   var $raw
@@ -168,8 +189,6 @@ _Directory.prototype.append = function (file) {
       $('<i>').addClass('fa fa-download download').text(file.download).appendTo($name)
     }
 
-    // drag and drop
-
     $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
     $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
     $('<td>').attr('id', 'owner').text(file.owner || '-').appendTo($raw)
@@ -179,6 +198,11 @@ _Directory.prototype.append = function (file) {
   }
 }
 
+/**
+ * Setup actions button.
+ * @param {object} file - File infos.
+ * @param {object} actions -Alowed actions.
+*/
 _Directory.prototype.setActions = function (file, actions) {
   for (var key in this.actions) {
     this.actions[key].addClass('hide').unbind()

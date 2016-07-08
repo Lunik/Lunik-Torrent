@@ -1,7 +1,14 @@
 var Storage = new _Storage()
 
+/**
+ * Media info manager.
+*/
 function _MediaInfo () {}
 
+/**
+ * Get media info from the server.
+ * @param {string} title - Media title.
+*/
 _MediaInfo.prototype.get = function (title) {
   var self = this
   title = title.toLowerCase()
@@ -21,6 +28,11 @@ _MediaInfo.prototype.get = function (title) {
   }
 }
 
+/**
+ * Get the Media info popup hmtl.
+ * @param {object} data - Info on the media.
+ * @return {object} - Jquery html element.
+*/
 _MediaInfo.prototype.html = function (data) {
   var html = {}
   html.title = $('<a/>').attr('href', data.link).text(data.title)
@@ -43,6 +55,10 @@ _MediaInfo.prototype.html = function (data) {
   return html
 }
 
+/**
+ * Create media info popup from data.
+ * @param {object} data - Info on the media.
+*/
 _MediaInfo.prototype.popup = function (data) {
   var html = this.html(data)
   $.popupjs.init({
@@ -59,11 +75,21 @@ _MediaInfo.prototype.popup = function (data) {
   $.popupjs.draw()
 }
 
+/**
+ * Clean the media title.
+ * @param {string} title - Media title.
+ * @return {string} - Clean media title.
+*/
 _MediaInfo.prototype.cleanTitle = function (title) {
   var f = new _Format()
   return f.name(title)
 }
 
+/**
+ * Get type of the media (tvshow / movie).
+ * @param {string} title - Media title.
+ * @return {string} - Type of the media (films / series)
+*/
 _MediaInfo.prototype.getType = function (title) {
   title = title.toLowerCase()
   var regex = /s[0-9^e]*e[0-9]/

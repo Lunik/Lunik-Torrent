@@ -1,7 +1,15 @@
+/**
+ * Search torrent manager
+ * @constructor
+*/
 function _SearchTorrent () {
   this.torrentInput = $('.left-menu .torrent-input input')
 }
 
+/**
+ * Query the sever to search torrent.
+ * @param {string} query - Search title.
+*/
 _SearchTorrent.prototype.search = function (query) {
   var self = this
   $.post('/search-t', {
@@ -12,6 +20,10 @@ _SearchTorrent.prototype.search = function (query) {
   })
 }
 
+/**
+ * Display search torrent popup.
+ * @param {object} data - Search results.
+*/
 _SearchTorrent.prototype.show = function (data) {
   $.popupjs.init({
     pos: {
@@ -27,6 +39,11 @@ _SearchTorrent.prototype.show = function (data) {
   $.popupjs.draw()
 }
 
+/**
+ * Get search torrent popup html from data.
+ * @param {object} data - Search results.
+ * @return {object} - Jquery html element
+*/
 _SearchTorrent.prototype.getHtml = function (data) {
   var self = this
   var $searchDiv = $('<div>').addClass('search-result')

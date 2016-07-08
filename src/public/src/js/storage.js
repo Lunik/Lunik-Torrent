@@ -1,31 +1,48 @@
-// ///////////////
-//  localStorage
-// ///////////////
-
+/**
+ * API for the localstorage
+ * @constructor
+*/
 function _Storage () {}
-// Sauvgarder des donnes dans le localStorage
+
+/**
+ * Save data in the localstorage.
+ * @param {string} key - Where to store the data.
+ * @param {object} data - Data to store.
+*/
 _Storage.prototype.storeData = function (key, data) {
   data = JSON.stringify(data)
   localStorage.setItem(key, data)
 }
 
-// Lire des donnes dans le localStorage
+/**
+ * Read data from the localstorage.
+ * @param {string} key - Where the data is stored
+ * @return {object} - The data.
+*/
 _Storage.prototype.readData = function (key) {
   var data = localStorage.getItem(key)
   return JSON.parse(data)
 }
 
-// Effacer le localStorage
+/**
+ * Clear all localstorage.
+*/
 _Storage.prototype.clearData = function () {
   localStorage.clear()
 }
 
-// Affacer un localStorage precis
+/**
+ * Clear storage at specific key.
+ * @param {string} key - Where to store the data.
+*/
 _Storage.prototype.clearKey = function (key) {
   localStorage.setItem(key, null)
 }
 
-// Recupere toutes les clefs
+/**
+ * Read all keys from the localstorage.
+ * @param {array} - List of all keys
+*/
 _Storage.prototype.getAllKey = function () {
   var keys = []
   for (var key in localStorage) {
@@ -34,7 +51,10 @@ _Storage.prototype.getAllKey = function () {
   return keys
 }
 
-// Recup toutes les datas
+/**
+ * Read all data from the localstorage.
+ * @param {object} - List of all stored data
+*/
 _Storage.prototype.getAllData = function () {
   var keys = getAllKey()
   var data = {}

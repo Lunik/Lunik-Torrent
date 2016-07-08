@@ -1,5 +1,9 @@
 var Format = new _Format()
 
+/**
+ * Torrent manager.
+ * @constructor
+*/
 function _Torrent () {
   this.body = $('.list table tbody')
   this.table = $('.list').click(function () {
@@ -14,6 +18,9 @@ function _Torrent () {
   this.refresh = 3000
 }
 
+/**
+ * Get the torrent list from the server.
+*/
 _Torrent.prototype.getList = function () {
   var self = this
   $.post('/list-t', function (torrents) {
@@ -37,6 +44,10 @@ _Torrent.prototype.getList = function () {
   }, this.refresh)
 }
 
+/**
+ * Setup torrent list.
+ * @param {object} torrents - Torrents infos.
+*/
 _Torrent.prototype.list = function (torrents) {
   $('.torrent.button').addClass('toremove')
   for (var key in torrents) {
@@ -45,6 +56,10 @@ _Torrent.prototype.list = function (torrents) {
   $('.torrent.toremove').remove()
 }
 
+/**
+ * Append a torrent to the screen.
+ * @param {object} torrent - Torrent infos.
+*/
 _Torrent.prototype.append = function (torrent) {
   var self = this
   var needToAppend
@@ -84,6 +99,11 @@ _Torrent.prototype.append = function (torrent) {
   }
 }
 
+/**
+ * Setup actions aviable for the torrent.
+ * @param {object} torrent - Torrent infos.
+ * @param {object} actions - List of allowed actions.
+*/
 _Torrent.prototype.setActions = function (torrent, actions) {
   for (var key in this.actions) {
     this.actions[key].addClass('hide').unbind()
