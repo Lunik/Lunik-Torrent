@@ -159,7 +159,7 @@ Directory.prototype.mv = function (path, file, folder) {
 Directory.prototype.setOwner = function (file, user) {
   var self = this
   setTimeout(function () {
-    file = file[0] == '/' ? file.slice(1) : file
+    file = file[0] === '/' ? file.slice(1) : file
     self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
     if (self.fileInfo[file].owner == null) {
       self.fileInfo[file].owner = user
