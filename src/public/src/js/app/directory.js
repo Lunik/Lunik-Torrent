@@ -17,7 +17,6 @@ function _Directory () {
   this.timer = null
   this.refresh = 30000
 
-
   $(window).bind('hashchange', function () {
     self.body.html('')
     self.getList()
@@ -52,14 +51,14 @@ _Directory.prototype.getList = function () {
       var current_scroll = $('body').scrollTop()
 
       var locked = {}
-      for(var key in directory.infos){
-        if(directory.infos[key] && directory.infos[key].downloading){
+      for (var key in directory.infos) {
+        if (directory.infos[key] && directory.infos[key].downloading) {
           locked[key] = directory.infos[key]
         }
-        if(directory.infos[key] && directory.files[key]){
+        if (directory.infos[key] && directory.files[key]) {
           directory.files[key].owner = directory.infos[key].owner
         }
-        if(directory.infos[key] && directory.files[key]){
+        if (directory.infos[key] && directory.files[key]) {
           directory.files[key].download = directory.infos[key].download
         }
       }
@@ -133,9 +132,9 @@ _Directory.prototype.append = function (file) {
       file.isdir
         ? $('<a>').addClass('button').attr('href', '#' + file.href).text(file.name)
         : file.name
-      ).appendTo($raw).draggable({
-          revert: true
-        }).draggable('disable')
+    ).appendTo($raw).draggable({
+      revert: true
+    }).draggable('disable')
     if (file.isdir) {
       $name.droppable({
         greedy: true,

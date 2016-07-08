@@ -60,7 +60,7 @@ _MediaInfo.prototype.popup = function (data) {
 }
 
 _MediaInfo.prototype.cleanTitle = function (title) {
-  var bannedWords = ['dvdrip','fr','vo','vostfr','hdtv','webrip','bdrip']
+  var bannedWords = ['dvdrip', 'fr', 'vo', 'vostfr', 'hdtv', 'webrip', 'bdrip']
   title = title.toLowerCase()
     .replace(/\.[a-z0-9]*$/, '') // remove extension
     .replace(/\./g, ' ') // point
@@ -68,9 +68,9 @@ _MediaInfo.prototype.cleanTitle = function (title) {
     .replace(/ $/, '') // espace en fin de chaine
   title = title.split(' ')
   var newTitle = []
-  for(var key in title){
+  for (var key in title) {
     var mot = title[key]
-    if(bannedWords.indexOf(mot) == -1){
+    if (bannedWords.indexOf(mot) == -1) {
       newTitle.push(mot)
     }
   }

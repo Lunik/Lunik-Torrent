@@ -156,23 +156,23 @@ Directory.prototype.mv = function (path, file, folder) {
   }, 1)
 }
 
-Directory.prototype.setOwner = function(file, user){
+Directory.prototype.setOwner = function (file, user) {
   var self = this
   setTimeout(function () {
     file = file[0] == '/' ? file.slice(1) : file
     self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
-    if(self.fileInfo[file].owner == null){
+    if (self.fileInfo[file].owner == null) {
       self.fileInfo[file].owner = user
     }
     self.saveFileInfo()
-  },1)
+  }, 1)
 }
 
-Directory.prototype.loadFileInfo = function(){
+Directory.prototype.loadFileInfo = function () {
   var self = this
-  setTimeout(function(){
-    fs.readFile('configs/fileInfo.json', function(err, data) {
-      if (err){
+  setTimeout(function () {
+    fs.readFile('configs/fileInfo.json', function (err, data) {
+      if (err) {
         console.log(err)
         self.fileInfo = {}
         self.saveFileInfo()
@@ -180,16 +180,16 @@ Directory.prototype.loadFileInfo = function(){
         self.fileInfo = JSON.parse(data)
       }
     })
-  },1)
+  }, 1)
 }
 
-Directory.prototype.saveFileInfo = function(){
+Directory.prototype.saveFileInfo = function () {
   var self = this
-  setTimeout(function(){
-    fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function(err) {
+  setTimeout(function () {
+    fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
       if (err) console.log(err)
     })
-  },1)
+  }, 1)
 }
 
 function removeRecursif (path) {

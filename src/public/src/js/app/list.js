@@ -131,7 +131,7 @@ _List.prototype.switchTable = function (nav) {
       }
 
       $.notify.warning({
-        text: 'Check that the file hasn\'t been downloaded before download.'
+        text: "Check that the file hasn't been downloaded before download."
       })
 
       break

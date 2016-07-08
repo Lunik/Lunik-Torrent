@@ -116,11 +116,11 @@ function _LeftMenu () {
     }
   })
 
-  $(window).keydown(function(event){
-    switch(event.keyCode){
+  $(window).keydown(function (event) {
+    switch (event.keyCode) {
       case 13:
         self.but.current.trigger('click')
-        break;
+        break
     }
   })
 }

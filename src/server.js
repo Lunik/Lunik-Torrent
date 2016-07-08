@@ -24,7 +24,7 @@ function Server () {
     extended: true
   }))
 
-  if(config.server.htpasswd && config.server.htpasswd.length > 0){
+  if (config.server.htpasswd && config.server.htpasswd.length > 0) {
     this.basic = auth.basic({
       realm: config.server.message,
       file: config.server.htpasswd

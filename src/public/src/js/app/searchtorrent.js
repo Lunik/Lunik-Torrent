@@ -43,9 +43,9 @@ _SearchTorrent.prototype.getHtml = function (data) {
         self.torrentInput.trigger('keyup')
       })
       $('<td>').addClass('img').append(
-        $('<img>').attr('src', element.cover).hover(function(event){
+        $('<img>').attr('src', element.cover).hover(function (event) {
           $(this).width($(this).width() * 2)
-        }, function(){
+        }, function () {
           $(this).width($(this).width() / 2)
         })
       ).appendTo($item)

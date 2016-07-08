@@ -56,7 +56,7 @@ Torrent.prototype.start = function (url) {
             console.log(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
             fs.renameSync(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
             // Defini l'owner
-            if(self.dowloader[url]){
+            if (self.dowloader[url]) {
               self.Directory.setOwner(name, self.dowloader[url])
             }
             // Relance un torrent si il y en a en attente
@@ -120,7 +120,7 @@ Torrent.prototype.getInfo = function () {
   return torrents
 }
 
-Torrent.prototype.setDownloader = function(user, url){
+Torrent.prototype.setDownloader = function (user, url) {
   this.dowloader[url] = user
 }
 module.exports = new Torrent()
