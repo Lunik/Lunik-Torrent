@@ -59,6 +59,9 @@ _Directory.prototype.getList = function () {
         if(directory.infos[key] && directory.files[key]){
           directory.files[key].owner = directory.infos[key].owner
         }
+        if(directory.infos[key] && directory.files[key]){
+          directory.files[key].download = directory.infos[key].download
+        }
       }
       self.list(directory.files, locked)
 
@@ -129,7 +132,8 @@ _Directory.prototype.append = function (file) {
     var $name = $('<td>').attr('id', 'name').attr('extension', Format.extention(file)).attr('data-file', file.name).html(
       file.isdir
         ? $('<a>').addClass('button').attr('href', '#' + file.href).text(file.name)
-        : file.name).appendTo($raw).draggable({
+        : file.name
+      ).appendTo($raw).draggable({
           revert: true
         }).draggable('disable')
     if (file.isdir) {
@@ -160,6 +164,9 @@ _Directory.prototype.append = function (file) {
     }
     if (file.locked) {
       $('<i>').addClass('fa fa-lock locked').appendTo($name)
+    }
+    if (file.download) {
+      $('<i>').addClass('fa fa-download download').text(file.download).appendTo($name)
     }
 
     // drag and drop

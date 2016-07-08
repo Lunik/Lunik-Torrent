@@ -72,9 +72,12 @@ Directory.prototype.setDownloading = function (file) {
   var self = this
   setTimeout(function () {
     self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
+    self.fileInfo[file].download = self.fileInfo[file].download ? self.fileInfo[file].download + 1 : 1
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
       : {date: new Date(), count: 1}
+
+    self.saveFileInfo()
   }, 1)
 }
 
