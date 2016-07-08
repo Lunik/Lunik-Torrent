@@ -44,7 +44,7 @@ _TopMenu.prototype.setAriane = function () {
     i++
   })
 
-  $('.fil-ariane a').droppable({
+  /*$('.fil-ariane a').droppable({
     greedy: true,
     drop: function (data) {
       var folder = ''
@@ -67,5 +67,5 @@ _TopMenu.prototype.setAriane = function () {
         }
       })
     }
-  })
+  })*/
 }
