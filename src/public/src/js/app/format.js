@@ -2,7 +2,7 @@ function _Format () {}
 
 _Format.prototype.size = function (bytes) {
   var sizes = ['b', 'kb', 'mb', 'gb', 'tb']
-  if (bytes === 0) return '0 b'
+  if (bytes === 0) { return '0 b' }
   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
 }
@@ -28,10 +28,10 @@ _Format.prototype.time = function (time) {
 
   var returnString = ''
 
-  if (days > 0) returnString += days + 'j - '
-  if (hours > 0) returnString += hours + 'h '
-  if (minutes > 0) returnString += minutes + 'm '
-  if (seconds > 0) returnString += seconds + 's '
+  if (days > 0) { returnString += days + 'j - ' }
+  if (hours > 0) { returnString += hours + 'h ' }
+  if (minutes > 0) { returnString += minutes + 'm ' }
+  if (seconds > 0) { returnString += seconds + 's ' }
 
   return returnString
 }

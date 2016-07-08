@@ -25,19 +25,16 @@ _MediaInfo.prototype.html = function (data) {
   var html = {}
   html.title = $('<a/>').attr('href', data.link).text(data.title)
 
-  $html = $('<div/>').addClass('Content')
+  var $html = $('<div/>').addClass('Content')
 
-  $image = $('<img/>').attr('src', data.poster).attr('alt', data.title + ' poster')
-  $html.append($image)
+  $('<img/>').attr('src', data.poster).attr('alt', data.title + ' poster').appendTo($html)
 
-  $infos = $('<div/>').addClass('infos')
+  var $infos = $('<div/>').addClass('infos')
 
-  $rating = $('<div/>').addClass('rating').text(Math.round(data.rating) + '/5')
-  $infos.append($rating)
+  $('<div/>').addClass('rating').text(Math.round(data.rating) + '/5').appendTo($infos)
 
-  $synopsis = $('<div/>').addClass('synopsis').html(data.description)
-  $lirelasuite = $('<br><a/>').addClass('button').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...')
-  $synopsis.append($lirelasuite)
+  var $synopsis = $('<div/>').addClass('synopsis').html(data.description)
+  $lirelasuite = $('<br><a/>').addClass('button').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...').appendTo($synopsis)
   $infos.append($synopsis)
 
   $html.append($infos)
