@@ -218,7 +218,6 @@ Directory.prototype.mv = function (path, file, folder) {
   }, 1)
 }
 
-<<<<<<< HEAD
 /**
  * Set the File / Directory Owner.
  * @param {string} file - File / Directory name.
@@ -229,31 +228,19 @@ Directory.prototype.setOwner = function(file, user){
   setTimeout(function () {
     file = file[0] == '/' ? file.slice(1) : file
     //set owner defalt value
-    self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
+    self.fileInfo[file] = self.fileInfo[file] || {}
     //prevent override current user
     if(self.fileInfo[file].owner == null){
-=======
-Directory.prototype.setOwner = function (file, user) {
-  var self = this
-  setTimeout(function () {
-    file = file[0] === '/' ? file.slice(1) : file
-    self.fileInfo[file] = self.fileInfo[file] || {}
-    if (self.fileInfo[file].owner == null) {
->>>>>>> d65b6618109778c3c5dfded526118423c622a559
       self.fileInfo[file].owner = user
     }
     self.saveFileInfo()
   }, 1)
 }
 
-<<<<<<< HEAD
 /**
  * Load configs/fileInfo.json into Directory.fileInfo.
 */
-Directory.prototype.loadFileInfo = function(){
-=======
 Directory.prototype.loadFileInfo = function () {
->>>>>>> d65b6618109778c3c5dfded526118423c622a559
   var self = this
   setTimeout(function () {
     fs.readFile('configs/fileInfo.json', function (err, data) {
@@ -268,14 +255,10 @@ Directory.prototype.loadFileInfo = function () {
   }, 1)
 }
 
-<<<<<<< HEAD
 /**
  * Save Directory.fileInfo into configs/fileInfo.json.
 */
-Directory.prototype.saveFileInfo = function(){
-=======
 Directory.prototype.saveFileInfo = function () {
->>>>>>> d65b6618109778c3c5dfded526118423c622a559
   var self = this
   setTimeout(function () {
     fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
