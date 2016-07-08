@@ -1,3 +1,7 @@
+/**
+ * List manager
+ * @constructor
+*/
 function _List () {
   var self = this
   this.Directory = new _Directory()
@@ -7,6 +11,7 @@ function _List () {
   this.table = $('.list table')
   this.body = $('.list table tbody')
 
+  //setup tablesorter
   $.tablesorter.addParser({
     // set a unique id
     id: 'size',
@@ -63,6 +68,7 @@ function _List () {
     }
   })
 
+  // directory column
   this.directoryElements = {
     ariane: $('.top-menu .ariane'),
     size: $('.top-menu .folder-size'),
@@ -75,6 +81,7 @@ function _List () {
     ownerCol: $('.list #owner')
   }
 
+  // torrent column
   this.torrentElements = {
     input: $('.left-menu .torrent-input'),
     startBut: $('.left-menu .start'),
@@ -87,7 +94,7 @@ function _List () {
     upCol: $('.list #up')
   }
 
-  // click en dehors d'une ligne du table pour la deselectionner
+  // click outside the list to unselect
   $('html').click(function () {
     $('.list .selected').children('#name').draggable('disable')
     $('.list .file').removeClass('selected')
@@ -104,6 +111,7 @@ function _List () {
     })
   })
 
+  //scrollTop button
   this.scrollTop = $('.scrollTop').click(function () {
     $('body').animate({
       scrollTop: 0
@@ -111,6 +119,10 @@ function _List () {
   })
 }
 
+/**
+ * switch between torrent and directory list.
+ * @param {string} nav - Table to show (torrent / directory)
+*/
 _List.prototype.switchTable = function (nav) {
   this.body.html('')
   var key

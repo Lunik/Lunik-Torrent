@@ -5,10 +5,18 @@ var fs = require('fs')
 var portscanner = require('portscanner')
 var Path = require('path')
 
+/**
+ * File transfert server.
+ * @constructor
+ * @param {object} req - http req object.
+ * @param {object} res - http res object.
+ * @param {callback} function - callback when transfert is complet.
+ */
 function FileTransfert (req, res, callback) {
   var self = this
   setTimeout(function () {
     if (config.nginx.active) {
+      //check if nginx is aviable
       portscanner.checkPortStatus(config.nginx.port, 'localhost', function (error, status) {
         if (error) {
           console.log(error)
@@ -29,6 +37,12 @@ function FileTransfert (req, res, callback) {
   }, 1)
 }
 
+/**
+ * Transfert file with js support.
+ * @param {object} req - http req object.
+ * @param {object} res - http res object.
+ * @param {callback} function - callback when transfert is complet.
+ */
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
   setTimeout(function () {
     var filename = Path.join(config.directory.path + req.query.f)
@@ -69,6 +83,12 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
   }, 1)
 }
 
+/**
+ * Transfert file with nginx server.
+ * @param {object} req - http req object.
+ * @param {object} res - http res object.
+ * @param {callback} function - callback when transfert is complet.
+ */
 FileTransfert.prototype.transfertNginx = function (req, res, callback) {
   // Execute callback after 1h
   setTimeout(function () {

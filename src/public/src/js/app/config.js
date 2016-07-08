@@ -1,5 +1,9 @@
 var Storage = new _Storage()
 
+/**
+ * Configuration manager.
+ * @constructor
+*/
 function Config () {
   var self = this
   this.config = {}
@@ -25,6 +29,10 @@ function Config () {
   this.configReady()
 }
 
+/**
+ * Get configuration popup html.
+ * @return {object} - Jquery html element.
+*/
 Config.prototype.getHtml = function () {
   var self = this
   var $html = $('<div/>').addClass('config-pop').click(function (event) {
@@ -50,6 +58,9 @@ Config.prototype.getHtml = function () {
   return $html
 }
 
+/**
+ * Submit config form.
+*/
 Config.prototype.submit = function () {
   var config = {}
   config.theme = $('.config-pop .theme').val()
@@ -58,6 +69,10 @@ Config.prototype.submit = function () {
   $.popup.remove()
 }
 
+/**
+ * Set config and save it.
+ * @param {object} config - Configuration.
+*/
 Config.prototype.setConfig = function (config) {
   if (config) {
     for (var key in config) {
@@ -67,12 +82,20 @@ Config.prototype.setConfig = function (config) {
   }
 }
 
+/**
+ * Apply the config.
+ * @param {object} config - Configuration.
+*/
 Config.prototype.applyConfig = function (config) {
   if (config) {
     this.applyTheme(config.theme)
   }
 }
 
+/**
+ * Apply a theme.
+ * @param {object} theme - Theme.
+*/
 Config.prototype.applyTheme = function (theme) {
   theme = theme || 'default'
   if ($('head .theme').length > 0) {
@@ -82,6 +105,9 @@ Config.prototype.applyTheme = function (theme) {
   }
 }
 
+/**
+ * Remove the loading page when the configuation is ready.
+*/
 Config.prototype.configReady = function () {
   $('.loading').remove()
 }

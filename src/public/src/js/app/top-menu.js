@@ -1,3 +1,7 @@
+/**
+ * Top menu manager.
+ * @constructor
+*/
 function _TopMenu () {
   var self = this
   this.ariane = $('.top-menu .ariane')
@@ -9,6 +13,9 @@ function _TopMenu () {
   self.setAriane()
 }
 
+/**
+ * Set the ariane links.
+*/
 _TopMenu.prototype.setAriane = function () {
   var self = this
   this.ariane.html('')

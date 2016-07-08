@@ -5,6 +5,10 @@ var Client = require('./client.js')
 var fs = require('fs')
 var Path = require('path')
 
+/**
+ * Torrent manager.
+ * @constructor
+*/
 function Torrent () {
   var self = this
   this.client = {}
@@ -17,6 +21,10 @@ function Torrent () {
   }, 30000)
 }
 
+/**
+ * Start downloadind torrent.
+ * @param {string} url - Url / magnet of the torrent.
+*/
 Torrent.prototype.start = function (url) {
   var self = this
   setTimeout(function () {
@@ -81,6 +89,10 @@ Torrent.prototype.start = function (url) {
   }, 1)
 }
 
+/**
+ * Stop and remove a torrent.
+ * @param {string} hash - Torrent to remove Hash.
+*/
 Torrent.prototype.remove = function (hash) {
   var url = this.getUrlFromHash(hash)
   if (url && this.client[url]) {
@@ -89,6 +101,11 @@ Torrent.prototype.remove = function (hash) {
   }
 }
 
+/**
+ * Get torrent url from hash.
+ * @param {string} hash - Torrent Hash.
+ * @return {string} - Torrent turl.
+*/
 Torrent.prototype.getUrlFromHash = function (hash) {
   for (var key in this.client) {
     if (this.client[key].hash === hash) {
@@ -98,6 +115,10 @@ Torrent.prototype.getUrlFromHash = function (hash) {
   return null
 }
 
+/**
+ * Start torrent into configured torrent file.
+ * @param {object} self - Torrent instance.
+*/
 Torrent.prototype.startPointTorrent = function (self) {
   var data = fs.readFileSync(config.torrent.scanTorrent, 'utf-8')
   var torrents = data.split('\n')
@@ -109,6 +130,10 @@ Torrent.prototype.startPointTorrent = function (self) {
   })
 }
 
+/**
+ * Get infos about all current clients.
+ * @return {object} - All torrent infos.
+*/
 Torrent.prototype.getInfo = function () {
   var torrents = {}
   for (var key in this.client) {
@@ -120,6 +145,11 @@ Torrent.prototype.getInfo = function () {
   return torrents
 }
 
+/**
+ * Define who download a torrent.
+ * @param {string} user - User who download the torrent.
+ * @param {string} url - Torrent url.
+*/
 Torrent.prototype.setDownloader = function (user, url) {
   this.dowloader[url] = user
 }

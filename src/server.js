@@ -15,6 +15,10 @@ var Path = require('path')
 
 http.globalAgent.maxSockets = Infinity
 
+/**
+ * Deserve http requests.
+ * @constructor
+*/
 function Server () {
   this.app = express()
   this.app.use(compression())
@@ -189,6 +193,7 @@ function Server () {
     }
   })
 
+  // client search torrent
   this.app.post('/search-t', function (req, res) {
     var searchEngine = require('./searchT.js')
     if (req.body.query !== '') {
@@ -204,6 +209,7 @@ function Server () {
     }
   })
 
+  // client get meida info
   this.app.post('/info-d', function (req, res) {
     if (req.body.type && req.body.query) {
       req.body.type = req.body.type.replace(/%20/g, ' ')
@@ -217,6 +223,7 @@ function Server () {
     }
   })
 
+  // lock api request
   this.app.get('/lock-d', function (req, res) {
     if (req.query.f) {
       req.query.f = req.query.f.replace(/%20/g, ' ')

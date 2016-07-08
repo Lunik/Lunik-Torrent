@@ -1,7 +1,18 @@
 var allocine = require('allocine-api')
 
+/**
+ * MediaInfo requester.
+ * @constructor
+*/
 function MediaInfo () {}
 
+/**
+ * Get Media Info from allocine.
+ * @param {string} query - Media to search.
+ * @param {string} type - Media type (tvseries, movie)
+ * @param {string} code - Media code.
+ * @param {function} callback - callback with iformation.
+*/
 MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
   setTimeout(function () {
     if (type === 'tvseries') {
@@ -42,6 +53,12 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
   }, 1)
 }
 
+/**
+ * Search Media on allocine.
+ * @param {string} type - Media type (tvseries, movie)
+ * @param {string} query - Media to search.
+ * @param {function} callback - callback with iformation.
+*/
 MediaInfo.prototype.search = function (type, query, callback) {
   var self = this
   setTimeout(function () {
@@ -77,6 +94,12 @@ MediaInfo.prototype.search = function (type, query, callback) {
   }, 1)
 }
 
+/**
+ * Get info about a Media.
+ * @param {string} type - Media type (tvseries, movie)
+ * @param {string} query - Media to search.
+ * @param {function} callback - callback with iformation.
+*/
 MediaInfo.prototype.getInfo = function (type, query, callback) {
   var self = this
   setTimeout(function () {

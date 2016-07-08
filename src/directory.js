@@ -3,6 +3,10 @@ var config = require('../configs/config.json')
 var fs = require('fs')
 var Path = require('path')
 
+/**
+ * Directory manager.
+ * @constructor
+ */
 function Directory () {
   var self = this
   this.dir = {}
@@ -14,7 +18,13 @@ function Directory () {
   }, 30000)
 }
 
+/**
+ * Get the list and informations of files into a specific directory.
+ * @param {string} dir - Directory to scan.
+ * @return {object} - Directory informations.
+*/
 Directory.prototype.list = function (dir) {
+  //save directory informations into app cache
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else {
@@ -31,6 +41,11 @@ Directory.prototype.list = function (dir) {
   }
 }
 
+/**
+ * Get directory informations.
+ * @param {string} dir - Directory to get informations.
+ * @return {object} - Directory informations.
+*/
 Directory.prototype.getDir = function (dir) {
   var self = this
 
@@ -54,9 +69,15 @@ Directory.prototype.getDir = function (dir) {
   }
 }
 
+/**
+ * Get file informations.
+ * @param {string} file - File / Directory to get informations.
+ * @return {object} - File / Directory informations.
+*/
 Directory.prototype.getInfo = function (file) {
   var stats = fs.statSync(file)
   var sfile = {}
+  // get size if it's a Directory
   if (stats.isFile()) {
     sfile = stats
   } else {
@@ -68,11 +89,18 @@ Directory.prototype.getInfo = function (file) {
   return sfile
 }
 
+/**
+ * Lock a file.
+ * @param {string} file - File to lock.
+*/
 Directory.prototype.setDownloading = function (file) {
   var self = this
   setTimeout(function () {
+    //file info default value
     self.fileInfo[file] = self.fileInfo[file] || {}
+    //increment file download
     self.fileInfo[file].download = self.fileInfo[file].download || 1
+    //increment file current downloading and set the current date
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
       : {date: new Date(), count: 1}
@@ -81,9 +109,14 @@ Directory.prototype.setDownloading = function (file) {
   }, 1)
 }
 
+/**
+ * Unlock a file.
+ * @param {string} file - File to unlock.
+*/
 Directory.prototype.finishDownloading = function (file) {
   var self = this
   setTimeout(function () {
+    // decrement file downloading
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: self.fileInfo[file].downloading.date, count: self.fileInfo[file].downloading.count - 1}
       : {date: new Date(), count: 0}
@@ -94,6 +127,9 @@ Directory.prototype.finishDownloading = function (file) {
   }, 1)
 }
 
+/**
+ * Auto Unlock a files after 1h.
+*/
 Directory.prototype.updateDownloads = function () {
   var self = this
   setTimeout(function () {
@@ -107,11 +143,20 @@ Directory.prototype.updateDownloads = function () {
   }, 1)
 }
 
+/**
+ * Check if a file is locked.
+ * @param {string} file - File to check.
+ * @return {bool} - File lock state.
+*/
 Directory.prototype.isDownloading = function (file) {
   file = file[0] === '/' ? file.substring(1) : file
   return this.fileInfo[file] && this.fileInfo[file].downloading ? true : false
 }
 
+/**
+ * Remove a file.
+ * @param {string} file - File to remove.
+*/
 Directory.prototype.remove = function (file) {
   if (this.isDownloading(file)) return -1
   setTimeout(function () {
@@ -130,6 +175,12 @@ Directory.prototype.remove = function (file) {
   }, 1)
 }
 
+/**
+ * Raname a file.
+ * @param {string} path - File directory path.
+ * @param {string} oldname - File old name.
+ * @param {string} newname - File new name.
+*/
 Directory.prototype.rename = function (path, oldname, newname) {
   if (this.isDownloading(path + oldname)) return -1
   setTimeout(function () {
@@ -139,6 +190,11 @@ Directory.prototype.rename = function (path, oldname, newname) {
   }, 1)
 }
 
+/**
+ * Create directory.
+ * @param {string} path - Parent directory path.
+ * @param {string} name - Directory name.
+*/
 Directory.prototype.mkdir = function (path, name) {
   setTimeout(function () {
     fs.mkdir(Path.join(config.directory.path, path, name), function (err) {
@@ -147,6 +203,12 @@ Directory.prototype.mkdir = function (path, name) {
   }, 1)
 }
 
+/**
+ * Move a file or directory.
+ * @param {string} path - File / Directory directory path.
+ * @param {string} file - File / Directory name.
+ * @param {string} folder - Destination directory.
+*/
 Directory.prototype.mv = function (path, file, folder) {
   if (this.isDownloading(Path.join(path, file))) return -1
   setTimeout(function () {
@@ -156,18 +218,28 @@ Directory.prototype.mv = function (path, file, folder) {
   }, 1)
 }
 
-Directory.prototype.setOwner = function (file, user) {
+/**
+ * Set the File / Directory Owner.
+ * @param {string} file - File / Directory name.
+ * @param {string} user - Owner.
+*/
+Directory.prototype.setOwner = function(file, user){
   var self = this
   setTimeout(function () {
-    file = file[0] === '/' ? file.slice(1) : file
+    file = file[0] == '/' ? file.slice(1) : file
+    //set owner defalt value
     self.fileInfo[file] = self.fileInfo[file] || {}
-    if (self.fileInfo[file].owner == null) {
+    //prevent override current user
+    if(self.fileInfo[file].owner == null){
       self.fileInfo[file].owner = user
     }
     self.saveFileInfo()
   }, 1)
 }
 
+/**
+ * Load configs/fileInfo.json into Directory.fileInfo.
+*/
 Directory.prototype.loadFileInfo = function () {
   var self = this
   setTimeout(function () {
@@ -183,6 +255,9 @@ Directory.prototype.loadFileInfo = function () {
   }, 1)
 }
 
+/**
+ * Save Directory.fileInfo into configs/fileInfo.json.
+*/
 Directory.prototype.saveFileInfo = function () {
   var self = this
   setTimeout(function () {
@@ -192,6 +267,10 @@ Directory.prototype.saveFileInfo = function () {
   }, 1)
 }
 
+/**
+ * Remove Directory recursively.
+ * @param {string} path - Directory to remove.
+*/
 function removeRecursif (path) {
   setTimeout(function () {
     if (fs.existsSync(path)) {
@@ -208,6 +287,11 @@ function removeRecursif (path) {
   }, 1)
 }
 
+/**
+ * Get the Directory size recursively.
+ * @param {string} path - Directory to remove.
+ * @return {int} - Directory size (bytes)
+*/
 function sizeRecursif (path) {
   var size = 0
   if (fs.existsSync(path)) {
