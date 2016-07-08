@@ -41,7 +41,6 @@ _Directory.prototype.getList = function () {
     dir: hash
   }, function (directory) {
     directory = JSON.parse(directory)
-    console.log(directory)
     if (directory.err) {
       $.notify.error({
         title: 'Error',
