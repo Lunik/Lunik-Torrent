@@ -63,14 +63,21 @@ _MediaInfo.prototype.popup = function (data) {
 }
 
 _MediaInfo.prototype.cleanTitle = function (title) {
+  var bannedWords = ['dvdrip','fr','vo','vostfr','hdtv','webrip','bdrip']
   title = title.toLowerCase()
     .replace(/\.[a-z0-9]*$/, '') // remove extension
-    .replace(/s[0-9][0-9]e[0-9][0-9]/g, '') // numero d'episode
-    .replace(/[ \.]((french)|(dvdrip)|(xvid-trs)|(fr)|(vo)|(vostfr)|(fastub)|(hdtv)|(xvid-ark01)|(webrip)|(bdrip))/g, '') // remove useless stuff
     .replace(/\./g, ' ') // point
+    .replace(/s[0-9][0-9]e[0-9][0-9]/g, '') // numero d'episode
     .replace(/ $/, '') // espace en fin de chaine
-
-  return title
+  title = title.split(' ')
+  var newTitle = []
+  for(var key in title){
+    var mot = title[key]
+    if(bannedWords.indexOf(mot) == -1){
+      newTitle.push(mot)
+    }
+  }
+  return newTitle.join(' ')
 }
 
 _MediaInfo.prototype.getType = function (title) {
