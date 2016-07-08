@@ -44,7 +44,7 @@ Config.prototype.getHtml = function () {
   }
   $theme.appendTo($html)
 
-  $submit = $('<input>').addClass('submit button').attr('type', 'submit').attr('value', 'Save').appendTo($html).click(function () {
+  $('<input>').addClass('submit button').attr('type', 'submit').attr('value', 'Save').appendTo($html).click(function () {
     self.submit()
   })
   return $html
@@ -74,12 +74,11 @@ Config.prototype.applyConfig = function (config) {
 }
 
 Config.prototype.applyTheme = function (theme) {
-  theme = theme ? theme : 'default'
-  var $themeLink
+  theme = 'default' || theme
   if ($('head .theme').length > 0) {
-    $themeLink = $('head .theme').attr('href', 'src/css/themes/' + theme + '/theme.css')
+    $('head .theme').attr('href', 'src/css/themes/' + theme + '/theme.css')
   } else {
-    $themeLink = $('<link>').addClass('theme').attr('rel', 'stylesheet').attr('href', 'src/css/themes/' + theme + '/theme.css').appendTo($('head'))
+    $('<link>').addClass('theme').attr('rel', 'stylesheet').attr('href', 'src/css/themes/' + theme + '/theme.css').appendTo($('head'))
   }
 }
 

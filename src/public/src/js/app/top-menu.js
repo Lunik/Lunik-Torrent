@@ -14,7 +14,7 @@ _TopMenu.prototype.setAriane = function () {
   this.ariane.html('')
   var $delimiter = $('<span>').addClass('delimiter').text('>')
 
-  var $home = $('<a>').addClass('button').attr('href', '#').attr('data-file', '/').text('Home').appendTo(this.ariane)
+  $('<a>').addClass('button').attr('href', '#').attr('data-file', '/').text('Home').appendTo(this.ariane)
 
   var directories = document.location.hash.substring(1).split('/')
   directories.pop()
@@ -22,7 +22,7 @@ _TopMenu.prototype.setAriane = function () {
   var begin = 0
   if (directories.length >= 5) {
     self.ariane.append($delimiter.clone())
-    var $point = $('<a>').text('...').appendTo(this.ariane)
+    $('<a>').text('...').appendTo(this.ariane)
     begin = directories.length - 4
   }
 

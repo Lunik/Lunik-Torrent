@@ -37,7 +37,8 @@
       "getAllKey",
       "localStorage",
       "confirm",
-      "prompt"
+      "prompt",
+      "requirejs"
     ]
   }
 }

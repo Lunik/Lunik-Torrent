@@ -48,7 +48,7 @@ function _List () {
     id: 'date',
     is: function (s) { return false },
     format: function (s) {
-      s = s.split('\/')
+      s = s.split('/')
 
       return parseInt(s[0], 10) + parseInt(s[1], 10) * 30 + parseInt(s[2], 10) * 12
     },

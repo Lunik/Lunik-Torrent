@@ -70,7 +70,7 @@ _MediaInfo.prototype.cleanTitle = function (title) {
   var newTitle = []
   for (var key in title) {
     var mot = title[key]
-    if (bannedWords.indexOf(mot) == -1) {
+    if (bannedWords.indexOf(mot) === -1) {
       newTitle.push(mot)
     }
   }

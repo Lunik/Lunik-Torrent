@@ -48,7 +48,7 @@ _Directory.prototype.getList = function () {
     } else {
       self.appendSize(directory.totalSize)
 
-      var current_scroll = $('body').scrollTop()
+      var currentScroll = $('body').scrollTop()
 
       var locked = {}
       for (var key in directory.infos) {
@@ -64,7 +64,7 @@ _Directory.prototype.getList = function () {
       }
       self.list(directory.files, locked)
 
-      $('body').scrollTop(current_scroll)
+      $('body').scrollTop(currentScroll)
     }
   })
   clearTimeout(this.timer)
@@ -77,9 +77,9 @@ _Directory.prototype.list = function (directory, locked) {
   var kownFiles = Storage.readData('directory') ? Storage.readData('directory') : [] // array
 
   // ...
-  var href = document.location.hash.substring(1).split('\/')
+  var href = document.location.hash.substring(1).split('/')
   href.splice(href.length - 2 || 0, 1)
-  href = href.join('\/')
+  href = href.join('/')
   this.append({ new: false, name: '..', href: href, isfile: false, isdir: true })
 
   $('.file.button[data-file!=".."]').addClass('toremove')
@@ -120,8 +120,8 @@ _Directory.prototype.append = function (file) {
 
       self.setActions(file, {
         download: file.isfile,
-        rename: ! file.locked,
-        remove: ! file.locked,
+        rename: !file.locked,
+        remove: !file.locked,
         info: file.isfile
       })
 
@@ -170,9 +170,9 @@ _Directory.prototype.append = function (file) {
 
     // drag and drop
 
-    var $size = $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
-    var $date = $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
-    var $owner = $('<td>').attr('id', 'owner').text(file.owner || '-').appendTo($raw)
+    $('<td>').attr('id', 'size').text(Format.size(file.size)).appendTo($raw)
+    $('<td>').attr('id', 'date').text(Format.date(file.ctime)).appendTo($raw)
+    $('<td>').attr('id', 'owner').text(file.owner || '-').appendTo($raw)
 
     this.body.append($raw)
     $('.list table').trigger('update')
@@ -180,8 +180,6 @@ _Directory.prototype.append = function (file) {
 }
 
 _Directory.prototype.setActions = function (file, actions) {
-  var self = this
-
   for (var key in this.actions) {
     this.actions[key].addClass('hide').unbind()
     this.actions[key].removeClass('unactive')
@@ -209,7 +207,7 @@ _Directory.prototype.setActions = function (file, actions) {
       }
       var name = prompt('New name for: ' + oldname.join(' '), oldname.join(' '))
       if (name) {
-        name = name.split('\/').pop() + extension
+        name = name.split('/').pop() + extension
         name = name.trim()
         $.post('/rename-d', {
           'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
