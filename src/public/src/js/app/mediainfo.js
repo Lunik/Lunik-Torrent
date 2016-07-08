@@ -34,7 +34,7 @@ _MediaInfo.prototype.html = function (data) {
   $('<div/>').addClass('rating').text(Math.round(data.rating) + '/5').appendTo($infos)
 
   var $synopsis = $('<div/>').addClass('synopsis').html(data.description)
-  $lirelasuite = $('<br><a/>').addClass('button').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...').appendTo($synopsis)
+  $('<br><a/>').addClass('button').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...').appendTo($synopsis)
   $infos.append($synopsis)
 
   $html.append($infos)
