@@ -24,6 +24,7 @@ function Directory () {
  * @return {object} - Directory informations.
 */
 Directory.prototype.list = function (dir) {
+  //save directory informations into app cache
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else {
@@ -76,6 +77,7 @@ Directory.prototype.getDir = function (dir) {
 Directory.prototype.getInfo = function (file) {
   var stats = fs.statSync(file)
   var sfile = {}
+  // get size if it's a Directory
   if (stats.isFile()) {
     sfile = stats
   } else {
@@ -94,8 +96,11 @@ Directory.prototype.getInfo = function (file) {
 Directory.prototype.setDownloading = function (file) {
   var self = this
   setTimeout(function () {
+    //file info default value
     self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
+    //increment file download
     self.fileInfo[file].download = self.fileInfo[file].download ? self.fileInfo[file].download + 1 : 1
+    //increment file current downloading and set the current date
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
       : {date: new Date(), count: 1}
@@ -111,6 +116,7 @@ Directory.prototype.setDownloading = function (file) {
 Directory.prototype.finishDownloading = function (file) {
   var self = this
   setTimeout(function () {
+    // decrement file downloading
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: self.fileInfo[file].downloading.date, count: self.fileInfo[file].downloading.count - 1}
       : {date: new Date(), count: 0}
@@ -221,7 +227,9 @@ Directory.prototype.setOwner = function(file, user){
   var self = this
   setTimeout(function () {
     file = file[0] == '/' ? file.slice(1) : file
+    //set owner defalt value
     self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
+    //prevent override current user
     if(self.fileInfo[file].owner == null){
       self.fileInfo[file].owner = user
     }
