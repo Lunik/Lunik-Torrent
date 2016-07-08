@@ -3,8 +3,16 @@ var config = require('../configs/config.json')
 var fs = require('fs')
 var Path = require('path')
 
+/**
+ *  Log manager.
+ * @constructor
+*/
 function Log () {}
 
+/**
+ *  Write log into .txt and log it on the screen.
+ * @param {string} text - Text to log.
+*/
 Log.prototype.print = function (text) {
   setTimeout(function () {
     console.log(text)
@@ -14,6 +22,10 @@ Log.prototype.print = function (text) {
   })
 }
 
+/**
+ *  Write log on the screen.
+ * @param {string} text - Text to log.
+*/
 Log.prototype.echo = function (text) {
   console.log(text)
 }
