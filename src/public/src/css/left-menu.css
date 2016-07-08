@@ -20,7 +20,7 @@
     left: -200px;
   }
   .left-menu#open {
-    left: 0px;
+    left: 0;
   }
   .left-menu .menu {
     display: block;
@@ -32,7 +32,6 @@
 .left-menu .menu i#open {
   display: inline-block;
 }
-.left-menu .nav-bar {}
 .left-menu .nav-bar ul {
   list-style-type: none;
 }

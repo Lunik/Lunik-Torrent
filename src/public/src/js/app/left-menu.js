@@ -49,7 +49,7 @@ function _LeftMenu () {
     var name = prompt('Nom du nouveau dossier ?')
     if (name) {
       $.post('/mkdir-d', {
-        'path': document.location.hash.substring(1) ? document.location.hash.substring(1) : '/',
+        'path': document.location.hash.substring(1) || '/',
         'name': name
       }, function (name) {
         name = JSON.parse(name)
@@ -116,11 +116,11 @@ function _LeftMenu () {
     }
   })
 
-  $(window).keydown(function(event){
-    switch(event.keyCode){
+  $(window).keydown(function (event) {
+    switch (event.keyCode) {
       case 13:
         self.but.current.trigger('click')
-        break;
+        break
     }
   })
 }

@@ -97,9 +97,9 @@ Directory.prototype.setDownloading = function (file) {
   var self = this
   setTimeout(function () {
     //file info default value
-    self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
+    self.fileInfo[file] = self.fileInfo[file] || {}
     //increment file download
-    self.fileInfo[file].download = self.fileInfo[file].download ? self.fileInfo[file].download + 1 : 1
+    self.fileInfo[file].download = self.fileInfo[file].download || 1
     //increment file current downloading and set the current date
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
@@ -218,6 +218,7 @@ Directory.prototype.mv = function (path, file, folder) {
   }, 1)
 }
 
+<<<<<<< HEAD
 /**
  * Set the File / Directory Owner.
  * @param {string} file - File / Directory name.
@@ -231,20 +232,32 @@ Directory.prototype.setOwner = function(file, user){
     self.fileInfo[file] = self.fileInfo[file] ? self.fileInfo[file] : {}
     //prevent override current user
     if(self.fileInfo[file].owner == null){
+=======
+Directory.prototype.setOwner = function (file, user) {
+  var self = this
+  setTimeout(function () {
+    file = file[0] === '/' ? file.slice(1) : file
+    self.fileInfo[file] = self.fileInfo[file] || {}
+    if (self.fileInfo[file].owner == null) {
+>>>>>>> d65b6618109778c3c5dfded526118423c622a559
       self.fileInfo[file].owner = user
     }
     self.saveFileInfo()
-  },1)
+  }, 1)
 }
 
+<<<<<<< HEAD
 /**
  * Load configs/fileInfo.json into Directory.fileInfo.
 */
 Directory.prototype.loadFileInfo = function(){
+=======
+Directory.prototype.loadFileInfo = function () {
+>>>>>>> d65b6618109778c3c5dfded526118423c622a559
   var self = this
-  setTimeout(function(){
-    fs.readFile('configs/fileInfo.json', function(err, data) {
-      if (err){
+  setTimeout(function () {
+    fs.readFile('configs/fileInfo.json', function (err, data) {
+      if (err) {
         console.log(err)
         self.fileInfo = {}
         self.saveFileInfo()
@@ -252,19 +265,23 @@ Directory.prototype.loadFileInfo = function(){
         self.fileInfo = JSON.parse(data)
       }
     })
-  },1)
+  }, 1)
 }
 
+<<<<<<< HEAD
 /**
  * Save Directory.fileInfo into configs/fileInfo.json.
 */
 Directory.prototype.saveFileInfo = function(){
+=======
+Directory.prototype.saveFileInfo = function () {
+>>>>>>> d65b6618109778c3c5dfded526118423c622a559
   var self = this
-  setTimeout(function(){
-    fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function(err) {
+  setTimeout(function () {
+    fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
       if (err) console.log(err)
     })
-  },1)
+  }, 1)
 }
 
 /**

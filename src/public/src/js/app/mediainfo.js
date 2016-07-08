@@ -25,19 +25,16 @@ _MediaInfo.prototype.html = function (data) {
   var html = {}
   html.title = $('<a/>').attr('href', data.link).text(data.title)
 
-  $html = $('<div/>').addClass('Content')
+  var $html = $('<div/>').addClass('Content')
 
-  $image = $('<img/>').attr('src', data.poster).attr('alt', data.title + ' poster')
-  $html.append($image)
+  $('<img/>').attr('src', data.poster).attr('alt', data.title + ' poster').appendTo($html)
 
-  $infos = $('<div/>').addClass('infos')
+  var $infos = $('<div/>').addClass('infos')
 
-  $rating = $('<div/>').addClass('rating').text(Math.round(data.rating) + '/5')
-  $infos.append($rating)
+  $('<div/>').addClass('rating').text(Math.round(data.rating) + '/5').appendTo($infos)
 
-  $synopsis = $('<div/>').addClass('synopsis').html(data.description)
-  $lirelasuite = $('<br><a/>').addClass('button').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...')
-  $synopsis.append($lirelasuite)
+  var $synopsis = $('<div/>').addClass('synopsis').html(data.description)
+  $('<br><a/>').addClass('button').attr('target', '_blank').attr('href', data.link).text('Fiche Allocine...').appendTo($synopsis)
   $infos.append($synopsis)
 
   $html.append($infos)
@@ -63,21 +60,8 @@ _MediaInfo.prototype.popup = function (data) {
 }
 
 _MediaInfo.prototype.cleanTitle = function (title) {
-  var bannedWords = ['dvdrip','fr','vo','vostfr','hdtv','webrip','bdrip']
-  title = title.toLowerCase()
-    .replace(/\.[a-z0-9]*$/, '') // remove extension
-    .replace(/\./g, ' ') // point
-    .replace(/s[0-9][0-9]e[0-9][0-9]/g, '') // numero d'episode
-    .replace(/ $/, '') // espace en fin de chaine
-  title = title.split(' ')
-  var newTitle = []
-  for(var key in title){
-    var mot = title[key]
-    if(bannedWords.indexOf(mot) == -1){
-      newTitle.push(mot)
-    }
-  }
-  return newTitle.join(' ')
+  var f = new _Format()
+  return f.name(title)
 }
 
 _MediaInfo.prototype.getType = function (title) {

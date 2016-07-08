@@ -24,11 +24,11 @@ _Torrent.prototype.getList = function () {
         text: torrents.err
       })
     } else {
-      var current_scroll = $('body').scrollTop()
+      var currentScroll = $('body').scrollTop()
 
       self.list(torrents)
 
-      $('body').scrollTop(current_scroll)
+      $('body').scrollTop(currentScroll)
     }
   })
   clearTimeout(this.timer)
@@ -69,15 +69,15 @@ _Torrent.prototype.append = function (torrent) {
     })
   })
 
-  var $name = $('<td>').attr('id', 'name').text(Format.name(torrent.name.substring(0, 50))).appendTo($torrent)
-  var $size = $('<td>').attr('id', 'size').text(Format.size(torrent.size)).appendTo($torrent)
-  var $progress = $('<td>').attr('id', 'progress').append(
+  $('<td>').attr('id', 'name').text(Format.name(torrent.name.substring(0, 50))).appendTo($torrent)
+  $('<td>').attr('id', 'size').text(Format.size(torrent.size)).appendTo($torrent)
+  $('<td>').attr('id', 'progress').append(
     $('<progress>').attr('max', 1).attr('value', torrent.progress),
     $('<p>').addClass('percent').text(Math.round(torrent.progress * 100) + '%'),
     $('<p>').addClass('remaining-time').text(Format.time(torrent.timeRemaining))
   ).appendTo($torrent)
-  var $downspeed = $('<td>').attr('id', 'sdown').text(Format.speed(torrent.sdown)).appendTo($torrent)
-  var $upspeed = $('<td>').attr('id', 'sup').text(Format.speed(torrent.sup)).appendTo($torrent)
+  $('<td>').attr('id', 'sdown').text(Format.speed(torrent.sdown)).appendTo($torrent)
+  $('<td>').attr('id', 'sup').text(Format.speed(torrent.sup)).appendTo($torrent)
 
   if (needToAppend) {
     this.body.append($torrent)
@@ -85,7 +85,6 @@ _Torrent.prototype.append = function (torrent) {
 }
 
 _Torrent.prototype.setActions = function (torrent, actions) {
-  var self = this
   for (var key in this.actions) {
     this.actions[key].addClass('hide').unbind()
   }

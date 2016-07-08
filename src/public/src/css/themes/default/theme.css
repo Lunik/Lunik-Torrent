@@ -7,14 +7,14 @@ body {
   background: #f7a253;
 }
 .button {
-  cursor: pointer !important;
+  cursor: pointer;
 }
 .button:hover {
-  color: #675f5f !important;
+  color: #675f5f;
   transition: color 0.1s ease-out;
 }
 .button:active, .button:focus {
-  color: #f7a253 !important;
+  color: #f7a253;
 }
 a {
   text-decoration: none;
