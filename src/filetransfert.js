@@ -16,6 +16,7 @@ function FileTransfert (req, res, callback) {
   var self = this
   setTimeout(function () {
     if (config.nginx.active) {
+      //check if nginx is aviable
       portscanner.checkPortStatus(config.nginx.port, 'localhost', function (error, status) {
         if (error) {
           console.log(error)
