@@ -60,21 +60,8 @@ _MediaInfo.prototype.popup = function (data) {
 }
 
 _MediaInfo.prototype.cleanTitle = function (title) {
-  var bannedWords = ['dvdrip', 'fr', 'vo', 'vostfr', 'hdtv', 'webrip', 'bdrip']
-  title = title.toLowerCase()
-    .replace(/\.[a-z0-9]*$/, '') // remove extension
-    .replace(/\./g, ' ') // point
-    .replace(/s[0-9][0-9]e[0-9][0-9]/g, '') // numero d'episode
-    .replace(/ $/, '') // espace en fin de chaine
-  title = title.split(' ')
-  var newTitle = []
-  for (var key in title) {
-    var mot = title[key]
-    if (bannedWords.indexOf(mot) === -1) {
-      newTitle.push(mot)
-    }
-  }
-  return newTitle.join(' ')
+  var f = new _Format()
+  return f.name(title)
 }
 
 _MediaInfo.prototype.getType = function (title) {

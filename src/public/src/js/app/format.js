@@ -45,11 +45,19 @@ _Format.prototype.extention = function (file) {
 }
 
 _Format.prototype.name = function (name) {
-  name = name.replace(/\.[A-Za-z0-9]*$/, '')
-    .replace(/\[[^\]]*]/, '')
-    .replace(/[ \.](([Ff][Rr])|([Vv][Oo])|(VOSTFR)|(FASTSUB)|(HDTV)|(XviD-ARK01)|(FRENCH))/g, '')
+  var bannedWords = ['dvdrip', 'fr', 'vo', 'vostfr', 'hdtv', 'webrip', 'bdrip']
+  name = name.toLowerCase()
+    .replace(/\.[a-z0-9]*$/, '') // remove extension
     .replace(/\./g, ' ') // point
+    .replace(/s[0-9][0-9]e[0-9][0-9]/g, '') // numero d'episode
     .replace(/ $/, '') // espace en fin de chaine
-
-  return name
+  name = name.split(' ')
+  var newName = []
+  for (var key in name) {
+    var mot = name[key]
+    if (bannedWords.indexOf(mot) === -1) {
+      newName.push(mot)
+    }
+  }
+  return newName.join(' ')
 }
