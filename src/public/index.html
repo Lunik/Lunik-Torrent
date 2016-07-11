@@ -13,7 +13,23 @@
 
   <body>
     <div class="loading" v-bind:class="{'hide': isHidden}"><div class="logo"></div></div>
-
+    <div class="top-menu">
+      <a href="#" class="logo button"><div class="logo"></div></a>
+      <div class="ariane">
+        <a class="button" href="#" data-file="/">Home</a>
+        <div v-for="dir in ariane">
+          <span class="delimiter">&gt;</span>
+          <a class="button" href="#{{ dir.path }}">{{ dir.name }}</a>
+        </div>
+      </div>
+      <div class="folder-size">{{ folderSize }}</div>
+      <div class="parameter">
+        <i class="fa fa-gear button" id="parameter"></i>
+      </div>
+      <div class="action">
+        <i class="fa {{ action.icon }} {{ action.state }}" id="{{ action.id }}" v-for="action in actions"></i>
+      </div>
+    </div>
     <script data-main="src/js/app" src="src/bower_components/requirejs/require.js"></script>
   </body>
 </html>
