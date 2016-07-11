@@ -1,5 +1,7 @@
+//Variable global avec tous les modules
 var App = {}
 
+// Configure le path pour les bower_components
 requirejs.config({
   paths: {
     'localstorage': '../bower_components/local-storage-api/dist/storage.min',
@@ -13,6 +15,7 @@ requirejs.config({
   }
 })
 
+// Charge les modules
 requirejs([
   'localstorage',
   'jquery',
@@ -20,14 +23,14 @@ requirejs([
   'vue'
 ], function (ls, jq, ui, v) {
   App.Vue = v
-  App.ls = ls
+  App.ls = new Storage()
   requirejs([
     'jquery.ui.touch-punch',
     'tablesorter',
     'notify-me',
     'popup'
   ], function () {
-    requirejs(['loading'], function () {
+    requirejs(['loading', 'top-menu'], function () {
       App.Loading.hide()
     })
   })
