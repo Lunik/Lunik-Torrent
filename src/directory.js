@@ -249,7 +249,11 @@ Directory.prototype.loadFileInfo = function () {
         self.fileInfo = {}
         self.saveFileInfo()
       } else {
-        self.fileInfo = JSON.parse(data)
+        var fileInfo = JSON.parse(data)
+        for(var key in fileInfo){
+          delete fileInfo[key].downloading
+        }
+        self.fileInfo = fileInfo
       }
     })
   }, 1)
