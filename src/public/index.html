@@ -12,69 +12,8 @@
   </head>
 
   <body>
-    <div class="loading"><div class="logo"></div></div>
-    <div class="top-menu">
-      <div class="container">
-        <a href="#" class="logo button"><div class="logo"></div></a>
-        <div class="ariane"></div>
-        <div class="folder-size"></div>
-        <div class="parameter">
-          <i class="fa fa-gear button" id="parameter"></i>
-        </div>
-        <div class="action">
-          <a href="#"><i class="fa fa-download button hide" id="download"></i></a>
-          <i class="fa fa-pencil button hide" id="rename"></i>
-          <i class="fa fa-times button hide" id="remove"></i>
-          <i class="fa fa-info button hide" id="info"></i>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="left-menu" id="close">
-        <div class="container">
-          <div class="menu">
-            <i class="fa fa-arrow-left button" id="close"></i>
-            <i class="fa fa-bars button" id="open"></i>
-          </div>
-          <div class="nav-bar">
-            <ul>
-              <li class="button" id="torrents">Torrents</li>
-              <li class="button active" id="directories">Directories</li>
-            </ul>
-          </div>
-          <div class="action">
-            <div class="new button">New</div>
-            <div class="torrent-input hide"><input type="text" placeholder="Search or Torrent Link..."></div>
-            <div class="start button hide">Start</div>
-            <div class="search button hide">Search</div>
-          </div>
-          <div class="footer">
-            <p><a target="_blank" href="https://github.com/Lunik/Lunik-Torrent/issues">FeedBack</a></p>
-            <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="list">
-        <table>
-          <thead>
-            <tr>
-              <th class="button" id="name" number="0">Name</th>
-              <th class="button" id="size" number="1">Size</th>
-              <th class="button" id="date" number="2">Date</th>
-              <th class="button" id="owner" number="3">Owner</th>
-              <th class="hide button" id="progress" number="4">Progress</th>
-              <th class="hide button" id="down" number="5">Down</th>
-              <th class="hide button" id="up" number="6">Up</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>
-      <div class="scrollTop">
-        <i class="fa fa-arrow-up button"></i>
-      </div>
-    </div>
-    <script data-main="src/js/app/app.js" src="src/bower_components/requirejs/require.js"></script>
+    <div class="loading" v-bind:class="{'hide': isHidden}"><div class="logo"></div></div>
+
+    <script data-main="src/js/app" src="src/bower_components/requirejs/require.js"></script>
   </body>
 </html>
