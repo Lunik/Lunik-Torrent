@@ -5,7 +5,6 @@ function Loading(){
       isHidden: false
     }
   })
-  console.log(this.vue)
 }
 
 Loading.prototype.hide = function () {
