@@ -19,7 +19,6 @@ requirejs([
   'jquery-ui',
   'vue'
 ], function (ls, jq, ui, v) {
-  console.log(ls)
   App.Vue = v
   App.ls = ls
   requirejs([
@@ -28,6 +27,8 @@ requirejs([
     'notify-me',
     'popup'
   ], function () {
-    requirejs(['loading'], function () {})
+    requirejs(['loading'], function () {
+      App.Loading.hide()
+    })
   })
 })
