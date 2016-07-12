@@ -40,6 +40,7 @@
 }
 .top-menu .parameter {
   float: right;
+  margin-right: 25px
 }
 .top-menu .folder-size {
   margin-top: 20px;
