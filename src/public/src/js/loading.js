@@ -2,7 +2,7 @@
  * Ecran de chargement
  * @constructor
 */
-function Loading(){
+function Loading () {
   this.vue = new App.Vue({
     el: '.loading',
     data: {

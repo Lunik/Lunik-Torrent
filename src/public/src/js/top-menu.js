@@ -39,11 +39,11 @@ TopMenu.prototype.setActions = function (actions) {
   })
 }
 
-TopMenu.prototype.setAriane = function(list){
+TopMenu.prototype.setAriane = function (list) {
   var self = this
   self.vue.$data.ariane = []
   var profDir = ''
-  for(var key in list){
+  for (var key in list) {
     profDir += list[key] + '/'
     self.vue.$data.ariane.push({
       path: profDir,
@@ -52,7 +52,8 @@ TopMenu.prototype.setAriane = function(list){
   }
 }
 
-TopMenu.prototype.setFolderSize = function(size){
+TopMenu.prototype.setFolderSize = function (size) {
   self.vue.$data.folderSize = size
 }
+
 App.TopMenu = new TopMenu()
