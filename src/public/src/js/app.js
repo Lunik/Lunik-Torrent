@@ -1,6 +1,6 @@
 function App () {
   var self = this
-  // Configure le path pour les bower_components
+  // Configure bower_components path
   requirejs.config({
     paths: {
       'localstorage': '../bower_components/local-storage-api/dist/storage.min',
@@ -14,7 +14,7 @@ function App () {
     }
   })
 
-  // Charge les modules
+  // load modules
   requirejs([
     'localstorage',
     'jquery',
@@ -29,7 +29,11 @@ function App () {
       'notify-me',
       'popup'
     ], function () {
-      requirejs(['loading', 'top-menu'], function () {
+      requirejs([
+        'loading',
+        'top-menu',
+        'config'
+      ], function () {
         self.Loading.hide()
 
         self.hash = document.location.hash.substring(1)
@@ -54,5 +58,5 @@ App.prototype.getDirFromHash = function () {
   return dir
 }
 
-// Variable global avec tous les modules
+// Global var with all the modules
 var App = new App()

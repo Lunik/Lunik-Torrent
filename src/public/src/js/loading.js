@@ -1,5 +1,5 @@
 /**
- * Ecran de chargement
+ * Loading screen
  * @constructor
 */
 function Loading () {
@@ -12,14 +12,14 @@ function Loading () {
 }
 
 /**
- * Cache l'ecran de chargement
+ * Hide loading screen
 */
 Loading.prototype.hide = function () {
   this.vue.$data.isHidden = true
 }
 
 /**
- * Montre l'ecran de chargement
+ * Show loading screen
 */
 Loading.prototype.show = function () {
   this.vue.$data.isHidden = false
