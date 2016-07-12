@@ -32,12 +32,23 @@ function App () {
       requirejs(['loading', 'top-menu'], function () {
         self.Loading.hide()
 
+        self.hash = document.location.hash.substring(1)
         $(window).bind('hashchange', function () {
           self.hash = document.location.hash.substring(1)
         })
       })
     })
   })
+}
+
+App.prototype.getDirFromHash = function () {
+  var dir = document.location.hash.substring(1).split('/')
+  for (var i in dir) {
+    if (dir[i] === '') {
+      dir.splice(i, 1)
+    }
+  }
+  return dir
 }
 
 // Variable global avec tous les modules
