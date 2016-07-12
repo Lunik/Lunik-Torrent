@@ -33,8 +33,11 @@ function App () {
         self.Loading.hide()
 
         self.hash = document.location.hash.substring(1)
+        self.TopMenu.setAriane(self.getDirFromHash())
         $(window).bind('hashchange', function () {
           self.hash = document.location.hash.substring(1)
+
+          self.TopMenu.setAriane(self.getDirFromHash())
         })
       })
     })
@@ -42,7 +45,7 @@ function App () {
 }
 
 App.prototype.getDirFromHash = function () {
-  var dir = document.location.hash.substring(1).split('/')
+  var dir = this.hash.split('/') || ''
   for (var i in dir) {
     if (dir[i] === '') {
       dir.splice(i, 1)
