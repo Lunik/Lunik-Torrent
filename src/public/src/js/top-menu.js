@@ -41,6 +41,7 @@ TopMenu.prototype.setActions = function (actions) {
 
 TopMenu.prototype.setAriane = function(list){
   var self = this
+  self.vue.$data.ariane = []
   var profDir = ''
   for(var key in list){
     profDir += list[key] + '/'
