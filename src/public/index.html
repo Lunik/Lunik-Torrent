@@ -9,6 +9,7 @@
 
     <link rel="icon" href="src/image/favicon.ico">
     <link rel="stylesheet" href="src/css/style.css">
+    <link class="theme" rel="stylesheet" href="src/css/themes/{{ config.theme }}/theme.css">
   </head>
 
   <body>
@@ -28,6 +29,14 @@
       </div>
       <div class="action">
         <i class="fa {{ action.icon }} {{ action.state }}" id="{{ action.id }}" v-for="action in actions"></i>
+      </div>
+    </div>
+    <div class="popup hide">
+      <div class="config-pop">
+        <select class="theme">
+          <option value="{{ t.value }}" selected="{{config.theme == t.value ? true : false}}" v-for="t in themes">{{ t.name }}</option>
+        </select>
+        <input class="submit button" type="submit" value="Save"></input>
       </div>
     </div>
     <script data-main="src/js/app" src="src/bower_components/requirejs/require.js"></script>
