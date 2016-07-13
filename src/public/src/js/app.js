@@ -16,11 +16,12 @@ function _App () {
 
   // load modules
   requirejs([
+    'vue',
     'localstorage',
     'jquery',
     'jquery-ui',
-    'vue'
-  ], function (ls, jq, ui, v) {
+    'format'
+  ], function (v, ls, jq, jqui, f) {
     self.Vue = v
     self.Storage = new Storage()
     requirejs([
@@ -28,12 +29,12 @@ function _App () {
       'tablesorter',
       'notify-me',
       'popup'
-    ], function () {
+    ], function (jquit, ts, notif, pop) {
       requirejs([
         'loading',
         'top-menu',
         'config'
-      ], function () {
+      ], function (load, tm, conf) {
         self.Loading.hide()
 
         self.hash = document.location.hash.substring(1)
