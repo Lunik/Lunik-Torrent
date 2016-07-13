@@ -28,7 +28,26 @@
         <i class="fa fa-gear button" id="parameter"></i>
       </div>
       <div class="action">
-        <i class="fa {{ action.icon }} {{ action.state }}" id="{{ action.id }}" v-for="action in actions"></i>
+        <i class="fa {{ a.icon }} {{ a.state }}" id="{{ a.id }}" v-for="a in actions"></i>
+      </div>
+    </div>
+    <div class="left-menu" id="close">
+      <div class="menu">
+        <i class="fa fa-arrow-left button" id="close"></i>
+        <i class="fa fa-bars button" id="open"></i>
+      </div>
+      <div class="nav-bar">
+        <ul>
+          <li class="button" v-bind:class="{'active': t.state}" id="{{ t.id }}" v-for="t in tabs">{{ t.name }}</li>
+        </ul>
+      </div>
+      <div class="action">
+        <div class="{{ i.class }} {{ i.state }}" v-for="i in inputs"><input type="{{ i.type }}" placeholder="{{ i.placeholder }}"></div>
+        <div class="button {{ a.class }} {{ a.state }}" v-for="a in actions">{{ a.name }}</div>
+      </div>
+      <div class="footer">
+        <p><a target="_blank" href="https://github.com/Lunik/Lunik-Torrent/issues">FeedBack</a></p>
+        <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
       </div>
     </div>
     <div class="popup hide">

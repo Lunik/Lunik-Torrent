@@ -1,0 +1,136 @@
+/**
+ * Left Menu
+*/
+function _LeftMenu(){
+  var self = this
+  this.vue = new App.Vue({
+    el: '.left-menu',
+    data: {
+      tabs: [
+        {
+          name: 'Torrents',
+          id: 'torrents',
+          state: false,
+          actions: [
+            'search',
+            'start'
+          ],
+          inputs: [
+            'torrent-input'
+          ]
+        },
+        {
+          name: 'Directories',
+          id: 'directories',
+          state: true,
+          actions: [
+            'new'
+          ],
+          inputs: []
+        }
+      ],
+      actions: [
+        {
+          name: 'Start',
+          class: 'start',
+          state: 'hide'
+        },
+        {
+          name: 'Search',
+          class: 'search',
+          state: 'hide'
+        },
+        {
+          name: 'New',
+          class: 'new',
+          state: ''
+        }
+      ],
+      inputs: [
+        {
+          name: 'Torrent Input',
+          class: 'torrent-input',
+          type: 'text',
+          placeholder: 'Search or Torrent Link...',
+          state: 'hide'
+        }
+      ],
+      currentAction: 'new'
+    }
+  })
+
+  $('.left-menu').on('keyup', '.torrent-input input', function(){
+    var value = $(this).val()
+    if (value.search('.torrent') !== -1 || value.search('http://') !== -1 || value.search('magnet') !== -1) {
+      self.switchTorrent('start')
+    } else {
+      self.switchTorrent('search')
+    }
+  })
+}
+
+_LeftMenu.prototype.switchTab = function(tabId){
+  var self = this
+  for(var t in this.vue.$data.tabs){
+    var tab = this.vue.$data.tabs[t]
+
+    if(tab.id === tabId){
+      tab.state = true
+      self.vue.$data.currentAction = tab.actions[0]
+      for(var a in this.vue.$data.actions){
+        var action = this.vue.$data.actions[a]
+
+        if(tab.actions.indexOf(action.class) !== -1){
+          action.state = ''
+        }
+      }
+      if(tab.id === 'torrents'){
+        self.switchTorrent(tab.actions[0])
+      }
+      for(var i in this.vue.$data.inputs){
+        var input = this.vue.$data.inputs[i]
+
+        if(tab.inputs.indexOf(input.class) !== -1){
+          input.state = ''
+        }
+      }
+    } else {
+      tab.state = false
+      for(var a in this.vue.$data.actions){
+        var action = this.vue.$data.actions[a]
+
+        if(tab.actions.indexOf(action.class) !== -1){
+          action.state = 'hide'
+        }
+      }
+      for(var i in this.vue.$data.inputs){
+        var input = this.vue.$data.inputs[i]
+
+        if(tab.inputs.indexOf(input.class) !== -1){
+          input.state = 'hide'
+        }
+      }
+    }
+
+  }
+}
+
+_LeftMenu.prototype.switchTorrent = function(act){
+  var self = this
+  self.vue.$data.currentAction = act
+  var tab = $.grep(self.vue.$data.tabs, function(e){ return e.id === 'torrents' })[0]
+  if(tab.state){
+    for(var ta in tab.actions){
+      for(var a in self.vue.$data.actions){
+        var action = self.vue.$data.actions[a]
+        if(act === action.class){
+          action.state = ''
+        } else {
+          action.state = 'hide'
+        }
+      }
+    }
+  }
+}
+
+App.LeftMenu = new _LeftMenu()

@@ -33,8 +33,9 @@ function _App () {
       requirejs([
         'loading',
         'top-menu',
-        'config'
-      ], function (load, tm, conf) {
+        'config',
+        'left-menu'
+      ], function (load, tm, conf, lm) {
         self.Loading.hide()
 
         self.hash = document.location.hash.substring(1)
@@ -43,6 +44,14 @@ function _App () {
           self.hash = document.location.hash.substring(1)
 
           self.TopMenu.setAriane(self.getDirFromHash())
+        })
+
+        $(window).keydown(function (event) {
+          switch (event.keyCode) {
+            case 13:
+              // trigger start / search torrent
+            break
+          }
         })
       })
     })
