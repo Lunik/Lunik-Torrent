@@ -50,6 +50,17 @@
         <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
       </div>
     </div>
+    <div class="list">
+      <table>
+        <thead>
+          <tr>
+            <th class="button {{ c.state }}" id="{{ c.id }}" v-for="c in columns">{{ c.name }}</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
     <div class="popup hide">
       <div class="config-pop">
         <select class="theme">
