@@ -125,5 +125,10 @@ _List.prototype.removeLine = function(line){
     }
   }
 }
-
+/**
+ * Clear all lines into the table
+*/
+_List.prototype.clearLines = function(){
+  this.vue.$data.lines = []
+}
 App.List = new _List()
