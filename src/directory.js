@@ -34,10 +34,18 @@ Directory.prototype.list = function (dir) {
     }
   }
 
+  for(var f in this.dir[dir].files){
+    var file = Path.join(dir, f)
+    file = file[0] === '/' ? file.substring(1) : file
+    if(this.fileInfo[file] !== -1){
+      for(var i in this.fileInfo[file]){
+          this.dir[dir].files[f][i] = this.fileInfo[file][i]
+      }
+    }
+  }
   return {
     'totalSize': this.dir[dir].totalSize,
-    'files': this.dir[dir].files,
-    'infos': this.fileInfo
+    'files': this.dir[dir].files
   }
 }
 
