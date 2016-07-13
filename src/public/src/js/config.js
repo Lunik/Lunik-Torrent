@@ -74,7 +74,6 @@ Config.prototype.showConfig = function () {
 Config.prototype.submit = function () {
   var config = {}
   config.theme = $('.popupContainer .config-pop .theme').val()
-  console.log(config)
   this.setConfig(config)
   $.popupjs.remove()
 }
