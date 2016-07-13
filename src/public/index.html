@@ -31,10 +31,10 @@
         <i class="fa {{ a.icon }} {{ a.state }}" id="{{ a.id }}" v-for="a in actions"></i>
       </div>
     </div>
-    <div class="left-menu" id="close">
+    <div class="left-menu" id="{{ state }}">
       <div class="menu">
-        <i class="fa fa-arrow-left button" id="close"></i>
-        <i class="fa fa-bars button" id="open"></i>
+        <i class="fa fa-arrow-left button" id="{{ state }}"></i>
+        <i class="fa fa-bars button" id="{{ reverseState }}"></i>
       </div>
       <div class="nav-bar">
         <ul>

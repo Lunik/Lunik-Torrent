@@ -6,6 +6,8 @@ function _LeftMenu(){
   this.vue = new App.Vue({
     el: '.left-menu',
     data: {
+      state: 'close',
+      reverseState: 'open',
       tabs: [
         {
           name: 'Torrents',
@@ -143,6 +145,16 @@ _LeftMenu.prototype.switchTorrent = function(act){
       }
     }
   }
+}
+
+_LeftMenu.prototype.open = function(){
+  this.vue.$data.state = 'open'
+  this.vue.$data.reverseState = 'close'
+}
+
+_LeftMenu.prototype.close = function(){
+  this.vue.$data.state = 'close'
+  this.vue.$data.reverseState = 'open'
 }
 
 App.LeftMenu = new _LeftMenu()
