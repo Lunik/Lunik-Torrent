@@ -50,6 +50,9 @@ function Config () {
   $('.config-pop .submit').click(function(){ self.submit() })
 }
 
+/**
+ * Display the config popup
+*/
 Config.prototype.showConfig = function () {
   $.popupjs.init({
     pos: {
