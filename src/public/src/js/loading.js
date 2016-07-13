@@ -2,7 +2,7 @@
  * Loading screen
  * @constructor
 */
-function Loading () {
+function _Loading () {
   this.vue = new App.Vue({
     el: '.loading',
     data: {
@@ -14,15 +14,15 @@ function Loading () {
 /**
  * Hide loading screen
 */
-Loading.prototype.hide = function () {
+_Loading.prototype.hide = function () {
   this.vue.$data.isHidden = true
 }
 
 /**
  * Show loading screen
 */
-Loading.prototype.show = function () {
+_Loading.prototype.show = function () {
   this.vue.$data.isHidden = false
 }
 
-App.Loading = new Loading()
+App.Loading = new _Loading()

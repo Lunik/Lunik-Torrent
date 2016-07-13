@@ -1,4 +1,4 @@
-function App () {
+function _App () {
   var self = this
   // Configure bower_components path
   requirejs.config({
@@ -48,7 +48,7 @@ function App () {
   })
 }
 
-App.prototype.getDirFromHash = function () {
+_App.prototype.getDirFromHash = function () {
   var dir = this.hash.split('/') || ''
   for (var i in dir) {
     if (dir[i] === '') {
@@ -59,4 +59,4 @@ App.prototype.getDirFromHash = function () {
 }
 
 // Global var with all the modules
-var App = new App()
+var App = new _App()

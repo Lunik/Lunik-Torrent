@@ -2,7 +2,7 @@
  * Configuration manager
  * @constructor
 */
-function Config () {
+function _Config () {
   var self = this
   this.config = {
     theme: 'default'
@@ -53,7 +53,7 @@ function Config () {
 /**
  * Display the config popup
 */
-Config.prototype.showConfig = function () {
+_Config.prototype.showConfig = function () {
   $.popupjs.init({
     pos: {
       x: null,
@@ -71,7 +71,7 @@ Config.prototype.showConfig = function () {
 /**
  * Submit config form.
 */
-Config.prototype.submit = function () {
+_Config.prototype.submit = function () {
   var config = {}
   config.theme = $('.popupContainer .config-pop .theme').val()
   this.setConfig(config)
@@ -82,7 +82,7 @@ Config.prototype.submit = function () {
  * Set config and save it.
  * @param {object} config - Configuration.
 */
-Config.prototype.setConfig = function (config) {
+_Config.prototype.setConfig = function (config) {
   if (config) {
     for (var key in config) {
       this.config[key] = config[key]
@@ -90,4 +90,4 @@ Config.prototype.setConfig = function (config) {
     App.Storage.storeData('config', this.config)
   }
 }
-App.Config = new Config()
+App.Config = new _Config()

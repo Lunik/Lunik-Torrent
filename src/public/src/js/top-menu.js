@@ -2,7 +2,7 @@
  * Top Menu
  * @constructor
 */
-function TopMenu () {
+function _TopMenu () {
   this.vue = new App.Vue({
     el: '.top-menu',
     data: {
@@ -38,7 +38,7 @@ function TopMenu () {
  * Update actions buttons
  * @param {object} actions - List of actions to update with states
 */
-TopMenu.prototype.setActions = function (actions) {
+_TopMenu.prototype.setActions = function (actions) {
   var self = this
   $.each(self.vue.$data.actions, function (index, value) {
     if (actions[value.id]) {
@@ -51,7 +51,7 @@ TopMenu.prototype.setActions = function (actions) {
  * Update Ariane link
  * @param {object} list - List sorted of directories
 */
-TopMenu.prototype.setAriane = function (list) {
+_TopMenu.prototype.setAriane = function (list) {
   var self = this
   self.vue.$data.ariane = []
   var profDir = ''
@@ -64,8 +64,8 @@ TopMenu.prototype.setAriane = function (list) {
   }
 }
 
-TopMenu.prototype.setFolderSize = function (size) {
+_TopMenu.prototype.setFolderSize = function (size) {
   self.vue.$data.folderSize = size
 }
 
-App.TopMenu = new TopMenu()
+App.TopMenu = new _TopMenu()
