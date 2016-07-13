@@ -129,9 +129,13 @@ _LeftMenu.prototype.switchTab = function(tabId){
   })
   App.List.clearLines()
   if(tabId === 'directories'){
-    App.Directory.getDir(function(dir){
-      App.Directory.append(dir)
-    })
+    if(App.hash){
+      window.location.hash = "#"
+    } else {
+      App.Directory.getDir(function(dir){
+        App.Directory.append(dir)
+      })
+    }
   } else if(tabId === 'torrents'){
     self.switchTorrent(tab.actions[0])
   }
