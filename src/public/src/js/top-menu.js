@@ -41,8 +41,8 @@ function _TopMenu () {
 _TopMenu.prototype.setActions = function (actions) {
   var self = this
   $.each(self.vue.$data.actions, function (index, value) {
-    if (actions[value.id]) {
-      value.state = actions[value.id]
+    if (typeof actions[value.id] !== 'undefined') {
+      self.vue.$data.actions[index].state = actions[value.id]
     }
   })
 }
