@@ -29,7 +29,7 @@ function _TopMenu () {
         }
       ],
       ariane: [],
-      folderSize: 0
+      folderSize: '0b'
     }
   })
 }
@@ -64,6 +64,10 @@ _TopMenu.prototype.setAriane = function (list) {
   }
 }
 
+/**
+ * Set the displayed folder size
+ * @param {string} size - The size formated
+*/
 _TopMenu.prototype.setFolderSize = function (size) {
   self.vue.$data.folderSize = size
 }

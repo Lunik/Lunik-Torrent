@@ -1,4 +1,7 @@
-
+/**
+ * List
+ * @constructor
+*/
 function _List(){
   this.vue = new App.Vue({
     el: '.list',
@@ -71,6 +74,10 @@ function _List(){
   })
 }
 
+/**
+ * Switch between all tables
+ * @param {string} tabId - Id of the table
+*/
 _List.prototype.switchTab = function(tabId){
   var self = this
   for(var t in this.vue.$data.tabs){

@@ -74,6 +74,10 @@ function _LeftMenu(){
   })
 }
 
+/**
+ * Switch between all tables
+ * @param {string} tabId - Id of the table
+*/
 _LeftMenu.prototype.switchTab = function(tabId){
   var self = this
   for(var t in this.vue.$data.tabs){
@@ -119,6 +123,10 @@ _LeftMenu.prototype.switchTab = function(tabId){
   }
 }
 
+/**
+ * Switch between all torrents functions
+ * @param {string} act - class of the torren action
+*/
 _LeftMenu.prototype.switchTorrent = function(act){
   var self = this
   self.vue.$data.currentAction = act
