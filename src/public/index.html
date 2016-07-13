@@ -58,6 +58,16 @@
           </tr>
         </thead>
         <tbody>
+          <tr class="button {{ l.type }}" v-for="l in lines">
+            <td id="name" extension="{{ l.extension }}" data-file="{{ l.name }}" lock="{{ l.lock }}">
+              <a class="button" href="{{ l.href }}">{{ l.name }}</a>
+              <i class="fa" v-bind:class="{'fa-lock locked': l.lock}"></i>
+              <i class="fa" v-bind:class="{'fa-download download': l.download}">{{ l.download }}</i>
+            </td>
+            <td id="size">{{ l.size }}</td>
+            <td id="date">{{ l.date }}</td>
+            <td id="owner">{{ l.owner }}</td>
+          </tr>
         </tbody>
       </table>
     </div>

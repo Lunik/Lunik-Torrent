@@ -36,25 +36,46 @@ function _App () {
         'config',
         'list'
       ], function (load, tm, conf, l) {
-        self.Loading.hide()
-
-        self.hash = document.location.hash.substring(1)
-        self.TopMenu.setAriane(self.getDirFromHash())
-        $(window).bind('hashchange', function () {
-          self.hash = document.location.hash.substring(1)
-
-          self.TopMenu.setAriane(self.getDirFromHash())
-        })
-
         requirejs([
-          'left-menu'
-        ], function(lm){
-          $(window).keydown(function (event) {
-            switch (event.keyCode) {
-              case 13:
-                // trigger start / search torrent
-              break
-            }
+          'left-menu',
+          'directory'
+        ], function(lm, dir){
+          requirejs([
+            'left-menu'
+          ], function(){
+            // Update Directory and Hash
+            self.hash = document.location.hash.substring(1)
+            self.TopMenu.setAriane(self.getDirFromHash())
+            self.Directory.getDir(function(dir){
+              self.Directory.append(dir)
+            })
+            $(window).bind('hashchange', function () {
+              self.hash = document.location.hash.substring(1)
+
+              self.TopMenu.setAriane(self.getDirFromHash())
+              App.TopMenu.setActions({
+                download: 'hide',
+                rename: 'hide',
+                remove: 'hide',
+                info: 'hide'
+              })
+              self.List.clearLines()
+              self.Directory.getDir(function(dir){
+                self.Directory.append(dir)
+              })
+            })
+
+            // Trigger keydown event
+            $(window).keydown(function (event) {
+              switch (event.keyCode) {
+                case 13:
+                  // trigger start / search torrent
+                break
+              }
+            })
+
+            // Everithing is loaded
+            self.Loading.hide()
           })
         })
       })

@@ -95,9 +95,6 @@ _LeftMenu.prototype.switchTab = function(tabId){
           action.state = ''
         }
       }
-      if(tab.id === 'torrents'){
-        self.switchTorrent(tab.actions[0])
-      }
       for(var i in this.vue.$data.inputs){
         var input = this.vue.$data.inputs[i]
 
@@ -122,6 +119,21 @@ _LeftMenu.prototype.switchTab = function(tabId){
         }
       }
     }
+  }
+
+  App.TopMenu.setActions({
+    download: 'hide',
+    rename: 'hide',
+    remove: 'hide',
+    info: 'hide'
+  })
+  App.List.clearLines()
+  if(tabId === 'directories'){
+    App.Directory.getDir(function(dir){
+      App.Directory.append(dir)
+    })
+  } else if(tabId === 'torrents'){
+    self.switchTorrent(tab.actions[0])
   }
 }
 
