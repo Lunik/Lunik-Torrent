@@ -69,6 +69,7 @@ _TopMenu.prototype.setAriane = function (list) {
  * @param {string} size - The size formated
 */
 _TopMenu.prototype.setFolderSize = function (size) {
+  var self = this
   self.vue.$data.folderSize = size
 }
 
