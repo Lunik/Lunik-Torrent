@@ -69,7 +69,8 @@ function _List(){
           id: 'down',
           state: 'hide'
         }
-      ]
+      ],
+      lines: []
     }
   })
 }
@@ -101,6 +102,26 @@ _List.prototype.switchTab = function(tabId){
           column.state = 'hide'
         }
       }
+    }
+  }
+}
+
+/**
+ * Add lines to table
+ * @param {object} line - Line to add
+*/
+_List.prototype.addLine = function(line){
+  this.vue.$data.lines.push(line)
+}
+/**
+ * Remove lines to table
+ * @param {object} line - Line to remove
+*/
+_List.prototype.removeLine = function(line){
+  for(var l in this.vue.$data.lines){
+    if(this.vue.$data.lines[l].id === line.id){
+      this.vue.$data.lines.splice(l, 1)
+      return
     }
   }
 }
