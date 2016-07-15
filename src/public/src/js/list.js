@@ -113,22 +113,55 @@ _List.prototype.switchTab = function(tabId){
 _List.prototype.addLine = function(line){
   this.vue.$data.lines.push(line)
 }
+
 /**
  * Remove lines to table
  * @param {object} line - Line to remove
 */
 _List.prototype.removeLine = function(line){
   for(var l in this.vue.$data.lines){
-    if(this.vue.$data.lines[l].id === line.id){
+    if(this.vue.$data.lines[l].name === line.name){
       this.vue.$data.lines.splice(l, 1)
       return
     }
   }
 }
+
 /**
  * Clear all lines into the table
 */
 _List.prototype.clearLines = function(){
   this.vue.$data.lines = []
 }
+
+/**
+ * Update all lines into the table
+ * And remove absent lines
+*/
+_List.prototype.updateLines = function(lines){
+   var self = this
+  $.each(lines, function(index, value){
+
+    var li = $.indexOfO(self.vue.$data.lines, function(e){ return e.name === value.name })
+    if(li !== -1){
+      var line = self.vue.$data.lines[li]
+      $.each(value, function(i, v){
+        line[i] = v
+      })
+    } else {
+      self.addLine(value)
+    }
+  })
+
+  var vueLines = self.vue.$data.lines.slice(0)
+  for(var key in vueLines){
+    console.log(key)
+    var line = vueLines[key]
+    var li = $.indexOfO(lines, function(e){ return e.name === line.name })
+    if(li === -1){
+      self.removeLine(line)
+    }
+  }
+}
+
 App.List = new _List()
