@@ -8,7 +8,6 @@ function _App () {
       'jquery-ui': '../bower_components/jquery-ui/jquery-ui.min',
       'vue': '../bower_components/vue/dist/vue.min',
       'jquery.ui.touch-punch': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
-      'tablesorter': '../bower_components/tablesorter/jquery.tablesorter.min',
       'notify-me': '../bower_components/notify.me/dist/js/notify-me',
       'popup': '../bower_components/popupjs/dist/popup.min'
     }
@@ -33,13 +32,12 @@ function _App () {
       }
       return -1
     }
-    
+
     requirejs([
       'jquery.ui.touch-punch',
-      'tablesorter',
       'notify-me',
       'popup'
-    ], function (jquit, ts, notif, pop) {
+    ], function (jquit, notif, pop) {
       requirejs([
         'loading',
         'top-menu',
