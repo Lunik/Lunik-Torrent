@@ -67,7 +67,6 @@ function _App () {
                 remove: 'hide',
                 info: 'hide'
               })
-              self.List.clearLines()
               self.Directory.getDir(function(dir){
                 self.Directory.append(dir)
               })

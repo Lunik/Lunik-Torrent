@@ -86,6 +86,9 @@ _LeftMenu.prototype.switchTab = function(tabId){
     var tab = this.vue.$data.tabs[t]
 
     if(tab.id === tabId){
+      if(!tab.state){
+        App.List.clearLines()
+      }
       tab.state = true
       self.vue.$data.currentAction = tab.actions[0]
       for(var a in this.vue.$data.actions){
@@ -127,7 +130,6 @@ _LeftMenu.prototype.switchTab = function(tabId){
     remove: 'hide',
     info: 'hide'
   })
-  App.List.clearLines()
   if(tabId === 'directories'){
     if(App.hash){
       window.location.hash = "#"
