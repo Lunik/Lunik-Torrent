@@ -95,6 +95,9 @@ _Directory.prototype.setActions = function(file){
   $('.top-menu .action').on('click', '#rename', function(){
     self.rename(file.name)
   })
+  $('.top-menu .action').on('click', '#remove', function(){
+    self.remove(file.name)
+  })
 }
 
 _Directory.prototype.rename = function(fileName){
@@ -131,4 +134,23 @@ _Directory.prototype.rename = function(fileName){
   }
 }
 
+_Directory.prototype.remove = function(fileName){
+  if (confirm('Confirmer la suppression de ' + fileName + ' ?')) {
+    $.post('/remove-d', {
+      file: App.hash + fileName
+    }, function (file) {
+      file = JSON.parse(file)
+      if (file.err) {
+        $.notify.error({
+          title: 'Error',
+          text: file.err
+        })
+      } else {
+        App.List.removeLine({
+          name: file.file
+        })
+      }
+    })
+  }
+}
 App.Directory = new _Directory()
