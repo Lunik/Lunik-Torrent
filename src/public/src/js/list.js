@@ -184,6 +184,21 @@ _List.prototype.updateLines = function(lines){
   }
 }
 
+/**
+ * Update one lines into the table
+*/
+_List.prototype.updateLine = function(line){
+  var self = this
+
+  var li = $.indexOfO(self.vue.$data.lines, function(e){ return e.name === line.name })
+  if(li !== -1){
+    var l = self.vue.$data.lines[li]
+    $.each(line, function(i, v){
+      l[i] = v
+    })
+  }
+}
+
 _List.prototype.sortLines = function(by, direction){
   var dir = direction === 'asc' ? -1 : 1
   if(typeof this.vue.$data.lines[0][by] !== 'undefined'){
