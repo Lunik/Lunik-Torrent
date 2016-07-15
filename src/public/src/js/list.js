@@ -3,6 +3,7 @@
  * @constructor
 */
 function _List(){
+  var self = this
   this.vue = new App.Vue({
     el: '.list',
     data: {
@@ -36,42 +37,60 @@ function _List(){
           name: 'Name',
           id: 'name',
           important: true,
-          state: ''
+          state: '',
+          sort: 'asc'
         },
         {
           name: 'Size',
           id: 'size',
           important: true,
-          state: ''
+          state: '',
+          sort: 'asc'
         },
         {
           name: 'Date',
           id: 'date',
-          state: ''
+          state: '',
+          sort: 'asc'
         },
         {
           name: 'Owner',
           id: 'owner',
-          state: ''
+          state: '',
+          sort: 'asc'
         },
         {
           name: 'Progress',
           id: 'progress',
-          state: 'hide'
+          state: 'hide',
+          sort: 'asc'
         },
         {
           name: 'Up',
           id: 'up',
-          state: 'hide'
+          state: 'hide',
+          sort: 'asc'
         },
         {
           name: 'Down',
           id: 'down',
-          state: 'hide'
+          state: 'hide',
+          sort: 'asc'
         }
       ],
       lines: []
     }
+  })
+
+  $('.list').on('click', 'th', function(){
+    var clickedColumn = $(this)
+    var col = self.vue.$data.columns[$.indexOfO(self.vue.$data.columns, function(e){ return e.id === clickedColumn.attr('id') })]
+    if(col.sort === 'asc'){
+      col.sort = 'desc'
+    } else {
+      col.sort = 'asc'
+    }
+    self.sortLines(col.id, col.sort)
   })
 }
 
@@ -140,8 +159,9 @@ _List.prototype.clearLines = function(){
 */
 _List.prototype.updateLines = function(lines){
    var self = this
-  $.each(lines, function(index, value){
 
+   //updates lines
+  $.each(lines, function(index, value){
     var li = $.indexOfO(self.vue.$data.lines, function(e){ return e.name === value.name })
     if(li !== -1){
       var line = self.vue.$data.lines[li]
@@ -153,9 +173,9 @@ _List.prototype.updateLines = function(lines){
     }
   })
 
+  //remove old lines
   var vueLines = self.vue.$data.lines.slice(0)
   for(var key in vueLines){
-    console.log(key)
     var line = vueLines[key]
     var li = $.indexOfO(lines, function(e){ return e.name === line.name })
     if(li === -1){
