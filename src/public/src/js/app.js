@@ -24,6 +24,16 @@ function _App () {
   ], function (v, ls, jq, jqui, f) {
     self.Vue = v
     self.Storage = new Storage()
+
+    $.indexOfO = function(array, compFunc){
+      for(var key in array){
+        if(compFunc(array[key])){
+          return key
+        }
+      }
+      return -1
+    }
+    
     requirejs([
       'jquery.ui.touch-punch',
       'tablesorter',
@@ -95,12 +105,3 @@ _App.prototype.getDirFromHash = function () {
 
 // Global var with all the modules
 var App = new _App()
-
-Array.prototype.indexOfO = function(compFunc){
-  for(var key in this){
-    if(compFunc(this[key])){
-      return key
-    }
-  }
-  return -1
-}
