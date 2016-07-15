@@ -97,6 +97,9 @@ _Directory.prototype.setActions = function(file){
   $('.top-menu .action').unbind().on('click', '#remove', function(){
     self.remove(file.name)
   })
+  $('.top-menu .action').unbind().on('click', '#info', function(){
+    self.info(file.name)
+  })
 }
 
 _Directory.prototype.rename = function(fileName){
