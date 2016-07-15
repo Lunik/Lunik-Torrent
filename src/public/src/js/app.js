@@ -95,3 +95,12 @@ _App.prototype.getDirFromHash = function () {
 
 // Global var with all the modules
 var App = new _App()
+
+Array.prototype.indexOfO = function(compFunc){
+  for(var key in this){
+    if(compFunc(this[key])){
+      return key
+    }
+  }
+  return -1
+}
