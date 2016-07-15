@@ -10,22 +10,26 @@ function _TopMenu () {
         {
           id: 'download',
           icon: 'fa-download',
-          state: 'hide'
+          state: 'hide',
+          href: '#'
         },
         {
           id: 'rename',
           icon: 'fa-pencil',
-          state: 'hide'
+          state: 'hide',
+          href: '#'
         },
         {
           id: 'remove',
           icon: 'fa-times',
-          state: 'hide'
+          state: 'hide',
+          href: '#'
         },
         {
           id: 'info',
           icon: 'fa-info',
-          state: 'hide'
+          state: 'hide',
+          href: '#'
         }
       ],
       ariane: [],
@@ -73,4 +77,9 @@ _TopMenu.prototype.setFolderSize = function (size) {
   self.vue.$data.folderSize = size
 }
 
+_TopMenu.prototype.setDowloadLink = function(url){
+  var self = this
+  var action = self.vue.$data.actions[$.indexOfO(self.vue.$data.actions, function(e){ return e.id === 'download'})]
+  action.href = url
+}
 App.TopMenu = new _TopMenu()

@@ -81,12 +81,54 @@ _Directory.prototype.append = function(dir){
 }
 
 _Directory.prototype.setActions = function(file){
+  var self = this
   App.TopMenu.setActions({
     download: file.isdir ? 'unactive' : '',
     rename: file.lock ? 'unactive' : '',
     remove: file.lock ? 'unactive' : '',
     info: file.isdir ? 'unactive' : ''
   })
+
+  App.TopMenu.setDowloadLink('files/?f=' + document.location.hash.substring(1) + file.name)
+
+  $('.top-menu .action .button').unbind()
+  $('.top-menu .action').on('click', '#rename', function(){
+    self.rename(file.name)
+  })
+}
+
+_Directory.prototype.rename = function(fileName){
+  var oldname = fileName.split('.')
+  var extension
+  if (oldname.length > 1 && file.isfile) {
+    extension = oldname.pop()
+    extension = extension.length > 0 ? '.' + extension : ''
+  } else {
+    extension = ''
+  }
+  var name = prompt('New name for: ' + oldname.join(' '), oldname.join(' '))
+  if (name) {
+    name = name.split('/').pop() + extension
+    name = name.trim()
+    $.post('/rename-d', {
+      'path': App.hash || '/',
+      'oldname': fileName,
+      'newname': name
+    }, function (data) {
+      data = JSON.parse(data)
+      if (data.err) {
+        $.notify.error({
+          title: 'Error',
+          text: data.err
+        })
+      } else {
+        App.List.updateLine({
+          name: fileName,
+          newname: data.newname
+        })
+      }
+    })
+  }
 }
 
 App.Directory = new _Directory()
