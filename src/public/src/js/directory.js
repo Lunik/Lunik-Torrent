@@ -13,6 +13,17 @@ function _Directory(){
   })
 }
 
+_Directory.prototype.setRefresh = function(state, time){
+  var self = this
+  if (state){
+    self.interval = setInterval(function(){
+      self.getDir()
+    }, time)
+  } else {
+    clearInterval(self.interval)
+  }
+}
+
 _Directory.prototype.getDir = function(cb){
   var self = this
   $.post('/list-d', {
@@ -45,9 +56,12 @@ _Directory.prototype.append = function(dir){
     type: 'file',
     extension: 'dir'
   })
+
+  var lines = []
+  var i = 0
   $.each(dir.files, function(index, value){
     value.name = index
-    App.List.addLine({
+    lines.push({
       name: index,
       href: value.isfile ? null : '#' + App.hash + index + '/',
       type: 'file',
@@ -58,6 +72,11 @@ _Directory.prototype.append = function(dir){
       lock: typeof value.downloading !== 'undefined',
       download: value.download
     })
+
+    i++
+    if(i === Object.keys(dir.files).length){
+      App.List.updateLines(lines)
+    }
   })
 }
 
