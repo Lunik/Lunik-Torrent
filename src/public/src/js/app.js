@@ -53,7 +53,7 @@ function _App () {
           ], function(){
             // Update Directory and Hash
             self.hash = document.location.hash.substring(1)
-            if(self.hash[self.hash.length -1] !== '/'){
+            if(self.hash[self.hash.length -1] !== '/' && self.hash.length > 0){
               self.hash += '/'
             }
             self.TopMenu.setAriane(self.getDirFromHash())
@@ -62,7 +62,7 @@ function _App () {
             })
             $(window).bind('hashchange', function () {
               self.hash = document.location.hash.substring(1)
-              if(self.hash[self.hash.length -1] !== '/'){
+              if(self.hash[self.hash.length -1] !== '/' && self.hash.length > 0){
                 self.hash += '/'
               }
 
