@@ -9,7 +9,7 @@
 
     <link rel="icon" href="src/image/favicon.ico">
     <link rel="stylesheet" href="src/css/style.css">
-    <link class="theme" rel="stylesheet" v-bind:href="src/css/themes/{{ config.theme }}/theme.css">
+    <link class="theme" rel="stylesheet" href="src/css/themes/{{ config.theme }}/theme.css">
   </head>
 
   <body>
@@ -28,7 +28,7 @@
         <i class="fa fa-gear button" id="parameter"></i>
       </div>
       <div class="action">
-        <i class="fa {{ a.icon }} {{ a.state }}" id="{{ a.id }}" v-for="a in actions"></i>
+        <a href="{{ a.href }}" v-for="a in actions"><i class="fa {{ a.icon }} {{ a.state }} button" id="{{ a.id }}"></i></a>
       </div>
     </div>
     <div class="left-menu" id="{{ state }}">
