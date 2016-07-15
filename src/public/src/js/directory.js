@@ -91,11 +91,10 @@ _Directory.prototype.setActions = function(file){
 
   App.TopMenu.setDowloadLink('files/?f=' + document.location.hash.substring(1) + file.name)
 
-  $('.top-menu .action .button').unbind()
-  $('.top-menu .action').on('click', '#rename', function(){
+  $('.top-menu .action').unbind().on('click', '#rename', function(){
     self.rename(file.name)
   })
-  $('.top-menu .action').on('click', '#remove', function(){
+  $('.top-menu .action').unbind().on('click', '#remove', function(){
     self.remove(file.name)
   })
 }
@@ -152,5 +151,9 @@ _Directory.prototype.remove = function(fileName){
       }
     })
   }
+}
+
+_Directory.prototype.info = function(fileName){
+  App.info.get(fileName)
 }
 App.Directory = new _Directory()
