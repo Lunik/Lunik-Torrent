@@ -130,7 +130,9 @@ _List.prototype.switchTab = function(tabId){
  * @param {object} line - Line to add
 */
 _List.prototype.addLine = function(line){
-  this.vue.$data.lines.push(line)
+  if($.indexOfO(this.vue.$data.lines, function(e){ return e.name === line.name}) === -1){
+    this.vue.$data.lines.push(line)
+  }
 }
 
 /**
@@ -192,6 +194,9 @@ _List.prototype.updateLine = function(line){
 
   var li = $.indexOfO(self.vue.$data.lines, function(e){ return e.name === line.name })
   if(li !== -1){
+    if(typeof line.newname !== 'undefined'){
+      line.name = line.newname
+    }
     var l = self.vue.$data.lines[li]
     $.each(line, function(i, v){
       l[i] = v
