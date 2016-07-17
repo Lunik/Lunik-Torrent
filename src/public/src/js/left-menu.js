@@ -140,7 +140,10 @@
         })
       }
     } else if (tabId === 'torrents') {
-      self.switchTorrent(tab.actions[0])
+      self.switchTorrent(this.vue.$data.tabs[0].actions[0])
+      App.Torrent.getTorrents(function(tor){
+        App.Torrent.append(tor)
+      })
     }
   }
 

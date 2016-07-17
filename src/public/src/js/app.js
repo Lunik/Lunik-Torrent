@@ -49,7 +49,8 @@ var App
         ], function (load, tm, conf, l) {
           requirejs([
             'left-menu',
-            'directory'
+            'directory',
+            'torrent'
           ], function (lm, dir) {
             requirejs([
               'left-menu'
