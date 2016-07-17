@@ -46,7 +46,8 @@ var App
           'top-menu',
           'config',
           'list',
-          'mediainfo'
+          'mediainfo',
+          'searchtorrent'
         ], function (load, tm, conf, l) {
           requirejs([
             'left-menu',

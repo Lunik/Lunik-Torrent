@@ -96,6 +96,48 @@
           </div>
         </div>
       </div>
+      <div class="searchtorrent-pop">
+        <table>
+          <thead>
+            <th class="search-header">Films</th>
+          </thead>
+          <tbody>
+            <tr class="search-item button" v-for="e in results.films">
+              <td class="img">
+                <img src="{{ e.cover }}">
+              </td>
+              <td>{{ e.title }}</td>
+              <td>{{ e.size }}</td>
+              <td class="seed">
+                <i class="fa fa-arrow-up">{{ e.seeds }}</i>
+              </td>
+              <td class="peer">
+                <i class="fa fa-arrow-down">{{ e.peeds }}</i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table>
+          <thead>
+            <th class="search-header">Series</th>
+          </thead>
+          <tbody>
+            <tr class="search-item button" v-for="e in results.series">
+              <td class="img">
+                <img src="{{ e.cover }}">
+              </td>
+              <td>{{ e.title }}</td>
+              <td>{{ e.size }}</td>
+              <td class="seed">
+                <i class="fa fa-arrow-up">{{ e.seeds }}</i>
+              </td>
+              <td class="peer">
+                <i class="fa fa-arrow-down">{{ e.peeds }}</i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <script data-main="src/js/app" src="src/bower_components/requirejs/require.js"></script>
   </body>

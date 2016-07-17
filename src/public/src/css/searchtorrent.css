@@ -1,31 +1,31 @@
-.search-result {
+.searchtorrent-pop {
   display: table-cell;
   text-align: left;
   width: 100%;
 }
-.search-result .search-header {
+.searchtorrent-pop .search-header {
   padding: 10px;
   font-size: 20px;
 }
-.search-result table {
+.searchtorrent-pop table {
   border-collapse: collapse;
   display: inline-block;
 
-  width: 50%;
+  width: 49%;
   vertical-align: top;
 }
 @media only screen and (max-width: 750px) {
-  .search-result table {
+  .searchtorrent-pop table {
     display: block;
     width: 100%;
   }
 }
-.search-result img {
+.searchtorrent-pop img {
   width: 100px;
   margin: 0 20px;
 }
 @media only screen and (max-width: 750px) {
-  .search-result .img {
+  .searchtorrent-pop .img {
     display: none;
   }
 }
