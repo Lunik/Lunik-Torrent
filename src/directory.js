@@ -142,10 +142,12 @@ Directory.prototype.updateDownloads = function () {
   var self = this
   setTimeout(function () {
     var curDate = new Date()
-    for (var key in self.downloading) {
-      // if downloading for more than 1 hour remove
-      if (curDate - self.fileInfo[key].downloading.date > 3600000) {
-        delete self.fileInfo[key].downloading
+    for (var key in self.fileInfo) {
+      if (self.fileInfo[key].downloading) {
+        // if downloading for more than 1 hour remove
+        if (curDate - self.fileInfo[key].downloading.date > 3600000) {
+          delete self.fileInfo[key].downloading
+        }
       }
     }
   }, 1)
@@ -257,7 +259,11 @@ Directory.prototype.loadFileInfo = function () {
         self.fileInfo = {}
         self.saveFileInfo()
       } else {
-        self.fileInfo = JSON.parse(data)
+        var fileInfo = JSON.parse(data)
+        for(var key in fileInfo){
+          delete fileInfo[key].downloading
+        }
+        self.fileInfo = fileInfo
       }
     })
   }, 1)
