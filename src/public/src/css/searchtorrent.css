@@ -24,6 +24,10 @@
   width: 100px;
   margin: 0 20px;
 }
+.searchtorrent-pop img:hover {
+  width: 200px;
+  margin: 0 20px;
+}
 @media only screen and (max-width: 750px) {
   .searchtorrent-pop .img {
     display: none;
