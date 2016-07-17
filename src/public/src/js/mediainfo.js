@@ -17,15 +17,19 @@
   */
   _MediaInfo.prototype.get = function (title) {
     var self = this
+    var type = self.getType(title)
     title = App.Format.name(title)
-    if (App.Storage.readData(title) != null) {
-      self.vue.$data.info = App.Storage.readData(title)
+    var data = App.Storage.readData(title)
+    if (data != null) {
+      self.vue.$data.info = data
+      setTimeout(function(){self.show()}, 1000)
     } else {
       $.post('/info-d', {
-        type: self.getType(title),
+        type: type,
         query: title
       }, function (data) {
         data = JSON.parse(data)
+        console.log(data)
         self.vue.$data.info = data
         App.Storage.storeData(data.query.toLowerCase(), data)
         self.show()
