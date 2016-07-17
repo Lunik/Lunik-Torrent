@@ -91,13 +91,14 @@ _Directory.prototype.setActions = function(file){
 
   App.TopMenu.setDowloadLink('files/?f=' + document.location.hash.substring(1) + file.name)
 
-  $('.top-menu .action').unbind().on('click', '#rename', function(){
+  $('.top-menu .action').unbind()
+  .on('click', '#rename', function(){
     self.rename(file.name)
   })
-  $('.top-menu .action').unbind().on('click', '#remove', function(){
+  .on('click', '#remove', function(){
     self.remove(file.name)
   })
-  $('.top-menu .action').unbind().on('click', '#info', function(){
+  .on('click', '#info', function(){
     self.info(file.name)
   })
 }
