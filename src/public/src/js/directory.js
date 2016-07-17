@@ -11,6 +11,10 @@
         lock: typeof $($(this).children('#name')).attr('lock') !== 'undefined'
       })
     })
+
+    $('.left-menu .new').click(function(){
+      self.newFolder()
+    })
   }
 
   _Directory.prototype.setRefresh = function (state, time) {
@@ -159,6 +163,38 @@
 
   _Directory.prototype.info = function (fileName) {
     App.info.get(fileName)
+  }
+
+  _Directory.prototype.newFolder = function(){
+    var name = prompt('Nom du nouveau dossier ?')
+    if (name) {
+      $.post('/mkdir-d', {
+        'path': App.hash || '/',
+        'name': name
+      }, function (file) {
+        file = JSON.parse(file)
+        if (file.err) {
+          $.notify.error({
+            title: 'Error',
+            text: file.err
+          })
+        } else {
+          App.List.addLine({
+            name: file.name,
+            href: App.hash + file.name + '/',
+            type: 'file',
+            extension: 'dir',
+            size: App.Format.size(0),
+            date: App.Format.date(new Date()),
+            owner: '-',
+            lock: false,
+            download: ''
+          })
+
+          App.List.sortLines('name', 'asc')
+        }
+      })
+    }
   }
   App.Directory = new _Directory()
 })()
