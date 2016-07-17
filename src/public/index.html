@@ -59,7 +59,7 @@
         </thead>
         <tbody>
           <tr class="button {{ l.type }}" v-for="l in lines">
-            <td id="name" extension="{{ l.extension }}" data-file="{{ l.name }}" hash="{{ l.hash }}" lock={{ l.lock }}">
+            <td id="name" extension="{{ l.extension }}" data-file="{{ l.name }}" hash="{{ l.hash }}" lock="{{ l.lock }}">
               <a class="button" href="{{ l.href }}">{{ l.name }}</a>
               <i class="fa" v-bind:class="{'fa-lock locked': l.lock}"></i>
               <i class="fa" v-bind:class="{'fa-download download': l.download}">{{ l.download }}</i>
