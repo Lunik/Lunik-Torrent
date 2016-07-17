@@ -13,20 +13,7 @@
     $('.left-menu .start').click(function () {
       var input = $('.left-menu .torrent-input input')
       if (input.val()) {
-        $.post('/download-t', {
-          url: input.val()
-        }, function (data) {
-          if (data.err) {
-            $.notify.error({
-              title: 'Error',
-              text: data.err
-            })
-          } else {
-            $.notify.success({
-              text: 'The torrent will begin in a moment.'
-            })
-          }
-        })
+        self.download(input.val())
         input.val('')
         input.trigger('keyup')
       }
@@ -119,5 +106,23 @@
       })
     }
   }
+
+  _Torrent.prototype.download = function(url){
+    $.post('/download-t', {
+      url: url
+    }, function (data) {
+      if (data.err) {
+        $.notify.error({
+          title: 'Error',
+          text: data.err
+        })
+      } else {
+        $.notify.success({
+          text: 'The torrent will begin in a moment.'
+        })
+      }
+    })
+  }
+
   App.Torrent = new _Torrent()
 })()
