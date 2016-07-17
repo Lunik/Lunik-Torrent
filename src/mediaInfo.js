@@ -27,9 +27,9 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
           'query': query,
           'title': data.tvseries.title,
           'link': data.tvseries.link.length > 0 ? data.tvseries.link[0].href : '',
-          'description': data.tvseries.synopsisShort,
+          'description': data.tvseries.synopsisShort.replace(/<\/*p>/g, ''),
           'poster': data.tvseries.poster ? data.tvseries.poster.href : '',
-          'rating': (data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2
+          'rating': Math.round((data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2) + '/5'
         })
       })
     } else if (type === 'movie') {
