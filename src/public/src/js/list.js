@@ -101,6 +101,7 @@
   */
   _List.prototype.switchTab = function (tabId) {
     var self = this
+    $('.list tr').removeClass('selected')
     for (var t in this.vue.$data.tabs) {
       var tab = this.vue.$data.tabs[t]
 
