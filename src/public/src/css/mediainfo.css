@@ -1,14 +1,14 @@
-.popupHtml .Content img, .popupHtml .Content .infos {
+.mediainfo-pop img, .mediainfo-pop .infos {
   display: inline-block;
   margin: 10px;
   width: 45%;
   vertical-align: top;
 }
-.popupHtml .Content .infos * {
+.mediainfo-pop .infos * {
   vertical-align: top;
   margin: 5px;
 }
-.popupHtml .Content .infos .rating {
+.mediainfo-pop .infos .rating {
   font-size: 200%;
   font-weight: bold;
 }
