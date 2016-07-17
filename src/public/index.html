@@ -85,6 +85,17 @@
         </select>
         <input class="submit button" type="submit" value="Save"></input>
       </div>
+      <div class="mediainfo-pop">
+        <img src="{{ info.poster }}" alt="{{ info.title }} poster">
+        <div class="infos">
+          <div class="rating">{{ info.rating }}</div>
+          <div class="synopsis">
+            {{ info.description }}
+            <br>
+            <a class="button" target="_blank" href="{{ info.link }}">Fiche Allocine...</a>
+          </div>
+        </div>
+      </div>
     </div>
     <script data-main="src/js/app" src="src/bower_components/requirejs/require.js"></script>
   </body>

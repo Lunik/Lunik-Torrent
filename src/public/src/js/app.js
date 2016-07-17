@@ -45,7 +45,8 @@ var App
           'loading',
           'top-menu',
           'config',
-          'list'
+          'list',
+          'mediainfo'
         ], function (load, tm, conf, l) {
           requirejs([
             'left-menu',

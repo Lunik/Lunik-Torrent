@@ -162,7 +162,7 @@
   }
 
   _Directory.prototype.info = function (fileName) {
-    App.info.get(fileName)
+    App.MediaInfo.get(fileName)
   }
 
   _Directory.prototype.newFolder = function(){
