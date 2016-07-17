@@ -59,14 +59,17 @@
         </thead>
         <tbody>
           <tr class="button {{ l.type }}" v-for="l in lines">
-            <td id="name" extension="{{ l.extension }}" data-file="{{ l.name }}" lock="{{ l.lock }}">
+            <td id="name" extension="{{ l.extension }}" data-file="{{ l.name }}" lock="{{ l.lock }}" v-show="tabs[1].state">
               <a class="button" href="{{ l.href }}">{{ l.name }}</a>
               <i class="fa" v-bind:class="{'fa-lock locked': l.lock}"></i>
               <i class="fa" v-bind:class="{'fa-download download': l.download}">{{ l.download }}</i>
             </td>
-            <td id="size">{{ l.size }}</td>
-            <td id="date">{{ l.date }}</td>
-            <td id="owner">{{ l.owner }}</td>
+            <td id="size" v-show="tabs[1].state">{{ l.size }}</td>
+            <td id="date" v-show="tabs[1].state">{{ l.date }}</td>
+            <td id="owner" v-show="tabs[1].state">{{ l.owner }}</td>
+            <td id="progress" v-show="tabs[0].state"><progress max="1" value="{{ l.progress}}"></progress></td>
+            <td id="sdown" v-show="tabs[0].state">{{ l.sdown }}</td>
+            <td id="sup" v-show="tabs[0].state">{{ l.sup }}</td>
           </tr>
         </tbody>
       </table>
