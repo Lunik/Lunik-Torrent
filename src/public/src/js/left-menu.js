@@ -76,6 +76,13 @@
       self.switchTab($(this).attr('id'))
       App.List.switchTab($(this).attr('id'))
     })
+
+    $('.left-menu').on('click', '.open', function(){
+      self.open()
+    })
+    $('.left-menu').on('click', '.close', function(){
+      self.close()
+    })
   }
 
   /**

@@ -5,7 +5,7 @@
   min-width: 200px;
   /* 100% de la taille de l'ecran - taille du menu du haut */
   height: calc(100vh - 80px);
-  z-index: 99;
+  z-index: 100;
 }
 .left-menu .menu {
   display: none;
@@ -26,10 +26,10 @@
     display: block;
   }
 }
-.left-menu .menu i#close {
+.left-menu .menu i.close {
   display: inline-block;
 }
-.left-menu .menu i#open {
+.left-menu .menu i.open {
   display: inline-block;
 }
 .left-menu .nav-bar ul {

@@ -60,7 +60,7 @@ body {
   color: #FFF;
   background-color: #151515;
 }
-.left-menu .menu i#open {
+.left-menu .menu i.open {
   background-color: #151515;
 }
 .left-menu .nav-bar li.active {
