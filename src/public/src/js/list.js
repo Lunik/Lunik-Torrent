@@ -93,6 +93,13 @@
       }
       self.sortLines(col.id, col.sort)
     })
+
+    // scrollTop button
+    $('.scrollTop').click(function () {
+      $('body').animate({
+        scrollTop: 0
+      }, 1000)
+    })
   }
 
   /**
