@@ -97,7 +97,7 @@
         </div>
       </div>
       <div class="searchtorrent-pop">
-        <table>
+        <table v-show="results.films.length > 0">
           <thead>
             <th class="search-header">Films</th>
           </thead>
@@ -117,7 +117,7 @@
             </tr>
           </tbody>
         </table>
-        <table>
+        <table v-show="results.series.length > 0">
           <thead>
             <th class="search-header">Series</th>
           </thead>

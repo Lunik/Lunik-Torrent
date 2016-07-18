@@ -27,7 +27,8 @@
       if(data.tv){
         self.vue.$data.results.series = data.tv.items
       } else {
-        self.vue.$data.results.series = data.tven.items.concat(data.tven.items)
+        for (var key in data.tvfr.items) { data.tven.items[key] = data.tvfr.items[key]; }
+        self.vue.$data.results.series = data.tven.items
       }
 
       setTimeout(function(){self.show()}, 1000)
