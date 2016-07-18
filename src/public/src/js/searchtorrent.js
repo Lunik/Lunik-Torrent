@@ -9,16 +9,19 @@
         }
       }
     })
+
+    $('.searchtorrent-pop').on('click', 'tr.search-item', function(){
+      $('.torrent-input input').val($(this).attr('data-torrent')).trigger('keyup')
+      $.popupjs.remove()
+    })
   }
 
   _SearchTorrent.prototype.search = function (query) {
-    console.log(query)
     var self = this
     $.post('/search-t', {
       query: query
     }, function (data) {
       data = JSON.parse(data)
-      console.log(data)
       self.vue.$data.results.films = data.mv.items
 
       if(data.tv){

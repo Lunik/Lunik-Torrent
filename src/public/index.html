@@ -102,7 +102,7 @@
             <th class="search-header">Films</th>
           </thead>
           <tbody>
-            <tr class="search-item button" v-for="e in results.films">
+            <tr class="search-item button" data-torrent="{{ e.torrent }}" v-for="e in results.films">
               <td class="img">
                 <img src="{{ e.cover }}">
               </td>
@@ -122,7 +122,7 @@
             <th class="search-header">Series</th>
           </thead>
           <tbody>
-            <tr class="search-item button" v-for="e in results.series">
+            <tr class="search-item button" data-torrent="{{ e.torrent }}" v-for="e in results.series">
               <td class="img">
                 <img src="{{ e.cover }}">
               </td>
