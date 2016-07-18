@@ -84,7 +84,7 @@
   */
   _TopMenu.prototype.setDowloadLink = function (url) {
     var self = this
-    var action = self.vue.$data.actions[$.indexOfO(self.vue.$data.actions, function (e) { return e.id === 'download'})]
+    var action = self.vue.$data.actions[$.indexOfO(self.vue.$data.actions, function (e) { return e.id === 'download' })]
     action.href = url
   }
   App.TopMenu = new _TopMenu()

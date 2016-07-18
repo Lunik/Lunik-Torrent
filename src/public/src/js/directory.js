@@ -135,7 +135,7 @@
   _Directory.prototype.rename = function (fileName) {
     var oldname = fileName.split('.')
     var extension
-    if (oldname.length > 1 && file.isfile) {
+    if (oldname.length > 1) {
       extension = oldname.pop()
       extension = extension.length > 0 ? '.' + extension : ''
     } else {

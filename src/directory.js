@@ -24,7 +24,7 @@ function Directory () {
  * @return {object} - Directory informations.
 */
 Directory.prototype.list = function (dir) {
-  //save directory informations into app cache
+  // save directory informations into app cache
   if (this.dir[dir] == null) {
     this.dir[dir] = this.getDir(dir)
   } else {
@@ -34,12 +34,12 @@ Directory.prototype.list = function (dir) {
     }
   }
 
-  for(var f in this.dir[dir].files){
+  for (var f in this.dir[dir].files) {
     var file = Path.join(dir, f)
     file = file[0] === '/' ? file.substring(1) : file
-    if(this.fileInfo[file] !== -1){
-      for(var i in this.fileInfo[file]){
-          this.dir[dir].files[f][i] = this.fileInfo[file][i]
+    if (this.fileInfo[file] !== -1) {
+      for (var i in this.fileInfo[file]) {
+        this.dir[dir].files[f][i] = this.fileInfo[file][i]
       }
     }
   }
@@ -104,11 +104,11 @@ Directory.prototype.getInfo = function (file) {
 Directory.prototype.setDownloading = function (file) {
   var self = this
   setTimeout(function () {
-    //file info default value
+    // file info default value
     self.fileInfo[file] = self.fileInfo[file] || {}
-    //increment file download
+    // increment file download
     self.fileInfo[file].download = self.fileInfo[file].download || 1
-    //increment file current downloading and set the current date
+    // increment file current downloading and set the current date
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
       : {date: new Date(), count: 1}
@@ -233,14 +233,14 @@ Directory.prototype.mv = function (path, file, folder) {
  * @param {string} file - File / Directory name.
  * @param {string} user - Owner.
 */
-Directory.prototype.setOwner = function(file, user){
+Directory.prototype.setOwner = function (file, user) {
   var self = this
   setTimeout(function () {
-    file = file[0] == '/' ? file.slice(1) : file
-    //set owner defalt value
+    file = file[0] === '/' ? file.slice(1) : file
+    // set owner defalt value
     self.fileInfo[file] = self.fileInfo[file] || {}
-    //prevent override current user
-    if(self.fileInfo[file].owner == null){
+    // prevent override current user
+    if (self.fileInfo[file].owner == null) {
       self.fileInfo[file].owner = user
     }
     self.saveFileInfo()
@@ -260,7 +260,7 @@ Directory.prototype.loadFileInfo = function () {
         self.saveFileInfo()
       } else {
         var fileInfo = JSON.parse(data)
-        for(var key in fileInfo){
+        for (var key in fileInfo) {
           delete fileInfo[key].downloading
         }
         self.fileInfo = fileInfo

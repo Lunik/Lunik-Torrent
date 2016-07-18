@@ -161,14 +161,12 @@
     self.vue.$data.currentAction = act
     var tab = $.grep(self.vue.$data.tabs, function (e) { return e.id === 'torrents' })[0]
     if (tab.state) {
-      for (var ta in tab.actions) {
-        for (var a in self.vue.$data.actions) {
-          var action = self.vue.$data.actions[a]
-          if (act === action.class) {
-            action.state = true
-          } else {
-            action.state = false
-          }
+      for (var a in self.vue.$data.actions) {
+        var action = self.vue.$data.actions[a]
+        if (act === action.class) {
+          action.state = true
+        } else {
+          action.state = false
         }
       }
     }

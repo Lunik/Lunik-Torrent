@@ -107,7 +107,6 @@
    * @param {string} tabId - Id of the table
   */
   _List.prototype.switchTab = function (tabId) {
-    var self = this
     $('.list tr').removeClass('selected')
     for (var t in this.vue.$data.tabs) {
       var tab = this.vue.$data.tabs[t]
@@ -139,7 +138,7 @@
    * @param {object} line - Line to add
   */
   _List.prototype.addLine = function (line) {
-    if ($.indexOfO(this.vue.$data.lines, function (e) { return e.name === line.name}) === -1) {
+    if ($.indexOfO(this.vue.$data.lines, function (e) { return e.name === line.name }) === -1) {
       this.vue.$data.lines.push(line)
     }
   }

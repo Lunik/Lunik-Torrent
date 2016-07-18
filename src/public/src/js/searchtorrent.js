@@ -35,11 +35,11 @@
       if (data.tv) {
         self.vue.$data.results.series = data.tv.items
       } else {
-        for (var key in data.tvfr.items) { data.tven.items[key] = data.tvfr.items[key]; }
+        for (var key in data.tvfr.items) { data.tven.items[key] = data.tvfr.items[key] }
         self.vue.$data.results.series = data.tven.items
       }
 
-      setTimeout(function () {self.show()}, 1000)
+      setTimeout(function () { self.show() }, 1000)
     })
   }
 
@@ -47,7 +47,6 @@
    * Show the search torrent popup
   */
   _SearchTorrent.prototype.show = function () {
-    var self = this
     $.popupjs.init({
       pos: {
         x: null,
