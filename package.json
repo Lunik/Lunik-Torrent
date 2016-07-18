@@ -33,12 +33,11 @@
     ],
     "globals": [
       "$",
-      "readData",
-      "getAllKey",
-      "localStorage",
       "confirm",
       "prompt",
-      "requirejs"
+      "requirejs",
+      "Storage",
+      "App"
     ]
   }
 }
