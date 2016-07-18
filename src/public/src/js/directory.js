@@ -1,4 +1,8 @@
 ;(function () {
+  /**
+   * Directory manager
+   * @constructor
+  */
   function _Directory () {
     var self = this
     $('.list').on('click', '.file', function () {
@@ -17,6 +21,11 @@
     })
   }
 
+  /**
+   * Set the refresh interval of the directory
+   * @param {bool} state - State of the refresh interval
+   * @param {int} time - Time in millis of the interval refresh
+  */
   _Directory.prototype.setRefresh = function (state, time) {
     var self = this
     if (state) {
@@ -29,6 +38,10 @@
     }
   }
 
+  /**
+   * Get the directory infos from the server
+   * @param {function} cb - Callback frunction with data
+  */
   _Directory.prototype.getDir = function (cb) {
     var self = this
     $.post('/list-d', {
@@ -46,6 +59,10 @@
     })
   }
 
+  /**
+   * Append directories infos to List
+   * @param {object} dir - directory infos
+  */
   _Directory.prototype.append = function (dir) {
     App.TopMenu.setFolderSize(App.Format.size(dir.totalSize))
     var previousDir = App.hash.split('/')
@@ -84,6 +101,10 @@
     })
   }
 
+  /**
+   * Define and set actions for a specific file
+   * @param {object} file - The file
+  */
   _Directory.prototype.setActions = function (file) {
     var self = this
     App.TopMenu.setActions({
@@ -107,6 +128,10 @@
       })
   }
 
+  /**
+   * Prompt and rename a file
+   * @param {string} fileName - The name of the file
+  */
   _Directory.prototype.rename = function (fileName) {
     var oldname = fileName.split('.')
     var extension
@@ -141,6 +166,10 @@
     }
   }
 
+  /**
+   * Prompt and remove a file
+   * @param {string} fileName - The name of the file
+  */
   _Directory.prototype.remove = function (fileName) {
     if (confirm('Confirmer la suppression de ' + fileName + ' ?')) {
       $.post('/remove-d', {
@@ -161,6 +190,10 @@
     }
   }
 
+  /**
+   * Get infos from a file
+   * @param {string} fileName - The name of the file
+  */
   _Directory.prototype.info = function (fileName) {
     App.MediaInfo.get(fileName)
   }

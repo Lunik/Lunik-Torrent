@@ -1,4 +1,8 @@
 ;(function () {
+  /**
+   * Torrent Manager
+   * @constructor
+  */
   function _Torrent () {
     var self = this
     $('.list').on('click', '.torrent', function () {
@@ -25,6 +29,11 @@
     })
   }
 
+  /**
+   * Set the refresh interval of the directory
+   * @param {bool} state - State of the refresh interval
+   * @param {int} time - Time in millis of the interval refresh
+  */
   _Torrent.prototype.setRefresh = function (state, time) {
     var self = this
     if (state) {
@@ -37,6 +46,10 @@
     }
   }
 
+  /**
+   * Get the current torrents infos from the server
+   * @param {function} cb - Callback frunction with data
+  */
   _Torrent.prototype.getTorrents = function (cb) {
     var self = this
     $.post('/list-t', function (torrents) {
@@ -52,6 +65,10 @@
     })
   }
 
+  /**
+   * Append torrents infos to List
+   * @param {object} tor - torrent infos
+  */
   _Torrent.prototype.append = function (tor) {
     var lines = []
     var i = 0
@@ -75,6 +92,10 @@
     })
   }
 
+  /**
+   * Define and set actions for a specific torrent
+   * @param {object} torrent - The torrent
+  */
   _Torrent.prototype.setActions = function (torrent) {
     var self = this
     App.TopMenu.setActions({
@@ -88,6 +109,10 @@
       })
   }
 
+  /**
+   * Prompt and remove a torrent
+   * @param {object} torrent - The torrent hash and name
+  */
   _Torrent.prototype.remove = function (torrent) {
     if (confirm('Confirmer la suppression de ' + torrent.name + ' ?')) {
       $.post('/remove-t', {
@@ -108,6 +133,10 @@
     }
   }
 
+  /**
+   * Start a torrent
+   * @param {string} url - The url of the torrent
+  */
   _Torrent.prototype.download = function (url) {
     $.post('/download-t', {
       url: url

@@ -1,3 +1,4 @@
+// Global variable to store all modules
 var App
 
 ;(function () {
@@ -27,6 +28,11 @@ var App
       self.Vue = v
       self.Storage = new Storage()
 
+      /**
+       * Get The index of an object into an array
+       * @param {array} array - The array
+       * @param {function} compFunc - Function to determine the object
+      */
       $.indexOfO = function (array, compFunc) {
         for (var key in array) {
           if (compFunc(array[key])) {
@@ -36,11 +42,13 @@ var App
         return -1
       }
 
+      // load secondary modules
       requirejs([
         'jquery.ui.touch-punch',
         'notify-me',
         'popup'
       ], function (jquit, notif, pop) {
+        // load 1st layer app modules
         requirejs([
           'loading',
           'top-menu',
@@ -49,24 +57,30 @@ var App
           'mediainfo',
           'searchtorrent'
         ], function (load, tm, conf, l) {
+          // load 2nd layer app modules
           requirejs([
             'left-menu',
             'directory',
             'torrent'
           ], function (lm, dir) {
+            // load last layer app modules
             requirejs([
               'left-menu'
             ], function () {
-              // Update Directory and Hash
+              // Get hash
               self.hash = document.location.hash.substring(1)
               if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
                 self.hash += '/'
               }
+
+              // Start with directory
               self.TopMenu.setAriane(self.getDirFromHash())
               self.Directory.getDir(function (dir) {
                 self.Directory.append(dir)
               })
               self.Directory.setRefresh(true, 30000)
+
+              // on hash change set hash and reload directory
               $(window).bind('hashchange', function () {
                 self.hash = document.location.hash.substring(1)
                 if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
@@ -103,6 +117,10 @@ var App
     })
   }
 
+  /**
+   * Get directory array from hash
+   * @return {array} - Array of directories
+  */
   _App.prototype.getDirFromHash = function () {
     var dir = this.hash.split('/') || ''
     for (var i in dir) {

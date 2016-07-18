@@ -1,6 +1,7 @@
 ;(function () {
   /**
    * Media info manager.
+   * @constructor
   */
   function _MediaInfo () {
     this.vue = new App.Vue({

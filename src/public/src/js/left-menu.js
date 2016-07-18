@@ -1,6 +1,7 @@
 ;(function () {
   /**
    * Left Menu
+   * @constructor
   */
   function _LeftMenu () {
     var self = this
@@ -173,11 +174,17 @@
     }
   }
 
+  /**
+   * Open the left Menu
+  */
   _LeftMenu.prototype.open = function () {
     this.vue.$data.state = 'open'
     this.vue.$data.reverseState = 'close'
   }
 
+  /**
+   * Close the left Menu
+  */
   _LeftMenu.prototype.close = function () {
     this.vue.$data.state = 'close'
     this.vue.$data.reverseState = 'open'

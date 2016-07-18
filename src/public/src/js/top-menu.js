@@ -78,6 +78,10 @@
     self.vue.$data.folderSize = size
   }
 
+  /**
+   * Set the download link for the download action button
+   * @param {string} url - The url to set
+  */
   _TopMenu.prototype.setDowloadLink = function (url) {
     var self = this
     var action = self.vue.$data.actions[$.indexOfO(self.vue.$data.actions, function (e) { return e.id === 'download'})]

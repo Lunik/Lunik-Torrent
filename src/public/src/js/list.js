@@ -160,6 +160,7 @@
   /**
    * Update all lines into the table
    * And remove absent lines
+   * @param {array} lines - Array of lines to update
   */
   _List.prototype.updateLines = function (lines) {
     var self = this
@@ -190,6 +191,7 @@
 
   /**
    * Update one lines into the table
+   * @param {object} line - The line to update
   */
   _List.prototype.updateLine = function (line) {
     var self = this
@@ -206,6 +208,11 @@
     }
   }
 
+  /**
+   * Sort the lines in the list
+   * @param {string} by - Column to sort by
+   * @param {string} direction - Asc, Desc
+  */
   _List.prototype.sortLines = function (by, direction) {
     var dir = direction === 'asc' ? -1 : 1
     if (typeof this.vue.$data.lines[0][by] !== 'undefined') {

@@ -1,4 +1,8 @@
 ;(function () {
+  /**
+   * Search torrent manager
+   * @constructor
+  */
   function _SearchTorrent () {
     this.vue = new App.Vue({
       el: '.searchtorrent-pop',
@@ -16,6 +20,10 @@
     })
   }
 
+  /**
+   * Search a torrent and show the results in popup
+   * @param {string} query - The torrent to search
+  */
   _SearchTorrent.prototype.search = function (query) {
     var self = this
     $.post('/search-t', {
@@ -35,6 +43,9 @@
     })
   }
 
+  /**
+   * Show the search torrent popup
+  */
   _SearchTorrent.prototype.show = function () {
     var self = this
     $.popupjs.init({
