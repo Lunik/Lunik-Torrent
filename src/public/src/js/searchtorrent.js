@@ -10,7 +10,7 @@
       }
     })
 
-    $('.searchtorrent-pop').on('click', 'tr.search-item', function(){
+    $('.searchtorrent-pop').on('click', 'tr.search-item', function () {
       $('.torrent-input input').val($(this).attr('data-torrent')).trigger('keyup')
       $.popupjs.remove()
     })
@@ -24,18 +24,18 @@
       data = JSON.parse(data)
       self.vue.$data.results.films = data.mv.items
 
-      if(data.tv){
+      if (data.tv) {
         self.vue.$data.results.series = data.tv.items
       } else {
         for (var key in data.tvfr.items) { data.tven.items[key] = data.tvfr.items[key]; }
         self.vue.$data.results.series = data.tven.items
       }
 
-      setTimeout(function(){self.show()}, 1000)
+      setTimeout(function () {self.show()}, 1000)
     })
   }
 
-  _SearchTorrent.prototype.show = function(){
+  _SearchTorrent.prototype.show = function () {
     var self = this
     $.popupjs.init({
       pos: {

@@ -12,7 +12,7 @@
       })
     })
 
-    $('.left-menu .new').click(function(){
+    $('.left-menu .new').click(function () {
       self.newFolder()
     })
   }
@@ -47,7 +47,6 @@
   }
 
   _Directory.prototype.append = function (dir) {
-    console.log(dir)
     App.TopMenu.setFolderSize(App.Format.size(dir.totalSize))
     var previousDir = App.hash.split('/')
     if (previousDir[previousDir.length - 1] === '') {
@@ -166,7 +165,7 @@
     App.MediaInfo.get(fileName)
   }
 
-  _Directory.prototype.newFolder = function(){
+  _Directory.prototype.newFolder = function () {
     var name = prompt('Nom du nouveau dossier ?')
     if (name) {
       $.post('/mkdir-d', {

@@ -143,7 +143,7 @@
       App.Torrent.setRefresh(false)
     } else if (tabId === 'torrents') {
       self.switchTorrent(this.vue.$data.tabs[0].actions[0])
-      App.Torrent.getTorrents(function(tor){
+      App.Torrent.getTorrents(function (tor) {
         App.Torrent.append(tor)
       })
       App.Torrent.setRefresh(true, 3000)

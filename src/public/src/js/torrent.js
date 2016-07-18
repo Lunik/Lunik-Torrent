@@ -47,7 +47,6 @@
           text: torrents.err
         })
       } else {
-        console.log(torrents)
         self.append(torrents)
       }
     })
@@ -109,7 +108,7 @@
     }
   }
 
-  _Torrent.prototype.download = function(url){
+  _Torrent.prototype.download = function (url) {
     $.post('/download-t', {
       url: url
     }, function (data) {
