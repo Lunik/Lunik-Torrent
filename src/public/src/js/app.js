@@ -66,6 +66,7 @@ var App
               self.Directory.getDir(function (dir) {
                 self.Directory.append(dir)
               })
+              self.Directory.setRefresh(true, 30000)
               $(window).bind('hashchange', function () {
                 self.hash = document.location.hash.substring(1)
                 if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
