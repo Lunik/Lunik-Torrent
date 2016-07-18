@@ -14,7 +14,6 @@ script:
 - npm test
 - npm start &
 - sleep 10
-- wget -qr http://localhost:$PORT
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "dir=/" http://localhost:$PORT/list-d
 - curl -s http://localhost:$PORT >/dev/null
