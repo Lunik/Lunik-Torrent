@@ -9,72 +9,139 @@
 
     <link rel="icon" href="src/image/favicon.ico">
     <link rel="stylesheet" href="src/css/style.css">
+    <link class="theme" rel="stylesheet" href="src/css/themes/{{ config.theme }}/theme.css">
   </head>
 
   <body>
-    <div class="loading"><div class="logo"></div></div>
+    <div class="loading" v-show="state"><div class="logo"></div></div>
     <div class="top-menu">
-      <div class="container">
-        <a href="#" class="logo button"><div class="logo"></div></a>
-        <div class="ariane"></div>
-        <div class="folder-size"></div>
-        <div class="parameter">
-          <i class="fa fa-gear button" id="parameter"></i>
+      <a href="#" class="logo button"><div class="logo"></div></a>
+      <div class="ariane">
+        <a class="button" href="#" data-file="/">Home</a>
+        <div v-for="dir in ariane">
+          <span class="delimiter">&gt;</span>
+          <a class="button" href="#{{ dir.path }}">{{ dir.name }}</a>
         </div>
-        <div class="action">
-          <a href="#"><i class="fa fa-download button hide" id="download"></i></a>
-          <i class="fa fa-pencil button hide" id="rename"></i>
-          <i class="fa fa-times button hide" id="remove"></i>
-          <i class="fa fa-info button hide" id="info"></i>
-        </div>
+      </div>
+      <div class="folder-size">{{ folderSize }}</div>
+      <div class="parameter">
+        <i class="fa fa-gear button" id="parameter"></i>
+      </div>
+      <div class="action">
+        <a href="{{ a.href }}" v-for="a in actions"><i class="fa {{ a.icon }} {{ a.state }} button" id="{{ a.id }}" v-show="a.state"></i></a>
       </div>
     </div>
-    <div class="container">
-      <div class="left-menu" id="close">
-        <div class="container">
-          <div class="menu">
-            <i class="fa fa-arrow-left button" id="close"></i>
-            <i class="fa fa-bars button" id="open"></i>
-          </div>
-          <div class="nav-bar">
-            <ul>
-              <li class="button" id="torrents">Torrents</li>
-              <li class="button active" id="directories">Directories</li>
-            </ul>
-          </div>
-          <div class="action">
-            <div class="new button">New</div>
-            <div class="torrent-input hide"><input type="text" placeholder="Search or Torrent Link..."></div>
-            <div class="start button hide">Start</div>
-            <div class="search button hide">Search</div>
-          </div>
-          <div class="footer">
-            <p><a target="_blank" href="https://github.com/Lunik/Lunik-Torrent/issues">FeedBack</a></p>
-            <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
+    <div class="left-menu" id="{{ state }}">
+      <div class="menu">
+        <i class="fa fa-arrow-left button" id="{{ state }}"></i>
+        <i class="fa fa-bars button" id="{{ reverseState }}"></i>
+      </div>
+      <div class="nav-bar">
+        <ul>
+          <li class="button" v-bind:class="{'active': t.state}" id="{{ t.id }}" v-for="t in tabs">{{ t.name }}</li>
+        </ul>
+      </div>
+      <div class="action">
+        <div class="{{ i.class }}" v-for="i in inputs" v-show="i.state"><input type="{{ i.type }}" placeholder="{{ i.placeholder }}"></div>
+        <div class="button {{ a.class }}" v-for="a in actions" v-show="a.state">{{ a.name }}</div>
+      </div>
+      <div class="footer">
+        <p><a target="_blank" href="https://github.com/Lunik/Lunik-Torrent/issues">FeedBack</a></p>
+        <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
+      </div>
+    </div>
+    <div class="list">
+      <table>
+        <thead>
+          <tr>
+            <th class="button" id="{{ c.id }}" v-for="c in columns" v-show="c.state">{{ c.name }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="button {{ l.type }}" v-for="l in lines">
+            <td id="name" extension="{{ l.extension }}" data-file="{{ l.name }}" hash="{{ l.hash }}" lock="{{ l.lock }}">
+              <a class="button" href="{{ l.href }}">{{ l.name }}</a>
+              <i class="fa" v-bind:class="{'fa-lock locked': l.lock}"></i>
+              <i class="fa" v-bind:class="{'fa-download download': l.download}">{{ l.download }}</i>
+            </td>
+            <td id="size">{{ l.size }}</td>
+            <td id="date" v-show="tabs[1].state">{{ l.date }}</td>
+            <td id="owner" v-show="tabs[1].state">{{ l.owner }}</td>
+            <td id="progress" v-show="tabs[0].state">
+              <progress max="1" value="{{ l.progress }}"></progress>
+              <p class="percent">{{ l.percent }}</p>
+              <p class="remaining-time">{{ l.timeRemaining }}</p>
+            </td>
+            <td id="sdown" v-show="tabs[0].state">{{ l.sdown }}</td>
+            <td id="sup" v-show="tabs[0].state">{{ l.sup }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scrollTop">
+        <i class="fa fa-arrow-up button"></i>
+      </div>
+    <div class="popup hide">
+      <div class="config-pop">
+        <select class="theme">
+          <option value="{{ t.value }}" selected="{{config.theme == t.value ? true : false}}" v-for="t in themes">{{ t.name }}</option>
+        </select>
+        <input class="submit button" type="submit" value="Save"></input>
+      </div>
+      <div class="mediainfo-pop">
+        <img src="{{ info.poster }}" alt="{{ info.title }} poster">
+        <div class="infos">
+          <div class="rating">{{ info.rating }}</div>
+          <div class="synopsis">
+            {{ info.description }}
+            <br>
+            <a class="button" target="_blank" href="{{ info.link }}">Fiche Allocine...</a>
           </div>
         </div>
       </div>
-      <div class="list">
-        <table>
+      <div class="searchtorrent-pop">
+        <table v-show="results.films.length > 0">
           <thead>
-            <tr>
-              <th class="button" id="name" number="0">Name</th>
-              <th class="button" id="size" number="1">Size</th>
-              <th class="button" id="date" number="2">Date</th>
-              <th class="button" id="owner" number="3">Owner</th>
-              <th class="hide button" id="progress" number="4">Progress</th>
-              <th class="hide button" id="down" number="5">Down</th>
-              <th class="hide button" id="up" number="6">Up</th>
-            </tr>
+            <th class="search-header">Films</th>
           </thead>
           <tbody>
+            <tr class="search-item button" data-torrent="{{ e.torrent }}" v-for="e in results.films">
+              <td class="img">
+                <img src="{{ e.cover }}">
+              </td>
+              <td>{{ e.title }}</td>
+              <td>{{ e.size }}</td>
+              <td class="seed">
+                <i class="fa fa-arrow-up">{{ e.seeds }}</i>
+              </td>
+              <td class="peer">
+                <i class="fa fa-arrow-down">{{ e.peeds }}</i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table v-show="results.series.length > 0">
+          <thead>
+            <th class="search-header">Series</th>
+          </thead>
+          <tbody>
+            <tr class="search-item button" data-torrent="{{ e.torrent }}" v-for="e in results.series">
+              <td class="img">
+                <img src="{{ e.cover }}">
+              </td>
+              <td>{{ e.title }}</td>
+              <td>{{ e.size }}</td>
+              <td class="seed">
+                <i class="fa fa-arrow-up">{{ e.seeds }}</i>
+              </td>
+              <td class="peer">
+                <i class="fa fa-arrow-down">{{ e.peeds }}</i>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-      <div class="scrollTop">
-        <i class="fa fa-arrow-up button"></i>
-      </div>
     </div>
-    <script data-main="src/js/app/app.js" src="src/bower_components/requirejs/require.js"></script>
+    <script data-main="src/js/app" src="src/bower_components/requirejs/require.js"></script>
   </body>
 </html>

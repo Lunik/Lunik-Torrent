@@ -14,8 +14,6 @@
   /*min-width: 300px;*/
   table-layout: fixed;
   border-collapse: collapse;
-
-  margin-left: 10px;
 }
 .list table th#name {
   width: 40%;

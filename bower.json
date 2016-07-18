@@ -18,10 +18,11 @@
     "jquery": "^3.0.0",
     "requirejs": "^2.2.0",
     "jquery-ui": "^1.11.4",
-    "tablesorter": "*",
     "jquery-ui-touch-punch-improved": "^0.3.1",
     "font-awesome": "^4.6.3",
     "notify.me": "^0.6.2",
-    "popupjs": "^1.1.2"
+    "popupjs": "^1.1.4",
+    "vue": "^1.0.26",
+    "local-storage-api": "^1.0.1"
   }
 }

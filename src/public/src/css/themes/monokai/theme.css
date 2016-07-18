@@ -116,16 +116,16 @@ body {
 
 /******************/
 
-.search-result tr.search-item:hover {
+.searchtorrent-pop tr.search-item:hover {
   background-color: #FD971F;
 }
-.search-result .search-item {
+.searchtorrent-pop .search-item {
   border-top: 1px solid #2E2E2E;
   border-bottom: 1px solid #2E2E2E;
 }
-.search-result .search-item .seed {
+.searchtorrent-pop .search-item .seed {
   color: #A6E22E;
 }
-.search-result .search-item .peer {
+.searchtorrent-pop .search-item .peer {
   color: #F92672;
 }

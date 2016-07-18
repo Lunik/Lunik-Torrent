@@ -1,4 +1,4 @@
-//launch the server
+// launch the server
 var Server = require('./server.js')
 
 var update = require('./update.js')

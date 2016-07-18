@@ -146,16 +146,16 @@ a {
 
 /******************/
 
-.search-result tr.search-item:hover {
+.searchtorrent-pop tr.search-item:hover {
   background-color: #f7a253;
 }
-.search-result .search-item {
+.searchtorrent-pop .search-item {
   border-top: 1px solid #2E2E2E;
   border-bottom: 1px solid #2E2E2E;
 }
-.search-result .search-item .seed {
+.searchtorrent-pop .search-item .seed {
   color: #27AE60;
 }
-.search-result .search-item .peer {
+.searchtorrent-pop .search-item .peer {
   color: #f75353;
 }

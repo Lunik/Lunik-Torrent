@@ -5,12 +5,12 @@
   width: 100%;
   z-index: 100;
 }
-.top-menu .container {
+.top-menu {
   padding: 0 15px 0 15px;
   height: 80px;
   margin: auto;
 }
-.top-menu .container > * {
+.top-menu > * {
   display: inline-block;
   padding: 25px 0 25px 0;
   height: 20px;
@@ -29,14 +29,18 @@
 .top-menu .ariane a {
   padding: 5px;
 }
+.top-menu .ariane div{
+  display: inline-block;
+}
 .top-menu .action {
   position: absolute;
   top: 0;
-  right: 35px;
+  right: 55px;
   margin-right: 2%;
 }
 .top-menu .parameter {
   float: right;
+  margin-right: 25px
 }
 .top-menu .folder-size {
   margin-top: 20px;
