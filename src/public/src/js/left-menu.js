@@ -126,10 +126,10 @@
     }
 
     App.TopMenu.setActions({
-      download: 'hide',
-      rename: 'hide',
-      remove: 'hide',
-      info: 'hide'
+      download: false,
+      rename: false,
+      remove: false,
+      info: false
     })
     if (tabId === 'directories') {
       if (App.hash) {
