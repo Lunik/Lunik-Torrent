@@ -11,25 +11,25 @@
           {
             id: 'download',
             icon: 'fa-download',
-            state: 'hide',
+            state: false,
             href: '#'
           },
           {
             id: 'rename',
             icon: 'fa-pencil',
-            state: 'hide',
+            state: false,
             href: '#'
           },
           {
             id: 'remove',
             icon: 'fa-times',
-            state: 'hide',
+            state: false,
             href: '#'
           },
           {
             id: 'info',
             icon: 'fa-info',
-            state: 'hide',
+            state: false,
             href: '#'
           }
         ],

@@ -78,7 +78,7 @@
   _Torrent.prototype.setActions = function (torrent) {
     var self = this
     App.TopMenu.setActions({
-      remove: '',
+      remove: true,
       info: 'unactive'
     })
 

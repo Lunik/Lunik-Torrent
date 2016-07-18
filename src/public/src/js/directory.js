@@ -87,10 +87,10 @@
   _Directory.prototype.setActions = function (file) {
     var self = this
     App.TopMenu.setActions({
-      download: file.isdir ? 'unactive' : '',
-      rename: file.lock ? 'unactive' : '',
-      remove: file.lock ? 'unactive' : '',
-      info: file.isdir ? 'unactive' : ''
+      download: file.isdir ? 'unactive' : true,
+      rename: file.lock ? 'unactive' : true,
+      remove: file.lock ? 'unactive' : true,
+      info: file.isdir ? 'unactive' : true
     })
 
     App.TopMenu.setDowloadLink('files/?f=' + document.location.hash.substring(1) + file.name)

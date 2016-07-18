@@ -38,44 +38,44 @@
             name: 'Name',
             id: 'name',
             important: true,
-            state: '',
+            state: true,
             sort: 'asc'
           },
           {
             name: 'Size',
             id: 'size',
             important: true,
-            state: '',
+            state: true,
             sort: 'asc'
           },
           {
             name: 'Date',
             id: 'date',
-            state: '',
+            state: true,
             sort: 'asc'
           },
           {
             name: 'Owner',
             id: 'owner',
-            state: '',
+            state: true,
             sort: 'asc'
           },
           {
             name: 'Progress',
             id: 'progress',
-            state: 'hide',
+            state: false,
             sort: 'asc'
           },
           {
             name: 'Up',
             id: 'up',
-            state: 'hide',
+            state: false,
             sort: 'asc'
           },
           {
             name: 'Down',
             id: 'down',
-            state: 'hide',
+            state: false,
             sort: 'asc'
           }
         ],
@@ -111,7 +111,7 @@
           var column = this.vue.$data.columns[c]
 
           if (tab.columns.indexOf(column.id) !== -1) {
-            column.state = ''
+            column.state = true
           }
         }
       } else {
@@ -120,7 +120,7 @@
           var column = this.vue.$data.columns[c]
 
           if (tab.columns.indexOf(column.id) !== -1 && !column.important) {
-            column.state = 'hide'
+            column.state = false
           }
         }
       }

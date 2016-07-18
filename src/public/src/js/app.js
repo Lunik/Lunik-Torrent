@@ -74,10 +74,10 @@ var App
 
                 self.TopMenu.setAriane(self.getDirFromHash())
                 App.TopMenu.setActions({
-                  download: 'hide',
-                  rename: 'hide',
-                  remove: 'hide',
-                  info: 'hide'
+                  download: false,
+                  rename: false,
+                  remove: false,
+                  info: false
                 })
                 self.Directory.getDir(function (dir) {
                   self.Directory.append(dir)

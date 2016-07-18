@@ -36,17 +36,17 @@
           {
             name: 'Start',
             class: 'start',
-            state: 'hide'
+            state: false
           },
           {
             name: 'Search',
             class: 'search',
-            state: 'hide'
+            state: false
           },
           {
             name: 'New',
             class: 'new',
-            state: ''
+            state: true
           }
         ],
         inputs: [
@@ -55,7 +55,7 @@
             class: 'torrent-input',
             type: 'text',
             placeholder: 'Search or Torrent Link...',
-            state: 'hide'
+            state: false
           }
         ],
         currentAction: 'new'
@@ -96,14 +96,14 @@
           var action = this.vue.$data.actions[a]
 
           if (tab.actions.indexOf(action.class) !== -1) {
-            action.state = ''
+            action.state = true
           }
         }
         for (var i in this.vue.$data.inputs) {
           var input = this.vue.$data.inputs[i]
 
           if (tab.inputs.indexOf(input.class) !== -1) {
-            input.state = ''
+            input.state = true
           }
         }
       } else {
@@ -112,14 +112,14 @@
           var action = this.vue.$data.actions[a]
 
           if (tab.actions.indexOf(action.class) !== -1) {
-            action.state = 'hide'
+            action.state = false
           }
         }
         for (var i in this.vue.$data.inputs) {
           var input = this.vue.$data.inputs[i]
 
           if (tab.inputs.indexOf(input.class) !== -1) {
-            input.state = 'hide'
+            input.state = false
           }
         }
       }
@@ -160,9 +160,9 @@
         for (var a in self.vue.$data.actions) {
           var action = self.vue.$data.actions[a]
           if (act === action.class) {
-            action.state = ''
+            action.state = true
           } else {
-            action.state = 'hide'
+            action.state = false
           }
         }
       }
