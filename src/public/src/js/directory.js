@@ -20,6 +20,7 @@
   _Directory.prototype.setRefresh = function (state, time) {
     var self = this
     if (state) {
+      clearInterval(self.interval)
       self.interval = setInterval(function () {
         self.getDir()
       }, time)
