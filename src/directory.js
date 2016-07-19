@@ -25,14 +25,7 @@ function Directory () {
 */
 Directory.prototype.list = function (dir) {
   // save directory informations into app cache
-  if (this.dir[dir] == null) {
-    this.dir[dir] = this.getDir(dir)
-  } else {
-    var s = fs.statSync(Path.join(config.directory.path, dir))
-    if (this.dir[dir].mtime < s.mtime) {
-      this.dir[dir] = this.getDir(dir)
-    }
-  }
+  this.dir[dir] = this.getDir(dir)
 
   for (var f in this.dir[dir].files) {
     var file = Path.join(dir, f)
