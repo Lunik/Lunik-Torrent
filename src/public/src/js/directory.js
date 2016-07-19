@@ -31,7 +31,9 @@
     if (state) {
       clearInterval(self.interval)
       self.interval = setInterval(function () {
-        self.getDir()
+        self.getDir(function(dir){
+          self.append(dir)
+        })
       }, time)
     } else {
       clearInterval(self.interval)
@@ -54,7 +56,7 @@
           text: directory.err
         })
       } else {
-        self.append(directory)
+        cb(directory)
       }
     })
   }

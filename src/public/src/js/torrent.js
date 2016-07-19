@@ -39,7 +39,9 @@
     if (state) {
       clearInterval(self.interval)
       self.interval = setInterval(function () {
-        self.getTorrents()
+        self.getTorrents(function(tor){
+          self.append(tor)
+        })
       }, time)
     } else {
       clearInterval(self.interval)
@@ -60,7 +62,7 @@
           text: torrents.err
         })
       } else {
-        self.append(torrents)
+        cb(torrents)
       }
     })
   }
