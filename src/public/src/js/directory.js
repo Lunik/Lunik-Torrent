@@ -116,9 +116,10 @@
       info: file.isdir ? 'unactive' : true
     })
 
-    App.TopMenu.setDowloadLink('files/?f=' + document.location.hash.substring(1) + file.name)
-
     $('.top-menu .action').unbind()
+      .on('click', '#download', function(){
+        window.open('files/?f=' + document.location.hash.substring(1) + file.name)
+      })
       .on('click', '#rename', function () {
         self.rename(file.name)
       })
@@ -161,7 +162,8 @@
         } else {
           App.List.updateLine({
             name: fileName,
-            newname: data.newname
+            newname: data.newname,
+            href: '#' + App.hash + data.newname + '/',
           })
         }
       })
