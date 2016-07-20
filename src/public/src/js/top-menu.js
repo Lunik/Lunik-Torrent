@@ -12,25 +12,21 @@
             id: 'download',
             icon: 'fa-download',
             state: false,
-            href: '#'
           },
           {
             id: 'rename',
             icon: 'fa-pencil',
             state: false,
-            href: '#'
           },
           {
             id: 'remove',
             icon: 'fa-times',
             state: false,
-            href: '#'
           },
           {
             id: 'info',
             icon: 'fa-info',
             state: false,
-            href: '#'
           }
         ],
         ariane: [],

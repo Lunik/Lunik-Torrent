@@ -28,7 +28,7 @@
         <i class="fa fa-gear button" id="parameter"></i>
       </div>
       <div class="action">
-        <a href="{{ a.href }}" v-for="a in actions"><i class="fa {{ a.icon }} {{ a.state }} button" id="{{ a.id }}" v-show="a.state"></i></a>
+        <i class="fa {{ a.icon }} {{ a.state }} button" id="{{ a.id }}" v-show="a.state" v-for="a in actions"></i>
       </div>
     </div>
     <div class="left-menu" id="{{ state }}">
