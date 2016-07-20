@@ -1,4 +1,4 @@
-# Lunik-Torrent Develop Branch
+# Lunik-Torrent Bug Branch
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 ![build](https://travis-ci.org/Lunik/Lunik-Torrent.svg?style=flat-square)
 
