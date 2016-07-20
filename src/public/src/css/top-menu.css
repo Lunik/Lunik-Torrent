@@ -3,7 +3,7 @@
   top: 0;
   height: 80px;
   width: 100%;
-  z-index: 99;
+  z-index: 100;
 }
 .top-menu {
   padding: 0 15px 0 15px;
@@ -12,11 +12,12 @@
 }
 .top-menu > * {
   display: inline-block;
-  padding: 25px 0 25px 0;
+  padding-top: 25px;
   height: 20px;
 }
-.top-menu .logo {
+.top-menu a.logo {
   margin-left: 0;
+  padding-bottom: 25px;
   width: 80px;
   background-size: 100%;
 }
