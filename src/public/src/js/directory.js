@@ -77,14 +77,13 @@
     }
     previousDir.pop()
     previousDir = previousDir.join('/')
-    App.List.addLine({
+
+    var lines = [{
       name: '..',
       href: '#' + previousDir,
       type: 'file',
       extension: 'dir'
-    })
-
-    var lines = []
+    }]
     var i = 0
     $.each(dir.files, function (index, value) {
       value.name = index
