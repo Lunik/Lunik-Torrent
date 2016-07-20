@@ -234,5 +234,43 @@
     }
   }
 
+  _List.prototype.updateDragDrop = function(){
+    var self = this
+    $('.list .file #name').draggable({
+      revert: true
+    })
+
+    $('.list .file #name[extension="dir"]').droppable({
+        greedy: true,
+        drop: function (data, element) {
+          var folder = $(this).attr('data-file')
+          var file = element.draggable.attr('data-file')
+          var path = App.hash + '/'
+
+          console.log({
+            'file': file,
+            'path': path,
+            'folder': folder
+          })
+          $.post('/mv-d', {
+            'file': file,
+            'path': path,
+            'folder': folder
+          }, function (file) {
+            file = JSON.parse(file)
+            if (file.err) {
+              $.notify.error({
+                title: 'Error',
+                text: file.err
+              })
+            } else {
+              self.removeLine({
+                name: file.file
+              })
+            }
+          })
+        }
+      })
+  }
   App.List = new _List()
 })()

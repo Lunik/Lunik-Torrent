@@ -14,6 +14,10 @@
         isfile: $($(this).children('#name')).attr('extension') !== 'dir',
         lock: typeof $($(this).children('#name')).attr('lock') !== 'undefined'
       })
+
+      App.List.updateDragDrop()
+      $('.list .file .ui-draggable').draggable('disable')
+      $(this).children('#name').draggable('enable')
     })
 
     $('.left-menu .new').click(function () {
