@@ -161,7 +161,8 @@
         } else {
           App.List.updateLine({
             name: fileName,
-            newname: data.newname
+            newname: data.newname,
+            href: '#' + App.hash + data.newname + '/',
           })
         }
       })
