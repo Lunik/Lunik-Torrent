@@ -21,13 +21,6 @@ http.globalAgent.maxSockets = Infinity
 */
 function Server () {
   this.app = express()
-  this.app.use(compression())
-  this.app.use(express.static(Path.join(__dirname, '/public')))
-  this.app.use(bodyParser.json())
-  this.app.use(bodyParser.urlencoded({
-    extended: true
-  }))
-
   if (config.server.htpasswd && config.server.htpasswd.length > 0) {
     this.basic = auth.basic({
       realm: config.server.message,
@@ -35,6 +28,12 @@ function Server () {
     })
     this.app.use(auth.connect(this.basic))
   }
+  this.app.use(compression())
+  this.app.use(express.static(Path.join(__dirname, '/public')))
+  this.app.use(bodyParser.json())
+  this.app.use(bodyParser.urlencoded({
+    extended: true
+  }))
 
   this.server = http.createServer(this.app)
   var port = process.env.PORT || config.server.port
