@@ -27,7 +27,7 @@ var fs = require('fs')
 */
 function testLog(cb){
   logTestModule('Log')
-  var Log = require('./log.js')
+  var Log = require('../src/log.js')
 
   logTestProto('print')
   Log.print('Print ok')
@@ -51,7 +51,7 @@ testLog(function(value){
 */
 function testClient(cb){
   logTestModule('Client')
-  var Client = require('./client.js')
+  var Client = require('../src/client.js')
   var c = new Client()
 
   logTestProto('on start')
@@ -98,7 +98,7 @@ testClient(function(value){
 */
 function testDirectory(cb){
   logTestModule('Directory')
-  var Directory = require('./directory.js')
+  var Directory = require('../src/directory.js')
   var dir = "ok"
   var dir2 = "ok2"
   var dir3 = "ok3"

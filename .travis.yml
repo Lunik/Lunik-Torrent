@@ -9,39 +9,56 @@ env:
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install curl wget
+- npm install -g phantomjs
+before_script:
+- sed -e 's/\(htpasswd\". \"\)[^\"]*/\1/' configs/config.json
+- mkdir test/screenshots
 script:
 #- npm test
 - npm start &
 - sleep 10
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "dir=/" http://localhost:$PORT/list-d
+- mkdir test/screenshots/test1 && phantom test/phantom.js directory 1
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "" http://localhost:$PORT/list-t
+- mkdir test/screenshots/test2 && phantom test/phantom.js torrent 2
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "name=$DIRNAME&path=/" http://localhost:$PORT/mkdir-d
+- mkdir test/screenshots/test3 && phantom test/phantom.js directory 3
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "path=/&oldname=$DIRNAME&newname=$DIRNAME2" http://localhost:$PORT/rename-d
+- mkdir test/screenshots/test4 && phantom test/phantom.js directory 4
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "name=$DIRNAME&path=/" http://localhost:$PORT/mkdir-d
+- mkdir test/screenshots/test5 && phantom test/phantom.js directory 5
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "path=/&file=$DIRNAME2&folder=$DIRNAME" http://localhost:$PORT/mv-d
+- mkdir test/screenshots/test6 && phantom test/phantom.js directory 6
 - curl -s http://localhost:$PORT >/dev/null
 - echo date > files/$FILENAME
 - curl -u admin:admin http://localhost:$PORT/files?f=$FILENAME
+- mkdir test/screenshots/test7 && phantom test/phantom.js directory 7
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "url=$MAGNET" http://localhost:$PORT/download-t
+- mkdir test/screenshots/test8 && phantom test/phantom.js torrent 8
 - curl -s http://localhost:$PORT >/dev/null
 - sleep 15
 - curl -u admin:admin --data "" http://localhost:$PORT/list-t
+- mkdir test/screenshots/test9 && phantom test/phantom.js torrent 9
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin --data "hash=$HASH" http://localhost:$PORT/remove-t
+- mkdir test/screenshots/test10 && phantom test/phantom.js torrent 10
 - curl -s http://localhost:$PORT >/dev/null
 - curl -u admin:admin http://localhost:$PORT/lock-d?f=$FILENAME
+- mkdir test/screenshots/test11 && phantom test/phantom.js directory 11
 - curl -s http://localhost:$PORT >/dev/null
+- test/find_diff.sh && mv test/screeshots test/cached_screenshots
 cache:
   directories:
   - "$(pwd)/node_modules"
   - "$(pwd)/src/public/src/bower_components"
+  - "$(pwd)/test/cached_screenshots"
 deploy:
   provider: npm
   email: guillaume.lunik@gmail.com
