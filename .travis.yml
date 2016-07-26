@@ -4,40 +4,11 @@ language: node_js
 node_js:
 - '6'
 - '5'
-env:
-- PORT="5000" DIRNAME="ok" DIRNAME2="ok2" FILENAME="thefile" MAGNET="magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4" HASH="6a9759bffd5c0af65319979fb7832189f4f3c35d"
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install curl wget
 script:
-#- npm test
-- npm start &
-- sleep 10
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin --data "dir=/" http://localhost:$PORT/list-d
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin --data "" http://localhost:$PORT/list-t
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin --data "name=$DIRNAME&path=/" http://localhost:$PORT/mkdir-d
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin --data "path=/&oldname=$DIRNAME&newname=$DIRNAME2" http://localhost:$PORT/rename-d
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin --data "name=$DIRNAME&path=/" http://localhost:$PORT/mkdir-d
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin --data "path=/&file=$DIRNAME2&folder=$DIRNAME" http://localhost:$PORT/mv-d
-- curl -s http://localhost:$PORT >/dev/null
-- echo date > files/$FILENAME
-- curl -u admin:admin http://localhost:$PORT/files?f=$FILENAME
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin --data "url=$MAGNET" http://localhost:$PORT/download-t
-- curl -s http://localhost:$PORT >/dev/null
-- sleep 15
-- curl -u admin:admin --data "" http://localhost:$PORT/list-t
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin --data "hash=$HASH" http://localhost:$PORT/remove-t
-- curl -s http://localhost:$PORT >/dev/null
-- curl -u admin:admin http://localhost:$PORT/lock-d?f=$FILENAME
-- curl -s http://localhost:$PORT >/dev/null
+- npm test
 cache:
   directories:
   - "$(pwd)/node_modules"
