@@ -42,7 +42,12 @@
         </ul>
       </div>
       <div class="action">
-        <div class="{{ i.class }}" v-for="i in inputs" v-show="i.state"><input type="{{ i.type }}" placeholder="{{ i.placeholder }}"></div>
+        <div class="{{ i.class }}" v-for="i in inputs" v-show="i.state">
+          <input type="{{ i.type }}" placeholder="{{ i.placeholder }}" list="{{ i.class }}">
+          <datalist id="{{ i.class }}">
+            <option value="{{ option }}" v-for="option in i.dataList">
+          </datalist>
+        </div>
         <div class="button {{ a.class }}" v-for="a in actions" v-show="a.state">{{ a.name }}</div>
       </div>
       <div class="footer">

@@ -26,6 +26,7 @@
     $('.left-menu .search').click(function () {
       var input = $('.left-menu .torrent-input input')
       App.SearchTorrent.search(input.val())
+      App.LeftMenu.addInputList('torrent-input', input.val())
     })
   }
 
