@@ -4,6 +4,8 @@ language: node_js
 node_js:
 - '6'
 - '5'
+env:
+- PORT="5000"
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install curl wget
