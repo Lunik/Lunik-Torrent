@@ -3,6 +3,7 @@ var system = require('system')
 
 var defaultColor = '\033[0m'
 
+var runID = Date.now()
 var pageToTest = system.args[1]
 var port = system.env.PORT ? ':' + system.env.PORT : ''
 var address = "http://localhost" + port
@@ -20,6 +21,10 @@ page.onResourceReceived = function (response) {
   console.log('<== Receive: ' + color + response.status + ' ' + response.statusText + defaultColor + ': ' + response.url)
 }
 
+page.onConsoleMessage = function(msg, lineNum, sourceId) {
+  console.log('CONSOLE: ' + msg + ' (from line #' + lineNum + ' in "' + sourceId + '")')
+}
+
 console.log('Loading \033[36m' + address + '\033[0m')
 
 page.open(address, function (status) {
@@ -34,7 +39,7 @@ page.open(address, function (status) {
     })
     console.log('Page title is \033[32m' + title + '\033[0m')
   }
-  page.render('test/screenshots/loading.png')
+  screenshot('loading')
   setTimeout(function(){
     switch (pageToTest) {
       case 'torrent':
@@ -55,7 +60,7 @@ page.open(address, function (status) {
       var i = 0
       setInterval(function(){
         console.log('Screen')
-        page.render('test/screenshots/' + pageToTest + i + '.png')
+        screenshot(pageToTest + i)
         i++
         if(i > 10){
           phantom.exit()
@@ -68,4 +73,8 @@ page.open(address, function (status) {
 
 function logTime(t){
   console.log('Time: \033[33m' + t + '\033[0m msec')
+}
+
+function screenshot(name){
+  page.render('test/screenshots/' + name + '-' + runID + '.png')
 }
