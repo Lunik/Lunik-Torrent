@@ -11,22 +11,22 @@
           {
             id: 'download',
             icon: 'fa-download',
-            state: false,
+            state: false
           },
           {
             id: 'rename',
             icon: 'fa-pencil',
-            state: false,
+            state: false
           },
           {
             id: 'remove',
             icon: 'fa-times',
-            state: false,
+            state: false
           },
           {
             id: 'info',
             icon: 'fa-info',
-            state: false,
+            state: false
           }
         ],
         ariane: [],

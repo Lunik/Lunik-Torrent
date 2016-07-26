@@ -40,7 +40,7 @@
     if (state) {
       clearInterval(self.interval)
       self.interval = setInterval(function () {
-        self.getTorrents(function(tor){
+        self.getTorrents(function (tor) {
           self.append(tor)
         })
       }, time)

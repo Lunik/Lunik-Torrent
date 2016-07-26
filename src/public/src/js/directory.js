@@ -35,7 +35,7 @@
     if (state) {
       clearInterval(self.interval)
       self.interval = setInterval(function () {
-        self.getDir(function(dir){
+        self.getDir(function (dir) {
           self.append(dir)
         })
       }, time)
@@ -49,7 +49,6 @@
    * @param {function} cb - Callback frunction with data
   */
   _Directory.prototype.getDir = function (cb) {
-    var self = this
     $.post('/list-d', {
       dir: App.hash || '/'
     }, function (directory) {
@@ -120,7 +119,7 @@
     })
 
     $('.top-menu .action').unbind()
-      .on('click', '#download', function(){
+      .on('click', '#download', function () {
         window.open('files/?f=' + document.location.hash.substring(1) + file.name)
       })
       .on('click', '#rename', function () {
@@ -166,7 +165,7 @@
           App.List.updateLine({
             name: fileName,
             newname: data.newname,
-            href: '#' + App.hash + data.newname + '/',
+            href: '#' + App.hash + data.newname + '/'
           })
         }
       })

@@ -78,10 +78,10 @@
       App.List.switchTab($(this).attr('id'))
     })
 
-    $('.left-menu').on('click', '.open', function(){
+    $('.left-menu').on('click', '.open', function () {
       self.open()
     })
-    $('.left-menu').on('click', '.close', function(){
+    $('.left-menu').on('click', '.close', function () {
       self.close()
     })
   }
@@ -196,9 +196,9 @@
     this.vue.$data.reverseState = 'open'
   }
 
-  _LeftMenu.prototype.addInputList = function(inputName, elem){
+  _LeftMenu.prototype.addInputList = function (inputName, elem) {
     var self = this
-    var input = $.grep(self.vue.$data.inputs, function(e){ return e.class === inputName })[0]
+    var input = $.grep(self.vue.$data.inputs, function (e) { return e.class === inputName })[0]
     if (input.dataList.indexOf(elem) === -1) {
       input.dataList.push(elem)
       App.Storage.storeData('listInput-' + inputName, input.dataList)
