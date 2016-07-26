@@ -3,8 +3,8 @@ var system = require('system')
 
 var defaultColor = '\033[0m'
 
-var runID = Date.now()
 var pageToTest = system.args[1]
+var testNum = system.args[2]
 var port = system.env.PORT ? ':' + system.env.PORT : ''
 var address = "http://localhost" + port
 var t = Date.now()
@@ -76,5 +76,5 @@ function logTime(t){
 }
 
 function screenshot(name){
-  page.render('test/screenshots/' + name + '-' + runID + '.png')
+  page.render('test/screenshots/test' + testNum + '/' + name + '.png')
 }
