@@ -7,7 +7,7 @@
     "postinstall": "sh -c scripts/init.sh && bower install",
     "start": "node src/index.js",
     "forever-start": "forever -a start src/index.js",
-    "test": "test/test.sh"
+    "test": "sh test/test.sh"
   },
   "main": "src/index.js",
   "repository": {
