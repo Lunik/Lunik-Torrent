@@ -11,7 +11,7 @@ before_install:
 - sudo apt-get install curl wget
 - npm install -g phantom
 before_script:
-- sed -e 's/\(htpasswd\": \"\)[^\"]*/\1/' configs/config.json
+- sed -e 's/\(htpasswd\". \"\)[^\"]*/\1/' configs/config.json
 - mkdir test/screenshots
 script:
 #- npm test
