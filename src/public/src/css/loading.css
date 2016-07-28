@@ -1,4 +1,4 @@
-.loading{
+.loading .loading-app{
   position: fixed;
   top: 0;
   left: 0;
@@ -8,7 +8,7 @@
   z-index: 1000;
 }
 
-.loading .logo{
+.loading .loading-app .logo{
   background-image: url(../image/logo.svg);
 
   width: 100%;
