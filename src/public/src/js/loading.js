@@ -17,15 +17,15 @@
   /**
    * Hide loading screen
   */
-  _Loading.prototype.hideLarge = function () {
-    this.vue.$data.app.state = false
+  _Loading.prototype.hide = function (load) {
+    this.vue.$data[load].state = false
   }
 
   /**
    * Show loading screen
   */
-  _Loading.prototype.showLarge = function () {
-    this.vue.$data.app.state = true
+  _Loading.prototype.show = function (load) {
+    this.vue.$data[load].state = true
   }
 
   App.Loading = new _Loading()
