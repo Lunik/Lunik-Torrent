@@ -9,8 +9,10 @@
       data: {
         app: {
           state: true
+        },
+        action: {
+          state: false
         }
-
       }
     })
   }
