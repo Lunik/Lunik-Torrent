@@ -10,6 +10,7 @@
         app: {
           state: true
         }
+
       }
     })
   }
@@ -18,14 +19,18 @@
    * Hide loading screen
   */
   _Loading.prototype.hide = function (load) {
-    this.vue.$data[load].state = false
+    if (this.vue.$data[load]) {
+      this.vue.$data[load].state = false
+    }
   }
 
   /**
    * Show loading screen
   */
   _Loading.prototype.show = function (load) {
-    this.vue.$data[load].state = true
+    if (this.vue.$data[load]) {
+      this.vue.$data[load].state = true
+    }
   }
 
   App.Loading = new _Loading()
