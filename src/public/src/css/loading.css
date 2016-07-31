@@ -7,11 +7,11 @@
 }
 
 .loading .loading-app {
-  z-index: 1011;
+  z-index: 500;
 }
 
 .loading .loading-actions {
-  z-index: 1010;
+  z-index: 499;
 }
 
 .loading .loading-app .logo{
