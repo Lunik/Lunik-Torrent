@@ -7,7 +7,12 @@
     this.vue = new App.Vue({
       el: '.loading',
       data: {
-        state: true
+        app: {
+          state: true
+        },
+        action: {
+          state: false
+        }
       }
     })
   }
@@ -15,15 +20,19 @@
   /**
    * Hide loading screen
   */
-  _Loading.prototype.hide = function () {
-    this.vue.$data.state = false
+  _Loading.prototype.hide = function (load) {
+    if (this.vue.$data[load]) {
+      this.vue.$data[load].state = false
+    }
   }
 
   /**
    * Show loading screen
   */
-  _Loading.prototype.show = function () {
-    this.vue.$data.state = true
+  _Loading.prototype.show = function (load) {
+    if (this.vue.$data[load]) {
+      this.vue.$data[load].state = true
+    }
   }
 
   App.Loading = new _Loading()

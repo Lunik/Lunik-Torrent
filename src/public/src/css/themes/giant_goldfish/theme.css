@@ -12,7 +12,7 @@ body {
 .button:active, .button:focus {
   color: #F38630;
 }
-.loading {
+.loading .loading-app {
   background-color: #E0E4CC;
 }
 

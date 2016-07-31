@@ -109,7 +109,7 @@ var App
               })
 
               // Everithing is loaded
-              self.Loading.hide()
+              self.Loading.hide('app')
             })
           })
         })
