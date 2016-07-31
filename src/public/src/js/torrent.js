@@ -54,6 +54,7 @@
    * @param {function} cb - Callback frunction with data
   */
   _Torrent.prototype.getTorrents = function (cb) {
+    App.Loading.show('action')
     var self = this
     $.post('/list-t', function (torrents) {
       torrents = JSON.parse(torrents)
@@ -63,6 +64,7 @@
           text: torrents.err
         })
       } else {
+        App.Loading.hide('action')
         cb(torrents)
       }
     })

@@ -25,6 +25,7 @@
    * @param {string} query - The torrent to search
   */
   _SearchTorrent.prototype.search = function (query) {
+    App.Loading.show('action')
     var self = this
     $.post('/search-t', {
       query: query
@@ -39,7 +40,10 @@
         self.vue.$data.results.series = data.tven.items
       }
 
-      setTimeout(function () { self.show() }, 1000)
+      setTimeout(function () {
+        App.Loading.hide('action')
+        self.show()
+      }, 1000)
     })
   }
 
