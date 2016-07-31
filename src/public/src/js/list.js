@@ -243,6 +243,7 @@
     $('.list .file #name[extension="dir"]').droppable({
       greedy: true,
       drop: function (data, element) {
+        App.Loading.show('action')
         var folder = $(this).attr('data-file')
         var file = element.draggable.attr('data-file')
         var path = App.hash + '/'
@@ -264,6 +265,7 @@
               text: file.err
             })
           } else {
+            App.Loading.hide('action')
             self.removeLine({
               name: file.file
             })

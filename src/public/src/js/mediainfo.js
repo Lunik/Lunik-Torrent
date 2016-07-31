@@ -17,6 +17,7 @@
    * @param {string} title - Media title.
   */
   _MediaInfo.prototype.get = function (title) {
+    App.Loading.show('action')
     var self = this
     var type = self.getType(title)
     title = App.Format.name(title)
@@ -29,6 +30,7 @@
         type: type,
         query: title
       }, function (data) {
+        App.Loading.hide('action')
         data = JSON.parse(data)
         console.log(data)
         self.vue.$data.info = data

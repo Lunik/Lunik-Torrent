@@ -49,6 +49,7 @@
    * @param {function} cb - Callback frunction with data
   */
   _Directory.prototype.getDir = function (cb) {
+    App.Loading.show('action')
     $.post('/list-d', {
       dir: App.hash || '/'
     }, function (directory) {
@@ -59,6 +60,7 @@
           text: directory.err
         })
       } else {
+        App.Loading.hide('action')
         cb(directory)
       }
     })
@@ -138,6 +140,7 @@
    * @param {string} fileName - The name of the file
   */
   _Directory.prototype.rename = function (fileName) {
+    App.Loading.show('action')
     var oldname = fileName.split('.')
     var extension
     if (oldname.length > 1) {
@@ -162,6 +165,7 @@
             text: data.err
           })
         } else {
+          App.Loading.hide('action')
           App.List.updateLine({
             name: fileName,
             newname: data.newname,
@@ -177,6 +181,7 @@
    * @param {string} fileName - The name of the file
   */
   _Directory.prototype.remove = function (fileName) {
+    App.Loading.show('action')
     if (confirm('Confirmer la suppression de ' + fileName + ' ?')) {
       $.post('/remove-d', {
         file: App.hash + fileName
@@ -188,6 +193,7 @@
             text: file.err
           })
         } else {
+          App.Loading.hide('action')
           App.List.removeLine({
             name: file.file
           })
@@ -205,6 +211,7 @@
   }
 
   _Directory.prototype.newFolder = function () {
+    App.Loading.show('action')
     var name = prompt('Nom du nouveau dossier ?')
     if (name) {
       $.post('/mkdir-d', {
@@ -218,6 +225,7 @@
             text: file.err
           })
         } else {
+          App.Loading.hide('action')
           App.List.addLine({
             name: file.name,
             href: App.hash + file.name + '/',

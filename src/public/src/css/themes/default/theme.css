@@ -20,10 +20,12 @@ a {
   text-decoration: none;
   color: inherit;
 }
-.loading {
+.loading .loading-app {
   background-color: #1C1C1C;
 }
-
+.loading .loading-actions .load i {
+  color: #f7a253;
+}
 /************/
 
 
