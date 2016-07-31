@@ -25,10 +25,16 @@
 }
 .searchtorrent-pop img:hover {
   width: 200px;
-  margin: 0 20px;
 }
 @media only screen and (max-width: 750px) {
-  .searchtorrent-pop .img {
+  .searchtorrent-pop img {
+    width: 50px;
+  }
+  .searchtorrent-pop img:hover {
+    width: 50px;
+  }
+
+  .searchtorrent-pop .seed, .searchtorrent-pop .peer {
     display: none;
   }
 }

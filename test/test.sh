@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 PORT="5000"
 DIRNAME="ok"
 DIRNAME2="ok2"
