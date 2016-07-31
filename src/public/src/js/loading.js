@@ -8,10 +8,12 @@
       el: '.loading',
       data: {
         app: {
-          state: true
+          state: true,
+          nb: 1
         },
         action: {
-          state: false
+          state: false,
+          nb: 0
         }
       }
     })
@@ -22,7 +24,10 @@
   */
   _Loading.prototype.hide = function (load) {
     if (this.vue.$data[load]) {
-      this.vue.$data[load].state = false
+      this.vue.$data[load].nb--
+      if(this.vue.$data[load].nb <= 0){
+        this.vue.$data[load].state = false
+      }
     }
   }
 
@@ -32,6 +37,7 @@
   _Loading.prototype.show = function (load) {
     if (this.vue.$data[load]) {
       this.vue.$data[load].state = true
+      this.vue.$data[load].nb++
     }
   }
 
