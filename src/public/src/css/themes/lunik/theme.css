@@ -15,7 +15,9 @@ body {
 .loading .loading-app {
   background-color: #1C1C1C;
 }
-
+.loading .loading-actions .load i {
+  color: #C7F464;
+}
 /************/
 
 

@@ -1,11 +1,10 @@
-.loading .loading-app{
+.loading > div{
+  z-index: 1000;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-
-  z-index: 1000;
 }
 
 .loading .loading-app .logo{
@@ -17,4 +16,10 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
+}
+
+.loading .loading-actions .load {
+  position: relative;
+  top: 50%;
+  left: 50%;
 }
