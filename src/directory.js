@@ -100,7 +100,7 @@ Directory.prototype.setDownloading = function (file) {
     // file info default value
     self.fileInfo[file] = self.fileInfo[file] || {}
     // increment file download
-    self.fileInfo[file].download = self.fileInfo[file].download || 1
+    self.fileInfo[file].download = self.fileInfo[file].download + 1 || 1
     // increment file current downloading and set the current date
     self.fileInfo[file].downloading = self.fileInfo[file].downloading
       ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
