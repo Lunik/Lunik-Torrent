@@ -25,7 +25,7 @@
   _Loading.prototype.hide = function (load) {
     if (this.vue.$data[load]) {
       this.vue.$data[load].nb--
-      if(this.vue.$data[load].nb <= 0){
+      if (this.vue.$data[load].nb <= 0) {
         this.vue.$data[load].state = false
       }
     }

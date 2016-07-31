@@ -47,7 +47,7 @@
 
     this.setConfig(App.Storage.readData('config'))
 
-    $('.parameter .button').click(function(){
+    $('.parameter .button').click(function () {
       self.showConfig()
     })
     $('.config-pop .submit').click(function () { self.submit() })
