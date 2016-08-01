@@ -25,6 +25,15 @@
 .top-menu .logo {
   background-image: url(../image/logo.svg);
 }
+.top-menu .ariane {
+  font-size: 20px;
+  display: none;
+}
+@media only screen and (max-width: 750px) {
+  .top-menu .ariane {
+    display: none;
+  }
+}
 .top-menu .ariane a {
   padding: 5px;
 }
