@@ -173,6 +173,8 @@
           })
         }
       })
+    } else {
+      App.Loading.hide('action')
     }
   }
 
@@ -199,6 +201,8 @@
           })
         }
       })
+    } else {
+      App.Loading.hide('action')
     }
   }
 
@@ -241,6 +245,8 @@
           App.List.sortLines('name', 'asc')
         }
       })
+    } else {
+      App.Loading.hide('action')
     }
   }
   App.Directory = new _Directory()

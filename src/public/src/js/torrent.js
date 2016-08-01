@@ -136,6 +136,8 @@
           })
         }
       })
+    } else {
+      App.Loading.hide('action')
     }
   }
 

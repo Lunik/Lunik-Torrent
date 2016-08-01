@@ -24,7 +24,10 @@
     var data = App.Storage.readData(title)
     if (data != null) {
       self.vue.$data.info = data
-      setTimeout(function () { self.show() }, 1000)
+      setTimeout(function () {
+        App.Loading.hide('action')
+        self.show()
+      }, 1000)
     } else {
       $.post('/info-d', {
         type: type,
