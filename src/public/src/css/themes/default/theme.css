@@ -37,10 +37,6 @@ a {
 .top-menu {
   color: #FFF;
   background-color: #111;
-  font-size: 25px;
-}
-.top-menu i.fa {
-  border-radius: 100%;
 }
 .top-menu .unactive {
   color: #675f5f;
@@ -60,8 +56,6 @@ a {
   color: #675f5f;
   background-color: #FFF;
   border: 1px solid #D8E1E4;
-  font-size: 15px;
-  border-radius: 3px;
 }
 
 /*************/
@@ -75,7 +69,6 @@ a {
 .left-menu {
   color: #FFF;
   background-color: #151515;
-  font-size: 25px;
   transition: left 0.3s ease-out;
 }
 .left-menu .menu i.open {
@@ -84,25 +77,20 @@ a {
 .left-menu .nav-bar li.active {
   background-color: #f7a253;
   color: #151515;
-  font-weight: bold;
 }
 .left-menu .action .button {
-  border-radius: 10px;
   background-color: #f75353;
 }
 .left-menu .torrent-input input {
   color: #675f5f;
   background-color: #FFF;
   border: 1px solid #D8E1E4;
-  font-size: 15px;
-  border-radius: 3px;
 }
 .left-menu .torrent-input input[type=text] {
-  transition: width 0.5s ease-out;
+  transition: width 0.2s ease-out;
 }
 .left-menu .footer {
   color: #675f5f;
-  font-size: 15px;
 }
 .left-menu .footer a:hover {
   color: #f7a253;
@@ -132,14 +120,12 @@ a {
   border-bottom: 1px solid #2E2E2E;
 }
 .scrollTop {
-  border-radius: 5px;
   background-color: #151515;
   color: #FFF;
 }
 .list .file td#name .locked {
   color: #f75353;
 }
-
 /******************/
 
 

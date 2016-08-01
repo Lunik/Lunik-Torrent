@@ -6,6 +6,7 @@
   /* 100% de la taille de l'ecran - taille du menu du haut */
   height: calc(100vh - 80px);
   z-index: 99;
+  font-size: 20px;
 }
 .left-menu .menu {
   display: none;
@@ -38,16 +39,26 @@
 .left-menu .nav-bar li {
   padding: 5px;
 }
+.left-menu .nav-bar li.active {
+  font-weight: bold;
+  border-radius: 2px 0px 0px 2px;
+}
 .left-menu .action {
   margin-top: 20px;
   text-align: center;
 }
+.left-menu .action .button {
+  border-radius: 2px;
+}
 .left-menu .action > * {
-  margin: 10px 25% 10px 25%;
+  margin: 10px 30% 10px 30%;
+  padding: 3px;
 }
 .left-menu .torrent-input input {
   padding: 5px;
   margin: 5px auto -5px auto;
+  font-size: 15px;
+  border-radius: 2px;
 }
 .left-menu .torrent-input input[type=text] {
   width: 100%;
@@ -59,6 +70,7 @@
 .left-menu .footer{
   position: fixed;
   bottom: 0;
+  font-size: 15px;
 }
 
 .left-menu .footer p{

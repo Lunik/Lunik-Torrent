@@ -11,3 +11,7 @@
 .config-pop .theme{
   width: 35%;
 }
+.config-pop input, .config-pop select {
+  font-size: 15px;
+  border-radius: 3px;
+}

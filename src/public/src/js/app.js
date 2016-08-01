@@ -23,7 +23,7 @@ var App
       'localstorage',
       'jquery',
       'jquery-ui',
-      'format'
+      'format',
     ], function (v, ls, jq, jqui, f) {
       self.Vue = v
       self.Storage = new Storage()
@@ -56,17 +56,16 @@ var App
           'list',
           'mediainfo',
           'searchtorrent'
-        ], function (load, tm, conf, l) {
+        ], function (load, tm, conf, l, mi, st) {
           // load 2nd layer app modules
           requirejs([
-            'left-menu',
             'directory',
             'torrent'
-          ], function (lm, dir) {
+          ], function (dir, tor) {
             // load last layer app modules
             requirejs([
               'left-menu'
-            ], function () {
+            ], function (lm) {
               // Get hash
               window.location = "#"
               self.hash = document.location.hash.substring(1)
