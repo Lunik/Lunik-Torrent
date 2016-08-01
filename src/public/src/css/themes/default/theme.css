@@ -75,7 +75,7 @@ a {
 .left-menu {
   color: #FFF;
   background-color: #151515;
-  font-size: 25px;
+  font-size: 20px;
   transition: left 0.3s ease-out;
 }
 .left-menu .menu i.open {
@@ -85,9 +85,10 @@ a {
   background-color: #f7a253;
   color: #151515;
   font-weight: bold;
+  border-radius: 2px 0px 0px 2px;
 }
 .left-menu .action .button {
-  border-radius: 10px;
+  border-radius: 2px;
   background-color: #f75353;
 }
 .left-menu .torrent-input input {
@@ -95,10 +96,10 @@ a {
   background-color: #FFF;
   border: 1px solid #D8E1E4;
   font-size: 15px;
-  border-radius: 3px;
+  border-radius: 2px;
 }
 .left-menu .torrent-input input[type=text] {
-  transition: width 0.5s ease-out;
+  transition: width 0.2s ease-out;
 }
 .left-menu .footer {
   color: #675f5f;

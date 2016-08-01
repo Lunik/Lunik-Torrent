@@ -43,7 +43,8 @@
   text-align: center;
 }
 .left-menu .action > * {
-  margin: 10px 25% 10px 25%;
+  margin: 10px 30% 10px 30%;
+  padding: 3px;
 }
 .left-menu .torrent-input input {
   padding: 5px;
