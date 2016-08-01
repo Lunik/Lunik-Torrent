@@ -13,7 +13,8 @@ var App
         'vue': '../bower_components/vue/dist/vue.min',
         'jquery.ui.touch-punch': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
         'notify-me': '../bower_components/notify.me/dist/js/notify-me',
-        'popup': '../bower_components/popupjs/dist/popup.min'
+        'popup': '../bower_components/popupjs/dist/popup.min',
+        'material-design-lite': '../bower_components/material-design-lite/material.min'
       }
     })
 
@@ -23,8 +24,9 @@ var App
       'localstorage',
       'jquery',
       'jquery-ui',
-      'format'
-    ], function (v, ls, jq, jqui, f) {
+      'format',
+      'material-design-lite'
+    ], function (v, ls, jq, jqui, f, md) {
       self.Vue = v
       self.Storage = new Storage()
 
@@ -56,17 +58,16 @@ var App
           'list',
           'mediainfo',
           'searchtorrent'
-        ], function (load, tm, conf, l) {
+        ], function (load, tm, conf, l, mi, st) {
           // load 2nd layer app modules
           requirejs([
-            'left-menu',
             'directory',
             'torrent'
-          ], function (lm, dir) {
+          ], function (dir, tor) {
             // load last layer app modules
             requirejs([
               'left-menu'
-            ], function () {
+            ], function (lm) {
               // Get hash
               window.location = "#"
               self.hash = document.location.hash.substring(1)

@@ -1,3 +1,6 @@
+@import url(../bower_components/notify.me/dist/css/notify-me.min.css);
+@import url(../bower_components/popupjs/dist/popup.min.css);
+@import url(../bower_components/material-design-lite/material.min.css);
 @import url(loading.css);
 @import url(top-menu.css);
 @import url(left-menu.css);
@@ -5,8 +8,6 @@
 @import url(config.css);
 @import url(themes/default/theme.css);
 @import url(themes/icon.css);
-@import url(../bower_components/notify.me/dist/css/notify-me.min.css);
-@import url(../bower_components/popupjs/dist/popup.min.css);
 
 * {
   outline: none;
