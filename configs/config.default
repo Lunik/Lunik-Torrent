@@ -4,7 +4,8 @@
   },
   "client": {
     "downloads": "downloads/",
-    "timeout": 3000,
+    "updateTimeout": 3000,
+    "timeout": 30000,
     "maxTry": 3
   },
   "server": {

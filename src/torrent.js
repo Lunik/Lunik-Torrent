@@ -56,17 +56,21 @@ Torrent.prototype.start = function (url) {
           }
         })
 
-        c.on('done', function (hash, name) {
+        c.on('done', function (err, hash, name) {
           if (self.client[url]) {
-            self.client[url].peer.stop()
-            delete self.client[url]
-            // Deplace les fichies
-            console.log(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
-            fs.renameSync(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
-            // Defini l'owner
-            if (self.dowloader[url]) {
-              self.Directory.setOwner(name, self.dowloader[url])
+            if(!err){
+              self.client[url].peer.stop()
+              // Deplace les fichies
+              Log.print(Path.join(config.torrent.downloads, name) + ' ' + Path.join(config.directory.path, name))
+              fs.renameSync(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
+              // Defini l'owner
+              if (self.dowloader[url]) {
+                self.Directory.setOwner(name, self.dowloader[url])
+              }
+            } else {
+              Log.print('Fail downloading: ' + url)
             }
+            delete self.client[url]
             // Relance un torrent si il y en a en attente
             if (self.waitList.length > 0) {
               Log.print('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
