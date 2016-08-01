@@ -13,8 +13,7 @@ var App
         'vue': '../bower_components/vue/dist/vue.min',
         'jquery.ui.touch-punch': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
         'notify-me': '../bower_components/notify.me/dist/js/notify-me',
-        'popup': '../bower_components/popupjs/dist/popup.min',
-        'material-design-lite': '../bower_components/material-design-lite/material.min'
+        'popup': '../bower_components/popupjs/dist/popup.min'
       }
     })
 
@@ -25,8 +24,7 @@ var App
       'jquery',
       'jquery-ui',
       'format',
-      'material-design-lite'
-    ], function (v, ls, jq, jqui, f, md) {
+    ], function (v, ls, jq, jqui, f) {
       self.Vue = v
       self.Storage = new Storage()
 
