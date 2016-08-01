@@ -20,7 +20,7 @@
       $(this).children('#name').draggable('enable')
     })
 
-    $('.left-menu .new').click(function () {
+    $('.left-menu').on('click', '.new', function () {
       self.newFolder()
     })
   }
