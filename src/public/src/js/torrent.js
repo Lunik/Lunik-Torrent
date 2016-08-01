@@ -85,7 +85,7 @@
         type: 'torrent',
         size: App.Format.size(value.size),
         progress: value.progress,
-        percent: Math.round(value.progress * 100) + '%',
+        percent: Math.round(value.progress * 100) + ' %',
         timeRemaining: App.Format.time(value.timeRemaining),
         sdown: App.Format.speed(value.sdown),
         sup: App.Format.speed(value.sup)
