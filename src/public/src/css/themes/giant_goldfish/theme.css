@@ -6,11 +6,19 @@ body {
 *::selection {
   background: #F38630;
 }
+.button {
+  cursor: pointer;
+}
 .button:hover {
   color: #A7DBD8;
+  transition: color 0.1s ease-out;
 }
 .button:active, .button:focus {
   color: #F38630;
+}
+a {
+  text-decoration: none;
+  color: inherit;
 }
 .loading .loading-app {
   background-color: #E0E4CC;
@@ -61,6 +69,7 @@ body {
 .left-menu {
   color: #111;
   background-color: #D6DAC2;
+  transition: left 0.3s ease-out;
 }
 .left-menu .menu i.open {
   background-color: #D6DAC2;
@@ -74,7 +83,11 @@ body {
 }
 .left-menu .torrent-input input {
   color: #111;
+  background-color: #FFF;
   border: 1px solid #D8E1E4;
+}
+.left-menu .torrent-input input[type=text] {
+  transition: width 0.2s ease-out;
 }
 .left-menu .footer {
   color: #D4D8C6;
@@ -113,7 +126,6 @@ body {
 .list .file td#name .locked {
   color: #FA6900;
 }
-
 /******************/
 
 

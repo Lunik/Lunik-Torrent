@@ -6,11 +6,19 @@ body {
 *::selection {
   background: #C7F464;
 }
+.button {
+  cursor: pointer;
+}
 .button:hover {
   color: #675f5f;
+  transition: color 0.1s ease-out;
 }
 .button:active, .button:focus {
   color: #C7F464;
+}
+a {
+  text-decoration: none;
+  color: inherit;
 }
 .loading .loading-app {
   background-color: #1C1C1C;
@@ -76,6 +84,9 @@ body {
   color: #675f5f;
   background-color: #FFF;
   border: 1px solid #D8E1E4;
+}
+.left-menu .torrent-input input[type=text] {
+  transition: width 0.2s ease-out;
 }
 .left-menu .footer {
   color: #675f5f;

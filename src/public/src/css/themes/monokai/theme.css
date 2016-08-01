@@ -6,11 +6,18 @@ body {
 *::selection {
   background: #FD971F;
 }
+.button {
+  cursor: pointer;
+}
 .button:hover {
   color: #675f5f;
 }
 .button:active, .button:focus {
   color: #FD971F;
+}
+a {
+  text-decoration: none;
+  color: inherit;
 }
 .loading .loading-app {
   background-color: #272822;
@@ -45,6 +52,7 @@ body {
 
 .config-pop input, .config-pop select {
   color: #675f5f;
+  background-color: #FFF;
   border: 1px solid #D8E1E4;
 }
 
@@ -57,7 +65,9 @@ body {
 /*************/
 
 .left-menu {
+  color: #FFF;
   background-color: #20211C;
+  transition: left 0.3s ease-out;
 }
 .left-menu .menu i.open {
   background-color: #20211C;
@@ -67,12 +77,15 @@ body {
   color: #272822;
 }
 .left-menu .action .button {
-  border-radius: 10px;
   background-color: #F92672;
 }
 .left-menu .torrent-input input {
   color: #675f5f;
+  background-color: #FFF;
   border: 1px solid #D8E1E4;
+}
+.left-menu .torrent-input input[type=text] {
+  transition: width 0.2s ease-out;
 }
 .left-menu .footer {
   color: #675f5f;
@@ -105,6 +118,7 @@ body {
 }
 .scrollTop {
   background-color: #272822;
+  color: #FFF;
 }
 .list .file td#name .locked {
   color: #F92672;
