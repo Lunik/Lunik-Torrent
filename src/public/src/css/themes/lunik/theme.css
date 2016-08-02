@@ -147,3 +147,14 @@ a {
 .searchtorrent-pop .search-item .peer {
   color: #FF6B6B;
 }
+
+/**********/
+/*  Other */
+/**********/
+
+@keyframes color {
+  100%,
+  0% {
+    stroke: #C7F464;
+  }
+}
