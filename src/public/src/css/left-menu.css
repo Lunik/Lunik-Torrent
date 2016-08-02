@@ -13,6 +13,9 @@
   margin-right: -33px;
   text-align: right;
 }
+.left-menu .menu i {
+  font-size: 25px;
+}
 @media only screen and (max-width: 750px) {
   .left-menu {
     position: fixed;
@@ -44,24 +47,28 @@
   border-radius: 2px 0px 0px 2px;
 }
 .left-menu .action {
-  margin-top: 20px;
   text-align: center;
 }
 .left-menu .action .button {
+  display: inline-block;
+  padding: 5px 10px;
   border-radius: 2px;
 }
 .left-menu .action > * {
-  margin: 10px 30% 10px 30%;
-  padding: 3px;
+  margin: 5px auto;
+}
+
+.left-menu .torrent-input{
+  display: block;
+  padding: 5px 0;
 }
 .left-menu .torrent-input input {
   padding: 5px;
-  margin: 5px auto -5px auto;
   font-size: 15px;
   border-radius: 2px;
 }
 .left-menu .torrent-input input[type=text] {
-  width: 100%;
+  width: 80%;
 }
 .left-menu .torrent-input input[type=text]:active, .left-menu .torrent-input input[type=text]:focus, .left-menu .torrent-input input[type=text]:hover {
   width: 300%;
