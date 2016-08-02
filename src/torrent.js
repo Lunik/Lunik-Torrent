@@ -58,7 +58,7 @@ Torrent.prototype.start = function (url) {
 
         c.on('done', function (err, hash, name) {
           if (self.client[url]) {
-            if(!err){
+            if (!err) {
               self.client[url].peer.stop()
               // Deplace les fichies
               Log.print(Path.join(config.torrent.downloads, name) + ' ' + Path.join(config.directory.path, name))

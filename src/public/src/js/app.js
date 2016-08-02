@@ -23,7 +23,7 @@ var App
       'localstorage',
       'jquery',
       'jquery-ui',
-      'format',
+      'format'
     ], function (v, ls, jq, jqui, f) {
       self.Vue = v
       self.Storage = new Storage()
@@ -67,7 +67,7 @@ var App
               'left-menu'
             ], function (lm) {
               // Get hash
-              window.location = "#"
+              window.location = '#'
               self.hash = document.location.hash.substring(1)
               if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
                 self.hash += '/'
