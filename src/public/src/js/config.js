@@ -62,7 +62,7 @@
         x: null,
         y: '5%'
       },
-      width: '50%',
+      width: '90%',
       height: '90%',
       title: 'Configuration',
       html: $('.popup .config-pop'),
