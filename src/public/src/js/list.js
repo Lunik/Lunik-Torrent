@@ -220,18 +220,17 @@
    * @param {string} direction - Asc, Desc
   */
   _List.prototype.sortLines = function (by, direction) {
+    console.log(by, direction)
     var dir = direction === 'asc' ? -1 : 1
-    if (typeof this.vue.$data.lines[0][by] !== 'undefined') {
-      this.vue.$data.lines.sort(function (a, b) {
-        if (a[by] < b[by]) {
-          return dir
-        } else if (a[by] > b[by]) {
-          return -dir
-        } else {
-          return 0
-        }
-      })
-    }
+    this.vue.$data.lines.sort(function (a, b) {
+      if (a[by] < b[by]) {
+        return dir
+      } else if (a[by] > b[by]) {
+        return -dir
+      } else {
+        return 0
+      }
+    })
   }
 
   _List.prototype.updateDragDrop = function () {
