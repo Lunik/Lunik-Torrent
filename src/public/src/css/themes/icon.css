@@ -8,37 +8,49 @@ i.fa {
 }
 .list .file td#name {
   background-repeat: no-repeat;
-  background-image: url("../../image/file/file.png");
-  background-size: 25px;
+  background-image: url("../../image/file/file.svg");
+  background-size: 30px;
   padding: 5px 0 0 30px;
 }
 .list .file td#name[extension=dir] {
-  background-image: url("../../image/file/dir.png");
+  background-image: url("../../image/file/dir.svg");
 }
 .list .file td#name[extension=avi] {
-  background-image: url("../../image/file/avi.png");
+  background-image: url("../../image/file/avi.svg");
 }
 .list .file td#name[extension=mkv] {
-  background-image: url("../../image/file/mkv.png");
+  background-image: url("../../image/file/mkv.svg");
 }
 .list .file td#name[extension=html] {
-  background-image: url("../../image/file/html.png");
+  background-image: url("../../image/file/html.svg");
 }
 .list .file td#name[extension=jpg] {
-  background-image: url("../../image/file/jpg.png");
+  background-image: url("../../image/file/jpg.svg");
 }
 .list .file td#name[extension=mp3] {
-  background-image: url("../../image/file/mp3.png");
+  background-image: url("../../image/file/mp3.svg");
 }
 .list .file td#name[extension=mp4] {
-  background-image: url("../../image/file/mp4.png");
+  background-image: url("../../image/file/mp4.svg");
 }
 .list .file td#name[extension=pdf] {
-  background-image: url("../../image/file/pdf.png");
+  background-image: url("../../image/file/pdf.svg");
 }
 .list .file td#name[extension=png] {
-  background-image: url("../../image/file/png.png");
+  background-image: url("../../image/file/png.svg");
 }
 .list .file td#name[extension=txt] {
-  background-image: url("../../image/file/txt.png");
+  background-image: url("../../image/file/txt.svg");
+}
+.list .file td#name[extension=zip] {
+  background-image: url("../../image/file/zip.svg");
+}
+.list .file td#name[extension=iso] {
+  background-image: url("../../image/file/iso.svg");
+}
+.list .file td#name[extension=json] {
+  background-image: url("../../image/file/json.svg");
+}
+.list .file td#name[extension=xml] {
+  background-image: url("../../image/file/xml.svg");
 }
