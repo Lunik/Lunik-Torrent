@@ -70,9 +70,6 @@
 .left-menu .torrent-input input[type=text] {
   width: 80%;
 }
-.left-menu .torrent-input input[type=text]:active, .left-menu .torrent-input input[type=text]:focus, .left-menu .torrent-input input[type=text]:hover {
-  width: 300%;
-}
 
 .left-menu .footer{
   position: fixed;
