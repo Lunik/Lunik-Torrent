@@ -25,7 +25,7 @@
     "forever": "^0.15.2",
     "http-auth": "^2.3.3",
     "portscanner": "^1.0.0",
-    "webtorrent": "^0.95.1"
+    "webtorrent": "^0.96.0"
   },
   "standard": {
     "ignore": [
