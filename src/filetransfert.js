@@ -14,27 +14,7 @@ var Path = require('path')
  */
 function FileTransfert (req, res, callback) {
   var self = this
-  setTimeout(function () {
-    if (config.nginx.active) {
-      // check if nginx is aviable
-      portscanner.checkPortStatus(config.nginx.port, 'localhost', function (error, status) {
-        if (error) {
-          console.log(error)
-        }
-        // Nginx aviable
-        if (status === 'open') {
-          self.transfertNginx(req, res, callback)
-        } else {
-          Log.print('Nginx unaviable for download.')
-          self.transfertNode(req, res, callback)
-        }
-      })
-    } else {
-      self.transfertNode(req, res, callback)
-    }
-
-    self.timeout = 0
-  }, 1)
+  self.transfertNode(req, res, callback)
 }
 
 /**
@@ -83,17 +63,4 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
   }, 1)
 }
 
-/**
- * Transfert file with nginx server.
- * @param {object} req - http req object.
- * @param {object} res - http res object.
- * @param {callback} function - callback when transfert is complet.
- */
-FileTransfert.prototype.transfertNginx = function (req, res, callback) {
-  // Execute callback after 1h
-  setTimeout(function () {
-    callback()
-  }, 3600000)
-  res.redirect(Path.join('http://', req.headers['host'], ':', config.nginx.port, config.nginx.path, req.query.f))
-}
 module.exports = FileTransfert
