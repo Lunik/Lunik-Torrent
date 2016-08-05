@@ -3,8 +3,8 @@
 ![build](https://travis-ci.org/Lunik/Lunik-Torrent.svg?style=flat-square)
 
 ## ===== View =====
-![directory-view](http://puu.sh/nq8p2/50860860e2.png)
-![torrent-view](http://puu.sh/nq8PZ/8f7d037025.png)
+![directory-view](https://puu.sh/qr53g/de79e3ea37.png)
+![torrent-view](https://puu.sh/qr511/826c4c4019.png)
 
 ## ===== Installation =====
 ## Git
