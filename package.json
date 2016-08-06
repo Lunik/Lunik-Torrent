@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "sh -c scripts/init.sh && bower install",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "dev": "nodemon src/index.js -w src/",
     "forever-start": "forever -a start src/index.js",
     "test": "test/test.sh"
   },
