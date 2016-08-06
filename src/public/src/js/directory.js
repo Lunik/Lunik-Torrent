@@ -135,11 +135,21 @@
       })
   }
 
+  _Directory.prototype.deselectAll = function () {
+    $('.list .file').removeClass('selected')
+    App.TopMenu.setActions({
+      download: false,
+      rename: false,
+      remove: false,
+      info: false
+    })
+  }
   /**
    * Prompt and rename a file
    * @param {string} fileName - The name of the file
   */
   _Directory.prototype.rename = function (fileName) {
+    var self = this
     App.Loading.show('action')
     var oldname = fileName.split('.')
     var extension
@@ -158,6 +168,7 @@
         'oldname': fileName,
         'newname': name
       }, function (data) {
+        self.deselectAll()
         data = JSON.parse(data)
         if (data.err) {
           $.notify.error({
@@ -183,11 +194,13 @@
    * @param {string} fileName - The name of the file
   */
   _Directory.prototype.remove = function (fileName) {
+    var self = this
     App.Loading.show('action')
     if (confirm('Confirmer la suppression de ' + fileName + ' ?')) {
       $.post('/remove-d', {
         file: App.hash + fileName
       }, function (file) {
+        self.deselectAll()
         file = JSON.parse(file)
         if (file.err) {
           $.notify.error({
@@ -215,6 +228,7 @@
   }
 
   _Directory.prototype.newFolder = function () {
+    var self = this
     App.Loading.show('action')
     var name = prompt('Nom du nouveau dossier ?')
     if (name) {
@@ -222,6 +236,7 @@
         'path': App.hash || '/',
         'name': name
       }, function (file) {
+        self.deselectAll()
         file = JSON.parse(file)
         if (file.err) {
           $.notify.error({

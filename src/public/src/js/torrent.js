@@ -116,15 +116,25 @@
       })
   }
 
+  _Torrent.prototype.deselectAll = function () {
+    $('.list .torrent').removeClass('selected')
+    App.TopMenu.setActions({
+      remove: false,
+      info: false
+    })
+  }
+
   /**
    * Prompt and remove a torrent
    * @param {object} torrent - The torrent hash and name
   */
   _Torrent.prototype.remove = function (torrent) {
+    var self = this
     if (confirm('Confirmer la suppression de ' + torrent.name + ' ?')) {
       $.post('/remove-t', {
         hash: torrent.hash
       }, function (file) {
+        self.deselectAll()
         file = JSON.parse(file)
         if (torrent.err) {
           $.notify.error({
