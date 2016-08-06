@@ -24,7 +24,6 @@
     })
 
     $('.left-menu').on('click', '.search', function () {
-      console.log('ok')
       var input = $('.left-menu .torrent-input input')
       App.SearchTorrent.search(input.val())
       App.LeftMenu.addInputList('torrent-input', input.val())
@@ -58,17 +57,32 @@
   _Torrent.prototype.getTorrents = function (cb) {
     App.Loading.show('action')
     var self = this
-    $.post('/list-t', function (torrents) {
-      torrents = JSON.parse(torrents)
-      if (torrents.err) {
-        $.notify.error({
-          title: 'Error',
-          text: torrents.err
-        })
-      } else {
-        App.Loading.hide('action')
-        cb(torrents)
+    $.ajax({
+      type: 'post',
+      url: '/list-t',
+      timeout: 10000,
+      data: {},
+      dataType: 'json',
+      success: function (torrents) {
+        if (torrents.err) {
+          $.notify.error({
+            title: 'Error',
+            text: torrents.err,
+            duration:  10
+          })
+        } else {
+          cb(torrents)
+        }
       }
+    }).done(function () {
+      App.Loading.hide('action')
+    }).fail(function (err) {
+      App.Loading.hide('action')
+      $.notify.error({
+        title: 'Error in Torrent.getTorrents()',
+        text: err.statusText,
+        duration:  5
+      })
     })
   }
 
@@ -130,22 +144,39 @@
   */
   _Torrent.prototype.remove = function (torrent) {
     var self = this
+    App.Loading.show('action')
     if (confirm('Confirmer la suppression de ' + torrent.name + ' ?')) {
-      $.post('/remove-t', {
-        hash: torrent.hash
-      }, function (file) {
-        self.deselectAll()
-        file = JSON.parse(file)
-        if (torrent.err) {
-          $.notify.error({
-            title: 'Error',
-            text: torrent.err
-          })
-        } else {
-          App.List.removeLine({
-            name: torrent.name
-          })
+      $.ajax({
+        type: 'post',
+        url: '/remove-t',
+        timeout: 10000,
+        data: {
+          hash: torrent.hash
+        },
+        dataType: 'json',
+        success: function (file) {
+          self.deselectAll()
+          if (torrent.err) {
+            $.notify.error({
+              title: 'Error',
+              text: torrent.err,
+              duration:  10
+            })
+          } else {
+            App.List.removeLine({
+              name: torrent.name
+            })
+          }
         }
+      }).done(function () {
+        App.Loading.hide('action')
+      }).fail(function (err) {
+        App.Loading.hide('action')
+        $.notify.error({
+          title: 'Error in Torrent.remove()',
+          text: err.statusText,
+          duration:  5
+        })
       })
     } else {
       App.Loading.hide('action')
@@ -157,19 +188,37 @@
    * @param {string} url - The url of the torrent
   */
   _Torrent.prototype.download = function (url) {
-    $.post('/download-t', {
-      url: url
-    }, function (data) {
-      if (data.err) {
-        $.notify.error({
-          title: 'Error',
-          text: data.err
-        })
-      } else {
-        $.notify.success({
-          text: 'The torrent will begin in a moment.'
-        })
+    App.Loading.show('action')
+    $.ajax({
+      type: 'post',
+      url: '/download-t',
+      timeout: 10000,
+      data: {
+        url: url
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data.err) {
+          $.notify.error({
+            title: 'Error',
+            text: data.err,
+            duration:  10
+          })
+        } else {
+          $.notify.success({
+            text: 'The torrent will begin in a moment.'
+          })
+        }
       }
+    }).done(function () {
+      App.Loading.hide('action')
+    }).fail(function (err) {
+      App.Loading.hide('action')
+      $.notify.error({
+        title: 'Error Torrent.download()',
+        text: err.statusText,
+        duration:  5
+      })
     })
   }
 
