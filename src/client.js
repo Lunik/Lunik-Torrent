@@ -39,7 +39,6 @@ Client.prototype.download = function (torrentLink) {
       path: config.torrent.downloads
     }, function (torrent) {
       clearTimeout(timeout)
-      console.log(timeout)
       // On torrent start
       self.torrent = torrent
       Log.print('Start torrent: ' + self.torrent.name)
