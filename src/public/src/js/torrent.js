@@ -93,24 +93,28 @@
   _Torrent.prototype.append = function (tor) {
     var lines = []
     var i = 0
-    $.each(tor, function (index, value) {
-      lines.push({
-        name: value.name,
-        hash: value.hash,
-        type: 'torrent',
-        size: App.Format.size(value.size),
-        progress: value.progress,
-        percent: Math.round(value.progress * 100) + ' %',
-        timeRemaining: App.Format.time(value.timeRemaining),
-        sdown: App.Format.speed(value.sdown),
-        sup: App.Format.speed(value.sup)
-      })
+    if (Object.keys(tor).length > 0){
+      $.each(tor, function (index, value) {
+        lines.push({
+          name: value.name,
+          hash: value.hash,
+          type: 'torrent',
+          size: App.Format.size(value.size),
+          progress: value.progress,
+          percent: Math.round(value.progress * 100) + ' %',
+          timeRemaining: App.Format.time(value.timeRemaining),
+          sdown: App.Format.speed(value.sdown),
+          sup: App.Format.speed(value.sup)
+        })
 
-      i++
-      if (i === Object.keys(tor).length) {
-        App.List.updateLines(lines)
-      }
-    })
+        i++
+        if (i === Object.keys(tor).length) {
+          App.List.updateLines(lines)
+        }
+      })
+    } else {
+      App.List.updateLines({})
+    }
   }
 
   /**
