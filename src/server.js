@@ -63,7 +63,7 @@ function Server () {
       Log.print(req.user + ' download torrent: ' + req.body.url)
       Torrent.setDownloader(req.user, req.body.url)
       Torrent.start(req.body.url)
-      res.end()
+      res.end(JSON.stringify({}))
     } else {
       res.end(JSON.stringify({
         err: 'Wrong url.'
