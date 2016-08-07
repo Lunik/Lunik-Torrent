@@ -63,7 +63,7 @@
           $.notify.error({
             title: 'Error',
             text: directory.err,
-            duration:  10
+            duration: 10
           })
         } else {
           cb(directory)
@@ -77,7 +77,7 @@
       $.notify.error({
         title: 'Error in Directory.getDir()',
         text: err.statusText,
-        duration:  5
+        duration: 5
       })
     })
   }
@@ -102,25 +102,29 @@
       extension: 'dir'
     }]
     var i = 0
-    $.each(dir.files, function (index, value) {
-      value.name = index
-      lines.push({
-        name: index,
-        href: value.isfile ? null : '#' + App.hash + index + '/',
-        type: 'file',
-        extension: App.Format.extention(value),
-        size: App.Format.size(value.size),
-        date: App.Format.date(value.ctime),
-        owner: value.owner || '-',
-        lock: typeof value.downloading !== 'undefined',
-        download: value.download
-      })
+    if (Object.keys(dir.files).length > 0) {
+      $.each(dir.files, function (index, value) {
+        value.name = index
+        lines.push({
+          name: index,
+          href: value.isfile ? null : '#' + App.hash + index + '/',
+          type: 'file',
+          extension: App.Format.extention(value),
+          size: App.Format.size(value.size),
+          date: App.Format.date(value.ctime),
+          owner: value.owner || '-',
+          lock: typeof value.downloading !== 'undefined',
+          download: value.download
+        })
 
-      i++
-      if (i === Object.keys(dir.files).length) {
-        App.List.updateLines(lines)
-      }
-    })
+        i++
+        if (i === Object.keys(dir.files).length) {
+          App.List.updateLines(lines)
+        }
+      })
+    } else {
+      App.List.updateLines({})
+    }
   }
 
   /**
@@ -195,7 +199,7 @@
             $.notify.error({
               title: 'Error',
               text: data.err,
-              duration:  10
+              duration: 10
             })
           } else {
             App.List.updateLine({
@@ -212,7 +216,7 @@
         $.notify.error({
           title: 'Error in Directory.rename()',
           text: err.statusText,
-          duration:  5
+          duration: 5
         })
       })
     } else {
@@ -242,7 +246,7 @@
             $.notify.error({
               title: 'Error',
               text: file.err,
-              duration:  10
+              duration: 10
             })
           } else {
             App.List.removeLine({
@@ -257,7 +261,7 @@
         $.notify.error({
           title: 'Error in Directory.remove()',
           text: err.statusText,
-          duration:  5
+          duration: 5
         })
       })
     } else {
@@ -293,7 +297,7 @@
             $.notify.error({
               title: 'Error',
               text: file.err,
-              duration:  10
+              duration: 10
             })
           } else {
             App.List.addLine({
@@ -318,7 +322,7 @@
         $.notify.error({
           title: 'Error in Directory.newFolder()',
           text: err.statusText,
-          duration:  5
+          duration: 5
         })
       })
     } else {
