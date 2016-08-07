@@ -220,7 +220,6 @@
    * @param {string} direction - Asc, Desc
   */
   _List.prototype.sortLines = function (by, direction) {
-    console.log(by, direction)
     var dir = direction === 'asc' ? -1 : 1
     this.vue.$data.lines.sort(function (a, b) {
       if (a[by] < b[by]) {
@@ -247,28 +246,38 @@
         var file = element.draggable.attr('data-file')
         var path = App.hash + '/'
 
-        console.log({
-          'file': file,
-          'path': path,
-          'folder': folder
-        })
-        $.post('/mv-d', {
-          'file': file,
-          'path': path,
-          'folder': folder
-        }, function (file) {
-          file = JSON.parse(file)
-          if (file.err) {
-            $.notify.error({
-              title: 'Error',
-              text: file.err
-            })
-          } else {
-            App.Loading.hide('action')
-            self.removeLine({
-              name: file.file
-            })
+        $.ajax({
+          type: 'post',
+          url: '/mv-d',
+          timeout: 10000,
+          data: {
+            'file': file,
+            'path': path,
+            'folder': folder
+          },
+          dataType: 'json',
+          success: function (file) {
+            if (file.err) {
+              $.notify.error({
+                title: 'Error',
+                text: file.err,
+                duration:  10
+              })
+            } else {
+              self.removeLine({
+                name: file.file
+              })
+            }
           }
+        }).done(function () {
+          App.Loading.hide('action')
+        }).fail(function (err) {
+          App.Loading.hide('action')
+          $.notify.error({
+            title: 'Error in List.updateDragDrop()',
+            text: err.statusText,
+            duration:  5
+          })
         })
       }
     })

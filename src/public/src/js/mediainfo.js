@@ -29,16 +29,32 @@
         self.show()
       }, 1000)
     } else {
-      $.post('/info-d', {
-        type: type,
-        query: title
-      }, function (data) {
+      $.ajax({
+        type: 'post',
+        url: '/info-d',
+        timeout: 10000,
+        data: {
+          type: type,
+          query: title
+        },
+        dataType: 'json',
+        success: function (data) {
+          data = JSON.parse(data)
+          console.log(data)
+          self.vue.$data.info = data
+          App.Storage.storeData(data.query.toLowerCase(), data)
+          self.show()
+        }
+      }).done(function(){
         App.Loading.hide('action')
-        data = JSON.parse(data)
-        console.log(data)
-        self.vue.$data.info = data
-        App.Storage.storeData(data.query.toLowerCase(), data)
-        self.show()
+      }).fail(function(err){
+        console.log(err)
+        App.Loading.hide('action')
+        $.notify.error({
+          title: 'Error in MediaInfo.get()',
+          text: err.statusText,
+          duration:  5
+        })
       })
     }
   }

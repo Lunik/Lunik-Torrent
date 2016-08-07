@@ -1,12 +1,12 @@
 {
   "name": "lunik-torrent",
-  "version": "2.16.3",
+  "version": "2.16.5",
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
   "scripts": {
     "postinstall": "sh -c scripts/init.sh && bower install",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js -w src/",
+    "dev": "nodemon src/index.js -w src/ --ignore src/public",
     "forever-start": "forever -a start src/index.js",
     "test": "test/test.sh"
   },
