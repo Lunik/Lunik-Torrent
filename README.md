@@ -1,7 +1,7 @@
 # Lunik-Torrent
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 ![build](https://travis-ci.org/Lunik/Lunik-Torrent.svg?style=flat-square)
-
+[![Dependency Status](https://gemnasium.com/badges/github.com/Lunik/Lunik-Torrent.svg)](https://gemnasium.com/github.com/Lunik/Lunik-Torrent)
 ## ===== View =====
 ![directory-view](https://puu.sh/qr53g/de79e3ea37.png)
 ![torrent-view](https://puu.sh/qr511/826c4c4019.png)
