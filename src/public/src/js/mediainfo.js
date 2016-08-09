@@ -39,7 +39,6 @@
         },
         dataType: 'json',
         success: function (data) {
-          data = JSON.parse(data)
           console.log(data)
           self.vue.$data.info = data
           App.Storage.storeData(data.query.toLowerCase(), data)
