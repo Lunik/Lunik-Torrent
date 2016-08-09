@@ -12,16 +12,26 @@
     <link class="theme" rel="stylesheet" href="src/css/themes/{{ config.theme }}/theme.css">
   </head>
   <body>
-    <div class="form-login">
-      <input type="text" name="user" placeholder="Username...">
-      <input type="password" name="pass" placeholder="Password...">
-      <button>Login</button>
+    <div class="loading">
+      <div class="loading-app" v-show="app.state"><div class="logo"></div></div>
+      <div class="loading-actions" v-show="action.state">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-miterlimit="10"/>
+        </svg>
+      </div>
     </div>
-    <div class="form-register">
-      <input type="text" name="user" placeholder="Username...">
-      <input type="password" name="pass" placeholder="Password...">
-      <input type="password" name="pass2" placeholder="Password again...">
-      <button>Register</button>
+    <div class="form">
+      <div class="login">
+        <input type="text" name="user" placeholder="Username..." v-model="login.user">
+        <input type="password" name="pass" placeholder="Password..." v-model="login.pass">
+        <button>Login</button>
+      </div>
+      <div class="register">
+        <input type="text" name="user" placeholder="Username..." v-model="register.user">
+        <input type="password" name="pass" placeholder="Password..." v-model="register.pass">
+        <input type="password" name="pass2" placeholder="Password again..." v-model="register.pass2">
+        <button>Register</button>
+      </div>
     </div>
     <script data-main="src/js/auth" src="src/bower_components/requirejs/require.js"></script>
   </body>
