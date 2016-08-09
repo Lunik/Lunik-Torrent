@@ -9,9 +9,7 @@
     "maxTry": 3
   },
   "server": {
-    "port": 80,
-    "message": "Protected area. Please disperse !",
-    "htpasswd": "configs/.htpasswd"
+    "port": 80
   },
   "directory": {
     "path": "files/"
