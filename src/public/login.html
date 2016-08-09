@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Login - Lunik - Torrent</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <link rel="icon" href="src/image/favicon.ico">
+    <link rel="stylesheet" href="src/css/style.css">
+    <link class="theme" rel="stylesheet" href="src/css/themes/{{ config.theme }}/theme.css">
+  </head>
+  <body>
+    <div class="form-login">
+      <input type="text" name="user" placeholder="Username...">
+      <input type="password" name="pass" placeholder="Password...">
+      <button>Login</button>
+    </div>
+    <div class="form-register">
+      <input type="text" name="user" placeholder="Username...">
+      <input type="password" name="pass" placeholder="Password...">
+      <input type="password" name="pass2" placeholder="Password again...">
+      <button>Register</button>
+    </div>
+    <script data-main="src/js/auth" src="src/bower_components/requirejs/require.js"></script>
+  </body>
+</html>
