@@ -42,7 +42,10 @@
           console.log(data)
           self.vue.$data.info = data
           App.Storage.storeData(data.query.toLowerCase(), data)
-          self.show()
+          
+          setTimeout(function () {
+            self.show()
+          }, 1000)
         }
       }).done(function(){
         App.Loading.hide('action')
