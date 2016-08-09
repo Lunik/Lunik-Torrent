@@ -29,11 +29,20 @@ var App = {}
         }
       })
       requirejs(['notify-me', 'format', 'loading'], function(notif){
+        self.updateHash()
         App.Loading.hide('app')
       })
     })
   }
 
+  _App.prototype.updateHash = function() {
+    var self = this
+    self.hash = document.location.hash.substring(1)
+
+    $(window).bind('hashchange', function () {
+      self.hash = document.location.hash.substring(1)
+    })
+  }
 
   App = new _App()
 })()
