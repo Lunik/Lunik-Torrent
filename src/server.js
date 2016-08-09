@@ -3,10 +3,10 @@ var Torrent = require('./torrent.js')
 var Directory = require('./directory.js')
 var config = require('../configs/config.json')
 var FileTransfert = require('./filetransfert.js')
+var Auth = require('./auth.js')
 
 Torrent.Directory = Directory
 
-var auth = require('http-auth')
 var express = require('express')
 var compression = require('compression')
 var http = require('http')
@@ -21,13 +21,6 @@ http.globalAgent.maxSockets = Infinity
 */
 function Server () {
   this.app = express()
-  if (config.server.htpasswd && config.server.htpasswd.length > 0) {
-    this.basic = auth.basic({
-      realm: config.server.message,
-      file: config.server.htpasswd
-    })
-    this.app.use(auth.connect(this.basic))
-  }
   this.app.use(compression())
   this.app.use(express.static(Path.join(__dirname, '/public')))
   this.app.use(bodyParser.json())
@@ -234,6 +227,11 @@ function Server () {
     } else {
       res.end()
     }
+  })
+
+  this.app.get('/auth', function(req, res){
+    var auth = new Auth()
+    
   })
 }
 
