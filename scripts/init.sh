@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if ! [ -f configs/.htpasswd ]
+if ! [ -f configs/passwords.json ]
   then echo "==> Creating htpasswd"
-  echo 'admin:admin' >> configs/.htpasswd
+  echo '{}' > configs/passwords.json
 fi
 
 if ! [ -f configs/fileInfo.json ]
