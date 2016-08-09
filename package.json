@@ -22,6 +22,8 @@
     "check-update-github": "^0.0.4",
     "compression": "^1.6.1",
     "cpasbien-api": "^1.1.0",
+    "crypto-js": "^3.1.6",
+    "crypto-rand": "0.0.2",
     "express": "^4.13.4",
     "forever": "^0.15.2",
     "http-auth": "^2.3.3",
