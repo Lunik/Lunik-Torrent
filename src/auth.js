@@ -2,28 +2,47 @@ var Log = require('./log.js')
 var config = require('../configs/config.json')
 
 var fs = require('fs')
+var Rand = require('crypto-rand')
+var Crypto = require('crypto-js')
+
 function Auth(){
-  this.passwords = {}
-  this.loadPasswords()
-  this.invites
+  this.passwords = require('../configs/passwords.json')
+  this.invites = []
 }
 
 Auth.prototype.login = function(user, pass){
-  if(this.passwords[user].pass === "pass"){
+  if(this.passwords[user] && this.passwords[user].pass === "pass"){
     this.passwords[user].token = this.genToken(user, pass)
+    return this.passwords[user].token
+  } else {
+    return false
   }
 }
 
 Auth.prototype.logout = function(user){
-
+  if(this.passwords[user]){
+    delete this.passwords[user].token
+    return true
+  } else {
+    return false
+  }
 }
 
 Auth.prototype.register = function(user, pass, invite){
-
+  if(this.invites.indexOf(invite) !== -1 && typeof this.passwords[user] === 'undefined'){
+    this.passwords[user] = {
+      pass: pass,
+      token: this.genToken(user, pass)
+    }
+    this.savePasswords()
+    return this.passwords[user].token
+  } else {
+    return false
+  }
 }
 
 Auth.prototype.checkLogged = function(user, token){
-  if(this.passwords[user].token && this.passwords[user].token === token){
+  if(this.passwords[user] && this.passwords[user].token && this.passwords[user].token === token){
     return true
   } else {
     return false
@@ -31,27 +50,8 @@ Auth.prototype.checkLogged = function(user, token){
 }
 
 Auth.prototype.genToken = function(user, pass){
-  var token
-
-  return token
-}
-
-/**
- * Load configs/fileInfo.json into Directory.fileInfo.
-*/
-Auth.prototype.loadPasswords = function () {
-  var self = this
-  setTimeout(function () {
-    fs.readFile('configs/passwords.json', function (err, data) {
-      if (err) {
-        console.log(err)
-        self.passwords = {}
-        self.savePasswords()
-      } else {
-        self.passwords = JSON.parse(data)
-      }
-    })
-  }, 1)
+  var seed = user+pass+Rand.rand().toString()
+  return Crypto.SHA256(seed).toString()
 }
 
 /**
@@ -60,10 +60,30 @@ Auth.prototype.loadPasswords = function () {
 Auth.prototype.savePasswords = function () {
   var self = this
   setTimeout(function () {
-    fs.writeFile('configs/passwords.json', JSON.stringify(self.passwords), function (err) {
+    var passwords = self.passwords
+    for (var user in passwords){
+      if(passwords[user].token){
+        delete passwords[user].token
+      }
+    }
+    fs.writeFile('configs/passwords.json', JSON.stringify(passwords), function (err) {
       if (err) console.log(err)
     })
   }, 1)
+}
+
+Auth.prototype.createInvite = function(){
+  var invite = this.genToken(Rand.rand(), Rand.rand())
+  this.invites.push(invite)
+  return invite
+}
+
+Auth.prototype.deleteInvite = function(invite){
+  var index = this.invites.indexOf(invite)
+  if(index !== -1){
+    this.invites.splice(index, 1)
+  }
+  return true
 }
 
 module.exports = new Auth()
