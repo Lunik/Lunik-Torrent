@@ -229,9 +229,14 @@ function Server () {
     }
   })
 
-  this.app.get('/auth', function(req, res){
-    var auth = new Auth()
-    
+  this.app.post('/auth', function(req, res){
+    var token = Auth.login("no", "pass")
+
+    var invite = Auth.createInvite()
+    console.log("Invite: ", invite)
+    console.log("Register: ", Auth.register('Michel', 'monpass', invite))
+    Auth.deleteInvite(invite)
+    res.end(token)
   })
 }
 
