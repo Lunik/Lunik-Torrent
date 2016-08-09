@@ -76,6 +76,10 @@ MediaInfo.prototype.search = function (type, query, callback) {
             data.feed.tvseries.shift()
           }
           self.getMediaInfo(query, type, data.feed.tvseries[0].code, callback)
+        } else {
+          callback({
+            err: 'Nothing found for "' + query + '".'
+          })
         }
       })
     } else if (type === 'movie') {
@@ -86,8 +90,13 @@ MediaInfo.prototype.search = function (type, query, callback) {
         if (err) {
           console.log(err)
         }
+        console.log(data.feed.results)
         if (data.feed.totalResults > 0) {
           self.getMediaInfo(query, type, data.feed.movie[0].code, callback)
+        } else {
+          callback({
+            err: 'Nothing found for "' + query + '".'
+          })
         }
       })
     }

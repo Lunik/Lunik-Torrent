@@ -35,17 +35,24 @@
         timeout: 10000,
         data: {
           type: type,
-          query: title
+          query: title.toLowerCase()
         },
         dataType: 'json',
         success: function (data) {
-          console.log(data)
-          self.vue.$data.info = data
-          App.Storage.storeData(data.query.toLowerCase(), data)
-          
-          setTimeout(function () {
-            self.show()
-          }, 1000)
+          if(!data.err){
+            self.vue.$data.info = data
+            App.Storage.storeData(data.query.toLowerCase(), data)
+
+            setTimeout(function () {
+              self.show()
+            }, 1000)
+          } else {
+            $.notify.error({
+              title: 'Error in MediaInfo.get()',
+              text: data.err,
+              duration:  5
+            })
+          }
         }
       }).done(function(){
         App.Loading.hide('action')
