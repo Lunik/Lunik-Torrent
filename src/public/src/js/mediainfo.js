@@ -57,7 +57,6 @@
       }).done(function(){
         App.Loading.hide('action')
       }).fail(function(err){
-        console.log(err)
         App.Loading.hide('action')
         $.notify.error({
           title: 'Error in MediaInfo.get()',
