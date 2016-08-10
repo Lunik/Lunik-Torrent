@@ -101,8 +101,14 @@ var App = {}
     var self = this
     self.hash = document.location.hash.substring(1)
 
+    if(self.hash){
+      App.switch('register')
+    }
     $(window).bind('hashchange', function () {
       self.hash = document.location.hash.substring(1)
+      if(self.hash){
+        App.switch('register')
+      }
     })
   }
 

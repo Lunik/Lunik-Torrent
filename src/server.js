@@ -245,17 +245,20 @@ function Server () {
   this.app.post('/auth', function(req, res){
     var reponse = {}
     if(req.query.todo){
-      var user = req.body.user
-      var pass = req.body.pass
-      var token = req.cookies.token
-      var invite = req.body.invite
+      var data = {
+        user: req.body.user,
+        pass: req.body.pass,
+        token: req.cookies.token,
+        invite: req.body.invite,
+        invitationKey: req.body.invitationkey
+      }
       switch(req.query.todo){
         case 'login':
-          if(user && pass){
-            var token = Auth.login(user, pass)
+          if(data.user && data.pass){
+            var token = Auth.login(data.user, data.pass)
             if(token){
               res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.cookie('user', user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+              res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               reponse = {
                 err: false,
                 token: token
@@ -270,10 +273,11 @@ function Server () {
               err: 'Missing User or Pass.'
             }
           }
-          break;
+          break
+
         case 'logout':
-          if(user && token){
-            if(Auth.logout(user, token)){
+          if(data.user && data.token){
+            if(Auth.logout(data.user, data.token)){
               reponse = {
                 err: false,
               }
@@ -283,13 +287,14 @@ function Server () {
           } else {
             err: 'Missing User or Token.'
           }
-          break;
+          break
+
         case 'register':
-          if(user && pass && invite){
-            var token = Auth.register(user, pass, invite)
+          if(data.user && data.pass && data.invite){
+            var token = Auth.register(data.user, data.pass, data.invite)
             if(token){
               res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.cookie('user', user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+              res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               reponse = {
                 err: false,
                 token: token
@@ -304,7 +309,27 @@ function Server () {
               err: 'Missing User, Pass or Invitation code.'
             }
           }
-          break;
+          break
+
+        case 'invite':
+          if(data.invitationKey){
+            var invite = Auth.createInvite(data.invitationKey)
+            if(invite){
+              reponse = {
+                err: false,
+                invitationCode: invite
+              }
+            } else {
+              reponse = {
+                err: 'Wrong Invitation Key.'
+              }
+            }
+          } else {
+            reponse = {
+              err: 'Missing Invitation Key.'
+            }
+          }
+          break
       }
     } else {
       response = {

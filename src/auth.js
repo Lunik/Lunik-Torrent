@@ -74,10 +74,14 @@ Auth.prototype.savePasswords = function () {
   }, 1)
 }
 
-Auth.prototype.createInvite = function(){
-  var invite = this.genToken(Rand.rand(), Rand.rand())
-  this.invites.push(invite)
-  return invite
+Auth.prototype.createInvite = function(inviteKey){
+  if(inviteKey === config.server.invitationKey){
+    var invite = this.genToken(Rand.rand(), Rand.rand())
+    this.invites.push(invite)
+    return invite
+  } else {
+    return false
+  }
 }
 
 Auth.prototype.deleteInvite = function(invite){

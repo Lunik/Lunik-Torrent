@@ -30,8 +30,16 @@ $ npm run forever-start
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lunik/Lunik-Torrent)
 
 ## ===== Infos =====
-### Default password:
+### Register
 
+You need an inscription code provided by the server admin.
+
+##### Create an invitation code
 ```
-admin:admin
+$ curl --data "invitationKey=mykey" http://localhost:5000/auth?todo=invite
+{
+  "err":false,
+  "invitationCode":"your_invitation_code"
+}
 ```
+To register go to `http://localhost:5000/login.html#your_invitation_code`
