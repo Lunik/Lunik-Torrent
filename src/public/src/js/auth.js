@@ -172,6 +172,10 @@ var App = {}
             duration: 10
           })
         } else {
+          $.notify.success({
+            title: 'Login',
+            text: 'Successfully logged in.'
+          })
           window.location = '/'
         }
       }
@@ -208,6 +212,10 @@ var App = {}
             duration: 10
           })
         } else {
+          $.notify.success({
+            title: 'Login',
+            text: 'Successfully Signed in.'
+          })
           window.location = '/'
         }
       }
