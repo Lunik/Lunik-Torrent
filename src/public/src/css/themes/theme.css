@@ -13,7 +13,7 @@ body {
   color: #675f5f;
   transition: color 0.1s ease-out;
 }
-.button:active, .button:focus {
+.button:active {
   color: #f7a253;
 }
 a {
@@ -35,7 +35,7 @@ a {
 /************/
 
 .top-menu {
-  color: #FFF;
+  color: #BBB;
   background-color: #111;
 }
 .top-menu .unactive {
@@ -54,7 +54,7 @@ a {
 
 .config-pop input, .config-pop select {
   color: #675f5f;
-  background-color: #FFF;
+  background-color: #BBB;
   border: 1px solid #D8E1E4;
 }
 
@@ -67,7 +67,7 @@ a {
 /*************/
 
 .left-menu {
-  color: #FFF;
+  color: #BBB;
   background-color: #151515;
   transition: left 0.3s ease-out;
 }
@@ -80,10 +80,15 @@ a {
 }
 .left-menu .action .button {
   background-color: #f75353;
+   border: 1px outset #f75353;
+
+}
+.left-menu .action .button:active {
+  border: 1px inset #f75353;
 }
 .left-menu .torrent-input input {
   color: #675f5f;
-  background-color: #FFF;
+  background-color: #BBB;
   border: 1px solid #D8E1E4;
 }
 .left-menu .torrent-input input[type=text] {
@@ -106,7 +111,7 @@ a {
 
 .list {
   background-color: #1C1C1C;
-  color: #FFF;
+  color: #BBB;
 }
 .list th {
   background: #2E2E2E;
@@ -121,7 +126,7 @@ a {
 }
 .scrollTop {
   background-color: #151515;
-  color: #FFF;
+  color: #BBB;
 }
 .list .file td#name .locked {
   color: #f75353;
@@ -139,7 +144,7 @@ a {
 }
 .searchtorrent-pop .search-item {
   border-top: 1px solid #2E2E2E;
-  border-bottom: 1px solid #2E2E2E;
+  border-bottom: 1px solid #;
 }
 .searchtorrent-pop .search-item .seed {
   color: #27AE60;
@@ -148,6 +153,46 @@ a {
   color: #f75353;
 }
 
+/***********/
+/*   Auth  */
+/***********/
+.auth .form {
+  color: #BBB;
+}
+.auth h1{
+  color: #f7a253;
+}
+.auth .invite p {
+  color: #f7a253;
+}
+.auth input{
+  border:none;
+  border-bottom: 1px solid #BBB;
+  background-color: #1C1C1C;
+  color: #BBB;
+}
+.auth input:valid { 
+  border-bottom: 1px solid #f7a253;
+}
+.auth input:valid ~ .bar:before, .auth input:valid ~ .bar:after{
+  background: #f7a253 !important;
+}
+.auth input:focus ~ label, .auth input.used ~ label     {
+  color:#5264AE;
+}
+.auth input:valid ~ label , .auth input:valid.used ~ label{
+  color: #f7a253;
+}
+.auth button {
+  background-color: #f75353;
+  border: 1px outset #f75353;
+}
+.auth button:active {
+  border: 1px inset #f75353;
+}
+.auth .info{
+  color: #f75353;
+}
 /**********/
 /*  Other */
 /**********/

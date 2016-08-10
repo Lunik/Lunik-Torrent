@@ -16,7 +16,7 @@ var App = {}
       self.Crypto = crypto
       self.Vue = vue
       self.v = new self.Vue({
-        el: '.form',
+        el: '.auth',
         data: {
           login: {
             state: true,
@@ -32,13 +32,41 @@ var App = {}
           invite: {
             state: false
           },
-          info: ''
+          info: '',
+          currentSubmit: 'login'
         }
       })
+
+      // Init auth input
+      $('input').blur(function() {
+        // check if the input has any value (if we've typed into it)
+        if ($(this).val()){
+          $(this).addClass('used')
+        } else{
+          $(this).removeClass('used')
+        }
+      })
+
+      // Trigger keydown event
+      $(window).keydown(function (event) {
+        switch (event.keyCode) {
+          case 13:
+            $('.auth .' + self.getCurrentSubmit() + ' button').trigger('click')
+          break
+        }
+      })
+
+      $('.auth .switch #login').click(function(){
+        App.switch('login')
+      })
+      $('.auth .switch #register').click(function(){
+        App.switch('register')
+      })
+
       requirejs(['notify-me', 'format', 'loading'], function(notif){
         self.updateHash()
 
-        $('.form .login .submit').click(function(){
+        $('.auth .login .submit').click(function(){
           var loginData = self.getLogin()
           if(loginData.user.length > 0 && loginData.pass.length){
              self.login(loginData.user, loginData.pass)
@@ -47,7 +75,7 @@ var App = {}
           }
         })
 
-        $('.form .register .submit').click(function(){
+        $('.auth .register .submit').click(function(){
           var registerData = self.getRegister()
           if(App.hash){
             if(registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length){
@@ -78,10 +106,15 @@ var App = {}
     })
   }
 
+  _App.prototype.getCurrentSubmit = function(){
+    return this.v.$data.currentSubmit
+  }
   _App.prototype.switch = function(to){
+    this.v.$data.currentSubmit = to
     this.v.$data.login.state = (to === 'login')
     this.v.$data.register.state = (to === 'register' && App.hash)
     this.v.$data.invite.state = (to === 'invite' || (to === 'register' && !App.hash))
+    this.v.$data.info = ''
   }
 
   _App.prototype.setInfo = function(info){

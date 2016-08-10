@@ -9,7 +9,6 @@
 
     <link rel="icon" href="src/image/favicon.ico">
     <link rel="stylesheet" href="src/css/style.css">
-    <link class="theme" rel="stylesheet" href="src/css/themes/{{ config.theme }}/theme.css">
   </head>
   <body>
     <div class="loading">
@@ -20,22 +19,51 @@
         </svg>
       </div>
     </div>
-    <div class="form">
-      <div class="login" v-show="login.state">
-        <input type="text" name="user" placeholder="Username..." v-model="login.user">
-        <input type="password" name="pass" placeholder="Password..." v-model="login.pass">
-        <button class="submit">Login</button>
+    <div class="auth">
+      <div class="form">
+        <div class="login" v-show="login.state">
+          <h1>Login</h1>
+          <div class="user input">
+            <input type="text" name="user" v-model="login.user" id="login-user">
+            <span class="bar"></span>
+            <label for="login-user">Username...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="pass" v-model="login.pass" id="login-pass">
+            <span class="bar"></span>
+            <label for="login-pass">Password...</label>
+          </div>
+          <button class="submit button">Login</button>
+        </div>
+        <div class="register" v-show="register.state">
+          <h1>Register</h1>
+          <div class="user input">
+            <input type="text" name="user" v-model="register.user" id="register-user">
+            <span class="bar"></span>
+            <label for="register-user">Username...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="pass" v-model="register.pass" id="register-pass">
+            <span class="bar"></span>
+            <label for="register-pass">Password...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="pass" v-model="register.pass2" id="register-pass2">
+            <span class="bar"></span>
+            <label for="register-pass2">Confirm Password...</label>
+          </div>
+          <button class="submit">Register</button>
+        </div>
+        <div class="invite" v-show="invite.state">
+          <h1>Register</h1>
+          <p>You don't have any invitation.</p>
+        </div>
+        <p class="info">{{ info }}</p>
+        <div class="switch">
+          <div class="switch button" id="login">Login</div>
+          <div class="switch button" id="register">Register</div>
+        </div>
       </div>
-      <div class="register" v-show="register.state">
-        <input type="text" name="user" placeholder="Username..." v-model="register.user">
-        <input type="password" name="pass" placeholder="Password..." v-model="register.pass">
-        <input type="password" name="pass2" placeholder="Password again..." v-model="register.pass2">
-        <button class="submit">Register</button>
-      </div>
-      <div class="invite" v-show="invite.state">
-        <p>Missing Invitation</p>
-      </div>
-      <p class="info">{{ info }}</p>
     </div>
     <script data-main="src/js/auth" src="src/bower_components/requirejs/require.js"></script>
   </body>
