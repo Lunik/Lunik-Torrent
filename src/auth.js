@@ -11,7 +11,7 @@ function Auth(){
 }
 
 Auth.prototype.login = function(user, pass){
-  if(this.passwords[user] && this.passwords[user].pass === "pass"){
+  if(this.passwords[user] && this.passwords[user].pass === pass){
     this.passwords[user].token = this.genToken(user, pass)
     return this.passwords[user].token
   } else {
@@ -19,8 +19,8 @@ Auth.prototype.login = function(user, pass){
   }
 }
 
-Auth.prototype.logout = function(user){
-  if(this.passwords[user]){
+Auth.prototype.logout = function(user, token){
+  if(this.passwords[user] && this.passwords[user].token && this.passwords[user].token === token){
     delete this.passwords[user].token
     return true
   } else {
