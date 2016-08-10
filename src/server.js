@@ -276,7 +276,6 @@ function Server () {
           break
 
         case 'logout':
-        console.log(data)
           if(data.user && data.token){
             if(Auth.logout(data.user, data.token)){
               reponse = {
