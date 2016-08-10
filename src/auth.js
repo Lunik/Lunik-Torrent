@@ -30,11 +30,13 @@ Auth.prototype.logout = function(user, token){
 
 Auth.prototype.register = function(user, pass, invite){
   if(this.invites.indexOf(invite) !== -1 && typeof this.passwords[user] === 'undefined'){
+    this.deleteInvite(invite)
     this.passwords[user] = {
       pass: pass,
       token: this.genToken(user, pass)
     }
     this.savePasswords()
+
     return this.passwords[user].token
   } else {
     return false
@@ -60,7 +62,7 @@ Auth.prototype.genToken = function(user, pass){
 Auth.prototype.savePasswords = function () {
   var self = this
   setTimeout(function () {
-    var passwords = self.passwords
+    var passwords = JSON.parse(JSON.stringify(self.passwords))
     for (var user in passwords){
       if(passwords[user].token){
         delete passwords[user].token
