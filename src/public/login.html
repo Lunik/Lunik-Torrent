@@ -21,17 +21,21 @@
       </div>
     </div>
     <div class="form">
-      <div class="login">
+      <div class="login" v-show="login.state">
         <input type="text" name="user" placeholder="Username..." v-model="login.user">
         <input type="password" name="pass" placeholder="Password..." v-model="login.pass">
-        <button>Login</button>
+        <button class="submit">Login</button>
       </div>
-      <div class="register">
+      <div class="register" v-show="register.state">
         <input type="text" name="user" placeholder="Username..." v-model="register.user">
         <input type="password" name="pass" placeholder="Password..." v-model="register.pass">
         <input type="password" name="pass2" placeholder="Password again..." v-model="register.pass2">
-        <button>Register</button>
+        <button class="submit">Register</button>
       </div>
+      <div class="invite" v-show="invite.state">
+        <p>Missing Invitation</p>
+      </div>
+      <p class="info">{{ info }}</p>
     </div>
     <script data-main="src/js/auth" src="src/bower_components/requirejs/require.js"></script>
   </body>
