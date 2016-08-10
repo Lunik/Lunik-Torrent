@@ -1,6 +1,6 @@
 .auth {
 	display: block;
-	margin: 20% auto;
+	margin: 100px auto;
 	text-align: center;
 }
 
@@ -35,9 +35,9 @@
   font-weight: bold;
 }
 /* form starting stylings ------------------------------- */
-.auth .input { 
-	position:relative; 
-	margin-bottom:45px; 
+.auth .input {
+	position:relative;
+	margin-bottom:45px;
 }
 .auth label {
   font-size:18px;
@@ -55,17 +55,17 @@
 }
 
 /* BOTTOM BARS ================================= */
-.auth .bar 	{ 
+.auth .bar 	{
 	padding: 0 10px 0 5px;
-	position:relative; 
-	display:block; 
-	width:300px; 
+	position:relative;
+	display:block;
+	width:300px;
 }
 .auth .bar:before, .auth .bar:after 	{
   content:'';
   height:2px;
   width:0;
-  bottom:1px; 
+  bottom:1px;
   position:absolute;
   transition:0.2s ease all;
 }
@@ -73,7 +73,7 @@
   left:50%;
 }
 .auth .bar:after {
-  right:50%; 
+  right:50%;
 }
 
 /* active state -------------------------------------------- */
