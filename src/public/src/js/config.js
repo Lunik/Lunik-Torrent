@@ -23,17 +23,17 @@
     })
     $('.config-pop .submit').click(function () { self.submit() })
 
-    //Logout
+    // Logout
 
-    $('.top-menu .logout').click(function(){ 
+    $('.top-menu .logout').click(function () {
       $.ajax({
         type: 'post',
         url: '/auth?todo=logout',
         timeout: 10000,
         data: {},
         dataType: 'json',
-        success: function(data){
-          if(data.err){
+        success: function (data) {
+          if (data.err) {
             $.notify.error({
               title: 'Error',
               text: data.err,
@@ -44,7 +44,7 @@
               title: 'Logout',
               text: 'Successfully logged out.'
             })
-            setTimeout(function(){
+            setTimeout(function () {
               document.location = '/login.html'
             }, 2000)
           }

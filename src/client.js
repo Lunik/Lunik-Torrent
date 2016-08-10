@@ -29,8 +29,8 @@ Client.prototype.download = function (torrentLink) {
     self.torrentLink = torrentLink
     Log.echo('Start: ' + torrentLink)
 
-    var timeout = setTimeout(function(){
-      self.client.destroy(function(){
+    var timeout = setTimeout(function () {
+      self.client.destroy(function () {
         self.doneFunction(true, null, null)
       })
     }, config.client.timeout)

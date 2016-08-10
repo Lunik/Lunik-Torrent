@@ -4,10 +4,12 @@
   width: 45%;
   vertical-align: top;
 }
+
 .mediainfo-pop .infos * {
   vertical-align: top;
   margin: 5px;
 }
+
 .mediainfo-pop .infos .rating {
   font-size: 200%;
   font-weight: bold;

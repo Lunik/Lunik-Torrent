@@ -28,11 +28,11 @@ function Server () {
   this.app.use(bodyParser.urlencoded({
     extended: true
   }))
-  this.app.use(function(req, res, next){
-    if(req.url === '/login.html' || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)){
+  this.app.use(function (req, res, next) {
+    if (req.url === '/login.html' || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)) {
       next()
     } else {
-      if(req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)){
+      if (req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)) {
         next()
       } else {
         res.redirect('/login.html')
@@ -242,9 +242,9 @@ function Server () {
     }
   })
 
-  this.app.post('/auth', function(req, res){
+  this.app.post('/auth', function (req, res) {
     var reponse = {}
-    if(req.query.todo){
+    if (req.query.todo) {
       var data = {
         user: req.body.user || req.cookies.user,
         pass: req.body.pass,
@@ -252,11 +252,11 @@ function Server () {
         invite: req.body.invite,
         invitationKey: req.body.invitationkey
       }
-      switch(req.query.todo){
+      switch (req.query.todo) {
         case 'login':
-          if(data.user && data.pass){
+          if (data.user && data.pass) {
             var token = Auth.login(data.user, data.pass)
-            if(token){
+            if (token) {
               res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               reponse = {
@@ -276,10 +276,10 @@ function Server () {
           break
 
         case 'logout':
-          if(data.user && data.token){
-            if(Auth.logout(data.user, data.token)){
+          if (data.user && data.token) {
+            if (Auth.logout(data.user, data.token)) {
               reponse = {
-                err: false,
+                err: false
               }
             } else {
               err: 'Wrong User or Token.'
@@ -290,9 +290,9 @@ function Server () {
           break
 
         case 'register':
-          if(data.user && data.pass && data.invite){
+          if (data.user && data.pass && data.invite) {
             var token = Auth.register(data.user, data.pass, data.invite)
-            if(token){
+            if (token) {
               res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               reponse = {
@@ -312,9 +312,9 @@ function Server () {
           break
 
         case 'invite':
-          if(data.invitationKey){
+          if (data.invitationKey) {
             var invite = Auth.createInvite(data.invitationKey)
-            if(invite){
+            if (invite) {
               reponse = {
                 err: false,
                 invitationCode: invite
@@ -333,7 +333,7 @@ function Server () {
       }
     } else {
       response = {
-        err: "Missing Todo."
+        err: 'Missing Todo.'
       }
     }
     res.end(JSON.stringify(reponse))

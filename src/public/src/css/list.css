@@ -1,5 +1,7 @@
 @import url('torrent.css');
+
 @import url('mediainfo.css');
+
 .list {
   position: relative;
   top: 80px;
@@ -9,33 +11,42 @@
   overflow: auto;
   height: calc(100vh - 80px);
 }
+
 .list table {
   width: 100%;
   /*min-width: 300px;*/
   table-layout: fixed;
   border-collapse: collapse;
 }
+
 .list table th#name {
   width: 40%;
 }
+
 .list table th#size {
   width: 15%;
 }
+
 .list table th#date {
   width: 15%;
 }
+
 .list table th#owner {
   width: 10%;
 }
+
 .list table th#progress {
   width: 50%;
 }
+
 .list table th#down {
   width: 10%;
 }
+
 .list table th#up {
   width: 10%;
 }
+
 .list table td#name .download {
   font-size: 15px;
 }
@@ -45,22 +56,27 @@
   .list table th#down, .list table th#up, .list table th#owner {
     display: none;
   }
+
   .list table th#name {
     width: 80%;
   }
 }
+
 .list th {
   height: 40px;
   text-align: left;
 }
+
 .list tr {
   height: 35px;
 }
+
 .list td, .list th {
   display: table-cell;
   overflow: hidden;
   padding-left: 10px;
 }
+
 .scrollTop {
   position: fixed;
   bottom: 20px;

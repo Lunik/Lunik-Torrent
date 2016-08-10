@@ -261,7 +261,7 @@
               $.notify.error({
                 title: 'Error',
                 text: file.err,
-                duration:  10
+                duration: 10
               })
             } else {
               self.removeLine({
@@ -276,7 +276,7 @@
           $.notify.error({
             title: 'Error in List.updateDragDrop()',
             text: err.statusText,
-            duration:  5
+            duration: 5
           })
         })
       }

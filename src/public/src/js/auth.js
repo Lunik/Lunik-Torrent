@@ -1,4 +1,4 @@
-var App = {}
+var App = {}
 ;(function () {
   function _App () {
     var self = this
@@ -38,11 +38,11 @@ var App = {}
       })
 
       // Init auth input
-      $('input').blur(function() {
+      $('input').blur(function () {
         // check if the input has any value (if we've typed into it)
-        if ($(this).val()){
+        if ($(this).val()) {
           $(this).addClass('used')
-        } else{
+        } else {
           $(this).removeClass('used')
         }
       })
@@ -52,35 +52,35 @@ var App = {}
         switch (event.keyCode) {
           case 13:
             $('.auth .' + self.getCurrentSubmit() + ' button').trigger('click')
-          break
+            break
         }
       })
 
-      $('.auth .switch #login').click(function(){
+      $('.auth .switch #login').click(function () {
         App.switch('login')
       })
-      $('.auth .switch #register').click(function(){
+      $('.auth .switch #register').click(function () {
         App.switch('register')
       })
 
-      requirejs(['notify-me', 'format', 'loading'], function(notif){
+      requirejs(['notify-me', 'format', 'loading'], function (notif) {
         self.updateHash()
 
-        $('.auth .login .submit').click(function(){
+        $('.auth .login .submit').click(function () {
           var loginData = self.getLogin()
-          if(loginData.user.length > 0 && loginData.pass.length){
-             self.login(loginData.user, loginData.pass)
+          if (loginData.user.length > 0 && loginData.pass.length) {
+            self.login(loginData.user, loginData.pass)
           } else {
             self.setInfo('User and Password are required.')
           }
         })
 
-        $('.auth .register .submit').click(function(){
+        $('.auth .register .submit').click(function () {
           var registerData = self.getRegister()
-          if(App.hash){
-            if(registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length){
-              if(registerData.pass === registerData.pass2){
-                if(registerData.pass.length >= 8){
+          if (App.hash) {
+            if (registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length) {
+              if (registerData.pass === registerData.pass2) {
+                if (registerData.pass.length >= 8) {
                   self.register(registerData.user, registerData.pass, App.hash)
                 } else {
                   self.setInfo('Password must be minimum 8 symbol long.')
@@ -96,10 +96,10 @@ var App = {}
           }
         })
 
-        $('.auth .invite input').keyup(function(){
+        $('.auth .invite input').keyup(function () {
           var code = $(this).val()
-          if(code.length === 64){
-            document.location.hash = "#" + code
+          if (code.length === 64) {
+            document.location.hash = '#' + code
           }
         })
 
@@ -108,25 +108,25 @@ var App = {}
     })
   }
 
-  _App.prototype.updateHash = function() {
+  _App.prototype.updateHash = function () {
     var self = this
     self.hash = document.location.hash.substring(1)
 
-    if(self.hash){
+    if (self.hash) {
       App.switch('register')
     }
     $(window).bind('hashchange', function () {
       self.hash = document.location.hash.substring(1)
-      if(self.hash){
+      if (self.hash) {
         App.switch('register')
       }
     })
   }
 
-  _App.prototype.getCurrentSubmit = function(){
+  _App.prototype.getCurrentSubmit = function () {
     return this.v.$data.currentSubmit
   }
-  _App.prototype.switch = function(to){
+  _App.prototype.switch = function (to) {
     this.v.$data.currentSubmit = to
     this.v.$data.login.state = (to === 'login')
     this.v.$data.register.state = (to === 'register' && App.hash)
@@ -134,18 +134,18 @@ var App = {}
     this.v.$data.info = ''
   }
 
-  _App.prototype.setInfo = function(info){
+  _App.prototype.setInfo = function (info) {
     this.v.$data.info = info
   }
 
-  _App.prototype.getLogin = function(){
+  _App.prototype.getLogin = function () {
     return {
       user: this.v.$data.login.user,
       pass: App.Crypto.SHA256(this.v.$data.login.pass).toString()
     }
   }
 
-  _App.prototype.getRegister = function(){
+  _App.prototype.getRegister = function () {
     return {
       user: this.v.$data.register.user,
       pass: App.Crypto.SHA256(this.v.$data.register.pass).toString(),
@@ -153,7 +153,7 @@ var App = {}
     }
   }
 
-  _App.prototype.login = function(user, pass){
+  _App.prototype.login = function (user, pass) {
     App.Loading.show('action')
     $.ajax({
       type: 'post',
@@ -164,7 +164,7 @@ var App = {}
         pass: pass
       },
       dataType: 'json',
-      success: function(data){
+      success: function (data) {
         if (data.err) {
           $.notify.error({
             title: 'Error',
@@ -172,7 +172,7 @@ var App = {}
             duration: 10
           })
         } else {
-          window.location = "/"
+          window.location = '/'
         }
       }
     }).done(function () {
@@ -188,7 +188,7 @@ var App = {}
     })
   }
 
-  _App.prototype.register = function(user, pass, invite){
+  _App.prototype.register = function (user, pass, invite) {
     App.Loading.show('action')
     $.ajax({
       type: 'post',
@@ -200,7 +200,7 @@ var App = {}
         invite: invite
       },
       dataType: 'json',
-      success: function(data){
+      success: function (data) {
         if (data.err) {
           $.notify.error({
             title: 'Error',
@@ -208,7 +208,7 @@ var App = {}
             duration: 10
           })
         } else {
-          window.location = "/"
+          window.location = '/'
         }
       }
     }).done(function () {

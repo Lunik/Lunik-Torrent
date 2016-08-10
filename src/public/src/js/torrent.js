@@ -68,7 +68,7 @@
           $.notify.error({
             title: 'Error',
             text: torrents.err,
-            duration:  10
+            duration: 10
           })
         } else {
           cb(torrents)
@@ -81,7 +81,7 @@
       $.notify.error({
         title: 'Error in Torrent.getTorrents()',
         text: err.statusText,
-        duration:  5
+        duration: 5
       })
     })
   }
@@ -93,7 +93,7 @@
   _Torrent.prototype.append = function (tor) {
     var lines = []
     var i = 0
-    if (Object.keys(tor).length > 0){
+    if (Object.keys(tor).length > 0) {
       $.each(tor, function (index, value) {
         lines.push({
           name: value.name,
@@ -164,7 +164,7 @@
             $.notify.error({
               title: 'Error',
               text: torrent.err,
-              duration:  10
+              duration: 10
             })
           } else {
             App.List.removeLine({
@@ -179,7 +179,7 @@
         $.notify.error({
           title: 'Error in Torrent.remove()',
           text: err.statusText,
-          duration:  5
+          duration: 5
         })
       })
     } else {
@@ -206,7 +206,7 @@
           $.notify.error({
             title: 'Error',
             text: data.err,
-            duration:  10
+            duration: 10
           })
         } else {
           $.notify.success({
@@ -221,7 +221,7 @@
       $.notify.error({
         title: 'Error Torrent.download()',
         text: err.statusText,
-        duration:  5
+        duration: 5
       })
     })
   }

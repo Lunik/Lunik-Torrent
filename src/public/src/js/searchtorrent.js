@@ -56,7 +56,7 @@
       $.notify.error({
         title: 'Error in SearchTorrent.search()',
         text: err.statusText,
-        duration:  5
+        duration: 5
       })
     })
   }

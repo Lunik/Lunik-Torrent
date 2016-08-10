@@ -39,7 +39,7 @@
         },
         dataType: 'json',
         success: function (data) {
-          if(!data.err){
+          if (!data.err) {
             self.vue.$data.info = data
             App.Storage.storeData(data.query.toLowerCase(), data)
 
@@ -50,18 +50,18 @@
             $.notify.error({
               title: 'Error in MediaInfo.get()',
               text: data.err,
-              duration:  5
+              duration: 5
             })
           }
         }
-      }).done(function(){
+      }).done(function () {
         App.Loading.hide('action')
-      }).fail(function(err){
+      }).fail(function (err) {
         App.Loading.hide('action')
         $.notify.error({
           title: 'Error in MediaInfo.get()',
           text: err.statusText,
-          duration:  5
+          duration: 5
         })
       })
     }
