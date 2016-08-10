@@ -12,36 +12,7 @@
     this.vuePopup = new App.Vue({
       el: '.popup .config-pop',
       data: {
-        themes: [
-          {
-            name: 'Default',
-            value: 'default',
-            state: true
-          },
-          {
-            name: 'Monokai',
-            value: 'monokai',
-            state: false
-          },
-          {
-            name: 'Giant Goldfish',
-            value: 'giant_goldfish',
-            state: false
-          },
-          {
-            name: 'Lunik',
-            value: 'lunik',
-            state: false
-          }
-        ],
         config: self.config
-      }
-    })
-
-    this.vueTheme = new App.Vue({
-      el: 'link.theme',
-      data: {
-        config: self.vuePopup.$data.config
       }
     })
 
@@ -76,7 +47,6 @@
   */
   _Config.prototype.submit = function () {
     var config = {}
-    config.theme = $('.popupContainer .config-pop .theme').val()
     this.setConfig(config)
     $.popupjs.remove()
   }
