@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Login - Lunik - Torrent</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <link rel="icon" href="src/image/favicon.ico">
+    <link rel="stylesheet" href="src/css/style.css">
+  </head>
+  <body>
+    <div class="loading">
+      <div class="loading-app" v-show="app.state"><div class="logo"></div></div>
+      <div class="loading-actions" v-show="action.state">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-miterlimit="10"/>
+        </svg>
+      </div>
+    </div>
+    <div class="auth">
+      <div class="form">
+        <div class="login" v-show="login.state">
+          <h1>Login</h1>
+          <div class="user input">
+            <input type="text" name="user" v-model="login.user" id="login-user">
+            <span class="bar"></span>
+            <label for="login-user">Username...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="pass" v-model="login.pass" id="login-pass">
+            <span class="bar"></span>
+            <label for="login-pass">Password...</label>
+          </div>
+          <button class="submit button">Login</button>
+        </div>
+        <div class="register" v-show="register.state">
+          <h1>Register</h1>
+          <div class="user input">
+            <input type="text" name="user" v-model="register.user" id="register-user">
+            <span class="bar"></span>
+            <label for="register-user">Username...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="pass" v-model="register.pass" id="register-pass">
+            <span class="bar"></span>
+            <label for="register-pass">Password...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="pass" v-model="register.pass2" id="register-pass2">
+            <span class="bar"></span>
+            <label for="register-pass2">Confirm Password...</label>
+          </div>
+          <button class="submit">Register</button>
+        </div>
+        <div class="invite" v-show="invite.state">
+          <h1>Register</h1>
+          <p>You don't have any invitation.</p>
+          <p>Ask your Admin to get one.</p>
+          <div class="invitation input">
+            <input type="text" name="invite" id="invitatation">
+            <span class="bar"></span>
+            <label for="register-pass2">Invitation Code...</label>
+          </div>
+        </div>
+        <p class="info">{{ info }}</p>
+        <div class="switch">
+          <div class="switch button" id="login">Login</div>
+          <div class="switch button" id="register">Register</div>
+        </div>
+      </div>
+    </div>
+    <script data-main="src/js/auth" src="src/bower_components/requirejs/require.js"></script>
+  </body>
+</html>

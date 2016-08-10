@@ -12,36 +12,7 @@
     this.vuePopup = new App.Vue({
       el: '.popup .config-pop',
       data: {
-        themes: [
-          {
-            name: 'Default',
-            value: 'default',
-            state: true
-          },
-          {
-            name: 'Monokai',
-            value: 'monokai',
-            state: false
-          },
-          {
-            name: 'Giant Goldfish',
-            value: 'giant_goldfish',
-            state: false
-          },
-          {
-            name: 'Lunik',
-            value: 'lunik',
-            state: false
-          }
-        ],
         config: self.config
-      }
-    })
-
-    this.vueTheme = new App.Vue({
-      el: 'link.theme',
-      data: {
-        config: self.vuePopup.$data.config
       }
     })
 
@@ -51,6 +22,45 @@
       self.showConfig()
     })
     $('.config-pop .submit').click(function () { self.submit() })
+
+    // Logout
+
+    $('.top-menu .logout').click(function () {
+      $.ajax({
+        type: 'post',
+        url: '/auth?todo=logout',
+        timeout: 10000,
+        data: {},
+        dataType: 'json',
+        success: function (data) {
+          if (data.err) {
+            $.notify.error({
+              title: 'Error',
+              text: data.err,
+              duration: 10
+            })
+          } else {
+            $.notify.success({
+              title: 'Logout',
+              text: 'Successfully logged out.'
+            })
+            setTimeout(function () {
+              document.location = '/login.html'
+            }, 2000)
+          }
+        }
+      }).done(function () {
+        App.Loading.hide('action')
+      }).fail(function (err) {
+        console.log(err)
+        App.Loading.hide('action')
+        $.notify.error({
+          title: 'Error in Config.logout()',
+          text: err.statusText,
+          duration: 5
+        })
+      })
+    })
   }
 
   /**
@@ -76,7 +86,6 @@
   */
   _Config.prototype.submit = function () {
     var config = {}
-    config.theme = $('.popupContainer .config-pop .theme').val()
     this.setConfig(config)
     $.popupjs.remove()
   }

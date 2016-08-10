@@ -5,34 +5,33 @@
 @import url(left-menu.css);
 @import url(list.css);
 @import url(config.css);
-@import url(themes/default/theme.css);
+@import url(themes/theme.css);
 @import url(themes/icon.css);
+@import url(auth.css);
 
 * {
   outline: none;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
 }
-html {
-  height: 100%;
-}
+
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
 }
+
 .hide {
   visibility: hidden;
   opacity: 0;
   display: none !important;
 }
 
-.notifyme-stack{
+.notifyme-stack {
   z-index: 100;
 }
 
 @media only screen and (max-width: 470px) {
-  .loading .logo{
+  .loading .logo {
     background-size: 50%;
   }
 }

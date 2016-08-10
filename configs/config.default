@@ -10,8 +10,7 @@
   },
   "server": {
     "port": 80,
-    "message": "Protected area. Please disperse !",
-    "htpasswd": "configs/.htpasswd"
+    "invitationKey": "mykey"
   },
   "directory": {
     "path": "files/"
