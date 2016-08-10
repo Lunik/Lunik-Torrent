@@ -29,7 +29,7 @@ function Server () {
     extended: true
   }))
   this.app.use(function(req, res, next){
-    if(req.url === '/login.html' || req.url.match(/\/src\/.*/g)){
+    if(req.url === '/login.html' || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)){
       next()
     } else {
       if(req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)){
@@ -243,13 +243,72 @@ function Server () {
   })
 
   this.app.post('/auth', function(req, res){
-    var token = Auth.login("no", "pass")
-
-    var invite = Auth.createInvite()
-    console.log("Invite: ", invite)
-    console.log("Register: ", Auth.register('Michel', 'monpass', invite))
-    Auth.deleteInvite(invite)
-    res.end(token)
+    var reponse = {}
+    console.log(req.body)
+    if(req.query.todo){
+      var user = req.body.user
+      var pass = req.body.pass
+      var token = req.cookies.token
+      var invite = req.body.invite
+      switch(req.query.todo){
+        case 'login':
+          if(user && pass){
+            var token = Auth.login(user, pass)
+            if(token){
+              reponse = {
+                err: false,
+                token: token
+              }
+            } else {
+              reponse = {
+                err: 'Wrong User or Pass.'
+              }
+            }
+          } else {
+            reponse = {
+              err: 'Missing User or Pass.'
+            }
+          }
+          break;
+        case 'logout':
+          if(user && token){
+            if(Auth.logout(user, token)){
+              reponse = {
+                err: false,
+              }
+            } else {
+              err: 'Wrong User or Token.'
+            }
+          } else {
+            err: 'Missing User or Token.'
+          }
+          break;
+        case 'register':
+          if(user && pass && invite){
+            var token = Auth.register(user, pass, invite)
+            if(token){
+              reponse = {
+                err: false,
+                token: token
+              }
+            } else {
+              reponse = {
+                err: 'Wrong User, Pass or Invitation code.'
+              }
+            }
+          } else {
+            reponse = {
+              err: 'Missing User, Pass or Invitation code.'
+            }
+          }
+          break;
+      }
+    } else {
+      response = {
+        err: "Missing Todo."
+      }
+    }
+    res.end(JSON.stringify(reponse))
   })
 }
 
