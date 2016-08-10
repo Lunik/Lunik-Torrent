@@ -9,7 +9,6 @@
 
     <link rel="icon" href="src/image/favicon.ico">
     <link rel="stylesheet" href="src/css/style.css">
-    <link class="theme" rel="stylesheet" href="src/css/themes/{{ config.theme }}/theme.css">
   </head>
 
   <body>
@@ -95,9 +94,6 @@
       </div>
     <div class="popup hide">
       <div class="config-pop">
-        <select class="theme">
-          <option value="{{ t.value }}" selected="{{config.theme == t.value ? true : false}}" v-for="t in themes">{{ t.name }}</option>
-        </select>
         <input class="submit button" type="submit" value="Save"></input>
       </div>
       <div class="mediainfo-pop">
