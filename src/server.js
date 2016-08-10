@@ -244,7 +244,6 @@ function Server () {
 
   this.app.post('/auth', function(req, res){
     var reponse = {}
-    console.log(req.body)
     if(req.query.todo){
       var user = req.body.user
       var pass = req.body.pass
@@ -255,6 +254,8 @@ function Server () {
           if(user && pass){
             var token = Auth.login(user, pass)
             if(token){
+              res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+              res.cookie('user', user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               reponse = {
                 err: false,
                 token: token
@@ -287,6 +288,8 @@ function Server () {
           if(user && pass && invite){
             var token = Auth.register(user, pass, invite)
             if(token){
+              res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+              res.cookie('user', user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               reponse = {
                 err: false,
                 token: token
