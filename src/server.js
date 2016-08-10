@@ -51,7 +51,7 @@ function Server () {
   this.app.get('/files', function (req, res) {
     if (req.query.f) {
       req.query.f = req.query.f.split('..').join('')
-      Log.print(req.user + ' download file: ' + req.query.f)
+      Log.print(req.cookies.user + ' download file: ' + req.query.f)
       Directory.setDownloading(req.query.f)
       var transfert = new FileTransfert(req, res, function () {
         Directory.finishDownloading(req.query.f)
@@ -66,8 +66,8 @@ function Server () {
   // client start torrent
   this.app.post('/download-t', function (req, res) {
     if (req.body.url) {
-      Log.print(req.user + ' download torrent: ' + req.body.url)
-      Torrent.setDownloader(req.user, req.body.url)
+      Log.print(req.cookies.user + ' download torrent: ' + req.body.url)
+      Torrent.setDownloader(req.cookies.user, req.body.url)
       Torrent.start(req.body.url)
       res.end(JSON.stringify({}))
     } else {
@@ -97,7 +97,7 @@ function Server () {
   // client remove torrent
   this.app.post('/remove-t', function (req, res) {
     if (req.body.hash) {
-      Log.print(req.user + ' remove torrent: ' + req.body.hash)
+      Log.print(req.cookies.user + ' remove torrent: ' + req.body.hash)
       Torrent.remove(req.body.hash)
       res.end(JSON.stringify({
         hash: req.body.hash
@@ -114,7 +114,7 @@ function Server () {
     if (req.body.file) {
       req.body.file = req.body.file.replace(/%20/g, ' ')
       if (Directory.remove(req.body.file) !== -1) {
-        Log.print(req.user + ' remove file: ' + req.body.file)
+        Log.print(req.cookies.user + ' remove file: ' + req.body.file)
         res.end(JSON.stringify({
           file: req.body.file.split('/')[req.body.file.split('/').length - 1]
         }))
@@ -137,13 +137,13 @@ function Server () {
       req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
       req.body.newname = req.body.newname.replace(/%20/g, ' ')
       if (Directory.rename(req.body.path, req.body.oldname, req.body.newname) !== -1) {
-        Log.print(req.user + ' rename file: ' + Path.join(req.body.path, req.body.oldname) + ' in: ' + req.body.newname)
+        Log.print(req.cookies.user + ' rename file: ' + Path.join(req.body.path, req.body.oldname) + ' in: ' + req.body.newname)
         res.end(JSON.stringify({
           path: req.body.path,
           oldname: req.body.oldname,
           newname: req.body.newname
         }))
-        Directory.setOwner(Path.join(req.body.path, req.body.newname), req.user)
+        Directory.setOwner(Path.join(req.body.path, req.body.newname), req.cookies.user)
       } else {
         res.end(JSON.stringify({
           err: 'Cannot rename, someone is downloading the file.'
@@ -161,12 +161,12 @@ function Server () {
     if (req.body.path && req.body.name) {
       req.body.path = req.body.path.replace(/%20/g, ' ')
       req.body.name = req.body.name.replace(/%20/g, ' ')
-      Log.print(req.user + ' create directory: ' + Path.join(req.body.path, req.body.name))
+      Log.print(req.cookies.user + ' create directory: ' + Path.join(req.body.path, req.body.name))
       Directory.mkdir(req.body.path, req.body.name)
       res.end(JSON.stringify({
         name: req.body.name
       }))
-      Directory.setOwner(Path.join(req.body.path, req.body.name), req.user)
+      Directory.setOwner(Path.join(req.body.path, req.body.name), req.cookies.user)
     } else {
       res.end(JSON.stringify({
         err: 'Wrong name.'
@@ -181,11 +181,11 @@ function Server () {
       req.body.file = req.body.file.replace(/%20/g, ' ')
       req.body.folder = req.body.folder.replace(/%20/g, ' ')
       if (Directory.mv(req.body.path, req.body.file, req.body.folder) !== -1) {
-        Log.print(req.user + ' move: ' + Path.join(req.body.path, req.body.file) + ' in: ' + Path.join(req.body.path, req.body.folder))
+        Log.print(req.cookies.user + ' move: ' + Path.join(req.body.path, req.body.file) + ' in: ' + Path.join(req.body.path, req.body.folder))
         res.end(JSON.stringify({
           file: req.body.file
         }))
-        Directory.setOwner(Path.join(req.body.path, req.body.folder, req.body.file), req.user)
+        Directory.setOwner(Path.join(req.body.path, req.body.folder, req.body.file), req.cookies.user)
       } else {
         res.end(JSON.stringify({
           err: 'Cannot move, someone is downloading the file.'
@@ -203,7 +203,7 @@ function Server () {
     var searchEngine = require('./searchT.js')
     if (req.body.query !== '') {
       req.body.query = req.body.query.replace(/%20/g, ' ')
-      Log.print(req.user + ' search: ' + req.body.query)
+      Log.print(req.cookies.user + ' search: ' + req.body.query)
       searchEngine.search(req.body.query, function (data) {
         res.end(JSON.stringify(data))
       })
