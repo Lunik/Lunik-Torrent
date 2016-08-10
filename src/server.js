@@ -11,6 +11,7 @@ var express = require('express')
 var compression = require('compression')
 var http = require('http')
 var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
 var Path = require('path')
 
 http.globalAgent.maxSockets = Infinity
@@ -22,11 +23,23 @@ http.globalAgent.maxSockets = Infinity
 function Server () {
   this.app = express()
   this.app.use(compression())
-  this.app.use(express.static(Path.join(__dirname, '/public')))
+  this.app.use(cookieParser())
   this.app.use(bodyParser.json())
   this.app.use(bodyParser.urlencoded({
     extended: true
   }))
+  this.app.use(function(req, res, next){
+    if(req.url === '/login.html' || req.url.match(/\/src\/.*/g)){
+      next()
+    } else {
+      if(req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)){
+        next()
+      } else {
+        res.redirect('/login.html')
+      }
+    }
+  })
+  this.app.use(express.static(Path.join(__dirname, '/public')))
 
   this.server = http.createServer(this.app)
   var port = process.env.PORT || config.server.port
