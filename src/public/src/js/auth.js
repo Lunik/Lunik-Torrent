@@ -96,6 +96,13 @@ var App = {}
           }
         })
 
+        $('.auth .invite input').keyup(function(){
+          var code = $(this).val()
+          if(code.length === 64){
+            document.location.hash = "#" + code
+          }
+        })
+
         App.Loading.hide('app')
       })
     })

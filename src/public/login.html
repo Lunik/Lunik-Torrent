@@ -57,7 +57,13 @@
         <div class="invite" v-show="invite.state">
           <h1>Register</h1>
           <p>You don't have any invitation.</p>
-          <p>Please ask the server Admin for invitation link.</p>
+          <p>Ask your Admin to get one.</p>
+          <div class="invitation input">
+            <input type="text" name="invite" id="invitatation">
+            <span class="bar"></span>
+            <label for="register-pass2">Invitation Code...</label>
+          </div>
+          <button class="submit">Register</button>
         </div>
         <p class="info">{{ info }}</p>
         <div class="switch">
