@@ -246,7 +246,7 @@ function Server () {
     var reponse = {}
     if(req.query.todo){
       var data = {
-        user: req.body.user,
+        user: req.body.user || req.cookies.user,
         pass: req.body.pass,
         token: req.cookies.token,
         invite: req.body.invite,
@@ -276,6 +276,7 @@ function Server () {
           break
 
         case 'logout':
+        console.log(data)
           if(data.user && data.token){
             if(Auth.logout(data.user, data.token)){
               reponse = {
