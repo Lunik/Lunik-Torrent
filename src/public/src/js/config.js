@@ -22,6 +22,45 @@
       self.showConfig()
     })
     $('.config-pop .submit').click(function () { self.submit() })
+
+    //Logout
+
+    $('.top-menu .logout').click(function(){ 
+      $.ajax({
+        type: 'post',
+        url: '/auth?todo=logout',
+        timeout: 10000,
+        data: {},
+        dataType: 'json',
+        success: function(data){
+          if(data.err){
+            $.notify.error({
+              title: 'Error',
+              text: data.err,
+              duration: 10
+            })
+          } else {
+            $.notify.success({
+              title: 'Logout',
+              text: 'Successfully logged out.'
+            })
+            setTimeout(function(){
+              document.location = '/login.html'
+            }, 2000)
+          }
+        }
+      }).done(function () {
+        App.Loading.hide('action')
+      }).fail(function (err) {
+        console.log(err)
+        App.Loading.hide('action')
+        $.notify.error({
+          title: 'Error in Config.logout()',
+          text: err.statusText,
+          duration: 5
+        })
+      })
+    })
   }
 
   /**
