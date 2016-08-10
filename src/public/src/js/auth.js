@@ -13,23 +13,57 @@ var App = {}
 
     // load modules
     requirejs(['jquery', 'crypto-js', 'vue'], function (jq, crypto, vue) {
+      self.Crypto = crypto
       self.Vue = vue
       self.v = new self.Vue({
         el: '.form',
         data: {
           login: {
+            state: true,
             user: '',
             pass: ''
           },
           register: {
+            state: false,
             user: '',
             pass: '',
             pass2: ''
-          }
+          },
+          invite: {
+            state: false
+          },
+          info: ''
         }
       })
       requirejs(['notify-me', 'format', 'loading'], function(notif){
         self.updateHash()
+
+        $('.form .login .submit').click(function(){
+          var loginData = self.getLogin()
+          if(loginData.user.length > 0 && loginData.pass.length){
+             self.login(loginData.user, loginData.pass)
+          } else {
+            self.setInfo('User and Password are required.')
+          }
+        })
+
+        $('.form .register .submit').click(function(){
+          var registerData = self.getRegister()
+          if(App.hash){
+            if(registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length){
+              if(registerData.pass === registerData.pass2){
+               self.register(registerData.user, registerData.pass, App.hash)
+              } else {
+                self.setInfo('The two Passwords must be identical.')
+              }
+            } else {
+              self.setInfo('User and Password are required.')
+            }
+          } else {
+            self.switch('invite')
+          }
+        })
+
         App.Loading.hide('app')
       })
     })
@@ -44,5 +78,100 @@ var App = {}
     })
   }
 
+  _App.prototype.switch = function(to){
+    this.v.$data.login.state = (to === 'login')
+    this.v.$data.register.state = (to === 'register' && App.hash)
+    this.v.$data.invite.state = (to === 'invite' || (to === 'register' && !App.hash))
+  }
+
+  _App.prototype.setInfo = function(info){
+    this.v.$data.info = info
+  }
+
+  _App.prototype.getLogin = function(){
+    return {
+      user: this.v.$data.login.user,
+      pass: App.Crypto.SHA256(this.v.$data.login.pass).toString()
+    }
+  }
+
+  _App.prototype.getRegister = function(){
+    return {
+      user: this.v.$data.register.user,
+      pass: App.Crypto.SHA256(this.v.$data.register.pass).toString(),
+      pass2: App.Crypto.SHA256(this.v.$data.register.pass2).toString()
+    }
+  }
+
+  _App.prototype.login = function(user, pass){
+    App.Loading.show('action')
+    $.ajax({
+      type: 'post',
+      url: '/auth?todo=login',
+      timeout: 10000,
+      data: {
+        user: user,
+        pass: pass
+      },
+      dataType: 'json',
+      success: function(data){
+        if (data.err) {
+          $.notify.error({
+            title: 'Error',
+            text: data.err,
+            duration: 10
+          })
+        } else {
+          window.location = "/"
+        }
+      }
+    }).done(function () {
+      App.Loading.hide('action')
+    }).fail(function (err) {
+      console.log(err)
+      App.Loading.hide('action')
+      $.notify.error({
+        title: 'Error in Auth.login()',
+        text: err.statusText,
+        duration: 5
+      })
+    })
+  }
+
+  _App.prototype.register = function(user, pass, invite){
+    App.Loading.show('action')
+    $.ajax({
+      type: 'post',
+      url: '/auth?todo=register',
+      timeout: 10000,
+      data: {
+        user: user,
+        pass: pass,
+        invite: invite
+      },
+      dataType: 'json',
+      success: function(data){
+        if (data.err) {
+          $.notify.error({
+            title: 'Error',
+            text: data.err,
+            duration: 10
+          })
+        } else {
+          window.location = "/"
+        }
+      }
+    }).done(function () {
+      App.Loading.hide('action')
+    }).fail(function (err) {
+      console.log(err)
+      App.Loading.hide('action')
+      $.notify.error({
+        title: 'Error in Auth.register()',
+        text: err.statusText,
+        duration: 5
+      })
+    })
+  }
   App = new _App()
 })()
