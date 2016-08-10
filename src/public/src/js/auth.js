@@ -80,7 +80,11 @@ var App = {}
           if(App.hash){
             if(registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length){
               if(registerData.pass === registerData.pass2){
-               self.register(registerData.user, registerData.pass, App.hash)
+                if(registerData.pass.length >= 8){
+                  self.register(registerData.user, registerData.pass, App.hash)
+                } else {
+                  self.setInfo('Password must be minimum 8 symbol long.')
+                }
               } else {
                 self.setInfo('The two Passwords must be identical.')
               }
