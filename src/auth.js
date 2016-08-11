@@ -12,6 +12,7 @@ function Auth () {
 
 Auth.prototype.login = function (user, pass) {
   if (this.passwords[user] && this.passwords[user].pass === pass) {
+    Log.print(user + ' login.')
     this.passwords[user].token = this.genToken(user, pass)
     return this.passwords[user].token
   } else {
@@ -20,6 +21,7 @@ Auth.prototype.login = function (user, pass) {
 }
 
 Auth.prototype.logout = function (user, token) {
+  Log.print(user + ' logout.')
   if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token === token) {
     delete this.passwords[user].token
     return true
@@ -30,6 +32,7 @@ Auth.prototype.logout = function (user, token) {
 
 Auth.prototype.register = function (user, pass, invite) {
   if (this.invites.indexOf(invite) !== -1 && typeof this.passwords[user] === 'undefined') {
+    Log.print(user + ' register with invitation: ' + invite + '.')
     this.deleteInvite(invite)
     this.passwords[user] = {
       pass: pass,
@@ -77,6 +80,7 @@ Auth.prototype.savePasswords = function () {
 Auth.prototype.createInvite = function (inviteKey) {
   if (inviteKey === config.server.invitationKey) {
     var invite = this.genToken(Rand.rand(), Rand.rand())
+    Log.print('Invite generated: ' + invite + '.')
     this.invites.push(invite)
     return invite
   } else {

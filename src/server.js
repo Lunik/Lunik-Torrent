@@ -30,7 +30,11 @@ function Server () {
   }))
   this.app.use(function (req, res, next) {
     if (req.url === '/login.html' || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)) {
-      next()
+      if (req.url === '/login.html' && req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)) {
+        res.redirect('/')
+      } else {
+        next()
+      }
     } else {
       if (req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)) {
         next()
