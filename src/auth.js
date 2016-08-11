@@ -13,8 +13,12 @@ function Auth () {
 Auth.prototype.login = function (user, pass) {
   if (this.passwords[user] && this.passwords[user].pass === pass) {
     Log.print(user + ' login.')
-    this.passwords[user].token = this.genToken(user, pass)
-    return this.passwords[user].token
+    if(typeof this.passwords[user].token === 'undefined'){
+      this.passwords[user].token = []
+    }
+    var token = this.genToken(user, pass)
+    this.passwords[user].token.push(token)
+    return token
   } else {
     return false
   }
@@ -22,8 +26,8 @@ Auth.prototype.login = function (user, pass) {
 
 Auth.prototype.logout = function (user, token) {
   Log.print(user + ' logout.')
-  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token === token) {
-    delete this.passwords[user].token
+  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(token) !== -1) {
+    delete this.passwords[user].token.splice(this.passwords[user].token.indexOf(token), 1)
     return true
   } else {
     return false
@@ -34,20 +38,21 @@ Auth.prototype.register = function (user, pass, invite) {
   if (this.invites.indexOf(invite) !== -1 && typeof this.passwords[user] === 'undefined') {
     Log.print(user + ' register with invitation: ' + invite + '.')
     this.deleteInvite(invite)
+    var token = this.genToken(user, pass)
     this.passwords[user] = {
       pass: pass,
-      token: this.genToken(user, pass)
+      token: [token]
     }
     this.savePasswords()
 
-    return this.passwords[user].token
+    return token
   } else {
     return false
   }
 }
 
 Auth.prototype.checkLogged = function (user, token) {
-  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token === token) {
+  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(token) !== -1) {
     return true
   } else {
     return false

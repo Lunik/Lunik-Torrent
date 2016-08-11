@@ -138,6 +138,12 @@ var App = {}
     this.v.$data.info = info
   }
 
+  _App.prototype.cleanPassword = function(){
+    this.v.$data.login.pass = ''
+    this.v.$data.register.pass = ''
+    this.v.$data.register.pass2 = ''
+  }
+
   _App.prototype.getLogin = function () {
     return {
       user: this.v.$data.login.user.toLowerCase(),
@@ -166,6 +172,7 @@ var App = {}
       dataType: 'json',
       success: function (data) {
         if (data.err) {
+          App.cleanPassword()
           $.notify.error({
             title: 'Error',
             text: data.err,
@@ -206,6 +213,7 @@ var App = {}
       dataType: 'json',
       success: function (data) {
         if (data.err) {
+          App.cleanPassword()
           $.notify.error({
             title: 'Error',
             text: data.err,
