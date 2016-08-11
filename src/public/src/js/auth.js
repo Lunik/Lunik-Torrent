@@ -140,14 +140,14 @@ var App = {}
 
   _App.prototype.getLogin = function () {
     return {
-      user: this.v.$data.login.user,
+      user: this.v.$data.login.user.toLowerCase(),
       pass: App.Crypto.SHA256(this.v.$data.login.pass).toString()
     }
   }
 
   _App.prototype.getRegister = function () {
     return {
-      user: this.v.$data.register.user,
+      user: this.v.$data.register.user.toLowerCase(),
       pass: App.Crypto.SHA256(this.v.$data.register.pass).toString(),
       pass2: App.Crypto.SHA256(this.v.$data.register.pass2).toString()
     }
