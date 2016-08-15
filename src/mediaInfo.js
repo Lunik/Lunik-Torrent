@@ -20,7 +20,9 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
         code: code
       }, function (err, data) {
         if (err) {
-          console.log(err)
+          callback({
+            err: err
+          })
         }
         callback({
           'type': 'series',
@@ -37,7 +39,9 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
         code: code
       }, function (err, data) {
         if (err) {
-          console.log(err)
+          callback({
+            err: err
+          })
         }
         callback({
           'type': 'films',
@@ -68,7 +72,9 @@ MediaInfo.prototype.search = function (type, query, callback) {
         filter: 'tvseries'
       }, function (err, data) {
         if (err) {
-          console.log(err)
+          callback({
+            err: err
+          })
         }
         if (data.feed.totalResults > 0) {
           // Maybe Change that
@@ -88,7 +94,9 @@ MediaInfo.prototype.search = function (type, query, callback) {
         filter: 'movie'
       }, function (err, data) {
         if (err) {
-          console.log(err)
+          callback({
+            err: err
+          })
         }
         if (data.feed.totalResults > 0) {
           self.getMediaInfo(query, type, data.feed.movie[0].code, callback)
@@ -115,6 +123,10 @@ MediaInfo.prototype.getInfo = function (type, query, callback) {
       self.search('tvseries', query, callback)
     } else if (type === 'films') {
       self.search('movie', query, callback)
+    } else {
+      callback({
+        err: 'Unknown type: ' + type
+      })
     }
   }, 1)
 }
