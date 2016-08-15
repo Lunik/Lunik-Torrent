@@ -1,7 +1,8 @@
-var Log = require('./log.js')
-var config = require('../configs/config.json')
-
+'use strict'
+var Path = require('path')
 var WebTorrent = require('webtorrent')
+
+var Log = require(Path.join(__base, 'src/log.js'))
 
 /**
  * Torrent Client.
@@ -33,10 +34,10 @@ Client.prototype.download = function (torrentLink) {
       self.client.destroy(function () {
         self.doneFunction(true, null, null)
       })
-    }, config.client.timeout)
+    }, __config.client.timeout)
     // download the torrent
     self.client.add(torrentLink, {
-      path: config.torrent.downloads
+      path: __config.torrent.downloads
     }, function (torrent) {
       clearTimeout(timeout)
       // On torrent start
@@ -47,7 +48,7 @@ Client.prototype.download = function (torrentLink) {
 
       self.torrent.on('download', function (chunkSize) {
         var currentTime = new Date().getTime()
-        if ((currentTime - self.timeout) > config.client.updateTimeout) {
+        if ((currentTime - self.timeout) > __config.client.updateTimeout) {
           // emit update function with torrent infos
           self.updateFunction(self.getTorrent())
           self.timeout = currentTime

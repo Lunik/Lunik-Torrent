@@ -1,9 +1,10 @@
-var Log = require('./log.js')
-var config = require('../configs/config.json')
-var Client = require('./client.js')
+'use strict'
 
 var fs = require('fs')
 var Path = require('path')
+
+var Log = require(Path.join(__base, 'src/log.js'))
+var Client = require(Path.join(__base, 'src/client.js'))
 
 /**
  * Torrent manager.
@@ -62,7 +63,7 @@ Torrent.prototype.start = function (url) {
               self.client[url].peer.stop()
               // Deplace les fichies
               Log.print(Path.join(config.torrent.downloads, name) + ' ' + Path.join(config.directory.path, name))
-              fs.renameSync(Path.join(config.torrent.downloads, name), Path.join(config.directory.path, name))
+              fs.renameSync(Path.join(__base, config.torrent.downloads, name), Path.join(__base, config.directory.path, name))
               // Defini l'owner
               if (self.dowloader[url]) {
                 self.Directory.setOwner(name, self.dowloader[url])

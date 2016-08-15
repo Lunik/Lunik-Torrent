@@ -1,15 +1,17 @@
+'use strict'
 // launch the server
 
-var path = require('path')
+var Path = require('path')
 
-global.__base = path.join(__dirname, '..', '/')
+global.__base = Path.join(__dirname, '..', '/')
 
-var Server = require(path.join(__base, 'src/server.js'))
-var Update = require(path.join(__base, 'src/update.js'))
-var Config = require(path.join(__base, 'src/config.js'))
-
+var Config = require(Path.join(__base, 'src/config.js'))
 var ConfigWorker = new Config()
-global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
+global.__config = ConfigWorker.load(Path.join(__base, 'configs/config.json'))
+
+var Server = require(Path.join(__base, 'src/server.js'))
+var Update = require(Path.join(__base, 'src/update.js'))
+
 
 // this function is called when you want the server to die gracefully
 // i.e. wait for existing connections
