@@ -165,7 +165,7 @@ Directory.prototype.isDownloading = function (file) {
 Directory.prototype.remove = function (file) {
   if (this.isDownloading(file)) return -1
   setTimeout(function () {
-    fs.stat(Path.join(__base, config.directory.path, file), function (err, stats) {
+    fs.stat(Path.join(__base, __config.directory.path, file), function (err, stats) {
       if (err) Log.print(err)
       if (stats) {
         if (stats.isDirectory()) {
@@ -281,19 +281,17 @@ Directory.prototype.saveFileInfo = function () {
  * @param {string} path - Directory to remove.
 */
 function removeRecursif (path) {
-  setTimeout(function () {
-    if (fs.existsSync(path)) {
-      fs.readdirSync(path).forEach(function (file, index) {
-        var curPath = Path.join(path, file)
-        if (fs.lstatSync(curPath).isDirectory()) { // recurse
-          removeRecursif(curPath)
-        } else { // delete file
-          fs.unlinkSync(curPath)
-        }
-      })
-      fs.rmdirSync(path)
-    }
-  }, 1)
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(function (file, index) {
+      var curPath = Path.join(path, file)
+      if (fs.lstatSync(curPath).isDirectory()) { // recurse
+        removeRecursif(curPath)
+      } else { // delete file
+        fs.unlinkSync(curPath)
+      }
+    })
+    fs.rmdirSync(path)
+  }
 }
 
 /**
