@@ -90,6 +90,7 @@ describe('Backend', function(){
   describe('MediaInfo', function(){
     var MediaInfo = require(path.join(__base, 'src/mediaInfo.js'))
     describe('GetInfo', function(){
+      this.timeout(10000)
       it('Type: series, Query: Game of thrones', function(done){
         MediaInfo.getInfo('series', 'Game of Thrones', function(res){
           assert.equal(res.query, 'Game of Thrones')
