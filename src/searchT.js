@@ -1,3 +1,5 @@
+'use strict'
+
 var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 

@@ -1,7 +1,9 @@
-var checkUpdate = require('check-update-github')
-var path = require('path')
+'use strict'
 
-var pkg = require(path.join(__dirname, '/../package.json'))
+var checkUpdate = require('check-update-github')
+var Path = require('path')
+
+var pkg = require(Path.join(__base, 'package.json'))
 
 checkUpdate({
   name: pkg.name,

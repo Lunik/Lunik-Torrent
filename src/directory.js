@@ -1,7 +1,9 @@
-var Log = require('./log.js')
-var config = require('../configs/config.json')
+'use strict'
+
 var fs = require('fs')
 var Path = require('path')
+
+var Log = require(Path.join(__base, 'src/log.js'))
 
 /**
  * Directory manager.
@@ -52,17 +54,17 @@ Directory.prototype.getDir = function (dir) {
 
   var list = {}
   var totalSize = 0
-  var files = fs.readdirSync(Path.join(config.directory.path, dir))
+  var files = fs.readdirSync(Path.join(__config.directory.path, dir))
 
   if (files.length > 0) {
     files.forEach(function (file) {
-      var stats = self.getInfo(Path.join(config.directory.path, dir, file))
+      var stats = self.getInfo(Path.join(__config.directory.path, dir, file))
       list[file] = stats
       totalSize += stats.size
     })
   }
 
-  var s = fs.statSync(Path.join(config.directory.path, dir))
+  var s = fs.statSync(Path.join(__config.directory.path, dir))
   return {
     'mtime': s.mtime,
     'totalSize': totalSize,
@@ -163,13 +165,13 @@ Directory.prototype.isDownloading = function (file) {
 Directory.prototype.remove = function (file) {
   if (this.isDownloading(file)) return -1
   setTimeout(function () {
-    fs.stat(Path.join(config.directory.path, file), function (err, stats) {
+    fs.stat(Path.join(__base, config.directory.path, file), function (err, stats) {
       if (err) Log.print(err)
       if (stats) {
         if (stats.isDirectory()) {
-          removeRecursif(Path.join(config.directory.path, file))
+          removeRecursif(Path.join(__base, __config.directory.path, file))
         } else {
-          fs.unlink(Path.join(config.directory.path, file), function (err) {
+          fs.unlink(Path.join(__base, __config.directory.path, file), function (err) {
             if (err) Log.print(err)
           })
         }
@@ -187,7 +189,7 @@ Directory.prototype.remove = function (file) {
 Directory.prototype.rename = function (path, oldname, newname) {
   if (this.isDownloading(path + oldname)) return -1
   setTimeout(function () {
-    fs.rename(Path.join(config.directory.path, path, oldname), Path.join(config.directory.path, path, newname), function (err) {
+    fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
       if (err) Log.print(err)
     })
   }, 1)
@@ -200,7 +202,7 @@ Directory.prototype.rename = function (path, oldname, newname) {
 */
 Directory.prototype.mkdir = function (path, name) {
   setTimeout(function () {
-    fs.mkdir(Path.join(config.directory.path, path, name), function (err) {
+    fs.mkdir(Path.join(__base, __config.directory.path, path, name), function (err) {
       if (err) Log.print(err)
     })
   }, 1)
@@ -215,7 +217,7 @@ Directory.prototype.mkdir = function (path, name) {
 Directory.prototype.mv = function (path, file, folder) {
   if (this.isDownloading(Path.join(path, file))) return -1
   setTimeout(function () {
-    fs.rename(Path.join(config.directory.path, path, file), Path.join(config.directory.path, path, folder, file), function (err) {
+    fs.rename(Path.join(__base, __config.directory.path, path, file), Path.join(__base, __config.directory.path, path, folder, file), function (err) {
       if (err) Log.print(err)
     })
   }, 1)

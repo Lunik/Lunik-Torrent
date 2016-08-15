@@ -1,9 +1,9 @@
-var config = require('../configs/config.json')
-var Log = require('./log.js')
-
+'use strict'
 var fs = require('fs')
 var portscanner = require('portscanner')
 var Path = require('path')
+
+var Log = require(Path.join(__base, 'src/log.js'))
 
 /**
  * File transfert server.
@@ -25,7 +25,7 @@ function FileTransfert (req, res, callback) {
  */
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
   setTimeout(function () {
-    var filename = Path.join(config.directory.path + req.query.f)
+    var filename = Path.join(__base, __config.directory.path + req.query.f)
     fs.stat(filename, function (err, stats) {
       if (err) {
         console.log(err)

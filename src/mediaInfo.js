@@ -1,3 +1,5 @@
+'use strict'
+
 var allocine = require('allocine-api')
 
 /**
