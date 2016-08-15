@@ -89,8 +89,8 @@ describe('Backend', function(){
   })
   describe('MediaInfo', function(){
     var MediaInfo = require(path.join(__base, 'src/mediaInfo.js'))
-    describe('GetInfo', function(){
-      this.timeout(10000)
+    describe('GetInfo()', function(){
+      this.timeout(30000)
       it('Type: series, Query: Game of thrones', function(done){
         MediaInfo.getInfo('series', 'Game of Thrones', function(res){
           assert.equal(res.query, 'Game of Thrones')
@@ -106,6 +106,32 @@ describe('Backend', function(){
       it('Type: movie, Query: Unknown', function(done){
         MediaInfo.getInfo('films', 'blbablabla', function(res){
           assert.typeOf(res.err, 'string')
+          done()
+        })
+      })
+    })
+  })
+  describe('SearchT', function(){
+    var SearchT = require(path.join(__base, 'src/searchT.js'))
+    describe('Search()', function(){
+      this.timeout(30000)
+      it('Search: Game of thrones', function(done){
+        SearchT.search('Game of Thrones', function(res){
+          assert.typeOf(res, 'object')
+          assert(res.tven)
+          assert(res.tvfr)
+          assert(res.mv)
+          done()
+        })
+      })
+    })
+    describe('Latest()', function(){
+      this.timeout(30000)
+      it('Get latest', function(done){
+        SearchT.latest(function(res){
+          assert.typeOf(res, 'object')
+          assert(res.tv)
+          assert(res.mv)
           done()
         })
       })
