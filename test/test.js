@@ -137,4 +137,41 @@ describe('Backend', function(){
       })
     })
   })
+  describe('Client', function(){
+    var Client = require(path.join(__base, 'src/client.js'))
+    var ClientWorker = new Client()
+    describe('On()', function(){
+      it('Add startFunction', function(done){
+        ClientWorker.on('start', function(hash){
+          assert.typeOf(hash, 'string')
+        })
+        done()
+      })
+      it('Add updateFunction', function(done){
+        ClientWorker.on('download', function(torrent){
+          assert.typeOf(torrent, 'object')
+          assert.typeOf(torrent.name, 'string')
+        })
+        done()
+      })
+      it('Add doneFunction', function(done){
+        ClientWorker.on('done', function(err, hash, name){
+          assert(!err)
+          assert.typeOf(hash, 'string')
+          assert.typeOf(name, 'string')
+        })
+        done()
+      })
+    })
+    describe('Dowload()', function(){
+      this.timeout(300000)
+      it('Dowload sintel', function(done){
+        ClientWorker.on('done', function(err, hash, name){
+          ClientWorker.stop()
+          done()
+        })
+        ClientWorker.download('magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
+      })
+    })
+  })
 })
