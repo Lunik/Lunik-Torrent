@@ -1,12 +1,14 @@
-var Log = require('./log.js')
-var config = require('../configs/config.json')
+'use strict'
 
 var fs = require('fs')
+var Path = require('path')
 var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
 
+var Log = require(Path.join(__base, 'src/log.js'))
+
 function Auth () {
-  this.passwords = require('../configs/passwords.json')
+  this.passwords = require(Path.join(__base, 'configs/passwords.json'))
   this.invites = []
 }
 
@@ -83,7 +85,7 @@ Auth.prototype.savePasswords = function () {
 }
 
 Auth.prototype.createInvite = function (inviteKey) {
-  if (inviteKey === config.server.invitationKey) {
+  if (inviteKey === __config.server.invitationKey) {
     var invite = this.genToken(Rand.rand(), Rand.rand())
     Log.print('Invite generated: ' + invite + '.')
     this.invites.push(invite)
