@@ -88,7 +88,7 @@ describe('Backend', function(){
     })
   })
   describe('MediaInfo', function(){
-    var MediaInfo = require(path.join(__base, 'src/mediainfo.js'))
+    var MediaInfo = require(path.join(__base, 'src/mediaInfo.js'))
     describe('GetInfo', function(){
       it('Type: series, Query: Game of thrones', function(done){
         MediaInfo.getInfo('series', 'Game of Thrones', function(res){
