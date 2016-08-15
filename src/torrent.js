@@ -32,14 +32,14 @@ Torrent.prototype.start = function (url) {
     // evite de lancer deux fois le meme torrent
     if (self.client[url] == null) {
       // Si trop de torrent en cours
-      if (Object.keys(self.client).length < config.torrent.max) {
+      if (Object.keys(self.client).length < __config.torrent.max) {
         if (self.client[url] == null) {
           self.client[url] = {count: 1}
         } else {
           self.client[url].count++
         }
 
-        if (self.client[url].count > config.client.maxTry) {
+        if (self.client[url].count > __config.client.maxTry) {
           return -1
         }
         var c = new Client()
@@ -62,8 +62,8 @@ Torrent.prototype.start = function (url) {
             if (!err) {
               self.client[url].peer.stop()
               // Deplace les fichies
-              Log.print(Path.join(config.torrent.downloads, name) + ' ' + Path.join(config.directory.path, name))
-              fs.renameSync(Path.join(__base, config.torrent.downloads, name), Path.join(__base, config.directory.path, name))
+              Log.print(Path.join(__config.torrent.downloads, name) + ' ' + Path.join(__config.directory.path, name))
+              fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
               // Defini l'owner
               if (self.dowloader[url]) {
                 self.Directory.setOwner(name, self.dowloader[url])
@@ -125,9 +125,9 @@ Torrent.prototype.getUrlFromHash = function (hash) {
  * @param {object} self - Torrent instance.
 */
 Torrent.prototype.startPointTorrent = function (self) {
-  var data = fs.readFileSync(config.torrent.scanTorrent, 'utf-8')
+  var data = fs.readFileSync(Path.join(__base, __config.torrent.scanTorrent), 'utf-8')
   var torrents = data.split('\n')
-  fs.writeFileSync(config.torrent.scanTorrent, '', 'utf-8')
+  fs.writeFileSync(Path.join(__base, __config.torrent.scanTorrent), '', 'utf-8')
   torrents.forEach(function (element) {
     if (element !== '') {
       self.start(element)
