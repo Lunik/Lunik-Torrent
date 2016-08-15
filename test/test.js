@@ -177,4 +177,73 @@ describe('Backend', function(){
       })
     })
   })
+  describe('Directory', function(){
+    var Directory = require(path.join(__base, 'src/directory.js'))
+    describe('saveFileInfo()', function(){
+      it('Save', function(done){
+        Directory.saveFileInfo()
+        done()
+      })
+    })
+    describe('Mkdir()', function(){
+      it('Create dir', function(done){
+        Directory.mkdir('/', 'ok'+rand.rand())
+        done()
+      })
+    })
+    describe('List()', function(){
+      it('Scan / ', function(done){
+        assert.typeOf(Directory.list('/'), 'object')
+        done()
+      })
+    })
+    describe('Mv()', function(){
+      it('Mv dir into dir', function(done){
+        var recip = 'ok'+rand.rand()
+        var dir = 'ok'+rand.rand()
+        Directory.mkdir('/', recip)
+        Directory.mkdir('/', dir)
+        Directory.mv('/', dir, recip)
+        done()
+      })
+    })
+    describe('Rename()', function(){
+      it('change dir name', function(done){
+        var dir = 'ok'+rand.rand()
+        var newname = 'ok'+rand.rand()
+        Directory.mkdir('/', dir)
+        Directory.rename('/', dir, newname)
+        done()
+      })
+    })
+    describe('SetOwner()', function(){
+      it('setOwner of dir', function(done){
+        var dir = 'ok'+rand.rand()
+        Directory.mkdir('/', dir)
+        Directory.setOwner(dir, 'test')
+        done()
+      })
+    })
+    describe('Remove()', function(){
+      it('remove dir', function(done){
+        var dir = 'ok'+rand.rand()
+        Directory.mkdir('/', dir)
+        Directory.remove(dir)
+        done()
+      })
+    })
+    describe('Downloading()', function(){
+      it('setDownloading', function(done){
+        var dir = 'ok'+rand.rand()
+        Directory.mkdir('/', dir)
+        Directory.setDownloading(dir)
+        Directory.finishDownloading(dir)
+        done()
+      })
+      it('updateDownloads', function(done){
+        Directory.updateDownloads()
+        done()
+      })
+    })
+  })
 })

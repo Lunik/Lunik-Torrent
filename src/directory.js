@@ -158,7 +158,7 @@ Directory.prototype.isDownloading = function (file) {
 */
 Directory.prototype.remove = function (file) {
   if (this.isDownloading(file)) return -1
-  fs.stat(Path.join(__base, config.directory.path, file), function (err, stats) {
+  fs.stat(Path.join(__base, __config.directory.path, file), function (err, stats) {
     if (err) Log.print(err)
     if (stats) {
       if (stats.isDirectory()) {
