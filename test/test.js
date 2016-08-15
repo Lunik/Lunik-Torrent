@@ -75,5 +75,16 @@ describe('Backend', function(){
         done()
       })
     })
+    describe('CheckLogged()', function(){
+      it('User: foo', function(done){
+        var token = Auth.login(username, 'bar')
+        assert(Auth.checkLogged(username, token))
+        done()
+      })
+      it('User: Unknown', function(done){
+        assert(!Auth.checkLogged(username2, ''))
+        done()
+      })
+    })
   })
 })
