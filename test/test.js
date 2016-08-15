@@ -87,4 +87,27 @@ describe('Backend', function(){
       })
     })
   })
+  describe('MediaInfo', function(){
+    var MediaInfo = require(path.join(__base, 'src/mediainfo.js'))
+    describe('GetInfo', function(){
+      it('Type: series, Query: Game of thrones', function(done){
+        MediaInfo.getInfo('series', 'Game of Thrones', function(res){
+          assert.equal(res.query, 'Game of Thrones')
+          done()
+        })
+      })
+      it('Type: movie, Query: Alien', function(done){
+        MediaInfo.getInfo('films', 'Alien', function(res){
+          assert.equal(res.query, 'Alien')
+          done()
+        })
+      })
+      it('Type: movie, Query: Unknown', function(done){
+        MediaInfo.getInfo('films', 'blbablabla', function(res){
+          assert.typeOf(res.err, 'string')
+          done()
+        })
+      })
+    })
+  })
 })
