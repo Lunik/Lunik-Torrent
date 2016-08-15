@@ -5,7 +5,10 @@ var fs = require('fs')
 var rand = require('crypto-rand')
 
 global.__base = path.join(__dirname, '..', '/')
-global.__config = require(path.join(__base, 'configs/config.json'))
+
+var Config = require(path.join(__base, 'src/config.js'))
+var ConfigWorker = new Config()
+global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
 
 var assert = require('chai').assert
 
