@@ -261,7 +261,7 @@ describe('Backend', function () {
           Torrent.startPointTorrent(Torrent)
           setTimeout(function(){
             done()
-          }, 120000)
+          }, 60000)
         })
       })
     })
