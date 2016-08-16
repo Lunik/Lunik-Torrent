@@ -15,7 +15,7 @@ var assert = require('chai').assert
 describe('Fontend', function () {})
 
 describe('Backend', function () {
-  /*describe('Auth', function(){
+  describe('Auth', function(){
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()
 
@@ -246,7 +246,7 @@ describe('Backend', function () {
         done()
       })
     })
-  })*/
+  })
   describe('torrent', function () {
     var Torrent = require(path.join(__base, 'src/torrent.js'))
     describe('Start()', function () {
