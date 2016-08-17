@@ -10,13 +10,14 @@ global.__base = path.join(__dirname, '..', '/')
 var Config = require(path.join(__base, 'src/config.js'))
 var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
+global.__config.server.port = process.env.PORT || global.__config.server.port
 
 var assert = require('chai').assert
 
 describe('Fontend', function () {})
 
-describe('Backend', function () { 
-  /*describe('Auth', function(){
+describe('Backend', function () {
+  describe('Auth', function(){
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()
 
@@ -280,7 +281,7 @@ describe('Backend', function () {
           }, 10000)
       })
     })
-  })*/
+  })
   describe('Server', function () {
     var Server = require(path.join(__base, 'src/server.js'))
     var url = 'http://localhost:' + __config.server.port + '/'
