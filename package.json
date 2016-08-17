@@ -33,10 +33,10 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "crypto-rand": "0.0.2",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
-    "nodemon": "^1.10.0"
+    "nodemon": "^1.10.0",
+    "request": "^2.74.0"
   },
   "standard": {
     "ignore": [

@@ -253,7 +253,7 @@ function Server () {
       var data = {
         user: req.body.user || req.cookies.user,
         pass: req.body.pass,
-        token: req.cookies.token,
+        token: req.body.token || req.cookies.token,
         invite: req.body.invite,
         invitationKey: req.body.invitationkey
       }

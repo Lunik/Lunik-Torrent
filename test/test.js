@@ -3,6 +3,7 @@
 var path = require('path')
 var fs = require('fs')
 var rand = require('crypto-rand')
+var request = require('request')
 
 global.__base = path.join(__dirname, '..', '/')
 
@@ -14,7 +15,7 @@ var assert = require('chai').assert
 
 describe('Fontend', function () {})
 
-describe('Backend', function () {
+describe('Backend', function () { 
   describe('Auth', function(){
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()
@@ -277,6 +278,76 @@ describe('Backend', function () {
             Torrent.remove('6a9759bffd5c0af65319979fb7832189f4f3c35d')
             done()
           }, 10000)
+      })
+    })
+  })
+  describe('Server', function () {
+    var Server = require(path.join(__base, 'src/server.js'))
+    var url = 'http://localhost:' + __config.server.port + '/'
+    var user = 'test' + rand.rand()
+    describe('POST and GET Auth', function () {
+      it('get / without login', function (done) {
+        request(url, function (err, res, body) {
+          if (!err && res.statusCode == 200) {
+            assert(body.match('<title>Login - Lunik - Torrent</title>'))
+          }
+          done()
+        })
+      })
+      it('gentoken + register + login', function (done) {
+        // gentoken
+        request.post({
+          url: url + 'auth?todo=invite',
+          form: {
+            invitationkey: __config.server.invitationKey
+          }
+        }, function (err, res, body) {
+          if (!err && res.statusCode == 200) {
+            var invite = JSON.parse(body).invitationCode
+            assert(invite)
+            // register
+            request.post({
+              url: url + 'auth?todo=register',
+              form: {
+                user: user,
+                pass: 'test',
+                invite: invite
+              }
+            }, function (err, res, body) {
+              if (!err && res.statusCode == 200) {
+                var token = JSON.parse(body).token
+                assert(token)
+                // login
+                request.post({
+                  url: url + 'auth?todo=login',
+                  form: {
+                    user: user,
+                    pass: 'test'
+                  }
+                }, function (err, res, body) {
+                  if (!err && res.statusCode == 200) {
+                    var token = JSON.parse(body).token
+                    assert(token)
+                    // login
+                    request.post({
+                      url: url + 'auth?todo=logout',
+                      form: {
+                        user: user,
+                        token: token
+                      }
+                    }, function (err, res, body) {
+                      if (!err && res.statusCode == 200) {
+                        var err = JSON.parse(body).err
+                        assert(!err)
+                        done()
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
       })
     })
   })
