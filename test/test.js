@@ -16,7 +16,7 @@ var assert = require('chai').assert
 
 describe('Fontend', function () {})
 
-describe('Backend', function () {
+describe('Backend', function () { 
   describe('Auth', function () {
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()
@@ -284,11 +284,13 @@ describe('Backend', function () {
   })
   describe('Server', function () {
     var Server = require(path.join(__base, 'src/server.js'))
-    var url = 'http://localhost:' + __config.server.port + '/'
+    var url = 'http://localhost:' + __config.server.port
     var user = 'test' + rand.rand()
+    var pass = 'test'
     describe('POST and GET Auth', function () {
       it('get / without login', function (done) {
         request(url, function (err, res, body) {
+          assert(!err)
           if (!err && res.statusCode == 200) {
             assert(body.match('<title>Login - Lunik - Torrent</title>'))
           }
@@ -298,45 +300,49 @@ describe('Backend', function () {
       it('gentoken + register + login', function (done) {
         // gentoken
         request.post({
-          url: url + 'auth?todo=invite',
+          url: url + '/auth?todo=invite',
           form: {
             invitationkey: __config.server.invitationKey
           }
         }, function (err, res, body) {
+          assert(!err)
           if (!err && res.statusCode == 200) {
             var invite = JSON.parse(body).invitationCode
             assert(invite)
             // register
             request.post({
-              url: url + 'auth?todo=register',
+              url: url + '/auth?todo=register',
               form: {
                 user: user,
-                pass: 'test',
+                pass: pass,
                 invite: invite
               }
             }, function (err, res, body) {
+              assert(!err)
               if (!err && res.statusCode == 200) {
                 var token = JSON.parse(body).token
                 assert(token)
                 // login
                 request.post({
-                  url: url + 'auth?todo=login',
+                  url: url + '/auth?todo=login',
                   form: {
                     user: user,
-                    pass: 'test'
+                    pass: pass
                   }
                 }, function (err, res, body) {
+                  assert(!err)
                   if (!err && res.statusCode == 200) {
                     var token = JSON.parse(body).token
                     assert(token)
-                    // login
+                    // logout
                     request.post({
-                      url: url + 'auth?todo=logout',
+                      url: url + '/auth?todo=logout',
                       form: {
                         user: user,
                         token: token
                       }
                     }, function (err, res, body) {
+                      assert(!err)
                       if (!err && res.statusCode == 200) {
                         var err = JSON.parse(body).err
                         assert(!err)
@@ -350,6 +356,117 @@ describe('Backend', function () {
           }
         })
       })
+      it('GET /files', function (done) {
+        Auth(url, user, pass, function (token) {
+          var file = 'ok' + rand.rand()
+          var r = rand.rand()
+          fs.writeFile(path.join(__base, __config.directory.path, file), r , function () {
+            request.get({
+              url: url + '/files?f=' + file,
+              headers: {
+                Cookie: 'user=' + user + ';token=' + token
+              }
+            }, function (err, res, body) {
+              assert(!err)
+              if (!err && res.statusCode == 200) {
+                assert.equal(body, r)
+                assert(!JSON.parse(body).err)
+                done()
+              }
+            })
+          })
+        })
+      })
+      it('POST download-t && remove-t', function (done) {
+        this.timeout(30000)
+        Auth(url, user, pass, function (token) {
+          request.post({
+            url: url + '/download-t',
+            headers: {
+              Cookie: 'user=' + user + ';token=' + token
+            },
+            form: {
+              url: 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
+            }
+          }, function (err, res, body) {
+            if (!err && res.statusCode == 200) {
+              body = JSON.parse(body)
+              assert(!body.err)
+              request.post({
+                url: url + '/remove-t',
+                headers: {
+                  Cookie: 'user=' + user + ';token=' + token
+                },
+                form: {
+                  hash: '6a9759bffd5c0af65319979fb7832189f4f3c35d'
+                }
+              }, function (err, res, body) {
+                if (!err && res.statusCode == 200) {
+                  body = JSON.parse(body)
+                  assert.equal(body.hash, '6a9759bffd5c0af65319979fb7832189f4f3c35d')
+                  assert(!body.err)
+                  done()
+                }
+              })
+            }
+          })
+        })
+      })
+      it('POST List-t', function (done) {
+        Auth(url, user, pass, function (token) {
+          request.post({
+            url: url + '/list-t',
+            headers: {
+              Cookie: 'user=' + user + ';token=' + token
+            }
+          }, function (err, res, body) {
+            if (!err && res.statusCode == 200) {
+              body = JSON.parse(body)
+              assert(!body.err)
+              assert.typeOf(body, 'object')
+              done()
+            }
+          })
+        })
+      })
+      it('POST List-d', function (done) {
+        Auth(url, user, pass, function (token) {
+          var dir = 'ok' + rand.rand()
+          fs.mkdir(path.join(__base, __config.directory.path, dir), function () {
+            request.post({
+              url: url + '/list-d',
+              headers: {
+                Cookie: 'user=' + user + ';token=' + token
+              },
+              form: {
+                dir: dir
+              }
+            }, function (err, res, body) {
+              if (!err && res.statusCode == 200) {
+                body = JSON.parse(body)
+                assert(!body.err)
+                assert.typeOf(body, 'object')
+                done()
+              }
+            })
+          })
+        })
+      })
     })
   })
 })
+
+function Auth (url, user, pass, cb) {
+  request.post({
+    url: url + '/auth?todo=login',
+    form: {
+      user: user,
+      pass: pass
+    }
+  }, function (err, res, body) {
+    if (!err && res.statusCode == 200) {
+      var token = JSON.parse(body).token
+      cb(token)
+    }
+  })
+}
