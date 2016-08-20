@@ -38,6 +38,8 @@ You need an inscription code provided by the server admin.
 
 ##### Create an invitation code
 ```
+$ ./scripts/getinvite.sh
+OR
 $ curl --data "invitationKey=mykey" http://localhost:5000/auth?todo=invite
 {
   "err":false,
