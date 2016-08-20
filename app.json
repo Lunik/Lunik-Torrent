@@ -7,7 +7,6 @@
   "env": {
     "INVITATION_CODE": {
       "description": "The code to generate invitaion key.",
-      "generator": "secret",
       "required": true
     }
   }
