@@ -15,7 +15,7 @@ function Auth () {
 Auth.prototype.login = function (user, pass) {
   if (this.passwords[user] && this.passwords[user].pass === pass) {
     Log.print(user + ' login.')
-    if(typeof this.passwords[user].token === 'undefined'){
+    if (typeof this.passwords[user].token === 'undefined') {
       this.passwords[user].token = []
     }
     var token = this.genToken(user, pass)
@@ -71,17 +71,15 @@ Auth.prototype.genToken = function (user, pass) {
 */
 Auth.prototype.savePasswords = function () {
   var self = this
-  setTimeout(function () {
-    var passwords = JSON.parse(JSON.stringify(self.passwords))
-    for (var user in passwords) {
-      if (passwords[user].token) {
-        delete passwords[user].token
-      }
+  var passwords = JSON.parse(JSON.stringify(self.passwords))
+  for (var user in passwords) {
+    if (passwords[user].token) {
+      delete passwords[user].token
     }
-    fs.writeFile('configs/passwords.json', JSON.stringify(passwords), function (err) {
-      if (err) console.log(err)
-    })
-  }, 1)
+  }
+  fs.writeFile('configs/passwords.json', JSON.stringify(passwords), function (err) {
+    if (err) console.log(err)
+  })
 }
 
 Auth.prototype.createInvite = function (inviteKey) {

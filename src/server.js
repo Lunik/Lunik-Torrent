@@ -229,7 +229,9 @@ function Server () {
         res.end(JSON.stringify(data))
       })
     } else {
-      res.end()
+      res.end(JSON.stringify({
+        err: 'Type or query not set.'
+      }))
     }
   })
 
@@ -237,13 +239,11 @@ function Server () {
   this.app.get('/lock-d', function (req, res) {
     if (req.query.f) {
       req.query.f = req.query.f.replace(/%20/g, ' ')
-      if (Directory.isDownloading(req.query.f)) {
-        res.end(Directory.isDownloading(req.query.f).toString())
-      } else {
-        res.end('false')
-      }
+      res.end(Directory.isDownloading(req.query.f).toString())
     } else {
-      res.end()
+      res.end(JSON.stringify({
+        err: 'File not set.'
+      }))
     }
   })
 
@@ -253,7 +253,7 @@ function Server () {
       var data = {
         user: req.body.user || req.cookies.user,
         pass: req.body.pass,
-        token: req.cookies.token,
+        token: req.body.token || req.cookies.token,
         invite: req.body.invite,
         invitationKey: req.body.invitationkey
       }

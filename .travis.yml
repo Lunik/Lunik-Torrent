@@ -15,6 +15,8 @@ cache:
   directories:
   - "$(pwd)/node_modules"
   - "$(pwd)/src/public/src/bower_components"
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: npm
   email: guillaume.lunik@gmail.com
