@@ -145,7 +145,7 @@
         window.open('files/?f=' + document.location.hash.substring(1) + file.name)
       })
       .on('click', '#rename', function () {
-        self.rename(file.name)
+        self.rename(file.name, file.isdir)
       })
       .on('click', '#remove', function () {
         self.remove(file.name)
@@ -168,12 +168,12 @@
    * Prompt and rename a file
    * @param {string} fileName - The name of the file
   */
-  _Directory.prototype.rename = function (fileName) {
+  _Directory.prototype.rename = function (fileName, dir) {
     var self = this
     App.Loading.show('action')
     var oldname = fileName.split('.')
     var extension
-    if (oldname.length > 1) {
+    if (oldname.length > 1 && !dir) {
       extension = oldname.pop()
       extension = extension.length > 0 ? '.' + extension : ''
     } else {
@@ -181,8 +181,8 @@
     }
     var name = prompt('New name for: ' + oldname.join(' '), oldname.join(' '))
     if (name) {
-      name = name.split('/').pop() + extension
       name = name.trim()
+      name = name.split('/').pop() + extension
       $.ajax({
         type: 'post',
         url: '/rename-d',
