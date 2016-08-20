@@ -133,7 +133,7 @@ Directory.prototype.updateDownloads = function () {
   var self = this
   var curDate = new Date()
   for (var key in self.fileInfo) {
-    if (self.fileInfo[key].downloading) {
+    if (self.fileInfo[key] && self.fileInfo[key].downloading) {
       // if downloading for more than 1 hour remove
       if (curDate - self.fileInfo[key].downloading.date > 3600000) {
         delete self.fileInfo[key].downloading
@@ -179,9 +179,20 @@ Directory.prototype.remove = function (file) {
  * @param {string} newname - File new name.
 */
 Directory.prototype.rename = function (path, oldname, newname) {
+  var self = this
   if (this.isDownloading(path + oldname)) return -1
   fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
     if (err) Log.print(err)
+    var oldfile = Path.join(path, oldname)
+    oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
+
+    var newfile = Path.join(path, newname)
+    newfile = newfile[0] === '/' ? newfile.substring(1) : newfile
+
+    self.fileInfo[newfile] = self.fileInfo[oldfile]
+    delete self.fileInfo[oldfile]
+
+    self.saveFileInfo()
   })
 }
 
@@ -233,7 +244,6 @@ Directory.prototype.loadFileInfo = function () {
   var self = this
   fs.readFile('configs/fileInfo.json', function (err, data) {
     if (err) {
-      console.log(err)
       self.fileInfo = {}
       self.saveFileInfo()
     } else {
@@ -251,9 +261,13 @@ Directory.prototype.loadFileInfo = function () {
 */
 Directory.prototype.saveFileInfo = function () {
   var self = this
-  fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
-    if (err) console.log(err)
-  })
+  if(!self.saving){
+    self.saving = true
+    fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
+      if (err) console.log(err)
+      self.saving = false
+    })
+  }
 }
 
 /**
