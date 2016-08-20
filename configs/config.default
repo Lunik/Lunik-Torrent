@@ -10,7 +10,7 @@
   },
   "server": {
     "port": 80,
-    "invitationKey": "mykey"
+    "invitationKey": "MY_KEY"
   },
   "directory": {
     "path": "files/"
