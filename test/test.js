@@ -346,8 +346,8 @@ describe('Backend', function () {
                       if (!err && res.statusCode == 200) {
                         var err = JSON.parse(body).err
                         assert(!err)
-                        done()
                       }
+                      done()
                     })
                   }
                 })
@@ -360,7 +360,8 @@ describe('Backend', function () {
         Auth(url, user, pass, function (token) {
           var file = 'ok' + rand.rand()
           var r = rand.rand()
-          fs.writeFile(path.join(__base, __config.directory.path, file), r , function () {
+          fs.writeFile(path.join(__base, __config.directory.path, file), r , function (err) {
+            assert(!err)
             request.get({
               url: url + '/files?f=' + file,
               headers: {
@@ -371,6 +372,214 @@ describe('Backend', function () {
               if (!err && res.statusCode == 200) {
                 assert.equal(body, r)
                 assert(!JSON.parse(body).err)
+              }
+              done()
+            })
+          })
+        })
+      })
+      it('POST List-t', function (done) {
+        Auth(url, user, pass, function (token) {
+          request.post({
+            url: url + '/list-t',
+            headers: {
+              Cookie: 'user=' + user + ';token=' + token
+            }
+          }, function (err, res, body) {
+            if (!err && res.statusCode == 200) {
+              body = JSON.parse(body)
+              assert(!body.err)
+              assert.typeOf(body, 'object')
+            }
+            done()
+          })
+        })
+      })
+      it('POST List-d', function (done) {
+        Auth(url, user, pass, function (token) {
+          var dir = 'ok' + rand.rand()
+          fs.mkdir(path.join(__base, __config.directory.path, dir), function (err) {
+            assert(!err)
+            request.post({
+              url: url + '/list-d',
+              headers: {
+                Cookie: 'user=' + user + ';token=' + token
+              },
+              form: {
+                dir: dir
+              }
+            }, function (err, res, body) {
+              if (!err && res.statusCode == 200) {
+                body = JSON.parse(body)
+                assert(!body.err)
+                assert.typeOf(body, 'object')
+              }
+              done()
+            })
+          })
+        })
+      })
+      it('POST remove-d', function (done) {
+        Auth(url, user, pass, function (token) {
+          var file = 'ok' + rand.rand()
+          fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
+            assert(!err)
+            request.post({
+              url: url + '/remove-d',
+              headers: {
+                Cookie: 'user=' + user + ';token=' + token
+              },
+              form: {
+                file: file
+              }
+            }, function (err, res, body) {
+              if (!err && res.statusCode == 200) {
+                body = JSON.parse(body)
+                assert(!body.err)
+                assert.equal(body.file, file)
+                done()
+              }
+            })
+          })
+        })
+      })
+      it('POST rename-d', function (done) {
+        Auth(url, user, pass, function (token) {
+          var file = 'ok' + rand.rand()
+          var file2 = 'ok' + rand.rand()
+          fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
+            assert(!err)
+            request.post({
+              url: url + '/rename-d',
+              headers: {
+                Cookie: 'user=' + user + ';token=' + token
+              },
+              form: {
+                path: '/',
+                oldname: file,
+                newname: file2
+              }
+            }, function (err, res, body) {
+              if (!err && res.statusCode == 200) {
+                body = JSON.parse(body)
+                assert(!body.err)
+                assert.equal(body.oldname, file)
+                assert.equal(body.newname, file2)
+                done()
+              }
+            })
+          })
+        })
+      })
+      it('POST mdkir-d', function (done) {
+        Auth(url, user, pass, function (token) {
+          var dir = 'ok' + rand.rand()
+          request.post({
+            url: url + '/mkdir-d',
+            headers: {
+              Cookie: 'user=' + user + ';token=' + token
+            },
+            form: {
+              path: '/',
+              name: dir
+            }
+          }, function (err, res, body) {
+            if (!err && res.statusCode == 200) {
+              body = JSON.parse(body)
+              assert(!body.err)
+              assert.equal(body.name, dir)
+              done()
+            }
+          })
+        })
+      })
+      it('POST mdkir-d', function (done) {
+        Auth(url, user, pass, function (token) {
+          var dir = 'ok' + rand.rand()
+          var file = 'ok' + rand.rand()
+          fs.mkdir(path.join(__base, __config.directory.path, dir), function (err) {
+            assert(!err)
+            fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
+              assert(!err)
+              request.post({
+                url: url + '/mv-d',
+                headers: {
+                  Cookie: 'user=' + user + ';token=' + token
+                },
+                form: {
+                  path: '/',
+                  file: file,
+                  folder: dir
+                }
+              }, function (err, res, body) {
+                if (!err && res.statusCode == 200) {
+                  body = JSON.parse(body)
+                  assert(!body.err)
+                  assert.equal(body.file, file)
+                  done()
+                }
+              })
+            })
+          })
+        })
+      })
+      it('POST search-t', function (done) {
+        this.timeout(30000)
+        Auth(url, user, pass, function (token) {
+          request.post({
+            url: url + '/search-t',
+            headers: {
+              Cookie: 'user=' + user + ';token=' + token
+            },
+            form: {
+              query: 'Game of Thrones'
+            }
+          }, function (err, res, body) {
+            if (!err && res.statusCode == 200) {
+              body = JSON.parse(body)
+              assert(!body.err)
+              assert.typeOf(body, 'object')
+              done()
+            }
+          })
+        })
+      })
+      it('POST info-d', function (done) {
+        this.timeout(30000)
+        Auth(url, user, pass, function (token) {
+          request.post({
+            url: url + '/info-d',
+            headers: {
+              Cookie: 'user=' + user + ';token=' + token
+            },
+            form: {
+              type: 'series',
+              query: 'Game of Thrones'
+            }
+          }, function (err, res, body) {
+            if (!err && res.statusCode == 200) {
+              body = JSON.parse(body)
+              assert(!body.err)
+              assert.typeOf(body, 'object')
+              done()
+            }
+          })
+        })
+      })
+      it('GET lock-d', function (done) {
+        var file = 'ok' + rand.rand()
+        Auth(url, user, pass, function (token) {
+          fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
+            assert(!err)
+            request.get({
+              url: url + '/lock-d?f='+file,
+              headers: {
+                Cookie: 'user=' + user + ';token=' + token
+              }
+            }, function (err, res, body) {
+              if (!err && res.statusCode == 200) {
+                body = JSON.parse(body)
+                assert(!body.err)
                 done()
               }
             })
@@ -405,50 +614,10 @@ describe('Backend', function () {
                   body = JSON.parse(body)
                   assert.equal(body.hash, '6a9759bffd5c0af65319979fb7832189f4f3c35d')
                   assert(!body.err)
-                  done()
                 }
+                done()
               })
             }
-          })
-        })
-      })
-      it('POST List-t', function (done) {
-        Auth(url, user, pass, function (token) {
-          request.post({
-            url: url + '/list-t',
-            headers: {
-              Cookie: 'user=' + user + ';token=' + token
-            }
-          }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
-              body = JSON.parse(body)
-              assert(!body.err)
-              assert.typeOf(body, 'object')
-              done()
-            }
-          })
-        })
-      })
-      it('POST List-d', function (done) {
-        Auth(url, user, pass, function (token) {
-          var dir = 'ok' + rand.rand()
-          fs.mkdir(path.join(__base, __config.directory.path, dir), function () {
-            request.post({
-              url: url + '/list-d',
-              headers: {
-                Cookie: 'user=' + user + ';token=' + token
-              },
-              form: {
-                dir: dir
-              }
-            }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
-                body = JSON.parse(body)
-                assert(!body.err)
-                assert.typeOf(body, 'object')
-                done()
-              }
-            })
           })
         })
       })
