@@ -40,6 +40,7 @@
         dataType: 'json',
         success: function (data) {
           if (!data.err) {
+            data.rating = Math.floor(data.rating * 100) / 100 + '/5'
             self.vue.$data.info = data
             App.Storage.storeData(data.query.toLowerCase(), data)
 
