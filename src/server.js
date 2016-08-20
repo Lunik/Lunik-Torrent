@@ -229,9 +229,9 @@ function Server () {
         res.end(JSON.stringify(data))
       })
     } else {
-      res.end({
+      res.end(JSON.stringify({
         err: 'Type or query not set.'
-      })
+      }))
     }
   })
 
@@ -245,7 +245,9 @@ function Server () {
         res.end('false')
       }
     } else {
-      res.end()
+      res.end(JSON.stringify({
+        err: 'File not set.'
+      }))
     }
   })
 
