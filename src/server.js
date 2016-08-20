@@ -239,11 +239,7 @@ function Server () {
   this.app.get('/lock-d', function (req, res) {
     if (req.query.f) {
       req.query.f = req.query.f.replace(/%20/g, ' ')
-      if (Directory.isDownloading(req.query.f)) {
-        res.end(Directory.isDownloading(req.query.f).toString())
-      } else {
-        res.end('false')
-      }
+      res.end(Directory.isDownloading(req.query.f).toString())
     } else {
       res.end(JSON.stringify({
         err: 'File not set.'
