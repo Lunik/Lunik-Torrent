@@ -20,6 +20,7 @@ Auth.prototype.login = function (user, pass) {
     }
     var token = this.genToken(user, pass)
     this.passwords[user].token.push(token)
+    this.savePasswords()
     return token
   } else {
     return false
@@ -72,11 +73,6 @@ Auth.prototype.genToken = function (user, pass) {
 Auth.prototype.savePasswords = function () {
   var self = this
   var passwords = JSON.parse(JSON.stringify(self.passwords))
-  for (var user in passwords) {
-    if (passwords[user].token) {
-      delete passwords[user].token
-    }
-  }
   fs.writeFile('configs/passwords.json', JSON.stringify(passwords), function (err) {
     if (err) console.log(err)
   })
