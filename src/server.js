@@ -229,7 +229,9 @@ function Server () {
         res.end(JSON.stringify(data))
       })
     } else {
-      res.end()
+      res.end({
+        err: 'Type or query not set.'
+      })
     }
   })
 
