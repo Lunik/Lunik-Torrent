@@ -1,7 +1,8 @@
-var Log = require('./log.js')
-var config = require('../configs/config.json')
-
+'use strict'
+var Path = require('path')
 var WebTorrent = require('webtorrent')
+
+var Log = require(Path.join(__base, 'src/log.js'))
 
 /**
  * Torrent Client.
@@ -25,52 +26,50 @@ function Client () {
 Client.prototype.download = function (torrentLink) {
   var self = this
 
-  setTimeout(function () {
-    self.torrentLink = torrentLink
-    Log.echo('Start: ' + torrentLink)
+  self.torrentLink = torrentLink
+  Log.echo('Start: ' + torrentLink)
 
-    var timeout = setTimeout(function () {
-      self.client.destroy(function () {
-        self.doneFunction(true, null, null)
-      })
-    }, config.client.timeout)
-    // download the torrent
-    self.client.add(torrentLink, {
-      path: config.torrent.downloads
-    }, function (torrent) {
-      clearTimeout(timeout)
-      // On torrent start
-      self.torrent = torrent
-      Log.print('Start torrent: ' + self.torrent.name)
-      // emit start function with infoHash
-      self.startFunction(torrent.infoHash)
-
-      self.torrent.on('download', function (chunkSize) {
-        var currentTime = new Date().getTime()
-        if ((currentTime - self.timeout) > config.client.updateTimeout) {
-          // emit update function with torrent infos
-          self.updateFunction(self.getTorrent())
-          self.timeout = currentTime
-        }
-      })
-
-      self.torrent.on('done', function () {
-        Log.print('Finish torrent: ' + self.torrent.name)
-        // emit done function with torrent hash and name
-        self.doneFunction(false, self.torrent.infoHash, self.torrent.name)
-      })
-
-      self.torrent.on('noPeers', function () {
-        Log.print('No peers: ' + self.torrent.name)
-        // emit done function with torrent hash and name
-        self.doneFunction(false, self.torrent.infoHash, self.torrent.name)
-      })
-
-      self.torrent.on('error', function (err) {
-        Log.print('Error: ' + err)
-      })
+  var timeout = setTimeout(function () {
+    self.client.destroy(function () {
+      self.doneFunction(true, null, null)
     })
-  }, 1)
+  }, __config.client.timeout)
+  // download the torrent
+  self.client.add(torrentLink, {
+    path: __config.torrent.downloads
+  }, function (torrent) {
+    clearTimeout(timeout)
+    // On torrent start
+    self.torrent = torrent
+    Log.print('Start torrent: ' + self.torrent.name)
+    // emit start function with infoHash
+    self.startFunction(torrent.infoHash)
+
+    self.torrent.on('download', function (chunkSize) {
+      var currentTime = new Date().getTime()
+      if ((currentTime - self.timeout) > __config.client.updateTimeout) {
+        // emit update function with torrent infos
+        self.updateFunction(self.getTorrent())
+        self.timeout = currentTime
+      }
+    })
+
+    self.torrent.on('done', function () {
+      Log.print('Finish torrent: ' + self.torrent.name)
+      // emit done function with torrent hash and name
+      self.doneFunction(false, self.torrent.infoHash, self.torrent.name)
+    })
+
+    self.torrent.on('noPeers', function () {
+      Log.print('No peers: ' + self.torrent.name)
+      // emit done function with torrent hash and name
+      self.doneFunction(false, self.torrent.infoHash, self.torrent.name)
+    })
+
+    self.torrent.on('error', function (err) {
+      Log.print('Error: ' + err)
+    })
+  })
 }
 
 /**

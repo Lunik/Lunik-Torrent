@@ -1,11 +1,4 @@
-var Log = require('./log.js')
-var Torrent = require('./torrent.js')
-var Directory = require('./directory.js')
-var config = require('../configs/config.json')
-var FileTransfert = require('./filetransfert.js')
-var Auth = require('./auth.js')
-
-Torrent.Directory = Directory
+'use strict'
 
 var express = require('express')
 var compression = require('compression')
@@ -15,6 +8,14 @@ var cookieParser = require('cookie-parser')
 var Path = require('path')
 
 http.globalAgent.maxSockets = Infinity
+
+var Log = require(Path.join(__base, 'src/log.js'))
+var Torrent = require(Path.join(__base, 'src/torrent.js'))
+var Directory = require(Path.join(__base, 'src/directory.js'))
+var FileTransfert = require(Path.join(__base, 'src/filetransfert.js'))
+var Auth = require(Path.join(__base, 'src/auth.js'))
+
+Torrent.Directory = Directory
 
 /**
  * Deserve http requests.
@@ -43,10 +44,10 @@ function Server () {
       }
     }
   })
-  this.app.use(express.static(Path.join(__dirname, '/public')))
+  this.app.use(express.static(Path.join(__base, 'src/public')))
 
   this.server = http.createServer(this.app)
-  var port = process.env.PORT || config.server.port
+  var port = process.env.PORT || __config.server.port
   this.server.listen(port, function () {
     Log.print('Server listening at port ' + port)
   })
@@ -228,7 +229,9 @@ function Server () {
         res.end(JSON.stringify(data))
       })
     } else {
-      res.end()
+      res.end(JSON.stringify({
+        err: 'Type or query not set.'
+      }))
     }
   })
 
@@ -236,13 +239,11 @@ function Server () {
   this.app.get('/lock-d', function (req, res) {
     if (req.query.f) {
       req.query.f = req.query.f.replace(/%20/g, ' ')
-      if (Directory.isDownloading(req.query.f)) {
-        res.end(Directory.isDownloading(req.query.f).toString())
-      } else {
-        res.end('false')
-      }
+      res.end(Directory.isDownloading(req.query.f).toString())
     } else {
-      res.end()
+      res.end(JSON.stringify({
+        err: 'File not set.'
+      }))
     }
   })
 
@@ -252,7 +253,7 @@ function Server () {
       var data = {
         user: req.body.user || req.cookies.user,
         pass: req.body.pass,
-        token: req.cookies.token,
+        token: req.body.token || req.cookies.token,
         invite: req.body.invite,
         invitationKey: req.body.invitationkey
       }

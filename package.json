@@ -8,7 +8,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js -w src/ --ignore src/public",
     "forever-start": "forever -a start src/index.js",
-    "test": "test/test.sh"
+    "test": "istanbul cover _mocha -- -R spec test/*"
   },
   "main": "src/index.js",
   "repository": {
@@ -30,6 +30,13 @@
     "http-auth": "^2.3.3",
     "portscanner": "^1.0.0",
     "webtorrent": "^0.96.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.4",
+    "mocha": "^3.0.2",
+    "nodemon": "^1.10.0",
+    "request": "^2.74.0"
   },
   "standard": {
     "ignore": [
