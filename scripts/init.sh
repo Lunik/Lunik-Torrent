@@ -1,13 +1,23 @@
 #!/bin/sh
 
-if ! [ -f configs/passwords.json ]
-  then echo "==> Creating passwords.json"
-  echo '{}' > configs/passwords.json
+if [ -f configs/passwords.json ] && ! [ -f data/passwords.json ]
+  then echo "==> Moving passwords.json"
+  mv configs/passwords.json data/passwords.json
 fi
 
-if ! [ -f configs/fileInfo.json ]
+if ! [ -f data/passwords.json ]
+  then echo "==> Creating passwords.json"
+  echo '{}' > data/passwords.json
+fi
+
+if [ -f configs/fileInfo.json ] && ! [ -f data/fileInfo.json ]
+  then echo "==> Moving passwords.json"
+  mv configs/fileInfo.json data/fileInfo.json
+fi
+
+if ! [ -f data/fileInfo.json ]
   then echo "==> Creating fileInfo"
-  echo '{}' >> configs/fileInfo.json
+  echo '{}' >> data/fileInfo.json
 fi
 
 for dir in files downloads logs;
