@@ -1,5 +1,13 @@
 #!/bin/sh
 
+for dir in files downloads logs data;
+do
+  if ! [ -d $dir ]
+    then echo "==> Creating $dir"
+    mkdir $dir
+  fi
+done
+
 if [ -f configs/passwords.json ] && ! [ -f data/passwords.json ]
   then echo "==> Moving passwords.json"
   mv configs/passwords.json data/passwords.json
@@ -19,14 +27,6 @@ if ! [ -f data/fileInfo.json ]
   then echo "==> Creating fileInfo"
   echo '{}' >> data/fileInfo.json
 fi
-
-for dir in files downloads logs;
-do
-  if ! [ -d $dir ]
-    then echo "==> Creating $dir"
-    mkdir $dir
-  fi
-done
 
 if ! [ -f torrents.txt ]
   then echo "==> Creating torrents"
