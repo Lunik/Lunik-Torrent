@@ -238,11 +238,11 @@ Directory.prototype.setOwner = function (file, user) {
 }
 
 /**
- * Load configs/fileInfo.json into Directory.fileInfo.
+ * Load data/fileInfo.json into Directory.fileInfo.
 */
 Directory.prototype.loadFileInfo = function () {
   var self = this
-  fs.readFile('configs/fileInfo.json', function (err, data) {
+  fs.readFile('data/fileInfo.json', function (err, data) {
     if (err) {
       self.fileInfo = {}
       self.saveFileInfo()
@@ -257,13 +257,13 @@ Directory.prototype.loadFileInfo = function () {
 }
 
 /**
- * Save Directory.fileInfo into configs/fileInfo.json.
+ * Save Directory.fileInfo into data/fileInfo.json.
 */
 Directory.prototype.saveFileInfo = function () {
   var self = this
   if(!self.saving){
     self.saving = true
-    fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
+    fs.writeFile('data/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
       if (err) console.log(err)
       self.saving = false
     })

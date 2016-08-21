@@ -8,7 +8,7 @@ var Crypto = require('crypto-js')
 var Log = require(Path.join(__base, 'src/log.js'))
 
 function Auth () {
-  this.passwords = require(Path.join(__base, 'configs/passwords.json'))
+  this.passwords = require(Path.join(__base, 'data/passwords.json'))
   this.invites = []
 }
 
@@ -68,12 +68,12 @@ Auth.prototype.genToken = function (user, pass) {
 }
 
 /**
- * Save Directory.fileInfo into configs/fileInfo.json.
+ * Save passwords.fileInfo into data/fileInfo.json.
 */
 Auth.prototype.savePasswords = function () {
   var self = this
   var passwords = JSON.parse(JSON.stringify(self.passwords))
-  fs.writeFile('configs/passwords.json', JSON.stringify(passwords), function (err) {
+  fs.writeFile('data/passwords.json', JSON.stringify(passwords), function (err) {
     if (err) console.log(err)
   })
 }
