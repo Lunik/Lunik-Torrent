@@ -19,7 +19,7 @@ function Auth () {
 Auth.prototype.login = function (user, pass, cb) {
   var self = this
   EtcdClient.get('passwords.'+user+'.pass', function(res){
-    if(res.code === 200){
+    if(res.code === 200 && res.data.value == pass){
       var token = self.genToken(user, pass)
       EtcdClient.add('passwords.'+user+'.token', token, function(res){
         if(res.code === 200){
