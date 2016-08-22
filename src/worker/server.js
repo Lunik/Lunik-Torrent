@@ -9,11 +9,11 @@ var Path = require('path')
 
 http.globalAgent.maxSockets = Infinity
 
-var Log = require(Path.join(__base, 'src/log.js'))
-var Torrent = require(Path.join(__base, 'src/torrent.js'))
-var Directory = require(Path.join(__base, 'src/directory.js'))
-var FileTransfert = require(Path.join(__base, 'src/filetransfert.js'))
-var Auth = require(Path.join(__base, 'src/auth.js'))
+var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
+var Directory = require(Path.join(__base, 'src/worker/directory.js'))
+var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
+var Auth = require(Path.join(__base, 'src/worker/auth.js'))
 
 Torrent.Directory = Directory
 

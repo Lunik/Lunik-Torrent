@@ -3,7 +3,7 @@
 var fs = require('fs')
 var Path = require('path')
 
-var Log = require(Path.join(__base, 'src/log.js'))
+var Log = require(Path.join(__base, 'src/worker/log.js'))
 
 /**
  * Directory manager.
