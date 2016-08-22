@@ -25,7 +25,7 @@
     "cpasbien-api": "^1.1.0",
     "crypto-js": "^3.1.6",
     "crypto-rand": "0.0.2",
-    "etcd-node": "^1.1.0",
+    "etcd-node": "^1.1.2",
     "express": "^4.13.4",
     "forever": "^0.15.2",
     "http-auth": "^2.3.3",
