@@ -13,17 +13,16 @@ var EtcdClient = new Etcd({
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 
 function Auth () {
-  this.passwords = require(Path.join(__base, 'data/passwords.json'))
   this.invites = []
 }
 
 Auth.prototype.login = function (user, pass, cb) {
   var self = this
-  EtcdClient.get('passwords.'+user+'.pass', function(data){
-    if(data.code === 200){
+  EtcdClient.get('passwords.'+user+'.pass', function(res){
+    if(res.code === 200){
       var token = self.genToken(user, pass)
-      EtcdClient.add('passwords.'+user+'.token', token, function(data){
-        if(data.code === 200){
+      EtcdClient.add('passwords.'+user+'.token', token, function(res){
+        if(res.code === 200){
           Log.print(user + ' login.')
           cb(token)
         } else {
@@ -38,22 +37,23 @@ Auth.prototype.login = function (user, pass, cb) {
 
 Auth.prototype.logout = function (user, token, cb) {
   var self = this
-  EtcdClient.get('passwords.'+user+'.token', function(data){
-    if(data.code === 200){
-      if(data.data.value.indexOf(token) !== -1){
-        let tokens = data.data.value
-        tokens.splice(data.data.value.indexOf(token), 1)
+  EtcdClient.get('passwords.'+user+'.token', function(res){
+    if(res.code === 200){
+      if(res.data.value.indexOf(token) !== -1){
+        let tokens = res.data.value
+        tokens.splice(res.data.value.indexOf(token), 1)
         if(tokens.length > 0){
-          EtcdClient.set('passwords.'+user+'.token', data.data.value, function(data){
-            if(data.code === 200){
+          EtcdClient.set('passwords.'+user+'.token', res.data.value, function(res){
+            if(res.code === 200){
               cb(true)
             } else {
               cb(false)
             }
           })
         } else {
-          EtcdClient.delete('passwords.'+user+'.token', function(data){
-            if(data.code === 200){
+          EtcdClient.delete('passwords.'+user+'.token', function(res){
+            if(res.code === 200){
+              Log.print(user + ' logout.')
               cb(true)
             } else {
               cb(false)
@@ -67,25 +67,18 @@ Auth.prototype.logout = function (user, token, cb) {
       cb(false)
     }
   })
-  Log.print(user + ' logout.')
-  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(token) !== -1) {
-    delete this.passwords[user].token.splice(this.passwords[user].token.indexOf(token), 1)
-    return true
-  } else {
-    return false
-  }
 }
 
 Auth.prototype.register = function (user, pass, invite, cb) {
   var self = this
-  EtcdClient.get('passwords.'+user+'.pass', function(data){
-    if(self.invites.indexOf(invite) !== -1 && data.code === 204){
+  EtcdClient.get('passwords.'+user+'.pass', function(res){
+    if(self.invites.indexOf(invite) !== -1 && res.code === 204){
       self.deleteInvite(invite)
       var token = self.genToken(user, pass)
-      EtcdClient.set('passwords.'+user+'.pass', pass, function(data){
-        if(data.code === 200){
-          EtcdClient.set('passwords.'+user+'.token', [token], function(data){
-            if(data.code === 200){
+      EtcdClient.set('passwords.'+user+'.pass', pass, function(res){
+        if(res.code === 200){
+          EtcdClient.set('passwords.'+user+'.token', [token], function(res){
+            if(res.code === 200){
               Log.print(user + ' register with invitation: ' + invite + '.')
               cb(token)
             } else {
@@ -103,9 +96,9 @@ Auth.prototype.register = function (user, pass, invite, cb) {
 }
 
 Auth.prototype.checkLogged = function (user, token, cb) {
-  EtcdClient.get('passwords.'+user+'.token', function(data){
-    if(data.code === 200){
-      cb(data.data.value.indexOf(token) !== -1)
+  EtcdClient.get('passwords.'+user+'.token', function(res){
+    if(res.code === 200){
+      cb(res.data.value.indexOf(token) !== -1)
     } else {
       cb(false)
     }
