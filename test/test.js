@@ -18,6 +18,12 @@ describe('Fontend', function () {})
 
 describe('Backend', function () { 
   describe('Auth', function () {
+    var Etcd = require('etcd-node/src/server')
+    var EtcdWorker = new Etcd({
+      host: __config.etcd.host,
+      port: __config.etcd.port
+    })
+    EtcdWorker.start()
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()
 
@@ -35,58 +41,83 @@ describe('Backend', function () {
     describe('Register()', function () {
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
         var invite = Auth.createInvite(__config.server.invitationKey)
-        assert.typeOf(Auth.register(username, 'bar', invite), 'string')
-        done()
+        Auth.register(username, 'bar', invite, function(token){
+          assert.typeOf(token, 'string')
+          done()
+        })
       })
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
         var invite = Auth.createInvite(__config.server.invitationKey)
-        assert(!Auth.register(username, 'bar', invite))
-        done()
+        Auth.register(username, 'bar', invite, function(token){
+          assert(!token)
+          done()
+        })
       })
       it('User: foo, Pass: bar, Invite: Invalid invitation', function (done) {
-        assert(!Auth.register(username2, 'bar', ''))
-        done()
+        Auth.register(username2, 'bar', 'falseinvite', function(token){
+          assert(!token)
+          done()
+        })
       })
     })
     describe('Loggin()', function () {
       it('User: foo, Pass: bar', function (done) {
-        assert.typeOf(Auth.login(username, 'bar'), 'string')
-        done()
+        Auth.login(username, 'bar', function(token){
+          assert.typeOf(token, 'string')
+          done()
+        })
       })
       it('User: Unknown, Pass: bar', function (done) {
-        assert(!Auth.login(username2, 'bar'))
-        done()
+        Auth.login(username2, 'bar', function(token){
+          assert(!token)
+          done()
+        })
       })
       it('User: foo, Pass: Wrong', function (done) {
-        assert(!Auth.login(username, 'test'))
-        done()
+        Auth.login(username, 'test', function(token){
+          assert(!token)
+          done()
+        })
       })
     })
     describe('Logout()', function () {
       it('User: foo, Pass: bar', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(Auth.logout(username, token))
-        done()
+        Auth.login(username, 'bar', function(token){
+          Auth.logout(username, token, function(loggedout){
+            assert(loggedout)
+            done()
+          })
+        })
       })
       it('User: Unknown, Pass: bar', function (done) {
-        assert(!Auth.logout(username2, ''))
-        done()
+        Auth.logout(username, 'token', function(loggedout){
+          assert(!loggedout)
+          done()
+        })
       })
       it('User: foo, Pass: Wrong', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(!Auth.logout(username, token + '1'))
-        done()
+        Auth.login(username, 'bar', function(token){
+          Auth.logout(username, token+1, function(loggedout){
+            assert(!loggedout)
+            done()
+          })
+        })
       })
     })
     describe('CheckLogged()', function () {
       it('User: foo', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(Auth.checkLogged(username, token))
-        done()
+        Auth.login(username, 'bar', function(token){
+          Auth.checkLogged(username, token, function(logged){
+            assert(logged)
+            done()
+          })
+        })
       })
       it('User: Unknown', function (done) {
-        assert(!Auth.checkLogged(username2, ''))
-        done()
+        Auth.checkLogged(username2, 'token', function(logged){
+          assert(!logged)
+          done()
+        })
       })
     })
   })
