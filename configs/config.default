@@ -19,5 +19,9 @@
     "downloads": "downloads/",
     "scanTorrent": "torrents.txt",
     "max": 3
+  },
+  "etcd": {
+    "host": "127.0.0.1",
+    "port": 2379
   }
 }

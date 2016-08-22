@@ -31,6 +31,10 @@ Config.prototype.load = function (path) {
   assert(config.torrent.scanTorrent, messageError('torrent.scanTorrent'))
   assert(config.torrent.max, messageError('torrent.max'))
 
+  assert(config.etcd, messageError('etcd'))
+  assert(config.etcd.host, messageError('etcd.host'))
+  assert(config.etcd.port, messageError('etcd.port'))
+
   return config
 }
 
