@@ -31,14 +31,26 @@ function Server () {
   }))
   this.app.use(function (req, res, next) {
     if (req.url === '/login.html' || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)) {
-      if (req.url === '/login.html' && req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)) {
-        res.redirect('/')
+      if (req.url === '/login.html' && req.cookies){
+        Auth.checkLogged(req.cookies.user, req.cookies.token, function(logged){
+          if(logged){
+            res.redirect('/')
+          } else {
+            next()
+          }
+        })
       } else {
         next()
       }
     } else {
-      if (req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)) {
-        next()
+      if(req.cookies){
+        Auth.checkLogged(req.cookies.user, req.cookies.token, function(logged){
+          if(logged){
+            next()
+          } else {
+            res.redirect('/login.html')
+          }
+        })
       } else {
         res.redirect('/login.html')
       }
@@ -260,59 +272,67 @@ function Server () {
       switch (req.query.todo) {
         case 'login':
           if (data.user && data.pass) {
-            var token = Auth.login(data.user, data.pass)
-            if (token) {
-              res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              reponse = {
-                err: false,
-                token: token
+            Auth.login(data.user, data.pass, function(token){
+              if (token) {
+                res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.end(JSON.stringify({
+                  err: false,
+                  token: token
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User or Pass.'
+                }))
               }
-            } else {
-              reponse = {
-                err: 'Wrong User or Pass.'
-              }
-            }
+            })
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing User or Pass.'
-            }
+            }))
           }
           break
 
         case 'logout':
           if (data.user && data.token) {
-            if (Auth.logout(data.user, data.token)) {
-              reponse = {
-                err: false
+            Auth.logout(data.user, data.token, function(logout){
+              if(logout){
+                res.end(JSON.stringify({
+                  err: false
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User or Token.'
+                }))
               }
-            } else {
-              err: 'Wrong User or Token.'
-            }
+            })
           } else {
-            err: 'Missing User or Token.'
+            res.end(JSON.stringify({
+              err: 'Missing User or Token.'
+            }))
           }
           break
 
         case 'register':
           if (data.user && data.pass && data.invite) {
-            var token = Auth.register(data.user, data.pass, data.invite)
-            if (token) {
-              res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              reponse = {
-                err: false,
-                token: token
+            Auth.register(data.user, data.pass, data.invite, function(token){
+              if (token) {
+                res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.end(JSON.stringify({
+                  err: false,
+                  token: token
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User, Pass or Invitation code.'
+                }))
               }
-            } else {
-              reponse = {
-                err: 'Wrong User, Pass or Invitation code.'
-              }
-            }
+            })
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing User, Pass or Invitation code.'
-            }
+            }))
           }
           break
 
@@ -320,28 +340,27 @@ function Server () {
           if (data.invitationKey) {
             var invite = Auth.createInvite(data.invitationKey)
             if (invite) {
-              reponse = {
+              res.end(JSON.stringify({
                 err: false,
                 invitationCode: invite
-              }
+              }))
             } else {
-              reponse = {
+              res.end(JSON.stringify({
                 err: 'Wrong Invitation Key.'
-              }
+              }))
             }
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing Invitation Key.'
-            }
+            }))
           }
           break
       }
     } else {
-      response = {
+      res.end(JSON.stringify({
         err: 'Missing Todo.'
-      }
+      }))
     }
-    res.end(JSON.stringify(reponse))
   })
 }
 
