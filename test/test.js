@@ -7,7 +7,7 @@ var request = require('request')
 
 global.__base = path.join(__dirname, '..', '/')
 
-var Config = require(path.join(__base, 'src/config.js'))
+var Config = require(path.join(__base, 'src/worker/config.js'))
 var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
 global.__config.server.port = process.env.PORT || global.__config.server.port
@@ -21,7 +21,7 @@ describe('Backend', function () {
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()
 
-    var Auth = require(path.join(__base, 'src/auth.js'))
+    var Auth = require(path.join(__base, 'src/worker/auth.js'))
     describe('createInvite()', function () {
       it('Invite key: ' + __config.server.invitationKey, function (done) {
         assert.typeOf(Auth.createInvite(__config.server.invitationKey), 'string')
@@ -91,7 +91,7 @@ describe('Backend', function () {
     })
   })
   describe('MediaInfo', function () {
-    var MediaInfo = require(path.join(__base, 'src/mediaInfo.js'))
+    var MediaInfo = require(path.join(__base, 'src/worker/mediaInfo.js'))
     describe('GetInfo()', function () {
       this.timeout(30000)
       it('Type: series, Query: Game of thrones', function (done) {
@@ -115,7 +115,7 @@ describe('Backend', function () {
     })
   })
   describe('SearchT', function () {
-    var SearchT = require(path.join(__base, 'src/searchT.js'))
+    var SearchT = require(path.join(__base, 'src/worker/searchT.js'))
     describe('Search()', function () {
       this.timeout(30000)
       it('Search: Game of thrones', function (done) {
@@ -141,7 +141,7 @@ describe('Backend', function () {
     })
   })
   describe('Client', function () {
-    var Client = require(path.join(__base, 'src/client.js'))
+    var Client = require(path.join(__base, 'src/worker/client.js'))
     var ClientWorker = new Client()
     describe('On()', function () {
       it('Add startFunction', function (done) {
@@ -178,7 +178,7 @@ describe('Backend', function () {
     })
   })
   describe('Directory', function () {
-    var Directory = require(path.join(__base, 'src/directory.js'))
+    var Directory = require(path.join(__base, 'src/worker/directory.js'))
     describe('saveFileInfo()', function () {
       it('Save', function (done) {
         Directory.saveFileInfo()
@@ -250,7 +250,7 @@ describe('Backend', function () {
     })
   })
   describe('torrent', function () {
-    var Torrent = require(path.join(__base, 'src/torrent.js'))
+    var Torrent = require(path.join(__base, 'src/worker/torrent.js'))
     describe('Start()', function () {
       it('startPointTorrent()', function (done) {
         this.timeout(300000)
@@ -283,7 +283,7 @@ describe('Backend', function () {
     })
   })
   describe('Server', function () {
-    var Server = require(path.join(__base, 'src/server.js'))
+    var Server = require(path.join(__base, 'src/worker/server.js'))
     var url = 'http://localhost:' + __config.server.port
     var user = 'test' + rand.rand()
     var pass = 'test'
