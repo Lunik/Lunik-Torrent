@@ -4,7 +4,7 @@
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
   "scripts": {
-    "postinstall": "sh -c scripts/init.sh && bower install",
+    "postinstall": "scripts/init.sh && bower install --allow-root",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js -w src/worker/ --ignore src/public",
     "forever-start": "forever -a start src/index.js",

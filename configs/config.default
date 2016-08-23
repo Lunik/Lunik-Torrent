@@ -9,7 +9,7 @@
     "maxTry": 3
   },
   "server": {
-    "port": 80,
+    "port": 8080,
     "invitationKey": "MY_KEY"
   },
   "directory": {
