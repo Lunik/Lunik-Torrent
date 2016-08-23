@@ -254,7 +254,7 @@ Directory.prototype.saveFileInfo = function () {
   var self = this
   if(!self.saving){
     self.saving = true
-    fs.writeFile('data/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
+    fs.writeFile(Path.join(__base, 'data/fileInfo.json'), JSON.stringify(self.fileInfo), function (err) {
       if (err) console.log(err)
       self.saving = false
     })
