@@ -10,3 +10,5 @@ npm-debug.log
 configs/*.json
 logs/log*
 bower_components
+data/
+coverage/

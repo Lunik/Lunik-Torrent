@@ -2,18 +2,15 @@
 
 var express = require('express')
 var compression = require('compression')
-var http = require('http')
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 var Path = require('path')
 
-http.globalAgent.maxSockets = Infinity
-
-var Log = require(Path.join(__base, 'src/log.js'))
-var Torrent = require(Path.join(__base, 'src/torrent.js'))
-var Directory = require(Path.join(__base, 'src/directory.js'))
-var FileTransfert = require(Path.join(__base, 'src/filetransfert.js'))
-var Auth = require(Path.join(__base, 'src/auth.js'))
+var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
+var Directory = require(Path.join(__base, 'src/worker/directory.js'))
+var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
+var Auth = require(Path.join(__base, 'src/worker/auth.js'))
 
 Torrent.Directory = Directory
 
@@ -46,9 +43,8 @@ function Server () {
   })
   this.app.use(express.static(Path.join(__base, 'src/public')))
 
-  this.server = http.createServer(this.app)
   var port = process.env.PORT || __config.server.port
-  this.server.listen(port, function () {
+  this.app.listen(port, function () {
     Log.print('Server listening at port ' + port)
   })
 
@@ -91,7 +87,9 @@ function Server () {
   this.app.post('/list-d', function (req, res) {
     if (req.body.dir) {
       req.body.dir = req.body.dir.replace(/%20/g, ' ')
-      res.end(JSON.stringify(Directory.list(req.body.dir)))
+      Directory.list(req.body.dir, function(dir){
+        res.end(JSON.stringify(dir))
+      })
     } else {
       res.end(JSON.stringify({
         err: 'Undefined directory.'
@@ -253,6 +251,8 @@ function Server () {
       var data = {
         user: req.body.user || req.cookies.user,
         pass: req.body.pass,
+        oldpass: req.body.oldpass,
+        newPass: req.body.newpass,
         token: req.body.token || req.cookies.token,
         invite: req.body.invite,
         invitationKey: req.body.invitationkey
@@ -332,6 +332,24 @@ function Server () {
           } else {
             reponse = {
               err: 'Missing Invitation Key.'
+            }
+          }
+          break
+
+        case 'changepass':
+          if (data.user && data.oldpass && data.newPass) {
+            if (Auth.changePass(data.user, data.oldpass, data.newPass)) {
+              reponse = {
+                err: false
+              }
+            } else {
+              reponse = {
+                err: 'Wrong User or Pass.'
+              }
+            }
+          } else {
+            reponse = {
+              err: 'Missing User, Pass or new Pass.'
             }
           }
           break

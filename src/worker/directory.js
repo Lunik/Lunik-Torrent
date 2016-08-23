@@ -3,7 +3,7 @@
 var fs = require('fs')
 var Path = require('path')
 
-var Log = require(Path.join(__base, 'src/log.js'))
+var Log = require(Path.join(__base, 'src/worker/log.js'))
 
 /**
  * Directory manager.
@@ -11,7 +11,6 @@ var Log = require(Path.join(__base, 'src/log.js'))
  */
 function Directory () {
   var self = this
-  this.dir = {}
   this.fileInfo = {}
   this.loadFileInfo()
 
@@ -25,23 +24,24 @@ function Directory () {
  * @param {string} dir - Directory to scan.
  * @return {object} - Directory informations.
 */
-Directory.prototype.list = function (dir) {
+Directory.prototype.list = function (dir, cb) {
+  var self = this
   // save directory informations into app cache
-  this.dir[dir] = this.getDir(dir)
-
-  for (var f in this.dir[dir].files) {
-    var file = Path.join(dir, f)
-    file = file[0] === '/' ? file.substring(1) : file
-    if (this.fileInfo[file] !== -1) {
-      for (var i in this.fileInfo[file]) {
-        this.dir[dir].files[f][i] = this.fileInfo[file][i]
+  self.getDir(dir, function(folder){
+    for (var f in folder.files) {
+      var file = Path.join(dir, f)
+      file = file[0] === '/' ? file.substring(1) : file
+      if (self.fileInfo[file] !== -1) {
+        for (var i in self.fileInfo[file]) {
+          folder.files[f][i] = self.fileInfo[file][i]
+        }
       }
     }
-  }
-  return {
-    'totalSize': this.dir[dir].totalSize,
-    'files': this.dir[dir].files
-  }
+    cb({
+      'totalSize': folder.totalSize,
+      'files': folder.files
+    })
+  })
 }
 
 /**
@@ -49,27 +49,48 @@ Directory.prototype.list = function (dir) {
  * @param {string} dir - Directory to get informations.
  * @return {object} - Directory informations.
 */
-Directory.prototype.getDir = function (dir) {
+Directory.prototype.getDir = function (dir, cb) {
   var self = this
 
   var list = {}
   var totalSize = 0
-  var files = fs.readdirSync(Path.join(__config.directory.path, dir))
+  var files = fs.readdir(Path.join(__config.directory.path, dir), function(err, files){
+    if (files.length > 0) {
+      var length = files.length
+      var i = 0
+      files.forEach(function (file) {
+        self.getInfo(Path.join(__config.directory.path, dir, file), function(stats){
+          list[file] = stats
+          totalSize += stats.size
 
-  if (files.length > 0) {
-    files.forEach(function (file) {
-      var stats = self.getInfo(Path.join(__config.directory.path, dir, file))
-      list[file] = stats
-      totalSize += stats.size
-    })
-  }
-
-  var s = fs.statSync(Path.join(__config.directory.path, dir))
-  return {
-    'mtime': s.mtime,
-    'totalSize': totalSize,
-    'files': list
-  }
+          i++
+          if(i === length){
+            fs.stat(Path.join(__config.directory.path, dir), function(err, s){
+              if(err){
+                Log.print(err)
+              }
+              cb({
+                'mtime': s.mtime,
+                'totalSize': totalSize,
+                'files': list
+              })
+            })
+          }
+        })
+      })
+    } else {
+      fs.stat(Path.join(__config.directory.path, dir), function(err, s){
+        if(err){
+          Log.print(err)
+        }
+        cb({
+          'mtime': s.mtime,
+          'totalSize': totalSize,
+          'files': list
+        })
+      })
+    }
+  })
 }
 
 /**
@@ -77,19 +98,23 @@ Directory.prototype.getDir = function (dir) {
  * @param {string} file - File / Directory to get informations.
  * @return {object} - File / Directory informations.
 */
-Directory.prototype.getInfo = function (file) {
-  var stats = fs.statSync(file)
-  var sfile = {}
-  // get size if it's a Directory
-  if (stats.isFile()) {
-    sfile = stats
-  } else {
-    stats.size = sizeRecursif(file)
-    sfile = stats
-  }
-  sfile.isfile = stats.isFile()
-  sfile.isdir = stats.isDirectory()
-  return sfile
+Directory.prototype.getInfo = function (file, cb) {
+  fs.stat(file, function(err, stats){
+    if(err){
+      Log.print(err)
+    }
+    var sfile = {}
+    // get size if it's a Directory
+    if (stats.isFile()) {
+      sfile = stats
+    } else {
+      stats.size = sizeRecursif(file)
+      sfile = stats
+    }
+    sfile.isfile = stats.isFile()
+    sfile.isdir = stats.isDirectory()
+    cb(sfile)
+  })
 }
 
 /**
@@ -133,7 +158,7 @@ Directory.prototype.updateDownloads = function () {
   var self = this
   var curDate = new Date()
   for (var key in self.fileInfo) {
-    if (self.fileInfo[key].downloading) {
+    if (self.fileInfo[key] && self.fileInfo[key].downloading) {
       // if downloading for more than 1 hour remove
       if (curDate - self.fileInfo[key].downloading.date > 3600000) {
         delete self.fileInfo[key].downloading
@@ -179,9 +204,20 @@ Directory.prototype.remove = function (file) {
  * @param {string} newname - File new name.
 */
 Directory.prototype.rename = function (path, oldname, newname) {
+  var self = this
   if (this.isDownloading(path + oldname)) return -1
   fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
     if (err) Log.print(err)
+    var oldfile = Path.join(path, oldname)
+    oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
+
+    var newfile = Path.join(path, newname)
+    newfile = newfile[0] === '/' ? newfile.substring(1) : newfile
+
+    self.fileInfo[newfile] = self.fileInfo[oldfile]
+    delete self.fileInfo[oldfile]
+
+    self.saveFileInfo()
   })
 }
 
@@ -227,33 +263,28 @@ Directory.prototype.setOwner = function (file, user) {
 }
 
 /**
- * Load configs/fileInfo.json into Directory.fileInfo.
+ * Load data/fileInfo.json into Directory.fileInfo.
 */
 Directory.prototype.loadFileInfo = function () {
-  var self = this
-  fs.readFile('configs/fileInfo.json', function (err, data) {
-    if (err) {
-      console.log(err)
-      self.fileInfo = {}
-      self.saveFileInfo()
-    } else {
-      var fileInfo = JSON.parse(data)
-      for (var key in fileInfo) {
-        delete fileInfo[key].downloading
-      }
-      self.fileInfo = fileInfo
-    }
-  })
+  var fileInfo = require(Path.join(__base, 'data/fileInfo.json'))
+  for (var key in fileInfo) {
+    delete fileInfo[key].downloading
+  }
+  this.fileInfo = fileInfo
 }
 
 /**
- * Save Directory.fileInfo into configs/fileInfo.json.
+ * Save Directory.fileInfo into data/fileInfo.json.
 */
 Directory.prototype.saveFileInfo = function () {
   var self = this
-  fs.writeFile('configs/fileInfo.json', JSON.stringify(self.fileInfo), function (err) {
-    if (err) console.log(err)
-  })
+  if(!self.saving){
+    self.saving = true
+    fs.writeFile(Path.join(__base, 'data/fileInfo.json'), JSON.stringify(self.fileInfo), function (err) {
+      if (err) console.log(err)
+      self.saving = false
+    })
+  }
 }
 
 /**

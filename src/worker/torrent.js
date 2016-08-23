@@ -3,8 +3,8 @@
 var fs = require('fs')
 var Path = require('path')
 
-var Log = require(Path.join(__base, 'src/log.js'))
-var Client = require(Path.join(__base, 'src/client.js'))
+var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Client = require(Path.join(__base, 'src/worker/client.js'))
 
 /**
  * Torrent manager.
@@ -42,7 +42,7 @@ Torrent.prototype.start = function (url) {
         return -1
       }
       var c = new Client()
-      c.download(url)
+      c.download(url, function(){})
 
       c.on('start', function (hash) {
         if (self.client[url]) {

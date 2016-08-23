@@ -48,26 +48,51 @@
             <label for="register-pass">Password...</label>
           </div>
           <div class="password input">
-            <input type="password" name="pass" v-model="register.pass2" id="register-pass2">
+            <input type="password" name="pass2" v-model="register.pass2" id="register-pass2">
             <span class="bar"></span>
-            <label for="register-pass2">Confirm Password...</label>
+            <label for="register-pass2">Confirm password...</label>
           </div>
           <button class="submit">Register</button>
+        </div>
+        <div class="changepass" v-show="changepass.state">
+          <h1>Change password</h1>
+          <div class="user input">
+            <input type="text" name="user" v-model="changepass.user" id="changepass-user">
+            <span class="bar"></span>
+            <label for="changepass-user">Username...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="oldpass" v-model="changepass.oldpass" id="changepass-oldpass">
+            <span class="bar"></span>
+            <label for="changepass-oldpass">Old password...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="newpass" v-model="changepass.newpass" id="changepass-newpass">
+            <span class="bar"></span>
+            <label for="changepass-newPass">New password...</label>
+          </div>
+          <div class="password input">
+            <input type="password" name="newpass2" v-model="changepass.newpass2" id="changepass-newpass2">
+            <span class="bar"></span>
+            <label for="changepass-newpass2">Confirm new password...</label>
+          </div>
+          <button class="submit">Change Password</button>
         </div>
         <div class="invite" v-show="invite.state">
           <h1>Register</h1>
           <p>You don't have any invitation.</p>
           <p>Ask your Admin to get one.</p>
           <div class="invitation input">
-            <input type="text" name="invite" id="invitatation">
+            <input type="text" name="invite" id="invite-invitatation">
             <span class="bar"></span>
-            <label for="register-pass2">Invitation Code...</label>
+            <label for="invite-invitatation">Invitation Code...</label>
           </div>
         </div>
         <p class="info">{{ info }}</p>
         <div class="switch">
           <div class="switch button" id="login">Login</div>
           <div class="switch button" id="register">Register</div>
+          <div class="switch button" id="changepass">Change Password</div>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ var fs = require('fs')
 var portscanner = require('portscanner')
 var Path = require('path')
 
-var Log = require(Path.join(__base, 'src/log.js'))
+var Log = require(Path.join(__base, 'src/worker/log.js'))
 
 /**
  * File transfert server.
@@ -38,19 +38,19 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
 
       fReadStream.pipe(res)
       fReadStream.on('end', function () {
-        Log.print(req.user + ' finish download file: ' + req.query.f)
+        Log.print(req.cookies.user + ' finish download file: ' + req.query.f)
         callback()
 
         res.end()
       })
       fReadStream.on('close', function () {
-        Log.print(req.user + ' stop download file: ' + req.query.f)
+        Log.print(req.cookies.user + ' stop download file: ' + req.query.f)
         callback()
 
         res.end()
       })
       fReadStream.on('error', function (err) {
-        Log.print(req.user + ' error during download file: ' + req.query.f + '\n err: ' + err)
+        Log.print(req.cookies.user + ' error during download file: ' + req.query.f + '\n err: ' + err)
         callback()
 
         res.end()

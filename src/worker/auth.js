@@ -5,10 +5,10 @@ var Path = require('path')
 var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
 
-var Log = require(Path.join(__base, 'src/log.js'))
+var Log = require(Path.join(__base, 'src/worker/log.js'))
 
 function Auth () {
-  this.passwords = require(Path.join(__base, 'configs/passwords.json'))
+  this.passwords = require(Path.join(__base, 'data/passwords.json'))
   this.invites = []
 }
 
@@ -19,7 +19,8 @@ Auth.prototype.login = function (user, pass) {
       this.passwords[user].token = []
     }
     var token = this.genToken(user, pass)
-    this.passwords[user].token.push(token)
+    this.passwords[user].token.push(Crypto.SHA256(token).toString())
+    this.savePasswords()
     return token
   } else {
     return false
@@ -28,8 +29,9 @@ Auth.prototype.login = function (user, pass) {
 
 Auth.prototype.logout = function (user, token) {
   Log.print(user + ' logout.')
-  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(token) !== -1) {
-    delete this.passwords[user].token.splice(this.passwords[user].token.indexOf(token), 1)
+  var encryptedToken = Crypto.SHA256(token).toString()
+  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(encryptedToken) !== -1) {
+    delete this.passwords[user].token.splice(this.passwords[user].token.indexOf(encryptedToken), 1)
     return true
   } else {
     return false
@@ -43,7 +45,7 @@ Auth.prototype.register = function (user, pass, invite) {
     var token = this.genToken(user, pass)
     this.passwords[user] = {
       pass: pass,
-      token: [token]
+      token: [Crypto.SHA256(token).toString()]
     }
     this.savePasswords()
 
@@ -53,8 +55,20 @@ Auth.prototype.register = function (user, pass, invite) {
   }
 }
 
+Auth.prototype.changePass = function(user, pass, newPass){
+  if (this.passwords[user] && this.passwords[user].pass === pass) {
+    Log.print(user + ' change his password.')
+    this.passwords[user].pass = newPass
+    this.savePasswords()
+    return true
+  } else {
+    return false
+  }
+}
+
 Auth.prototype.checkLogged = function (user, token) {
-  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(token) !== -1) {
+  var encryptedToken = Crypto.SHA256(token).toString()
+  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(encryptedToken) !== -1) {
     return true
   } else {
     return false
@@ -67,17 +81,12 @@ Auth.prototype.genToken = function (user, pass) {
 }
 
 /**
- * Save Directory.fileInfo into configs/fileInfo.json.
+ * Save passwords.fileInfo into data/fileInfo.json.
 */
 Auth.prototype.savePasswords = function () {
   var self = this
   var passwords = JSON.parse(JSON.stringify(self.passwords))
-  for (var user in passwords) {
-    if (passwords[user].token) {
-      delete passwords[user].token
-    }
-  }
-  fs.writeFile('configs/passwords.json', JSON.stringify(passwords), function (err) {
+  fs.writeFile('data/passwords.json', JSON.stringify(passwords), function (err) {
     if (err) console.log(err)
   })
 }
