@@ -177,113 +177,6 @@ describe('Backend', function () {
       })
     })
   })
-  describe('Directory', function () {
-    var Directory = require(path.join(__base, 'src/worker/directory.js'))
-    describe('saveFileInfo()', function () {
-      it('Save', function (done) {
-        Directory.saveFileInfo()
-        done()
-      })
-    })
-    describe('Mkdir()', function () {
-      it('Create dir', function (done) {
-        Directory.mkdir('/', 'ok' + rand.rand())
-        done()
-      })
-    })
-    describe('List()', function () {
-      it('Scan / ', function (done) {
-        Directory.list('/', function(folder){
-          assert.typeOf(folder, 'object')
-          done()
-        })
-      })
-    })
-    describe('Mv()', function () {
-      it('Mv dir into dir', function (done) {
-        var recip = 'ok' + rand.rand()
-        var dir = 'ok' + rand.rand()
-        Directory.mkdir('/', recip)
-        Directory.mkdir('/', dir)
-        Directory.mv('/', dir, recip)
-        done()
-      })
-    })
-    describe('Rename()', function () {
-      it('change dir name', function (done) {
-        var dir = 'ok' + rand.rand()
-        var newname = 'ok' + rand.rand()
-        Directory.mkdir('/', dir)
-        Directory.rename('/', dir, newname)
-        done()
-      })
-    })
-    describe('SetOwner()', function () {
-      it('setOwner of dir', function (done) {
-        var dir = 'ok' + rand.rand()
-        Directory.mkdir('/', dir)
-        Directory.setOwner(dir, 'test')
-        done()
-      })
-    })
-    describe('Remove()', function () {
-      it('remove dir', function (done) {
-        var dir = 'ok' + rand.rand()
-        Directory.mkdir('/', dir)
-        Directory.remove(dir)
-        done()
-      })
-    })
-    describe('Downloading()', function () {
-      it('setDownloading', function (done) {
-        var dir = 'ok' + rand.rand()
-        Directory.mkdir('/', dir)
-        Directory.setDownloading(dir)
-        Directory.setDownloading(dir)
-        Directory.isDownloading(dir)
-        Directory.finishDownloading(dir)
-        Directory.finishDownloading(dir)
-        done()
-      })
-      it('updateDownloads', function (done) {
-        Directory.updateDownloads()
-        done()
-      })
-    })
-  })
-  describe('torrent', function () {
-    var Torrent = require(path.join(__base, 'src/worker/torrent.js'))
-    describe('Start()', function () {
-      it('startPointTorrent()', function (done) {
-        this.timeout(300000)
-        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
-        fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4', function (err) {
-            assert(!err)
-            Torrent.startPointTorrent(Torrent)
-            setTimeout(function () {
-              done()
-            }, 60000)
-          })
-      })
-    })
-    describe('remove()', function () {
-      it('start and remove', function (done) {
-        this.timeout(300000)
-        Torrent.start('magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
-        setTimeout(function () {
-          assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('6a9759bffd5c0af65319979fb7832189f4f3c35d')
-          Torrent.remove('6a9759bffd5c0af65319979fb7832189f4f3c35d')
-          done()
-        }, 10000)
-      })
-    })
-  })
   describe('Server', function () {
     var Server = require(path.join(__base, 'src/worker/server.js'))
     var url = 'http://localhost:' + __config.server.port
@@ -622,6 +515,113 @@ describe('Backend', function () {
             }
           })
         })
+      })
+    })
+  })
+  describe('Directory', function () {
+    var Directory = require(path.join(__base, 'src/worker/directory.js'))
+    describe('saveFileInfo()', function () {
+      it('Save', function (done) {
+        Directory.saveFileInfo()
+        done()
+      })
+    })
+    describe('Mkdir()', function () {
+      it('Create dir', function (done) {
+        Directory.mkdir('/', 'ok' + rand.rand())
+        done()
+      })
+    })
+    describe('List()', function () {
+      it('Scan / ', function (done) {
+        Directory.list('/', function(folder){
+          assert.typeOf(folder, 'object')
+          done()
+        })
+      })
+    })
+    describe('Mv()', function () {
+      it('Mv dir into dir', function (done) {
+        var recip = 'ok' + rand.rand()
+        var dir = 'ok' + rand.rand()
+        Directory.mkdir('/', recip)
+        Directory.mkdir('/', dir)
+        Directory.mv('/', dir, recip)
+        done()
+      })
+    })
+    describe('Rename()', function () {
+      it('change dir name', function (done) {
+        var dir = 'ok' + rand.rand()
+        var newname = 'ok' + rand.rand()
+        Directory.mkdir('/', dir)
+        Directory.rename('/', dir, newname)
+        done()
+      })
+    })
+    describe('SetOwner()', function () {
+      it('setOwner of dir', function (done) {
+        var dir = 'ok' + rand.rand()
+        Directory.mkdir('/', dir)
+        Directory.setOwner(dir, 'test')
+        done()
+      })
+    })
+    describe('Remove()', function () {
+      it('remove dir', function (done) {
+        var dir = 'ok' + rand.rand()
+        Directory.mkdir('/', dir)
+        Directory.remove(dir)
+        done()
+      })
+    })
+    describe('Downloading()', function () {
+      it('setDownloading', function (done) {
+        var dir = 'ok' + rand.rand()
+        Directory.mkdir('/', dir)
+        Directory.setDownloading(dir)
+        Directory.setDownloading(dir)
+        Directory.isDownloading(dir)
+        Directory.finishDownloading(dir)
+        Directory.finishDownloading(dir)
+        done()
+      })
+      it('updateDownloads', function (done) {
+        Directory.updateDownloads()
+        done()
+      })
+    })
+  })
+  describe('torrent', function () {
+    var Torrent = require(path.join(__base, 'src/worker/torrent.js'))
+    describe('Start()', function () {
+      it('startPointTorrent()', function (done) {
+        this.timeout(300000)
+        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
+        fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
+          'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
+          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
+          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
+          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
+          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4', function (err) {
+            assert(!err)
+            Torrent.startPointTorrent(Torrent)
+            setTimeout(function () {
+              done()
+            }, 60000)
+          })
+      })
+    })
+    describe('remove()', function () {
+      it('start and remove', function (done) {
+        this.timeout(300000)
+        Torrent.start('magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
+        setTimeout(function () {
+          assert.typeOf(Torrent.getInfo(), 'object')
+          Torrent.getUrlFromHash('6a9759bffd5c0af65319979fb7832189f4f3c35d')
+          Torrent.remove('6a9759bffd5c0af65319979fb7832189f4f3c35d')
+          done()
+        }, 10000)
       })
     })
   })
