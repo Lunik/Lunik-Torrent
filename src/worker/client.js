@@ -41,11 +41,11 @@ Client.prototype.download = function (torrentLink) {
     clearTimeout(timeout)
     // On torrent start
     self.torrent = torrent
-    Log.print('Start torrent: ' + self.torrent.name)
+    Log.print('Start torrent: ' + torrent.name)
     // emit start function with infoHash
     self.startFunction(torrent.infoHash)
 
-    self.torrent.on('download', function (chunkSize) {
+    torrent.on('download', function (chunkSize) {
       var currentTime = new Date().getTime()
       if ((currentTime - self.timeout) > __config.client.updateTimeout) {
         // emit update function with torrent infos
@@ -54,19 +54,19 @@ Client.prototype.download = function (torrentLink) {
       }
     })
 
-    self.torrent.on('done', function () {
+    torrent.on('done', function () {
       Log.print('Finish torrent: ' + self.torrent.name)
       // emit done function with torrent hash and name
-      self.doneFunction(false, self.torrent.infoHash, self.torrent.name)
+      self.doneFunction(false, torrent.infoHash, torrent.name)
     })
 
-    self.torrent.on('noPeers', function () {
-      Log.print('No peers: ' + self.torrent.name)
+    torrent.on('noPeers', function () {
+      Log.print('No peers: ' + torrent.name)
       // emit done function with torrent hash and name
-      self.doneFunction(false, self.torrent.infoHash, self.torrent.name)
+      self.doneFunction(false, torrent.infoHash, torrent.name)
     })
 
-    self.torrent.on('error', function (err) {
+    torrent.on('error', function (err) {
       Log.print('Error: ' + err)
     })
   })
