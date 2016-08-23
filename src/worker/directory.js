@@ -78,6 +78,17 @@ Directory.prototype.getDir = function (dir, cb) {
           }
         })
       })
+    } else {
+      fs.stat(Path.join(__config.directory.path, dir), function(err, s){
+        if(err){
+          Log.print(err)
+        }
+        cb({
+          'mtime': s.mtime,
+          'totalSize': totalSize,
+          'files': list
+        })
+      })
     }
   })
 }
