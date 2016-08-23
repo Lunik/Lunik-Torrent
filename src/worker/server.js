@@ -251,6 +251,8 @@ function Server () {
       var data = {
         user: req.body.user || req.cookies.user,
         pass: req.body.pass,
+        oldpass: req.body.oldpass,
+        newPass: req.body.newpass,
         token: req.body.token || req.cookies.token,
         invite: req.body.invite,
         invitationKey: req.body.invitationkey
@@ -330,6 +332,24 @@ function Server () {
           } else {
             reponse = {
               err: 'Missing Invitation Key.'
+            }
+          }
+          break
+
+        case 'changepass':
+          if (data.user && data.oldpass && data.newPass) {
+            if (Auth.changePass(data.user, data.oldpass, data.newPass)) {
+              reponse = {
+                err: false
+              }
+            } else {
+              reponse = {
+                err: 'Wrong User or Pass.'
+              }
+            }
+          } else {
+            reponse = {
+              err: 'Missing User, Pass or new Pass.'
             }
           }
           break

@@ -29,6 +29,13 @@ var App = {}
             pass: '',
             pass2: ''
           },
+          changepass: {
+            state: false,
+            user: '',
+            oldpass: '',
+            newpass: '',
+            newpass2: ''
+          },
           invite: {
             state: false
           },
@@ -62,6 +69,9 @@ var App = {}
       $('.auth .switch #register').click(function () {
         App.switch('register')
       })
+      $('.auth .switch #changepass').click(function () {
+        App.switch('changepass')
+      })
 
       requirejs(['notify-me', 'format', 'loading'], function (notif) {
         self.updateHash()
@@ -80,11 +90,7 @@ var App = {}
           if (App.hash) {
             if (registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length) {
               if (registerData.pass === registerData.pass2) {
-                if (registerData.pass.length >= 8) {
-                  self.register(registerData.user, registerData.pass, App.hash)
-                } else {
-                  self.setInfo('Password must be minimum 8 symbol long.')
-                }
+                self.register(registerData.user, registerData.pass, App.hash)
               } else {
                 self.setInfo('The two Passwords must be identical.')
               }
@@ -93,6 +99,24 @@ var App = {}
             }
           } else {
             self.switch('invite')
+          }
+        })
+
+        $('.auth .changepass .submit').click(function () {
+          var changePassData = self.getChangePass()
+          console.log(changePassData)
+          if (changePassData.user.length > 0 && changePassData.oldpass.length && changePassData.newpass.length && changePassData.newpass2.length) {
+            if (changePassData.newpass === changePassData.newpass2) {
+              if (changePassData.newpass !== changePassData.oldpass) {
+                self.changePass(changePassData.user, changePassData.oldpass, changePassData.newpass)
+              } else {
+                self.setInfo('Same Password, nothing to change.')
+              }
+            } else {
+              self.setInfo('The two Passwords must be identical.')
+            }
+          } else {
+            self.setInfo('User, old Password and new Password are required.')
           }
         })
 
@@ -129,6 +153,7 @@ var App = {}
   _App.prototype.switch = function (to) {
     this.v.$data.currentSubmit = to
     this.v.$data.login.state = (to === 'login')
+    this.v.$data.changepass.state = (to === 'changepass')
     this.v.$data.register.state = (to === 'register' && App.hash)
     this.v.$data.invite.state = (to === 'invite' || (to === 'register' && !App.hash))
     this.v.$data.info = ''
@@ -156,6 +181,15 @@ var App = {}
       user: this.v.$data.register.user.toLowerCase(),
       pass: App.Crypto.SHA256(this.v.$data.register.pass).toString(),
       pass2: App.Crypto.SHA256(this.v.$data.register.pass2).toString()
+    }
+  }
+
+  _App.prototype.getChangePass = function () {
+    return {
+      user: this.v.$data.changepass.user.toLowerCase(),
+      oldpass: App.Crypto.SHA256(this.v.$data.changepass.oldpass).toString(),
+      newpass: App.Crypto.SHA256(this.v.$data.changepass.newpass).toString(),
+      newpass2: App.Crypto.SHA256(this.v.$data.changepass.newpass2).toString()
     }
   }
 
@@ -234,6 +268,48 @@ var App = {}
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Auth.register()',
+        text: err.statusText,
+        duration: 5
+      })
+    })
+  }
+
+  _App.prototype.changePass = function (user, oldpass, newpass) {
+    var self = this
+    App.Loading.show('action')
+    $.ajax({
+      type: 'post',
+      url: '/auth?todo=changepass',
+      timeout: 10000,
+      data: {
+        user: user,
+        oldpass: oldpass,
+        newpass: newpass
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data.err) {
+          App.cleanPassword()
+          $.notify.error({
+            title: 'Error',
+            text: data.err,
+            duration: 10
+          })
+        } else {
+          $.notify.success({
+            title: 'Change Password',
+            text: 'Successfully change Password.'
+          })
+          self.switch('login')
+        }
+      }
+    }).done(function () {
+      App.Loading.hide('action')
+    }).fail(function (err) {
+      console.log(err)
+      App.Loading.hide('action')
+      $.notify.error({
+        title: 'Error in Auth.changePass()',
         text: err.statusText,
         duration: 5
       })

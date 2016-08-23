@@ -63,18 +63,36 @@ describe('Backend', function () {
       })
     })
     describe('Logout()', function () {
-      it('User: foo, Pass: bar', function (done) {
+      it('User: foo, Token: valid', function (done) {
         var token = Auth.login(username, 'bar')
         assert(Auth.logout(username, token))
         done()
       })
-      it('User: Unknown, Pass: bar', function (done) {
+      it('User: Unknown, Token: valid', function (done) {
         assert(!Auth.logout(username2, ''))
         done()
       })
-      it('User: foo, Pass: Wrong', function (done) {
+      it('User: foo, Token: invalid', function (done) {
         var token = Auth.login(username, 'bar')
         assert(!Auth.logout(username, token + '1'))
+        done()
+      })
+    })
+    describe('ChangePass()', function () {
+      it('Change password User: foo, OldPass: bar, NewPass: rab', function (done) {
+        assert(Auth.changePass(username, 'bar', 'rab'))
+        done()
+      })
+      it('Change password User: Unknown, OldPass: bar, NewPass: rab', function (done) {
+        assert(!Auth.changePass(username2, 'bar', 'rab'))
+        done()
+      })
+      it('Change password User: foo, OldPass: Wrong, NewPass: rab', function (done) {
+        assert(!Auth.changePass(username, 'bar1', 'rab'))
+        done()
+      })
+      it('Change password User: foo, OldPass: rad, NewPass: bar', function (done) {
+        assert(Auth.changePass(username, 'rab', 'bar'))
         done()
       })
     })
@@ -192,7 +210,7 @@ describe('Backend', function () {
           done()
         })
       })
-      it('gentoken + register + login', function (done) {
+      it('genInvite + register + login + changePass + logout', function (done) {
         // gentoken
         request.post({
           url: url + '/auth?todo=invite',
@@ -241,8 +259,22 @@ describe('Backend', function () {
                       if (!err && res.statusCode == 200) {
                         var err = JSON.parse(body).err
                         assert(!err)
+                        request.post({
+                          url: url + '/auth?todo=changepass',
+                          form: {
+                            user: user,
+                            oldpass: pass,
+                            newpass: pass+1
+                          }
+                        }, function (err, res, body) {
+                          assert(!err)
+                          if (!err && res.statusCode == 200) {
+                            var err = JSON.parse(body).err
+                            assert(!err)
+                          }
+                          done()
+                        })
                       }
-                      done()
                     })
                   }
                 })

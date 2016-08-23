@@ -55,6 +55,17 @@ Auth.prototype.register = function (user, pass, invite) {
   }
 }
 
+Auth.prototype.changePass = function(user, pass, newPass){
+  if (this.passwords[user] && this.passwords[user].pass === pass) {
+    Log.print(user + ' change his password.')
+    this.passwords[user].pass = newPass
+    this.savePasswords()
+    return true
+  } else {
+    return false
+  }
+}
+
 Auth.prototype.checkLogged = function (user, token) {
   var encryptedToken = Crypto.SHA256(token).toString()
   if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(encryptedToken) !== -1) {
