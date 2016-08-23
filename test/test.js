@@ -17,7 +17,7 @@ var assert = require('chai').assert
 describe('Fontend', function () {})
 
 describe('Backend', function () { 
-  /*describe('Auth', function () {
+  describe('Auth', function () {
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()
 
@@ -176,7 +176,7 @@ describe('Backend', function () {
         ClientWorker.download('magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4', function(){})
       })
     })
-  })*/
+  })
   describe('Server', function () {
     var Server = require(path.join(__base, 'src/worker/server.js'))
     var url = 'http://localhost:' + __config.server.port
@@ -517,7 +517,7 @@ describe('Backend', function () {
         })
       })
     })
-  })/*
+  })
   describe('Directory', function () {
     var Directory = require(path.join(__base, 'src/worker/directory.js'))
     describe('saveFileInfo()', function () {
@@ -624,7 +624,7 @@ describe('Backend', function () {
         }, 10000)
       })
     })
-  })*/
+  })
 })
 
 function Auth (url, user, pass, cb) {
