@@ -193,8 +193,10 @@ describe('Backend', function () {
     })
     describe('List()', function () {
       it('Scan / ', function (done) {
-        assert.typeOf(Directory.list('/'), 'object')
-        done()
+        Directory.list('/', function(folder){
+          assert.typeOf(object, 'object')
+          done()
+        }
       })
     })
     describe('Mv()', function () {
