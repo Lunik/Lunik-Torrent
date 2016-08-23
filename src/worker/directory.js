@@ -24,23 +24,24 @@ function Directory () {
  * @param {string} dir - Directory to scan.
  * @return {object} - Directory informations.
 */
-Directory.prototype.list = function (dir) {
+Directory.prototype.list = function (dir, cb) {
+  var self = this
   // save directory informations into app cache
-  var folder = this.getDir(dir)
-
-  for (var f in folder.files) {
-    var file = Path.join(dir, f)
-    file = file[0] === '/' ? file.substring(1) : file
-    if (this.fileInfo[file] !== -1) {
-      for (var i in this.fileInfo[file]) {
-        folder.files[f][i] = this.fileInfo[file][i]
+  self.getDir(dir, function(folder){
+    for (var f in folder.files) {
+      var file = Path.join(dir, f)
+      file = file[0] === '/' ? file.substring(1) : file
+      if (self.fileInfo[file] !== -1) {
+        for (var i in self.fileInfo[file]) {
+          folder.files[f][i] = self.fileInfo[file][i]
+        }
       }
     }
-  }
-  return {
-    'totalSize': folder.totalSize,
-    'files': folder.files
-  }
+    cb({
+      'totalSize': folder.totalSize,
+      'files': folder.files
+    })
+  })
 }
 
 /**
@@ -48,27 +49,37 @@ Directory.prototype.list = function (dir) {
  * @param {string} dir - Directory to get informations.
  * @return {object} - Directory informations.
 */
-Directory.prototype.getDir = function (dir) {
+Directory.prototype.getDir = function (dir, cb) {
   var self = this
 
   var list = {}
   var totalSize = 0
-  var files = fs.readdirSync(Path.join(__config.directory.path, dir))
+  var files = fs.readdir(Path.join(__config.directory.path, dir), function(err, files){
+    if (files.length > 0) {
+      var length = files.length
+      var i = 0
+      files.forEach(function (file) {
+        self.getInfo(Path.join(__config.directory.path, dir, file), function(stats){
+          list[file] = stats
+          totalSize += stats.size
 
-  if (files.length > 0) {
-    files.forEach(function (file) {
-      var stats = self.getInfo(Path.join(__config.directory.path, dir, file))
-      list[file] = stats
-      totalSize += stats.size
-    })
-  }
-
-  var s = fs.statSync(Path.join(__config.directory.path, dir))
-  return {
-    'mtime': s.mtime,
-    'totalSize': totalSize,
-    'files': list
-  }
+          i++
+          if(i === length){
+            fs.stat(Path.join(__config.directory.path, dir), function(err, s){
+              if(err){
+                Log.print(err)
+              }
+              cb({
+                'mtime': s.mtime,
+                'totalSize': totalSize,
+                'files': list
+              })
+            })
+          }
+        })
+      })
+    }
+  })
 }
 
 /**
@@ -76,19 +87,23 @@ Directory.prototype.getDir = function (dir) {
  * @param {string} file - File / Directory to get informations.
  * @return {object} - File / Directory informations.
 */
-Directory.prototype.getInfo = function (file) {
-  var stats = fs.statSync(file)
-  var sfile = {}
-  // get size if it's a Directory
-  if (stats.isFile()) {
-    sfile = stats
-  } else {
-    stats.size = sizeRecursif(file)
-    sfile = stats
-  }
-  sfile.isfile = stats.isFile()
-  sfile.isdir = stats.isDirectory()
-  return sfile
+Directory.prototype.getInfo = function (file, cb) {
+  fs.stat(file, function(err, stats){
+    if(err){
+      Log.print(err)
+    }
+    var sfile = {}
+    // get size if it's a Directory
+    if (stats.isFile()) {
+      sfile = stats
+    } else {
+      stats.size = sizeRecursif(file)
+      sfile = stats
+    }
+    sfile.isfile = stats.isFile()
+    sfile.isdir = stats.isDirectory()
+    cb(sfile)
+  })
 }
 
 /**
