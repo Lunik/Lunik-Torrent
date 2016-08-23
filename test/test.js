@@ -271,8 +271,22 @@ describe('Backend', function () {
                           if (!err && res.statusCode == 200) {
                             var err = JSON.parse(body).err
                             assert(!err)
+                            request.post({
+                              url: url + '/auth?todo=changepass',
+                              form: {
+                                user: user,
+                                oldpass: pass+1,
+                                newpass: pass
+                              }
+                            }, function (err, res, body) {
+                              assert(!err)
+                              if (!err && res.statusCode == 200) {
+                                var err = JSON.parse(body).err
+                                assert(!err)
+                              }
+                              done()
+                            })
                           }
-                          done()
                         })
                       }
                     })
