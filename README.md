@@ -32,6 +32,19 @@ $ npm run forever-start
 ## Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lunik/Lunik-Torrent)
 
+## Docker
+[![Docker Stars](https://img.shields.io/docker/stars/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
+
+```
+$ docker pull lunik/lunik-torrent
+$ docker run -d \
+	-p 8080:8080 \
+	-v /myconfigs:/usr/src/app/configs \
+	-v /mydownloads:/usr/src/app/files \
+	lunik/lunik-torrent
+```
+
 ## ===== Infos =====
 ### Register
 
