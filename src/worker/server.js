@@ -2,12 +2,9 @@
 
 var express = require('express')
 var compression = require('compression')
-var http = require('http')
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 var Path = require('path')
-
-http.globalAgent.maxSockets = Infinity
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
@@ -46,9 +43,8 @@ function Server () {
   })
   this.app.use(express.static(Path.join(__base, 'src/public')))
 
-  this.server = http.createServer(this.app)
   var port = process.env.PORT || __config.server.port
-  this.server.listen(port, function () {
+  this.app.listen(port, function () {
     Log.print('Server listening at port ' + port)
   })
 
