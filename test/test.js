@@ -196,7 +196,7 @@ describe('Backend', function () {
         Directory.list('/', function(folder){
           assert.typeOf(object, 'object')
           done()
-        }
+        })
       })
     })
     describe('Mv()', function () {
