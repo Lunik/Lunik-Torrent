@@ -42,7 +42,7 @@ Torrent.prototype.start = function (url) {
         return -1
       }
       var c = new Client()
-      c.download(url)
+      c.download(url, function(){})
 
       c.on('start', function (hash) {
         if (self.client[url]) {
