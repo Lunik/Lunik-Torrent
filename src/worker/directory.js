@@ -11,7 +11,6 @@ var Log = require(Path.join(__base, 'src/worker/log.js'))
  */
 function Directory () {
   var self = this
-  this.dir = {}
   this.fileInfo = {}
   this.loadFileInfo()
 
@@ -27,20 +26,20 @@ function Directory () {
 */
 Directory.prototype.list = function (dir) {
   // save directory informations into app cache
-  this.dir[dir] = this.getDir(dir)
+  var folder = this.getDir(dir)
 
-  for (var f in this.dir[dir].files) {
+  for (var f in folder.files) {
     var file = Path.join(dir, f)
     file = file[0] === '/' ? file.substring(1) : file
     if (this.fileInfo[file] !== -1) {
       for (var i in this.fileInfo[file]) {
-        this.dir[dir].files[f][i] = this.fileInfo[file][i]
+        folder.files[f][i] = this.fileInfo[file][i]
       }
     }
   }
   return {
-    'totalSize': this.dir[dir].totalSize,
-    'files': this.dir[dir].files
+    'totalSize': folder.totalSize,
+    'files': folder.files
   }
 }
 
@@ -241,19 +240,11 @@ Directory.prototype.setOwner = function (file, user) {
  * Load data/fileInfo.json into Directory.fileInfo.
 */
 Directory.prototype.loadFileInfo = function () {
-  var self = this
-  fs.readFile('data/fileInfo.json', function (err, data) {
-    if (err) {
-      self.fileInfo = {}
-      self.saveFileInfo()
-    } else {
-      var fileInfo = JSON.parse(data)
-      for (var key in fileInfo) {
-        delete fileInfo[key].downloading
-      }
-      self.fileInfo = fileInfo
-    }
-  })
+  var fileInfo = require(Path.join(__base, 'data/fileInfo.json'))
+  for (var key in fileInfo) {
+    delete fileInfo[key].downloading
+  }
+  this.fileInfo = fileInfo
 }
 
 /**
