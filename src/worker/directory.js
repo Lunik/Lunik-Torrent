@@ -55,7 +55,10 @@ Directory.prototype.getDir = function (dir, cb) {
   var list = {}
   var totalSize = 0
   var files = fs.readdir(Path.join(__config.directory.path, dir), function(err, files){
-    if (files.length > 0) {
+    if (err) {
+      Log.print(err)
+    }
+    if (files && files.length > 0) {
       var length = files.length
       var i = 0
       files.forEach(function (file) {
