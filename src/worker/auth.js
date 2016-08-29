@@ -6,6 +6,9 @@ var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
+var LogWorker = new Log({
+  module: 'Auth'
+})
 
 function Auth () {
   this.passwords = require(Path.join(__base, 'data/passwords.json'))
@@ -14,7 +17,7 @@ function Auth () {
 
 Auth.prototype.login = function (user, pass) {
   if (this.passwords[user] && this.passwords[user].pass === pass) {
-    Log.print(user + ' login.')
+    LogWorker.info(user + ' login.')
     if (typeof this.passwords[user].token === 'undefined') {
       this.passwords[user].token = []
     }
@@ -28,7 +31,7 @@ Auth.prototype.login = function (user, pass) {
 }
 
 Auth.prototype.logout = function (user, token) {
-  Log.print(user + ' logout.')
+  LogWorker.info(user + ' logout.')
   var encryptedToken = Crypto.SHA256(token).toString()
   if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(encryptedToken) !== -1) {
     delete this.passwords[user].token.splice(this.passwords[user].token.indexOf(encryptedToken), 1)
@@ -40,7 +43,7 @@ Auth.prototype.logout = function (user, token) {
 
 Auth.prototype.register = function (user, pass, invite) {
   if (this.invites.indexOf(invite) !== -1 && typeof this.passwords[user] === 'undefined') {
-    Log.print(user + ' register with invitation: ' + invite + '.')
+    LogWorker.info(user + ' register with invitation: ' + invite + '.')
     this.deleteInvite(invite)
     var token = this.genToken(user, pass)
     this.passwords[user] = {
@@ -57,7 +60,7 @@ Auth.prototype.register = function (user, pass, invite) {
 
 Auth.prototype.changePass = function(user, pass, newPass){
   if (this.passwords[user] && this.passwords[user].pass === pass) {
-    Log.print(user + ' change his password.')
+    LogWorker.info(user + ' change his password.')
     this.passwords[user].pass = newPass
     this.savePasswords()
     return true
@@ -87,14 +90,14 @@ Auth.prototype.savePasswords = function () {
   var self = this
   var passwords = JSON.parse(JSON.stringify(self.passwords))
   fs.writeFile('data/passwords.json', JSON.stringify(passwords), function (err) {
-    if (err) console.log(err)
+    if (err) LogWorker.error(error)
   })
 }
 
 Auth.prototype.createInvite = function (inviteKey) {
   if (inviteKey === __config.server.invitationKey) {
     var invite = this.genToken(Rand.rand(), Rand.rand())
-    Log.print('Invite generated: ' + invite + '.')
+    LogWorker.info('Invite generated: ' + invite + '.')
     this.invites.push(invite)
     return invite
   } else {

@@ -4,6 +4,9 @@ var portscanner = require('portscanner')
 var Path = require('path')
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
+var LogWorker = new Log({
+  module: 'FileTransfert'
+})
 
 /**
  * File transfert server.
@@ -26,9 +29,7 @@ function FileTransfert (req, res, callback) {
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
   var filename = Path.join(__base, __config.directory.path + req.query.f)
   fs.stat(filename, function (err, stats) {
-    if (err) {
-      console.log(err)
-    }
+    if (err) LogWorker.error(err)
     if (stats) {
       res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('/').pop() + '"')
       res.setHeader('Content-Length', stats.size)
@@ -38,19 +39,19 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
 
       fReadStream.pipe(res)
       fReadStream.on('end', function () {
-        Log.print(req.cookies.user + ' finish download file: ' + req.query.f)
+        LogWorker.info(req.cookies.user + ' finish download file: ' + req.query.f)
         callback()
 
         res.end()
       })
       fReadStream.on('close', function () {
-        Log.print(req.cookies.user + ' stop download file: ' + req.query.f)
+        LogWorker.info(req.cookies.user + ' stop download file: ' + req.query.f)
         callback()
 
         res.end()
       })
       fReadStream.on('error', function (err) {
-        Log.print(req.cookies.user + ' error during download file: ' + req.query.f + '\n err: ' + err)
+        LogWorker.error(req.cookies.user + ' error during download file: ' + req.query.f + '\n err: ' + err)
         callback()
 
         res.end()

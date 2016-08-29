@@ -3,6 +3,9 @@ var Path = require('path')
 var WebTorrent = require('webtorrent')
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
+var LogWorker = new Log({
+  module: 'Client'
+})
 
 /**
  * Torrent Client.
@@ -28,7 +31,7 @@ Client.prototype.download = function (torrentLink, cb) {
 
   var dl = function(torrentLink){
     self.torrentLink = torrentLink
-    Log.echo('Start: ' + torrentLink)
+    LogWorker.info('Start: ' + torrentLink)
 
     var timeout = setTimeout(function () {
       self.client.destroy(function () {
@@ -42,7 +45,7 @@ Client.prototype.download = function (torrentLink, cb) {
       clearTimeout(timeout)
       // On torrent start
       self.torrent = torrent
-      Log.print('Start torrent: ' + torrent.name)
+      LogWorker.info('Start torrent: ' + torrent.name)
       // emit start function with infoHash
       self.startFunction(torrent.infoHash)
 
@@ -56,19 +59,19 @@ Client.prototype.download = function (torrentLink, cb) {
       })
 
       torrent.on('done', function () {
-        Log.print('Finish torrent: ' + self.torrent.name)
+        LogWorker.info('Finish torrent: ' + self.torrent.name)
         // emit done function with torrent hash and name
         self.doneFunction(false, torrent.infoHash, torrent.name)
       })
 
       torrent.on('noPeers', function () {
-        Log.print('No peers: ' + torrent.name)
+        LogWorker.warning('No peers: ' + torrent.name)
         // emit done function with torrent hash and name
         self.doneFunction(false, torrent.infoHash, torrent.name)
       })
 
       torrent.on('error', function (err) {
-        Log.print('Error: ' + err)
+        LogWorker.error(err)
       })
     })
   }
