@@ -104,7 +104,6 @@ var App = {}
 
         $('.auth .changepass .submit').click(function () {
           var changePassData = self.getChangePass()
-          console.log(changePassData)
           if (changePassData.user.length > 0 && changePassData.oldpass.length && changePassData.newpass.length && changePassData.newpass2.length) {
             if (changePassData.newpass === changePassData.newpass2) {
               if (changePassData.newpass !== changePassData.oldpass) {
@@ -223,7 +222,6 @@ var App = {}
     }).done(function () {
       App.Loading.hide('action')
     }).fail(function (err) {
-      console.log(err)
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Auth.login()',
@@ -264,7 +262,6 @@ var App = {}
     }).done(function () {
       App.Loading.hide('action')
     }).fail(function (err) {
-      console.log(err)
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Auth.register()',
@@ -306,7 +303,6 @@ var App = {}
     }).done(function () {
       App.Loading.hide('action')
     }).fail(function (err) {
-      console.log(err)
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Auth.changePass()',
