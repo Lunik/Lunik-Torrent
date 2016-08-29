@@ -99,6 +99,9 @@
       name: '..',
       href: '#' + previousDir,
       type: 'file',
+      size: App.Format.size(0),
+      date: App.Format.date(new Date()),
+      owner: '-',
       extension: 'dir'
     }]
     var i = 0
