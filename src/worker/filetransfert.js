@@ -29,7 +29,12 @@ function FileTransfert (req, res, callback) {
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
   var filename = Path.join(__base, __config.directory.path + req.query.f)
   fs.stat(filename, function (err, stats) {
-    if (err) LogWorker.error(err)
+    if (err) {
+      callback()
+      res.end()
+      LogWorker.error(err)
+      return
+    }
     if (stats) {
       res.setHeader('Content-disposition', 'attachment; filename="' + req.query.f.split('/').pop() + '"')
       res.setHeader('Content-Length', stats.size)
@@ -57,7 +62,7 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
         res.end()
       })
     } else {
-      res.end("Le fichier n'existe pas")
+      res.end("Le fichier n'existe pas.")
     }
   })
 }

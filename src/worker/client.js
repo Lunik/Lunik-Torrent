@@ -72,6 +72,7 @@ Client.prototype.download = function (torrentLink, cb) {
 
       torrent.on('error', function (err) {
         LogWorker.error(err)
+        return
       })
     })
   }
