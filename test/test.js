@@ -17,6 +17,23 @@ var assert = require('chai').assert
 describe('Fontend', function () {})
 
 describe('Backend', function () { 
+  describe('Log', function(){
+    var Log = require(path.join(__base, 'src/worker/log.js'))
+    var LogWorker = new Log()
+    var LogWorker2 = new Log({})
+    it('Log info', function(done){
+      LogWorker.info('This is an info.')
+      done()
+    })
+    it('Log warning', function(done){
+      LogWorker.warning('This is a warning.')
+      done()
+    })
+    it('Log error', function(done){
+      LogWorker.error('This is an error.')
+      done()
+    })
+  })
   describe('Auth', function () {
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()

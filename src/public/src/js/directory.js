@@ -72,7 +72,6 @@
     }).done(function () {
       App.Loading.hide('action')
     }).fail(function (err) {
-      console.log(err)
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Directory.getDir()',
@@ -99,6 +98,9 @@
       name: '..',
       href: '#' + previousDir,
       type: 'file',
+      size: App.Format.size(0),
+      date: App.Format.date(new Date()),
+      owner: '-',
       extension: 'dir'
     }]
     var i = 0
