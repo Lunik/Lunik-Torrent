@@ -26,7 +26,7 @@ Configuration into: `configs/config.json`
 ```
 $ npm start
 or with forever
-$ npm run forever-start
+$ npm run deamon
 ```
 
 ## Heroku
