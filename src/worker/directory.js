@@ -71,6 +71,12 @@ Directory.prototype.getDir = function (dir, cb) {
             fs.stat(Path.join(__config.directory.path, dir), function(err, s){
               if(err){
                 Log.print(err)
+                cb({
+                  'mtime': 0,
+                  'totalSize': 0,
+                  'files': []
+                })
+                return
               }
               cb({
                 'mtime': s.mtime,
@@ -85,6 +91,12 @@ Directory.prototype.getDir = function (dir, cb) {
       fs.stat(Path.join(__config.directory.path, dir), function(err, s){
         if(err){
           Log.print(err)
+          cb({
+            'mtime': 0,
+            'totalSize': 0,
+            'files': []
+          })
+          return
         }
         cb({
           'mtime': s.mtime,
