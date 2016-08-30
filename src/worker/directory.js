@@ -4,7 +4,9 @@ var fs = require('fs')
 var Path = require('path')
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
-
+var LogWorker = new Log({
+  module: 'Directory'
+})
 /**
  * Directory manager.
  * @constructor
@@ -56,7 +58,7 @@ Directory.prototype.getDir = function (dir, cb) {
   var totalSize = 0
   var files = fs.readdir(Path.join(__config.directory.path, dir), function(err, files){
     if (err) {
-      Log.print(err)
+      LogWorker.error(err)
     }
     if (files && files.length > 0) {
       var length = files.length
@@ -71,6 +73,12 @@ Directory.prototype.getDir = function (dir, cb) {
             fs.stat(Path.join(__config.directory.path, dir), function(err, s){
               if(err){
                 Log.print(err)
+                cb({
+                  'mtime': 0,
+                  'totalSize': 0,
+                  'files': []
+                })
+                return
               }
               cb({
                 'mtime': s.mtime,
@@ -85,6 +93,12 @@ Directory.prototype.getDir = function (dir, cb) {
       fs.stat(Path.join(__config.directory.path, dir), function(err, s){
         if(err){
           Log.print(err)
+          cb({
+            'mtime': 0,
+            'totalSize': 0,
+            'files': []
+          })
+          return
         }
         cb({
           'mtime': s.mtime,
@@ -104,7 +118,7 @@ Directory.prototype.getDir = function (dir, cb) {
 Directory.prototype.getInfo = function (file, cb) {
   fs.stat(file, function(err, stats){
     if(err){
-      Log.print(err)
+      LogWorker.error(err)
     }
     var sfile = {}
     // get size if it's a Directory
@@ -187,13 +201,13 @@ Directory.prototype.isDownloading = function (file) {
 Directory.prototype.remove = function (file) {
   if (this.isDownloading(file)) return -1
   fs.stat(Path.join(__base, __config.directory.path, file), function (err, stats) {
-    if (err) Log.print(err)
+    if (err) LogWorker.error(err)
     if (stats) {
       if (stats.isDirectory()) {
         removeRecursif(Path.join(__base, __config.directory.path, file))
       } else {
         fs.unlink(Path.join(__base, __config.directory.path, file), function (err) {
-          if (err) Log.print(err)
+          if (err) LogWorker.error(err)
         })
       }
     }
@@ -210,7 +224,7 @@ Directory.prototype.rename = function (path, oldname, newname) {
   var self = this
   if (this.isDownloading(path + oldname)) return -1
   fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
-    if (err) Log.print(err)
+    if (err) LogWorker.error(err)
     var oldfile = Path.join(path, oldname)
     oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
 
@@ -231,7 +245,7 @@ Directory.prototype.rename = function (path, oldname, newname) {
 */
 Directory.prototype.mkdir = function (path, name) {
   fs.mkdir(Path.join(__base, __config.directory.path, path, name), function (err) {
-    if (err) Log.print(err)
+    if (err) LogWorker.error(err)
   })
 }
 
@@ -244,7 +258,7 @@ Directory.prototype.mkdir = function (path, name) {
 Directory.prototype.mv = function (path, file, folder) {
   if (this.isDownloading(Path.join(path, file))) return -1
   fs.rename(Path.join(__base, __config.directory.path, path, file), Path.join(__base, __config.directory.path, path, folder, file), function (err) {
-    if (err) Log.print(err)
+    if (err) LogWorker.error(err)
   })
 }
 
@@ -284,7 +298,7 @@ Directory.prototype.saveFileInfo = function () {
   if(!self.saving){
     self.saving = true
     fs.writeFile(Path.join(__base, 'data/fileInfo.json'), JSON.stringify(self.fileInfo), function (err) {
-      if (err) console.log(err)
+      if (err) LogWorker.error(err)
       self.saving = false
     })
   }
