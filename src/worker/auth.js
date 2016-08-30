@@ -90,7 +90,10 @@ Auth.prototype.savePasswords = function () {
   var self = this
   var passwords = JSON.parse(JSON.stringify(self.passwords))
   fs.writeFile('data/passwords.json', JSON.stringify(passwords), function (err) {
-    if (err) LogWorker.error(error)
+    if (err) {
+      LogWorker.error(err)
+      return
+    }
   })
 }
 
