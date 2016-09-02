@@ -28,7 +28,6 @@
     "crypto-rand": "0.0.2",
     "express": "^4.13.4",
     "forever": "^0.15.2",
-    "http-auth": "^2.4.6",
     "portscanner": "^1.0.0",
     "webtorrent": "^0.96.0"
   },
