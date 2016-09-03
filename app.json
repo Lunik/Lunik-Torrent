@@ -5,8 +5,8 @@
   "logo": "https://node-js-sample.herokuapp.com/node.png",
   "keywords": ["node", "express", "static", "webtorrent", "cloud"],
   "env": {
-    "INVITATION_CODE": {
-      "description": "The code to generate invitaion key.",
+    "INVITATION_KEY": {
+      "description": "The code to generate invitaion code.",
       "required": true
     }
   }
