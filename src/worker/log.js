@@ -36,7 +36,7 @@ Log.prototype.error = function(text){
 */
 Log.prototype.save = function (text) {
   var name = Path.join(__config.log.path, 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1))
-  fs.appendFile(name, text + '\n', 'utf8', function (err) {
+  fs.appendFile(name, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
     if (err) this.echo(colors.red.bold('[Error] ') + err)
   })
 }
@@ -47,6 +47,11 @@ Log.prototype.save = function (text) {
 */
 Log.prototype.echo = function (text) {
   console.log(text)
+}
+
+function getDate () {
+  var date = new Date()
+  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + (date.getFullYear() + 1) + ' ' + (date.getHours() + 1) + ':' + (date.getMinutes() + 1) + ':' + (date.getSeconds() + 1)
 }
 
 module.exports = Log
