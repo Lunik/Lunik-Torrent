@@ -36,21 +36,8 @@ function Update (cb) {
               LogWorker.error('Git pull fail with code: ' + code)
               process.exit(1)
             }
-            var checkout = spawn('git', ['checkout', 'tags/' + version])
-            checkout.stdout.on('data', (data) => {
-              LogWorker.info(data)
-            })
-            checkout.stderr.on('data', (data) => {
-              LogWorker.error(data)
-            })
-            checkout.on('exit', (code) => {
-              if (code) {
-                LogWorker.error('Git pull fail with code: ' + code)
-                process.exit(1)
-              }
-              LogWorker.info('Update to ' + version + 'succeed.')
-              cb()
-            })
+            LogWorker.info('Update to ' + version + 'succeed.')
+            cb()
           })
         } else {
           LogWorker.warning('Auto update is disabled.')
