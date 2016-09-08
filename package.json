@@ -19,7 +19,6 @@
     "allocine-api": "^0.1.9",
     "body-parser": "^1.15.2",
     "bower": "^1.7.9",
-    "check-update-github": "^0.0.4",
     "colors": "^1.1.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
@@ -28,6 +27,7 @@
     "crypto-rand": "0.0.2",
     "express": "^4.14.0",
     "forever": "^0.15.2",
+    "version": "^0.1.2",
     "webtorrent": "^0.96.4"
   },
   "devDependencies": {
