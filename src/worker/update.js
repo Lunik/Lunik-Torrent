@@ -36,8 +36,21 @@ function Update (cb) {
               LogWorker.error('Git pull fail with code: ' + code)
               process.exit(1)
             }
-            LogWorker.info('Update to ' + version + ' succeed.')
-            cb()
+            var install = spawn('npm', ['install'])
+            install.stdout.on('data', (data) => {
+              LogWorker.info(data.toString())
+            })
+            install.stderr.on('data', (data) => {
+              LogWorker.error(data.toString())
+            })
+            install.on('exit', (code) => {
+              if (code) {
+                LogWorker.error('Npm install fail with code: ' + code)
+                process.exit(1)
+              }
+              LogWorker.info('Update to ' + version + ' succeed.')
+              cb()
+            })
           })
         } else {
           LogWorker.warning('Auto update is disabled.')
