@@ -15,15 +15,15 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "^3.0.0",
+    "jquery": "^2.1.4",
     "requirejs": "^2.2.0",
     "jquery-ui": "^1.11.4",
     "jquery-ui-touch-punch-improved": "^0.3.1",
     "font-awesome": "^4.6.3",
     "notify.me": "^0.6.2",
     "popupjs": "^1.1.4",
-    "vue": "^1.0.26",
+    "vue": "^1.0.24",
     "local-storage-api": "^1.0.1",
-    "crypto-js": "^3.1.6"
+    "crypto-js": "^3.1.5"
   }
 }

@@ -1,6 +1,5 @@
 'use strict'
 var fs = require('fs')
-var portscanner = require('portscanner')
 var Path = require('path')
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))

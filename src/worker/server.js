@@ -207,7 +207,7 @@ function Server () {
   // client search torrent
   this.app.post('/search-t', function (req, res) {
     var searchEngine = require('./searchT.js')
-    if (req.body.query !== '') {
+    if (req.body.query && req.body.query !== '') {
       req.body.query = req.body.query.replace(/%20/g, ' ')
       LogWorker.info(req.cookies.user + ' search: ' + req.body.query)
       searchEngine.search(req.body.query, function (data) {

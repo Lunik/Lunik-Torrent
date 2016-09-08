@@ -197,7 +197,6 @@ var App = {}
     $.ajax({
       type: 'post',
       url: '/auth?todo=login',
-      timeout: 10000,
       data: {
         user: user,
         pass: pass
@@ -236,7 +235,6 @@ var App = {}
     $.ajax({
       type: 'post',
       url: '/auth?todo=register',
-      timeout: 10000,
       data: {
         user: user,
         pass: pass,
@@ -277,7 +275,6 @@ var App = {}
     $.ajax({
       type: 'post',
       url: '/auth?todo=changepass',
-      timeout: 10000,
       data: {
         user: user,
         oldpass: oldpass,
