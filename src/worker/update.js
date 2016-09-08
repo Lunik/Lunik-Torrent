@@ -28,6 +28,9 @@ function Update (cb) {
           pull.stdout.on('data', (data) => {
             LogWorker.info(data)
           })
+          pull.stderr.on('data', (data) => {
+            LogWorker.error(data)
+          })
           pull.on('exit', (code) => {
             if (code) {
               LogWorker.error('Git pull fail with code: ' + code)
@@ -36,6 +39,9 @@ function Update (cb) {
             var checkout = spawn('git', ['checkout', 'tags/' + version])
             checkout.stdout.on('data', (data) => {
               LogWorker.info(data)
+            })
+            checkout.stderr.on('data', (data) => {
+              LogWorker.error(data)
             })
             checkout.on('exit', (code) => {
               if (code) {
