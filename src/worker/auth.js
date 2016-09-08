@@ -58,7 +58,7 @@ Auth.prototype.register = function (user, pass, invite) {
   }
 }
 
-Auth.prototype.changePass = function(user, pass, newPass){
+Auth.prototype.changePass = function (user, pass, newPass) {
   if (this.passwords[user] && this.passwords[user].pass === pass) {
     LogWorker.info(user + ' change his password.')
     this.passwords[user].pass = newPass

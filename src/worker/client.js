@@ -29,7 +29,7 @@ function Client () {
 Client.prototype.download = function (torrentLink, cb) {
   var self = this
 
-  var dl = function(torrentLink){
+  var dl = function (torrentLink) {
     self.torrentLink = torrentLink
     LogWorker.info('Start: ' + torrentLink)
 

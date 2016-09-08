@@ -29,7 +29,7 @@ function Directory () {
 Directory.prototype.list = function (dir, cb) {
   var self = this
   // save directory informations into app cache
-  self.getDir(dir, function(folder){
+  self.getDir(dir, function (folder) {
     for (var f in folder.files) {
       var file = Path.join(dir, f)
       file = file[0] === '/' ? file.substring(1) : file
@@ -56,7 +56,7 @@ Directory.prototype.getDir = function (dir, cb) {
 
   var list = {}
   var totalSize = 0
-  var files = fs.readdir(Path.join(__config.directory.path, dir), function(err, files){
+  var files = fs.readdir(Path.join(__config.directory.path, dir), function (err, files) {
     if (err) {
       cb({
         'mtime': 0,
@@ -70,14 +70,14 @@ Directory.prototype.getDir = function (dir, cb) {
       var length = files.length
       var i = 0
       files.forEach(function (file) {
-        self.getInfo(Path.join(__config.directory.path, dir, file), function(stats){
+        self.getInfo(Path.join(__config.directory.path, dir, file), function (stats) {
           list[file] = stats
           totalSize += stats.size
 
           i++
-          if(i === length){
-            fs.stat(Path.join(__config.directory.path, dir), function(err, s){
-              if(err){
+          if (i === length) {
+            fs.stat(Path.join(__config.directory.path, dir), function (err, s) {
+              if (err) {
                 LogWorker.error(err)
                 cb({
                   'mtime': 0,
@@ -96,8 +96,8 @@ Directory.prototype.getDir = function (dir, cb) {
         })
       })
     } else {
-      fs.stat(Path.join(__config.directory.path, dir), function(err, s){
-        if(err){
+      fs.stat(Path.join(__config.directory.path, dir), function (err, s) {
+        if (err) {
           LogWorker.error(err)
           cb({
             'mtime': 0,
@@ -122,8 +122,8 @@ Directory.prototype.getDir = function (dir, cb) {
  * @return {object} - File / Directory informations.
 */
 Directory.prototype.getInfo = function (file, cb) {
-  fs.stat(file, function(err, stats){
-    if(err){
+  fs.stat(file, function (err, stats) {
+    if (err) {
       cb({})
       LogWorker.error(err)
       return
@@ -318,7 +318,7 @@ Directory.prototype.loadFileInfo = function () {
 */
 Directory.prototype.saveFileInfo = function () {
   var self = this
-  if(!self.saving){
+  if (!self.saving) {
     self.saving = true
     fs.writeFile(Path.join(__base, 'data/fileInfo.json'), JSON.stringify(self.fileInfo), function (err) {
       self.saving = false
