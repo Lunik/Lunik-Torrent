@@ -15,7 +15,7 @@ function Update (cb) {
   version.fetch('lunik-torrent', function (error, version) {
     if (error) {
       LogWorker.error(error)
-      exit(1)
+      process.exit(1)
     } else {
       if (version === pkg.version) {
         LogWorker.info('You have the last version: ' + version)
@@ -25,22 +25,22 @@ function Update (cb) {
         if (__config.autoUpdate) {
           LogWorker.info('Auto updating the app.')
           var pull = spawn('git', ['pull'])
-          bat.stdout.on('data', (data) => {
+          pull.stdout.on('data', (data) => {
             LogWorker.info(data)
           })
           pull.on('exit', (code) => {
-            if(code){
+            if (code) {
               Log.error('Git pull fail with code: ' + code)
-              exit(1)
+              process.exit(1)
             }
             var checkout = spawn('git', ['checkout', 'tags/' + version])
             checkout.stdout.on('data', (data) => {
               LogWorker.info(data)
             })
             checkout.on('exit', (code) => {
-              if(code){
+              if (code) {
                 Log.error('Git pull fail with code: ' + code)
-                exit(1)
+                process.exit(1)
               }
               LogWorker.info('Update to ' + version + 'succeed.')
               cb()
