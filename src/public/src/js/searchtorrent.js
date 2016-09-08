@@ -30,7 +30,6 @@
     $.ajax({
       type: 'post',
       url: '/search-t',
-      timeout: 10000,
       data: {
         query: query
       },

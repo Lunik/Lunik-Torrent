@@ -236,7 +236,7 @@
           return dir * (new Date(sa.join('/')) - new Date(sb.join('/')))
         })
         break
-      default: 
+      default:
         this.vue.$data.lines.sort(function (a, b) {
           if (a[by] < b[by]) {
             return dir
@@ -267,7 +267,6 @@
         $.ajax({
           type: 'post',
           url: '/mv-d',
-          timeout: 10000,
           data: {
             'file': file,
             'path': path,

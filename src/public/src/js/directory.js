@@ -53,7 +53,6 @@
     $.ajax({
       type: 'post',
       url: '/list-d',
-      timeout: 10000,
       data: {
         dir: App.hash || '/'
       },
@@ -188,7 +187,6 @@
       $.ajax({
         type: 'post',
         url: '/rename-d',
-        timeout: 10000,
         data: {
           'path': App.hash || '/',
           'oldname': fileName,
@@ -237,7 +235,6 @@
       $.ajax({
         type: 'post',
         url: '/remove-d',
-        timeout: 10000,
         data: {
           file: App.hash + fileName
         },
@@ -287,7 +284,6 @@
       $.ajax({
         type: 'post',
         url: '/mkdir-d',
-        timeout: 10000,
         data: {
           'path': App.hash || '/',
           'name': name

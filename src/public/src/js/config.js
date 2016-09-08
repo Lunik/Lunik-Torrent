@@ -29,7 +29,6 @@
       $.ajax({
         type: 'post',
         url: '/auth?todo=logout',
-        timeout: 10000,
         data: {},
         dataType: 'json',
         success: function (data) {
