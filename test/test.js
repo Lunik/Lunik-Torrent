@@ -553,7 +553,7 @@ describe('Backend', function () {
               Cookie: 'user=' + user + ';token=' + token
             },
             form: {
-              url: 'http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-desktop-amd64.iso.torrent'
+              url: 'magnet:?xt=urn:btih:9f9165d9a281a9b8e782cd5176bbcc8256fd1871&dn=ubuntu-16.04.1-desktop-amd64.iso'
             }
           }, function (err, res, body) {
             if (!err && res.statusCode == 200) {
@@ -660,13 +660,13 @@ describe('Backend', function () {
     describe('Start()', function () {
       it('startPointTorrent()', function (done) {
         this.timeout(300000)
-        Torrent.setDownloader('admin', 'http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-desktop-i386.iso.torrent')
+        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:13d22ec551069369502a3100a99b991dd56389d4&dn=ubuntu-16.04.1-desktop-i386.iso')
         fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-server-amd64.iso.torrent'
-          + 'http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-server-i386.iso.torrent'
-          + 'http://releases.ubuntu.com/14.04/ubuntu-14.04.5-desktop-amd64.iso.torrent'
-          + 'http://releases.ubuntu.com/14.04/ubuntu-14.04.5-desktop-i386.iso.torrent'
-          + 'http://releases.ubuntu.com/14.04/ubuntu-14.04.5-server-amd64.iso.torrent', function (err) {
+          'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso'
+          + 'magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso'
+          + 'magnet:?xt=urn:btih:34930674ef3bb9317fb5f263cca830f52685235b&dn=ubuntu-14.04.5-desktop-amd64.iso'
+          + 'magnet:?xt=urn:btih:5ee7e1dc3e01f362b0e53bfee9e4d6dcdedad61b&dn=ubuntu-14.04.5-desktop-i386.iso'
+          + 'magnet:?xt=urn:btih:0a4193f50658c7f195288bfd84a1b067697e21a2&dn=ubuntu-14.04.5-server-amd64.iso', function (err) {
             assert(!err)
             Torrent.startPointTorrent(Torrent)
             setTimeout(function () {
@@ -678,7 +678,7 @@ describe('Backend', function () {
     describe('remove()', function () {
       it('start and remove', function (done) {
         this.timeout(300000)
-        Torrent.start('http://releases.ubuntu.com/14.04/ubuntu-14.04.5-server-i386.iso.torrent')
+        Torrent.start('magnet:?xt=urn:btih:f67c13cbd11a00bccd1edddf8c7b0e3db80e6312&dn=ubuntu-14.04.5-server-i386.iso')
         setTimeout(function () {
           assert.typeOf(Torrent.getInfo(), 'object')
           Torrent.getUrlFromHash('f67c13cbd11a00bccd1edddf8c7b0e3db80e6312')
