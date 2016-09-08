@@ -30,7 +30,7 @@ function Update (cb) {
           })
           pull.on('exit', (code) => {
             if (code) {
-              Log.error('Git pull fail with code: ' + code)
+              LogWorker.error('Git pull fail with code: ' + code)
               process.exit(1)
             }
             var checkout = spawn('git', ['checkout', 'tags/' + version])
@@ -39,7 +39,7 @@ function Update (cb) {
             })
             checkout.on('exit', (code) => {
               if (code) {
-                Log.error('Git pull fail with code: ' + code)
+                LogWorker.error('Git pull fail with code: ' + code)
                 process.exit(1)
               }
               LogWorker.info('Update to ' + version + 'succeed.')
