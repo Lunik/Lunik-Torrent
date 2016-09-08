@@ -18,10 +18,10 @@ function Update (cb) {
       exit(1)
     } else {
       if (version === pkg.version) {
-        LogWorker.info('You have the last version:', version)
+        LogWorker.info('You have the last version: ' + version)
         cb()
       } else {
-        LogWorker.warning("You don't have the last version:", version)
+        LogWorker.warning('You don\'t have the last version: ' + version)
         if (__config.autoUpdate) {
           LogWorker.info('Auto updating the app.')
           var pull = spawn('git', ['pull'])
