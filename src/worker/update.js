@@ -26,17 +26,17 @@ function Update (cb) {
           LogWorker.info('Auto updating the app.')
           var pull = spawn('git', ['pull'])
           pull.stdout.on('data', (data) => {
-            LogWorker.info(data)
+            LogWorker.info(data.toString())
           })
           pull.stderr.on('data', (data) => {
-            LogWorker.error(data)
+            LogWorker.error(data.toString())
           })
           pull.on('exit', (code) => {
             if (code) {
               LogWorker.error('Git pull fail with code: ' + code)
               process.exit(1)
             }
-            LogWorker.info('Update to ' + version + 'succeed.')
+            LogWorker.info('Update to ' + version + ' succeed.')
             cb()
           })
         } else {
