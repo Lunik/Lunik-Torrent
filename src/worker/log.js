@@ -9,26 +9,26 @@ var colors = require('colors')
  * @constructor
 */
 function Log (options) {
-	if(!options) options = {}
-	this.module = options.module || 'Default'
+  if (!options) options = {}
+  this.module = options.module || 'Default'
 }
 
-Log.prototype.info = function(text){
-	text = '[' + this.module + '] ' + colors.green.bold('[Info] ') + text
-	this.echo(text)
-	this.save(colors.strip(text))
+Log.prototype.info = function (text) {
+  text = '[' + this.module + '] ' + colors.green.bold('[Info] ') + text
+  this.echo(text)
+  this.save(colors.strip(text))
 }
 
-Log.prototype.warning = function(text){
-	text = '[' + this.module + '] ' + colors.yellow.bold('[Warning] ') + text
-	this.echo(text)
-	this.save(colors.strip(text))
+Log.prototype.warning = function (text) {
+  text = '[' + this.module + '] ' + colors.yellow.bold('[Warning] ') + text
+  this.echo(text)
+  this.save(colors.strip(text))
 }
 
-Log.prototype.error = function(text){
-	text = '[' + this.module + '] ' + colors.red.bold('[Error] ') + colors.red(text)
-	this.echo(text)
-	this.save(colors.strip(text))
+Log.prototype.error = function (text) {
+  text = '[' + this.module + '] ' + colors.red.bold('[Error] ') + colors.red(text)
+  this.echo(text)
+  this.save(colors.strip(text))
 }
 /**
  *  Write log into .txt and log it on the screen.

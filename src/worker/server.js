@@ -90,7 +90,7 @@ function Server () {
   this.app.post('/list-d', function (req, res) {
     if (req.body.dir) {
       req.body.dir = req.body.dir.replace(/%20/g, ' ')
-      Directory.list(req.body.dir, function(dir){
+      Directory.list(req.body.dir, function (dir) {
         res.end(JSON.stringify(dir))
       })
     } else {
