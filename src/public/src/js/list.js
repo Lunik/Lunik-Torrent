@@ -221,7 +221,7 @@
   */
   _List.prototype.sortLines = function (by, direction) {
     var dir = direction === 'asc' ? -1 : 1
-    switch(by){
+    switch (by) {
       case 'date':
         this.vue.$data.lines.sort(function (a, b) {
           var tamp

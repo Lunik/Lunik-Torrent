@@ -10,6 +10,6 @@ var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(Path.join(__base, 'configs/config.json'))
 
 var Update = require(Path.join(__base, 'src/worker/update.js'))
-var UpdateWorker = new Update(function(){
+var UpdateWorker = new Update(function () {
   var Server = require(Path.join(__base, 'src/worker/server.js'))
 })

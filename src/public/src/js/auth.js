@@ -162,7 +162,7 @@ var App = {}
     this.v.$data.info = info
   }
 
-  _App.prototype.cleanPassword = function(){
+  _App.prototype.cleanPassword = function () {
     this.v.$data.login.pass = ''
     this.v.$data.register.pass = ''
     this.v.$data.register.pass2 = ''
