@@ -16,7 +16,7 @@ var assert = require('chai').assert
 
 describe('Fontend', function () {})
 
-describe('Backend', function () { 
+describe('Backend', function () {
   describe('Log', function(){
     var Log = require(path.join(__base, 'src/worker/log.js'))
     var LogWorker = new Log()
@@ -553,7 +553,7 @@ describe('Backend', function () {
               Cookie: 'user=' + user + ';token=' + token
             },
             form: {
-              url: 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
+              url: 'http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-desktop-amd64.iso.torrent'
             }
           }, function (err, res, body) {
             if (!err && res.statusCode == 200) {
@@ -565,12 +565,12 @@ describe('Backend', function () {
                   Cookie: 'user=' + user + ';token=' + token
                 },
                 form: {
-                  hash: '6a9759bffd5c0af65319979fb7832189f4f3c35d'
+                  hash: '9f9165d9a281a9b8e782cd5176bbcc8256fd1871'
                 }
               }, function (err, res, body) {
                 if (!err && res.statusCode == 200) {
                   body = JSON.parse(body)
-                  assert.equal(body.hash, '6a9759bffd5c0af65319979fb7832189f4f3c35d')
+                  assert.equal(body.hash, '9f9165d9a281a9b8e782cd5176bbcc8256fd1871')
                   assert(!body.err)
                 }
                 done()
@@ -660,13 +660,13 @@ describe('Backend', function () {
     describe('Start()', function () {
       it('startPointTorrent()', function (done) {
         this.timeout(300000)
-        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
+        Torrent.setDownloader('admin', 'http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-desktop-i386.iso.torrent')
         fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4', function (err) {
+          'http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-server-amd64.iso.torrent'
+          + 'http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-server-i386.iso.torrent'
+          + 'http://releases.ubuntu.com/14.04/ubuntu-14.04.5-desktop-amd64.iso.torrent'
+          + 'http://releases.ubuntu.com/14.04/ubuntu-14.04.5-desktop-i386.iso.torrent'
+          + 'http://releases.ubuntu.com/14.04/ubuntu-14.04.5-server-amd64.iso.torrent', function (err) {
             assert(!err)
             Torrent.startPointTorrent(Torrent)
             setTimeout(function () {
@@ -678,11 +678,11 @@ describe('Backend', function () {
     describe('remove()', function () {
       it('start and remove', function (done) {
         this.timeout(300000)
-        Torrent.start('magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
+        Torrent.start('http://releases.ubuntu.com/14.04/ubuntu-14.04.5-server-i386.iso.torrent')
         setTimeout(function () {
           assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('6a9759bffd5c0af65319979fb7832189f4f3c35d')
-          Torrent.remove('6a9759bffd5c0af65319979fb7832189f4f3c35d')
+          Torrent.getUrlFromHash('f67c13cbd11a00bccd1edddf8c7b0e3db80e6312')
+          Torrent.remove('f67c13cbd11a00bccd1edddf8c7b0e3db80e6312')
           done()
         }, 10000)
       })
