@@ -1,4 +1,5 @@
 {
+  "autoUpdate": true,
   "log": {
     "path": "logs/"
   },

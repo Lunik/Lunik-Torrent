@@ -4,6 +4,9 @@ var fs = require('fs')
 var Path = require('path')
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
+var LogWorker = new Log({
+  module: 'Torrent'
+})
 var Client = require(Path.join(__base, 'src/worker/client.js'))
 
 /**
@@ -42,7 +45,7 @@ Torrent.prototype.start = function (url) {
         return -1
       }
       var c = new Client()
-      c.download(url, function(){})
+      c.download(url, function () {})
 
       c.on('start', function (hash) {
         if (self.client[url]) {
@@ -58,22 +61,22 @@ Torrent.prototype.start = function (url) {
 
       c.on('done', function (err, hash, name) {
         if (self.client[url]) {
-          if (!err) {
-            self.client[url].peer.stop()
-            // Deplace les fichies
-            Log.print(Path.join(__config.torrent.downloads, name) + ' ' + Path.join(__config.directory.path, name))
-            fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
-            // Defini l'owner
-            if (self.dowloader[url]) {
-              self.Directory.setOwner(name, self.dowloader[url])
-            }
-          } else {
-            Log.print('Fail downloading: ' + url)
+          if (err) {
+            LogWorker.error('Fail downloading: ' + url)
+            return
+          }
+          self.client[url].peer.stop()
+          // Deplace les fichies
+          LogWorker.info(Path.join(__config.torrent.downloads, name) + ' ' + Path.join(__config.directory.path, name))
+          fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
+          // Defini l'owner
+          if (self.dowloader[url]) {
+            self.Directory.setOwner(name, self.dowloader[url])
           }
           delete self.client[url]
           // Relance un torrent si il y en a en attente
           if (self.waitList.length > 0) {
-            Log.print('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
+            LogWorker.info('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
             self.start(self.waitList.shift())
           }
         }
@@ -81,14 +84,14 @@ Torrent.prototype.start = function (url) {
 
       self.client[url].peer = c
     } else {
-      Log.print('Too much client. Adding torrent to the waitlist.')
+      LogWorker.warning('Too much client. Adding torrent to the waitlist.')
       // On push dans la liste d'attente
       if (self.waitList.indexOf(url) === -1) {
         self.waitList.push(url)
       }
     }
   } else {
-    Log.print('Torrent is already downloading.')
+    LogWorker.warning('Torrent is already downloading.')
   }
 }
 

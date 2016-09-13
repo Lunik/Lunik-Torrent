@@ -29,7 +29,6 @@
       $.ajax({
         type: 'post',
         url: '/auth?todo=logout',
-        timeout: 10000,
         data: {},
         dataType: 'json',
         success: function (data) {
@@ -52,7 +51,6 @@
       }).done(function () {
         App.Loading.hide('action')
       }).fail(function (err) {
-        console.log(err)
         App.Loading.hide('action')
         $.notify.error({
           title: 'Error in Config.logout()',

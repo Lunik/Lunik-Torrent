@@ -221,15 +221,33 @@
   */
   _List.prototype.sortLines = function (by, direction) {
     var dir = direction === 'asc' ? -1 : 1
-    this.vue.$data.lines.sort(function (a, b) {
-      if (a[by] < b[by]) {
-        return dir
-      } else if (a[by] > b[by]) {
-        return -dir
-      } else {
-        return 0
-      }
-    })
+    switch (by) {
+      case 'date':
+        this.vue.$data.lines.sort(function (a, b) {
+          var tamp
+          var sa = a[by].split('/')
+          tamp = sa[0]
+          sa[0] = sa[1]
+          sa[1] = tamp
+          var sb = b[by].split('/')
+          tamp = sb[0]
+          sb[0] = sb[1]
+          sb[1] = tamp
+          return dir * (new Date(sa.join('/')) - new Date(sb.join('/')))
+        })
+        break
+      default:
+        this.vue.$data.lines.sort(function (a, b) {
+          if (a[by] < b[by]) {
+            return dir
+          } else if (a[by] > b[by]) {
+            return -dir
+          } else {
+            return 0
+          }
+        })
+        break
+    }
   }
 
   _List.prototype.updateDragDrop = function () {
@@ -249,7 +267,6 @@
         $.ajax({
           type: 'post',
           url: '/mv-d',
-          timeout: 10000,
           data: {
             'file': file,
             'path': path,

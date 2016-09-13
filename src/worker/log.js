@@ -2,22 +2,42 @@
 
 var fs = require('fs')
 var Path = require('path')
+var colors = require('colors')
 
 /**
  *  Log manager.
  * @constructor
 */
-function Log () {}
+function Log (options) {
+  if (!options) options = {}
+  this.module = options.module || 'Default'
+}
 
+Log.prototype.info = function (text) {
+  text = '[' + this.module + '] ' + colors.green.bold('[Info] ') + text
+  this.echo(text)
+  this.save(colors.strip(text))
+}
+
+Log.prototype.warning = function (text) {
+  text = '[' + this.module + '] ' + colors.yellow.bold('[Warning] ') + text
+  this.echo(text)
+  this.save(colors.strip(text))
+}
+
+Log.prototype.error = function (text) {
+  text = '[' + this.module + '] ' + colors.red.bold('[Error] ') + colors.red(text)
+  this.echo(text)
+  this.save(colors.strip(text))
+}
 /**
  *  Write log into .txt and log it on the screen.
  * @param {string} text - Text to log.
 */
-Log.prototype.print = function (text) {
-  var self = this
-  self.echo(text)
-  fs.appendFile(Path.join(__config.log.path, 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1)), '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
-    if (err) throw err
+Log.prototype.save = function (text) {
+  var name = Path.join(__config.log.path, 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1))
+  fs.appendFile(name, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
+    if (err) this.echo(colors.red.bold('[Error] ') + err)
   })
 }
 
@@ -31,7 +51,7 @@ Log.prototype.echo = function (text) {
 
 function getDate () {
   var date = new Date()
-  return date.getDate() + '/' + (date.getMonth() + 1) + ' ' + (date.getHours() + 1) + ':' + (date.getMinutes() + 1) + ':' + (date.getSeconds() + 1)
+  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + (date.getFullYear() + 1) + ' ' + (date.getHours() + 1) + ':' + (date.getMinutes() + 1) + ':' + (date.getSeconds() + 1)
 }
 
-module.exports = new Log()
+module.exports = Log

@@ -16,7 +16,24 @@ var assert = require('chai').assert
 
 describe('Fontend', function () {})
 
-describe('Backend', function () { 
+describe('Backend', function () {
+  describe('Log', function(){
+    var Log = require(path.join(__base, 'src/worker/log.js'))
+    var LogWorker = new Log()
+    var LogWorker2 = new Log({})
+    it('Log info', function(done){
+      LogWorker.info('This is an info.')
+      done()
+    })
+    it('Log warning', function(done){
+      LogWorker.warning('This is a warning.')
+      done()
+    })
+    it('Log error', function(done){
+      LogWorker.error('This is an error.')
+      done()
+    })
+  })
   describe('Auth', function () {
     var username = 'foo' + rand.rand()
     var username2 = 'foo2' + rand.rand()
@@ -536,7 +553,7 @@ describe('Backend', function () {
               Cookie: 'user=' + user + ';token=' + token
             },
             form: {
-              url: 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
+              url: 'magnet:?xt=urn:btih:9f9165d9a281a9b8e782cd5176bbcc8256fd1871&dn=ubuntu-16.04.1-desktop-amd64.iso'
             }
           }, function (err, res, body) {
             if (!err && res.statusCode == 200) {
@@ -548,12 +565,12 @@ describe('Backend', function () {
                   Cookie: 'user=' + user + ';token=' + token
                 },
                 form: {
-                  hash: '6a9759bffd5c0af65319979fb7832189f4f3c35d'
+                  hash: '9f9165d9a281a9b8e782cd5176bbcc8256fd1871'
                 }
               }, function (err, res, body) {
                 if (!err && res.statusCode == 200) {
                   body = JSON.parse(body)
-                  assert.equal(body.hash, '6a9759bffd5c0af65319979fb7832189f4f3c35d')
+                  assert.equal(body.hash, '9f9165d9a281a9b8e782cd5176bbcc8256fd1871')
                   assert(!body.err)
                 }
                 done()
@@ -643,13 +660,13 @@ describe('Backend', function () {
     describe('Start()', function () {
       it('startPointTorrent()', function (done) {
         this.timeout(300000)
-        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
+        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:13d22ec551069369502a3100a99b991dd56389d4&dn=ubuntu-16.04.1-desktop-i386.iso')
         fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4'
-          + 'magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4', function (err) {
+          'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso'
+          + 'magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso'
+          + 'magnet:?xt=urn:btih:34930674ef3bb9317fb5f263cca830f52685235b&dn=ubuntu-14.04.5-desktop-amd64.iso'
+          + 'magnet:?xt=urn:btih:5ee7e1dc3e01f362b0e53bfee9e4d6dcdedad61b&dn=ubuntu-14.04.5-desktop-i386.iso'
+          + 'magnet:?xt=urn:btih:0a4193f50658c7f195288bfd84a1b067697e21a2&dn=ubuntu-14.04.5-server-amd64.iso', function (err) {
             assert(!err)
             Torrent.startPointTorrent(Torrent)
             setTimeout(function () {
@@ -661,11 +678,11 @@ describe('Backend', function () {
     describe('remove()', function () {
       it('start and remove', function (done) {
         this.timeout(300000)
-        Torrent.start('magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4')
+        Torrent.start('magnet:?xt=urn:btih:f67c13cbd11a00bccd1edddf8c7b0e3db80e6312&dn=ubuntu-14.04.5-server-i386.iso')
         setTimeout(function () {
           assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('6a9759bffd5c0af65319979fb7832189f4f3c35d')
-          Torrent.remove('6a9759bffd5c0af65319979fb7832189f4f3c35d')
+          Torrent.getUrlFromHash('f67c13cbd11a00bccd1edddf8c7b0e3db80e6312')
+          Torrent.remove('f67c13cbd11a00bccd1edddf8c7b0e3db80e6312')
           done()
         }, 10000)
       })

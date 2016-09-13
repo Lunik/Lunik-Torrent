@@ -7,6 +7,9 @@ var cookieParser = require('cookie-parser')
 var Path = require('path')
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
+var LogWorker = new Log({
+  module: 'Server'
+})
 var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
 var Directory = require(Path.join(__base, 'src/worker/directory.js'))
 var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
@@ -45,14 +48,14 @@ function Server () {
 
   var port = process.env.PORT || __config.server.port
   this.app.listen(port, function () {
-    Log.print('Server listening at port ' + port)
+    LogWorker.info('Server listening at port ' + port)
   })
 
   // Client Download file
   this.app.get('/files', function (req, res) {
     if (req.query.f) {
       req.query.f = req.query.f.split('..').join('')
-      Log.print(req.cookies.user + ' download file: ' + req.query.f)
+      LogWorker.info(req.cookies.user + ' download file: ' + req.query.f)
       Directory.setDownloading(req.query.f)
       var transfert = new FileTransfert(req, res, function () {
         Directory.finishDownloading(req.query.f)
@@ -67,7 +70,7 @@ function Server () {
   // client start torrent
   this.app.post('/download-t', function (req, res) {
     if (req.body.url) {
-      Log.print(req.cookies.user + ' download torrent: ' + req.body.url)
+      LogWorker.info(req.cookies.user + ' download torrent: ' + req.body.url)
       Torrent.setDownloader(req.cookies.user, req.body.url)
       Torrent.start(req.body.url)
       res.end(JSON.stringify({}))
@@ -87,7 +90,7 @@ function Server () {
   this.app.post('/list-d', function (req, res) {
     if (req.body.dir) {
       req.body.dir = req.body.dir.replace(/%20/g, ' ')
-      Directory.list(req.body.dir, function(dir){
+      Directory.list(req.body.dir, function (dir) {
         res.end(JSON.stringify(dir))
       })
     } else {
@@ -100,7 +103,7 @@ function Server () {
   // client remove torrent
   this.app.post('/remove-t', function (req, res) {
     if (req.body.hash) {
-      Log.print(req.cookies.user + ' remove torrent: ' + req.body.hash)
+      LogWorker.info(req.cookies.user + ' remove torrent: ' + req.body.hash)
       Torrent.remove(req.body.hash)
       res.end(JSON.stringify({
         hash: req.body.hash
@@ -117,7 +120,7 @@ function Server () {
     if (req.body.file) {
       req.body.file = req.body.file.replace(/%20/g, ' ')
       if (Directory.remove(req.body.file) !== -1) {
-        Log.print(req.cookies.user + ' remove file: ' + req.body.file)
+        LogWorker.info(req.cookies.user + ' remove file: ' + req.body.file)
         res.end(JSON.stringify({
           file: req.body.file.split('/')[req.body.file.split('/').length - 1]
         }))
@@ -140,7 +143,7 @@ function Server () {
       req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
       req.body.newname = req.body.newname.replace(/%20/g, ' ')
       if (Directory.rename(req.body.path, req.body.oldname, req.body.newname) !== -1) {
-        Log.print(req.cookies.user + ' rename file: ' + Path.join(req.body.path, req.body.oldname) + ' in: ' + req.body.newname)
+        LogWorker.info(req.cookies.user + ' rename file: ' + Path.join(req.body.path, req.body.oldname) + ' in: ' + req.body.newname)
         res.end(JSON.stringify({
           path: req.body.path,
           oldname: req.body.oldname,
@@ -164,7 +167,7 @@ function Server () {
     if (req.body.path && req.body.name) {
       req.body.path = req.body.path.replace(/%20/g, ' ')
       req.body.name = req.body.name.replace(/%20/g, ' ')
-      Log.print(req.cookies.user + ' create directory: ' + Path.join(req.body.path, req.body.name))
+      LogWorker.info(req.cookies.user + ' create directory: ' + Path.join(req.body.path, req.body.name))
       Directory.mkdir(req.body.path, req.body.name)
       res.end(JSON.stringify({
         name: req.body.name
@@ -184,7 +187,7 @@ function Server () {
       req.body.file = req.body.file.replace(/%20/g, ' ')
       req.body.folder = req.body.folder.replace(/%20/g, ' ')
       if (Directory.mv(req.body.path, req.body.file, req.body.folder) !== -1) {
-        Log.print(req.cookies.user + ' move: ' + Path.join(req.body.path, req.body.file) + ' in: ' + Path.join(req.body.path, req.body.folder))
+        LogWorker.info(req.cookies.user + ' move: ' + Path.join(req.body.path, req.body.file) + ' in: ' + Path.join(req.body.path, req.body.folder))
         res.end(JSON.stringify({
           file: req.body.file
         }))
@@ -204,9 +207,9 @@ function Server () {
   // client search torrent
   this.app.post('/search-t', function (req, res) {
     var searchEngine = require('./searchT.js')
-    if (req.body.query !== '') {
+    if (req.body.query && req.body.query !== '') {
       req.body.query = req.body.query.replace(/%20/g, ' ')
-      Log.print(req.cookies.user + ' search: ' + req.body.query)
+      LogWorker.info(req.cookies.user + ' search: ' + req.body.query)
       searchEngine.search(req.body.query, function (data) {
         res.end(JSON.stringify(data))
       })

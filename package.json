@@ -1,13 +1,13 @@
 {
   "name": "lunik-torrent",
-  "version": "2.18.1",
+  "version": "2.18.4",
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
   "scripts": {
     "postinstall": "scripts/init.sh && bower install --allow-root",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js -w src/worker/ --ignore src/public",
-    "forever-start": "forever -a start src/index.js",
+    "deamon": "forever -a start src/index.js",
     "test": "istanbul cover _mocha -- -R spec test/*"
   },
   "main": "src/index.js",
@@ -17,19 +17,18 @@
   },
   "dependencies": {
     "allocine-api": "^0.1.9",
-    "body-parser": "^1.15.1",
+    "body-parser": "^1.15.2",
     "bower": "^1.7.9",
-    "check-update-github": "^0.0.4",
-    "compression": "^1.6.1",
+    "colors": "^1.1.2",
+    "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
-    "cpasbien-api": "^1.1.0",
+    "cpasbien-api": "^1.1.1",
     "crypto-js": "^3.1.6",
     "crypto-rand": "0.0.2",
-    "express": "^4.13.4",
+    "express": "^4.14.0",
     "forever": "^0.15.2",
-    "http-auth": "^2.3.3",
-    "portscanner": "^1.0.0",
-    "webtorrent": "^0.96.0"
+    "version": "^0.1.2",
+    "webtorrent": "^0.96.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",

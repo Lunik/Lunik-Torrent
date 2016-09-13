@@ -104,7 +104,6 @@ var App = {}
 
         $('.auth .changepass .submit').click(function () {
           var changePassData = self.getChangePass()
-          console.log(changePassData)
           if (changePassData.user.length > 0 && changePassData.oldpass.length && changePassData.newpass.length && changePassData.newpass2.length) {
             if (changePassData.newpass === changePassData.newpass2) {
               if (changePassData.newpass !== changePassData.oldpass) {
@@ -163,7 +162,7 @@ var App = {}
     this.v.$data.info = info
   }
 
-  _App.prototype.cleanPassword = function(){
+  _App.prototype.cleanPassword = function () {
     this.v.$data.login.pass = ''
     this.v.$data.register.pass = ''
     this.v.$data.register.pass2 = ''
@@ -198,7 +197,6 @@ var App = {}
     $.ajax({
       type: 'post',
       url: '/auth?todo=login',
-      timeout: 10000,
       data: {
         user: user,
         pass: pass
@@ -223,7 +221,6 @@ var App = {}
     }).done(function () {
       App.Loading.hide('action')
     }).fail(function (err) {
-      console.log(err)
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Auth.login()',
@@ -238,7 +235,6 @@ var App = {}
     $.ajax({
       type: 'post',
       url: '/auth?todo=register',
-      timeout: 10000,
       data: {
         user: user,
         pass: pass,
@@ -264,7 +260,6 @@ var App = {}
     }).done(function () {
       App.Loading.hide('action')
     }).fail(function (err) {
-      console.log(err)
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Auth.register()',
@@ -280,7 +275,6 @@ var App = {}
     $.ajax({
       type: 'post',
       url: '/auth?todo=changepass',
-      timeout: 10000,
       data: {
         user: user,
         oldpass: oldpass,
@@ -306,7 +300,6 @@ var App = {}
     }).done(function () {
       App.Loading.hide('action')
     }).fail(function (err) {
-      console.log(err)
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Auth.changePass()',

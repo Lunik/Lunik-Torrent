@@ -32,7 +32,6 @@
       $.ajax({
         type: 'post',
         url: '/info-d',
-        timeout: 10000,
         data: {
           type: type,
           query: title.toLowerCase()

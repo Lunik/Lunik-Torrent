@@ -53,7 +53,6 @@
     $.ajax({
       type: 'post',
       url: '/list-d',
-      timeout: 10000,
       data: {
         dir: App.hash || '/'
       },
@@ -72,7 +71,6 @@
     }).done(function () {
       App.Loading.hide('action')
     }).fail(function (err) {
-      console.log(err)
       App.Loading.hide('action')
       $.notify.error({
         title: 'Error in Directory.getDir()',
@@ -99,6 +97,9 @@
       name: '..',
       href: '#' + previousDir,
       type: 'file',
+      size: App.Format.size(0),
+      date: App.Format.date(new Date()),
+      owner: '-',
       extension: 'dir'
     }]
     var i = 0
@@ -186,7 +187,6 @@
       $.ajax({
         type: 'post',
         url: '/rename-d',
-        timeout: 10000,
         data: {
           'path': App.hash || '/',
           'oldname': fileName,
@@ -235,7 +235,6 @@
       $.ajax({
         type: 'post',
         url: '/remove-d',
-        timeout: 10000,
         data: {
           file: App.hash + fileName
         },
@@ -285,7 +284,6 @@
       $.ajax({
         type: 'post',
         url: '/mkdir-d',
-        timeout: 10000,
         data: {
           'path': App.hash || '/',
           'name': name

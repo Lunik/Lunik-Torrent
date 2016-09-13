@@ -24,6 +24,7 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
         callback({
           err: err
         })
+        return
       }
       callback({
         'type': 'series',
@@ -43,6 +44,7 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
         callback({
           err: err
         })
+        return
       }
       callback({
         'type': 'films',
@@ -74,6 +76,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
         callback({
           err: err
         })
+        return
       }
       if (data.feed.totalResults > 0) {
         // Maybe Change that
@@ -85,6 +88,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
         callback({
           err: 'Nothing found for "' + query + '".'
         })
+        return
       }
     })
   } else if (type === 'movie') {
@@ -96,6 +100,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
         callback({
           err: err
         })
+        return
       }
       if (data.feed.totalResults > 0) {
         self.getMediaInfo(query, type, data.feed.movie[0].code, callback)
@@ -103,6 +108,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
         callback({
           err: 'Nothing found for "' + query + '".'
         })
+        return
       }
     })
   }
@@ -124,6 +130,7 @@ MediaInfo.prototype.getInfo = function (type, query, callback) {
     callback({
       err: 'Unknown type: ' + type
     })
+    return
   }
 }
 

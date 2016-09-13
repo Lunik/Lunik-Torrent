@@ -60,7 +60,6 @@
     $.ajax({
       type: 'post',
       url: '/list-t',
-      timeout: 10000,
       data: {},
       dataType: 'json',
       success: function (torrents) {
@@ -153,7 +152,6 @@
       $.ajax({
         type: 'post',
         url: '/remove-t',
-        timeout: 10000,
         data: {
           hash: torrent.hash
         },
@@ -196,7 +194,6 @@
     $.ajax({
       type: 'post',
       url: '/download-t',
-      timeout: 10000,
       data: {
         url: url
       },
