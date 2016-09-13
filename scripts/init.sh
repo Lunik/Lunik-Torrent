@@ -36,8 +36,8 @@ fi
 if ! [ -f configs/config.json ]
   then echo "==> Copying configs"
   cp configs/config.default configs/config.json
-  if [ ${#INVITATION_CODE} -gt 0 ]
+  if [ ${#INVITATION_KEY} -gt 0 ]
   then
-    sed -i -e 's/MY_KEY/'$INVITATION_CODE'/' configs/config.json
+    sed -i -e 's/MY_KEY/'$INVITATION_KEY'/' configs/config.json
   fi
 fi
