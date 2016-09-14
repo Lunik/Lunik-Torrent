@@ -6,7 +6,7 @@
   "keywords": ["node", "express", "static", "webtorrent", "cloud"],
   "env": {
     "INVITATION_KEY": {
-      "description": "The code to generate invitaion code.",
+      "description": "The key to generate invitation code.",
       "required": true
     }
   }
