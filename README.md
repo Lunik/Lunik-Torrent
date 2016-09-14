@@ -54,7 +54,7 @@ You need an inscription code provided by the server admin.
 ```
 $ ./scripts/getinvite.sh
 OR
-$ curl --data "invitationKey=mykey" http://localhost:5000/auth?todo=invite
+$ curl --data "invitationkey=mykey" http://localhost:5000/auth?todo=invite
 {
   "err":false,
   "invitationCode":"your_invitation_code"
