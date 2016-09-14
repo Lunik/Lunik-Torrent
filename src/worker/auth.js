@@ -23,6 +23,12 @@ Auth.prototype.login = function (user, pass) {
     }
     var token = this.genToken(user, pass)
     this.passwords[user].token.push(Crypto.SHA256(token).toString())
+    var length = this.passwords[user].token.length
+    if (length > 10) {
+      console.log("\n", this.passwords[user].token)
+      this.passwords[user].token = this.passwords[user].token.slice(length - 10, length);
+      console.log(this.passwords[user].token)
+    }
     this.savePasswords()
     return token
   } else {
