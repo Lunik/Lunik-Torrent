@@ -3,9 +3,14 @@ image: node:6.5.0
 variables:
   PORT: "5000"
 
+cache:
+  paths:
+    - "$(pwd)/node_modules"
+    - "$(pwd)/src/public/src/bower_components"
+    
 before_script:
   - npm install
-  
+
 job_test:
   script:
     - npm test
