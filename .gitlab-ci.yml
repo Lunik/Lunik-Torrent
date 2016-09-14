@@ -7,9 +7,10 @@ cache:
   paths:
     - "$(pwd)/node_modules"
     - "$(pwd)/src/public/src/bower_components"
-    
+
 before_script:
   - npm install
+  - npm postinstall
 
 job_test:
   script:
