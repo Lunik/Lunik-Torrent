@@ -10,7 +10,7 @@ cache:
 
 before_script:
   - npm install
-  - npm postinstall
+  - npm run postinstall
 
 job_test:
   script:
