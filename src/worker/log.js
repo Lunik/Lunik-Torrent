@@ -35,9 +35,10 @@ Log.prototype.error = function (text) {
  * @param {string} text - Text to log.
 */
 Log.prototype.save = function (text) {
+  var self = this
   var name = Path.join(__config.log.path, 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1))
   fs.appendFile(name, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
-    if (err) this.echo(colors.red.bold('[Error] ') + err)
+    if (err) self.echo(colors.red.bold('[Error] ') + err)
   })
 }
 
