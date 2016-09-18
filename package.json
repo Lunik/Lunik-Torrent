@@ -28,7 +28,7 @@
     "express": "^4.14.0",
     "forever": "^0.15.2",
     "version": "^0.1.2",
-    "webtorrent": "^0.96.5"
+    "webtorrent": "^0.97.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
