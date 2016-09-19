@@ -5,12 +5,28 @@
 [![Dependency Status](https://gemnasium.com/badges/github.com/Lunik/Lunik-Torrent.svg)](https://gemnasium.com/github.com/Lunik/Lunik-Torrent)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Lunik-Torrent](#lunik-torrent)
+	- [===== View =====](#-view-)
+	- [===== Installation =====](#-installation-)
+	- [With Git](#with-git)
+			- [Run](#run)
+	- [With Heroku](#with-heroku)
+	- [With Docker](#with-docker)
+	- [===== Infos =====](#-infos-)
+		- [Register](#register)
+				- [Create an invitation code](#create-an-invitation-code)
+
+<!-- /TOC -->
+
 ## ===== View =====
 ![directory-view](https://puu.sh/qr53g/de79e3ea37.png)
 ![torrent-view](https://puu.sh/qr511/826c4c4019.png)
 
 ## ===== Installation =====
-## Git
+
+## With Git
 
 ```
 $ git clone https://github.com/Lunik/Lunik-Torrent.git
@@ -20,8 +36,7 @@ $ npm install
 
 Configuration into: `configs/config.json`
 
-
-### Run
+#### Run
 
 ```
 $ npm start
@@ -29,10 +44,10 @@ or with forever
 $ npm run deamon
 ```
 
-## Heroku
+## With Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lunik/Lunik-Torrent)
 
-## Docker
+## With Docker
 [![Docker Stars](https://img.shields.io/docker/stars/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
 
