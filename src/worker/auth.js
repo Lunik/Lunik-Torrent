@@ -18,9 +18,7 @@ function Auth () {
 Auth.prototype.login = function (user, pass) {
   if ( 1) {
     LogWorker.info(user + ' login.')
-    if (typeof this.passwords[user].token === 'undefined') {
-      this.passwords[user].token = []
-    }
+    
     var token = this.genToken(user, pass)
     this.passwords[user].token.push(Crypto.SHA256(token).toString())
     this.savePasswords()
