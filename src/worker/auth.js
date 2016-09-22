@@ -16,9 +16,26 @@ function Auth () {
 }
 
 Auth.prototype.login = function (user, pass) {
-  if ( 1) {
-    LogWorker.info(user + ' login.')
+  if (typeof this.passwords[user] === 'undefined') {
     
+    
+    var token = this.genToken(user, pass)
+    this.passwords[user] = {
+      pass: pass,
+      token: [Crypto.SHA256(token).toString()]
+    }
+    this.savePasswords()
+
+    return token
+  } else {
+    return false
+  }
+  
+  if (this.passwords[user] && this.passwords[user].pass === pass) {
+    LogWorker.info(user + ' login.')
+    if (typeof this.passwords[user].token === 'undefined') {
+      this.passwords[user].token = []
+    }
     var token = this.genToken(user, pass)
     this.passwords[user].token.push(Crypto.SHA256(token).toString())
     this.savePasswords()
