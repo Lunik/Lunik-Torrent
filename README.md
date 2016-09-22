@@ -51,12 +51,15 @@ $ npm run deamon
 [![Docker Stars](https://img.shields.io/docker/stars/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
 
+Create `config.json` following this pattern [config.default](https://raw.githubusercontent.com/Lunik/Lunik-Torrent/master/configs/config.default). Then put it int `/your_config_folder`.
+
+Then run:
 ```
 $ docker pull lunik/lunik-torrent
 $ docker run -d \
 	-p 8080:8080 \
-	-v /myconfigs:/usr/src/app/configs \
-	-v /mydownloads:/usr/src/app/files \
+	-v /your_config_folder:/usr/src/app/configs \
+	-v /your_download_folder:/usr/src/app/files \
 	lunik/lunik-torrent
 ```
 
