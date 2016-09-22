@@ -1,11 +1,9 @@
-/****** DEFAULT THEME *****/
-
 body {
   background: #1C1C1C;
 }
 
 *::selection {
-  background: #f7a253;
+  background: #7554f8;
 }
 
 .button {
@@ -18,7 +16,7 @@ body {
 }
 
 .button:active {
-  color: #f7a253;
+  color: #7554f8;
 }
 
 a {
@@ -31,7 +29,7 @@ a {
 }
 
 .loading .loading-actions .load i {
-  color: #f7a253;
+  color: #7554f8;
 }
 /************/
 
@@ -51,7 +49,7 @@ a {
 }
 
 .top-menu .ariane .active {
-  color: #f7a253;
+  color: #7554f8;
 }
 /*************/
 
@@ -86,7 +84,7 @@ a {
 }
 
 .left-menu .nav-bar li.active {
-  background-color: #f7a253;
+  background-color: #7554f8;
   color: #151515;
 }
 
@@ -114,7 +112,7 @@ a {
 }
 
 .left-menu .footer a:hover {
-  color: #f7a253;
+  color: #7554f8;
 }
 
 /*********/
@@ -135,7 +133,7 @@ a {
 }
 
 .list tr.selected, .list tr.selected a {
-  background-color: #f7a253;
+  background-color: #7554f8;
   color: #1C1C1C;
 }
 
@@ -161,7 +159,7 @@ a {
 /******************/
 
 .searchtorrent-pop tr.search-item:hover {
-  background-color: #f7a253;
+  background-color: #7554f8;
 }
 
 .searchtorrent-pop .search-item {
@@ -185,11 +183,11 @@ a {
 }
 
 .auth h1 {
-  color: #f7a253;
+  color: #7554f8;
 }
 
 .auth .invite p {
-  color: #f7a253;
+  color: #7554f8;
 }
 
 .auth input {
@@ -200,11 +198,11 @@ a {
 }
 
 .auth input:valid {
-  border-bottom: 1px solid #f7a253;
+  border-bottom: 1px solid #7554f8;
 }
 
 .auth input:valid ~ .bar:before, .auth input:valid ~ .bar:after {
-  background: #f7a253 !important;
+  background: #7554f8 !important;
 }
 
 .auth input:focus ~ label, .auth input.used ~ label {
@@ -212,7 +210,7 @@ a {
 }
 
 .auth input:valid ~ label , .auth input:valid.used ~ label {
-  color: #f7a253;
+  color: #7554f8;
 }
 
 .auth button {
@@ -234,6 +232,6 @@ a {
 @keyframes color {
   100%,
   0% {
-    stroke: #f7a253;
+    stroke: #7554f8;
   }
 }
