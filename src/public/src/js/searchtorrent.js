@@ -36,11 +36,10 @@
       dataType: 'json',
       success: function (data) {
         self.vue.$data.results.films = data.mv.items
-
         if (data.tv) {
           self.vue.$data.results.series = data.tv.items
         } else {
-          for (var key in data.tvfr.items) { data.tven.items[key] = data.tvfr.items[key] }
+          for (var key in data.tvfr.items) { data.tven.items.push(data.tvfr.items[key]) }
           self.vue.$data.results.series = data.tven.items
         }
 
