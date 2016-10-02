@@ -46,6 +46,8 @@ $ npm run deamon
 
 ## With Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lunik/Lunik-Torrent)
+/!\ Heroku don't store any data. Once your app shutdown, you will loose all your login and your files.
+To prevent that you can use [kaffeine](http://kaffeine.herokuapp.com/) to keep your app UP 24/24.
 
 ## With Docker
 [![Docker Stars](https://img.shields.io/docker/stars/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
