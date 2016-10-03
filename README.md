@@ -51,7 +51,8 @@ To prevent that you can use [kaffeine](http://kaffeine.herokuapp.com/) to keep y
 
 ## With Docker
 [![Docker Stars](https://img.shields.io/docker/stars/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/) [![](https://images.microbadger.com/badges/image/lunik/lunik-torrent.svg)](https://microbadger.com/images/lunik/lunik-torrent "Get your own image badge on microbadger.com")
+[![Docker Pulls](https://img.shields.io/docker/pulls/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
+[![](https://images.microbadger.com/badges/image/lunik/lunik-torrent.svg)](https://microbadger.com/images/lunik/lunik-torrent "Get your own image badge on microbadger.com")
 
 Create `config.json` following this pattern [config.default](https://raw.githubusercontent.com/Lunik/Lunik-Torrent/master/configs/config.default). Then put it int `/your_config_folder`.
 
