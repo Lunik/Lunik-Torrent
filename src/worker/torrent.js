@@ -63,6 +63,7 @@ Torrent.prototype.start = function (url) {
         if (self.client[url]) {
           if (err) {
             LogWorker.error('Fail downloading: ' + url)
+            delete self.client[url]
             return
           }
           self.client[url].peer.stop()
