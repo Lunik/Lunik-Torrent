@@ -68,7 +68,7 @@ Torrent.prototype.start = function (url) {
           }
           self.client[url].peer.stop()
           // Deplace les fichies
-          LogWorker.info(Path.join(__config.torrent.downloads, name) + ' ' + Path.join(__config.directory.path, name))
+          LogWorker.info('Moving: ' + Path.join(__config.torrent.downloads, name) + ' to ' + Path.join(__config.directory.path, name))
           fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
           // Defini l'owner
           if (self.dowloader[url]) {
