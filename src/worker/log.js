@@ -52,7 +52,7 @@ Log.prototype.echo = function (text) {
 
 function getDate () {
   var date = new Date()
-  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + (date.getFullYear() + 1) + ' ' + (date.getHours() + 1) + ':' + (date.getMinutes() + 1) + ':' + (date.getSeconds() + 1)
+  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 }
 
 module.exports = Log
