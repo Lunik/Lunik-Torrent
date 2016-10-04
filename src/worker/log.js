@@ -52,7 +52,14 @@ Log.prototype.echo = function (text) {
 
 function getDate () {
   var date = new Date()
-  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+  return formatDateNumbers(date.getDate()) + '/' + formatDateNumbers(date.getMonth() + 1) + '/' + formatDateNumbers(date.getFullYear()) + ' ' + formatDateNumbers(date.getHours()) + ':' + formatDateNumbers(date.getMinutes()) + ':' + formatDateNumbers(date.getSeconds())
 }
 
+function formatDateNumbers(num){
+  num = num.toString()
+  while (num.length < 2) {
+    num = "0" + num
+  }
+  return num
+}
 module.exports = Log
