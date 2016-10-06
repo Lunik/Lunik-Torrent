@@ -222,11 +222,7 @@ var App = {}
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in Auth.login()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error('Error in Auth.login() : ' + err.statusText)
     })
   }
 
@@ -261,11 +257,7 @@ var App = {}
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in Auth.register()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error('Error in Auth.register() : ' + err.statusText);
     })
   }
 
@@ -301,11 +293,7 @@ var App = {}
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in Auth.changePass()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error('Error in Auth.changePass() : ' + err.statusText);
     })
   }
   App = new _App()

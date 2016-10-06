@@ -51,11 +51,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in SearchTorrent.search()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error('Error in SearchTorrent.search() : ' + err.statusText);
     })
   }
 

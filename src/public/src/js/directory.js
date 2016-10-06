@@ -72,11 +72,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in Directory.getDir()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error('Error in Directory.getDir() : ' + err.statusText);
     })
   }
 
@@ -213,11 +209,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        $.notify.error({
-          title: 'Error in Directory.rename()',
-          text: err.statusText,
-          duration: 5
-        })
+        console.error('Error in Directory.rename() : ' + err.statusText);
       })
     } else {
       App.Loading.hide('action')
@@ -257,11 +249,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        $.notify.error({
-          title: 'Error in Directory.remove()',
-          text: err.statusText,
-          duration: 5
-        })
+        console.error('Error in Directory.remove() : ' + err.statusText);
       })
     } else {
       App.Loading.hide('action')
@@ -317,11 +305,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        $.notify.error({
-          title: 'Error in Directory.newFolder()',
-          text: err.statusText,
-          duration: 5
-        })
+        console.error('Error in Directory.newFolder() : ' + err.statusText);
       })
     } else {
       App.Loading.hide('action')
