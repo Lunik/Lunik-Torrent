@@ -127,13 +127,23 @@ Torrent.prototype.getUrlFromHash = function (hash) {
  * @param {object} self - Torrent instance.
 */
 Torrent.prototype.startPointTorrent = function (self) {
-  var data = fs.readFileSync(Path.join(__base, __config.torrent.scanTorrent), 'utf-8')
-  var torrents = data.split('\n')
-  fs.writeFileSync(Path.join(__base, __config.torrent.scanTorrent), '', 'utf-8')
-  torrents.forEach(function (element) {
-    if (element !== '') {
-      self.start(element)
+  fs.readFile(Path.join(__base, __config.torrent.scanTorrent), 'utf-8', function(err, data){
+    if(err){
+      LogWorker.error(err)
+      return
     }
+    var torrents = data.split('\n')
+    fs.writeFile(Path.join(__base, __config.torrent.scanTorrent), '', 'utf-8', function(err){
+      if(err){
+        LogWorker.error(err)
+        return
+      }
+      torrents.forEach(function (element) {
+        if (element !== '') {
+          self.start(element)
+        }
+      })
+    })
   })
 }
 
