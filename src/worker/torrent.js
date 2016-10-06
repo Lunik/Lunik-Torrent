@@ -63,27 +63,23 @@ Torrent.prototype.start = function (url) {
         if (self.client[url]) {
           if (err) {
             LogWorker.error('Fail downloading: ' + url)
+            delete self.client[url]
             return
           }
           self.client[url].peer.stop()
           // Deplace les fichies
-          LogWorker.info(Path.join(__config.torrent.downloads, name) + ' ' + Path.join(__config.directory.path, name))
-          fs.rename(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name), function(err){
-            if(err){
-              LogWorker.error(err)
-              return
-            }
-            // Defini l'owner
-            if (self.dowloader[url]) {
-              self.Directory.setOwner(name, self.dowloader[url])
-            }
-            delete self.client[url]
-            // Relance un torrent si il y en a en attente
-            if (self.waitList.length > 0) {
-              LogWorker.info('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
-              self.start(self.waitList.shift())
-            }
-          })
+          LogWorker.info('Moving: ' + Path.join(__config.torrent.downloads, name) + ' to ' + Path.join(__config.directory.path, name))
+          fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
+          // Defini l'owner
+          if (self.dowloader[url]) {
+            self.Directory.setOwner(name, self.dowloader[url])
+          }
+          delete self.client[url]
+          // Relance un torrent si il y en a en attente
+          if (self.waitList.length > 0) {
+            LogWorker.info('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
+            self.start(self.waitList.shift())
+          }
         }
       })
 

@@ -35,9 +35,10 @@ Log.prototype.error = function (text) {
  * @param {string} text - Text to log.
 */
 Log.prototype.save = function (text) {
+  var self = this
   var name = Path.join(__config.log.path, 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1))
   fs.appendFile(name, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
-    if (err) this.echo(colors.red.bold('[Error] ') + err)
+    if (err) self.echo(colors.red.bold('[Error] ') + err)
   })
 }
 
@@ -51,7 +52,14 @@ Log.prototype.echo = function (text) {
 
 function getDate () {
   var date = new Date()
-  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + (date.getFullYear() + 1) + ' ' + (date.getHours() + 1) + ':' + (date.getMinutes() + 1) + ':' + (date.getSeconds() + 1)
+  return formatDateNumbers(date.getDate()) + '/' + formatDateNumbers(date.getMonth() + 1) + '/' + formatDateNumbers(date.getFullYear()) + ' ' + formatDateNumbers(date.getHours()) + ':' + formatDateNumbers(date.getMinutes()) + ':' + formatDateNumbers(date.getSeconds())
 }
 
+function formatDateNumbers(num){
+  num = num.toString()
+  while (num.length < 2) {
+    num = "0" + num
+  }
+  return num
+}
 module.exports = Log

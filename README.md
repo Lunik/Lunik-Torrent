@@ -5,12 +5,28 @@
 [![Dependency Status](https://gemnasium.com/badges/github.com/Lunik/Lunik-Torrent.svg)](https://gemnasium.com/github.com/Lunik/Lunik-Torrent)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Lunik-Torrent](#lunik-torrent)
+	- [===== View =====](#-view-)
+	- [===== Installation =====](#-installation-)
+	- [With Git](#with-git)
+			- [Run](#run)
+	- [With Heroku](#with-heroku)
+	- [With Docker](#with-docker)
+	- [===== Infos =====](#-infos-)
+		- [Register](#register)
+				- [Create an invitation code](#create-an-invitation-code)
+
+<!-- /TOC -->
+
 ## ===== View =====
 ![directory-view](https://puu.sh/qr53g/de79e3ea37.png)
 ![torrent-view](https://puu.sh/qr511/826c4c4019.png)
 
 ## ===== Installation =====
-## Git
+
+## With Git
 
 ```
 $ git clone https://github.com/Lunik/Lunik-Torrent.git
@@ -20,8 +36,7 @@ $ npm install
 
 Configuration into: `configs/config.json`
 
-
-### Run
+#### Run
 
 ```
 $ npm start
@@ -29,19 +44,25 @@ or with forever
 $ npm run deamon
 ```
 
-## Heroku
+## With Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Lunik/Lunik-Torrent)
+/!\ Heroku don't store any data. Once your app shutdown, you will loose all your login and your files.
+To prevent that you can use [kaffeine](http://kaffeine.herokuapp.com/) to keep your app UP 24/24.
 
-## Docker
+## With Docker
 [![Docker Stars](https://img.shields.io/docker/stars/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/lunik/lunik-torrent.svg)](https://hub.docker.com/r/lunik/lunik-torrent/)
+[![](https://images.microbadger.com/badges/image/lunik/lunik-torrent.svg)](https://microbadger.com/images/lunik/lunik-torrent "Get your own image badge on microbadger.com")
 
+Create `config.json` following this pattern [config.default](https://raw.githubusercontent.com/Lunik/Lunik-Torrent/master/configs/config.default). Then put it int `/your_config_folder`.
+
+Then run:
 ```
 $ docker pull lunik/lunik-torrent
 $ docker run -d \
 	-p 8080:8080 \
-	-v /myconfigs:/usr/src/app/configs \
-	-v /mydownloads:/usr/src/app/files \
+	-v /your_config_folder:/usr/src/app/configs \
+	-v /your_download_folder:/usr/src/app/files \
 	lunik/lunik-torrent
 ```
 
@@ -61,3 +82,4 @@ $ curl --data "invitationkey=mykey" http://localhost:5000/auth?todo=invite
 }
 ```
 To register go to `http://localhost:5000/login.html#your_invitation_code`
+ 
