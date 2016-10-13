@@ -262,7 +262,7 @@
         App.Loading.show('action')
         var folder = $(this).attr('data-file')
         var file = element.draggable.attr('data-file')
-        var path = App.hash + '/'
+        var path = `${App.hash}/`
 
         $.ajax({
           type: 'post',
@@ -290,7 +290,7 @@
           App.Loading.hide('action')
         }).fail(function (err) {
           App.Loading.hide('action')
-          console.error('Error in List.updateDragDrop() : ' + err.statusText);
+          console.error(`Error in List.updateDragDrop() : ${err.statusText}`);
         })
       }
     })

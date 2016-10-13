@@ -37,6 +37,6 @@ Config.prototype.load = function (path) {
 }
 
 function messageError (field) {
-  return 'Config Error: ' + field + ' is missing.'
+  return `Config Error: ${field} is missing.`
 }
 module.exports = Config

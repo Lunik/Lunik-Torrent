@@ -17,7 +17,7 @@ function Auth () {
 
 Auth.prototype.login = function (user, pass) {
   if (this.passwords[user] && this.passwords[user].pass === pass) {
-    LogWorker.info(user + ' login.')
+    LogWorker.info(`${user} login.`)
     if (typeof this.passwords[user].token === 'undefined') {
       this.passwords[user].token = []
     }
@@ -35,7 +35,7 @@ Auth.prototype.login = function (user, pass) {
 }
 
 Auth.prototype.logout = function (user, token) {
-  LogWorker.info(user + ' logout.')
+  LogWorker.info(`${user} logout.`)
   var encryptedToken = Crypto.SHA256(token).toString()
   if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(encryptedToken) !== -1) {
     delete this.passwords[user].token.splice(this.passwords[user].token.indexOf(encryptedToken), 1)
@@ -47,7 +47,7 @@ Auth.prototype.logout = function (user, token) {
 
 Auth.prototype.register = function (user, pass, invite) {
   if (this.invites.indexOf(invite) !== -1 && typeof this.passwords[user] === 'undefined') {
-    LogWorker.info(user + ' register with invitation: ' + invite + '.')
+    LogWorker.info(`${user} register with invitation: ${invite}.`)
     this.deleteInvite(invite)
     var token = this.genToken(user, pass)
     this.passwords[user] = {
@@ -64,7 +64,7 @@ Auth.prototype.register = function (user, pass, invite) {
 
 Auth.prototype.changePass = function (user, pass, newPass) {
   if (this.passwords[user] && this.passwords[user].pass === pass) {
-    LogWorker.info(user + ' change his password.')
+    LogWorker.info(`${user} change his password.`)
     this.passwords[user].pass = newPass
     this.savePasswords()
     return true
@@ -83,7 +83,7 @@ Auth.prototype.checkLogged = function (user, token) {
 }
 
 Auth.prototype.genToken = function (user, pass) {
-  var seed = user + pass + Rand.rand().toString()
+  var seed = `${user}${pass}${Rand.rand().toString()}`
   return Crypto.SHA256(seed).toString()
 }
 
@@ -104,7 +104,7 @@ Auth.prototype.savePasswords = function () {
 Auth.prototype.createInvite = function (inviteKey) {
   if (inviteKey === __config.server.invitationKey) {
     var invite = this.genToken(Rand.rand(), Rand.rand())
-    LogWorker.info('Invite generated: ' + invite + '.')
+    LogWorker.info(`Invite generated: ${invite}.`)
     this.invites.push(invite)
     return invite
   } else {

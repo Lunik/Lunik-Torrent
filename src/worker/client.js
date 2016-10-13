@@ -31,7 +31,7 @@ Client.prototype.download = function (torrentLink, cb) {
 
   var dl = function (torrentLink) {
     self.torrentLink = torrentLink
-    LogWorker.info('Start: ' + torrentLink)
+    LogWorker.info(`Start: ${torrentLink}`)
 
     var timeout = setTimeout(function () {
       self.client.destroy(function () {
@@ -45,7 +45,7 @@ Client.prototype.download = function (torrentLink, cb) {
       clearTimeout(timeout)
       // On torrent start
       self.torrent = torrent
-      LogWorker.info('Start torrent: ' + torrent.name)
+      LogWorker.info(`Start torrent: ${torrent.name}`)
       // emit start function with infoHash
       self.startFunction(torrent.infoHash)
 
@@ -59,13 +59,13 @@ Client.prototype.download = function (torrentLink, cb) {
       })
 
       torrent.on('done', function () {
-        LogWorker.info('Finish torrent: ' + self.torrent.name)
+        LogWorker.info(`Finish torrent: ${self.torrent.name}`)
         // emit done function with torrent hash and name
         self.doneFunction(false, torrent.infoHash, torrent.name)
       })
 
       torrent.on('noPeers', function () {
-        LogWorker.warning('No peers: ' + torrent.name)
+        LogWorker.warning(`No peers: ${torrent.name}`)
         // emit done function with torrent hash and name
         self.doneFunction(false, torrent.infoHash, torrent.name)
       })

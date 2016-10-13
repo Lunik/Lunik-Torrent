@@ -14,19 +14,19 @@ function Log (options) {
 }
 
 Log.prototype.info = function (text) {
-  text = '[' + this.module + '] ' + colors.green.bold('[Info] ') + text
+  text = `[${this.module}] ${colors.green.bold('[Info] ')}${text}`
   this.echo(text)
   this.save(colors.strip(text))
 }
 
 Log.prototype.warning = function (text) {
-  text = '[' + this.module + '] ' + colors.yellow.bold('[Warning] ') + text
+  text = `[${this.module}] ${colors.yellow.bold('[Warning] ')}${text}`
   this.echo(text)
   this.save(colors.strip(text))
 }
 
 Log.prototype.error = function (text) {
-  text = '[' + this.module + '] ' + colors.red.bold('[Error] ') + colors.red(text)
+  text = `[${this.module}] ${colors.red.bold('[Error] ')}${colors.red(text)}`
   this.echo(text)
   this.save(colors.strip(text))
 }
@@ -36,9 +36,9 @@ Log.prototype.error = function (text) {
 */
 Log.prototype.save = function (text) {
   var self = this
-  var name = Path.join(__config.log.path, 'log-' + (new Date()).getDate() + '-' + ((new Date()).getMonth() + 1))
-  fs.appendFile(name, '[' + getDate() + '] ' + text + '\n', 'utf8', function (err) {
-    if (err) self.echo(colors.red.bold('[Error] ') + err)
+  var name = Path.join(__config.log.path, `log-${(new Date()).getDate()}-${((new Date()).getMonth() + 1)}`)
+  fs.appendFile(name, `[${getDate()}] ${text}\n`, 'utf8', function (err) {
+    if (err) self.echo(`${colors.red.bold('[Error] ')}${err}`)
   })
 }
 
@@ -52,13 +52,13 @@ Log.prototype.echo = function (text) {
 
 function getDate () {
   var date = new Date()
-  return formatDateNumbers(date.getDate()) + '/' + formatDateNumbers(date.getMonth() + 1) + '/' + formatDateNumbers(date.getFullYear()) + ' ' + formatDateNumbers(date.getHours()) + ':' + formatDateNumbers(date.getMinutes()) + ':' + formatDateNumbers(date.getSeconds())
+  return formatDateNumbers(`${date.getDate()}/${formatDateNumbers(date.getMonth() + 1)}/${formatDateNumbers(date.getFullYear())} ${formatDateNumbers(date.getHours())}:${formatDateNumbers(date.getMinutes())}:${formatDateNumbers(date.getSeconds())}`)
 }
 
 function formatDateNumbers(num){
   num = num.toString()
   while (num.length < 2) {
-    num = "0" + num
+    num = `0${num}`
   }
   return num
 }

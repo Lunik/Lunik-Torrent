@@ -77,7 +77,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error('Error in Torrent.getTorrents() : ' + err.statusText);
+      console.error(`Error in Torrent.getTorrents() : ${err.statusText}`);
     })
   }
 
@@ -96,7 +96,7 @@
           type: 'torrent',
           size: App.Format.size(value.size),
           progress: value.progress,
-          percent: Math.round(value.progress * 100) + ' %',
+          percent: `${Math.round(value.progress * 100)} %`,
           timeRemaining: App.Format.time(value.timeRemaining),
           sdown: App.Format.speed(value.sdown),
           sup: App.Format.speed(value.sup)
@@ -144,7 +144,7 @@
   _Torrent.prototype.remove = function (torrent) {
     var self = this
     App.Loading.show('action')
-    if (confirm('Confirmer la suppression de ' + torrent.name + ' ?')) {
+    if (confirm(`Confirmer la suppression de ${torrent.name} ?`)) {
       $.ajax({
         type: 'post',
         url: '/remove-t',
@@ -170,7 +170,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        console.error('Error in Torrent.remove() : ' + err.statusText);
+        console.error(`Error in Torrent.remove() : ${err.statusText}`);
       })
     } else {
       App.Loading.hide('action')
@@ -207,7 +207,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error('Error Torrent.download() : ' + err.statusText);
+      console.error(`Error Torrent.download() : ${err.statusText}`);
     })
   }
 

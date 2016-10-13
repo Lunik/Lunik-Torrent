@@ -52,7 +52,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        console.error('Error in Config.logout() : ' + err.statusText);
+        console.error(`Error in Config.logout() : ${err.statusText}`);
       })
     })
   }
