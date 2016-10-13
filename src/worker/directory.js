@@ -236,7 +236,7 @@ Directory.prototype.remove = function (file) {
 */
 Directory.prototype.rename = function (path, oldname, newname) {
   var self = this
-  if (this.isDownloading(`${path}${oldname}`)) return -1
+  if (this.isDownloading(Path.join(path,oldname))) return -1
   fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
     if (err) {
       LogWorker.error(err)
