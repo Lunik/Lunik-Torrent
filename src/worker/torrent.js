@@ -62,13 +62,13 @@ Torrent.prototype.start = function (url) {
       c.on('done', function (err, hash, name) {
         if (self.client[url]) {
           if (err) {
-            LogWorker.error('Fail downloading: ' + url)
+            LogWorker.error(`Fail downloading: ${url}`)
             delete self.client[url]
             return
           }
           self.client[url].peer.stop()
           // Deplace les fichies
-          LogWorker.info('Moving: ' + Path.join(__config.torrent.downloads, name) + ' to ' + Path.join(__config.directory.path, name))
+          LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, name)} to ${Path.join(__config.directory.path, name)}`)
           fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
           // Defini l'owner
           if (self.dowloader[url]) {
@@ -77,7 +77,7 @@ Torrent.prototype.start = function (url) {
           delete self.client[url]
           // Relance un torrent si il y en a en attente
           if (self.waitList.length > 0) {
-            LogWorker.info('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
+            LogWorker.info(`Start torrent into waitList (left: ${(self.waitList.length - 1)})`)
             self.start(self.waitList.shift())
           }
         }
@@ -127,13 +127,23 @@ Torrent.prototype.getUrlFromHash = function (hash) {
  * @param {object} self - Torrent instance.
 */
 Torrent.prototype.startPointTorrent = function (self) {
-  var data = fs.readFileSync(Path.join(__base, __config.torrent.scanTorrent), 'utf-8')
-  var torrents = data.split('\n')
-  fs.writeFileSync(Path.join(__base, __config.torrent.scanTorrent), '', 'utf-8')
-  torrents.forEach(function (element) {
-    if (element !== '') {
-      self.start(element)
+  fs.readFile(Path.join(__base, __config.torrent.scanTorrent), 'utf-8', function(err, data){
+    if(err){
+      LogWorker.error(err)
+      return
     }
+    var torrents = data.split('\n')
+    fs.writeFile(Path.join(__base, __config.torrent.scanTorrent), '', 'utf-8', function(err){
+      if(err){
+        LogWorker.error(err)
+        return
+      }
+      torrents.forEach(function (element) {
+        if (element !== '') {
+          self.start(element)
+        }
+      })
+    })
   })
 }
 

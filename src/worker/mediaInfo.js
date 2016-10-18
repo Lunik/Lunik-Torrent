@@ -33,7 +33,7 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
         'link': data.tvseries.link.length > 0 ? data.tvseries.link[0].href : '',
         'description': data.tvseries.synopsisShort.replace(/<\/*p>/g, ''),
         'poster': data.tvseries.poster ? data.tvseries.poster.href : '',
-        'rating': Math.round((data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2) + '/5'
+        'rating': `${Math.round((data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2)}/5`
       })
     })
   } else if (type === 'movie') {
@@ -86,7 +86,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
         self.getMediaInfo(query, type, data.feed.tvseries[0].code, callback)
       } else {
         callback({
-          err: 'Nothing found for "' + query + '".'
+          err: `Nothing found for "${query}".`
         })
         return
       }
@@ -106,7 +106,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
         self.getMediaInfo(query, type, data.feed.movie[0].code, callback)
       } else {
         callback({
-          err: 'Nothing found for "' + query + '".'
+          err: `Nothing found for "${query}".`
         })
         return
       }
@@ -128,7 +128,7 @@ MediaInfo.prototype.getInfo = function (type, query, callback) {
     self.search('movie', query, callback)
   } else {
     callback({
-      err: 'Unknown type: ' + type
+      err: `Unknown type: ${type}`
     })
     return
   }

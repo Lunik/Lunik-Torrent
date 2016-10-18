@@ -57,7 +57,7 @@
     self.vue.$data.ariane = []
     var profDir = ''
     for (var key in list) {
-      profDir += list[key] + '/'
+      profDir += `${list[key]}/`
       self.vue.$data.ariane.push({
         path: profDir,
         name: list[key]

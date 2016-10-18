@@ -39,7 +39,7 @@
         dataType: 'json',
         success: function (data) {
           if (!data.err) {
-            data.rating = Math.floor(data.rating * 100) / 100 + '/5'
+            data.rating = `${Math.floor(data.rating * 100) / 100}/5`
             self.vue.$data.info = data
             App.Storage.storeData(data.query.toLowerCase(), data)
 
@@ -58,11 +58,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        $.notify.error({
-          title: 'Error in MediaInfo.get()',
-          text: err.statusText,
-          duration: 5
-        })
+        console.error(`Error in MediaInfo.get() : ${err.statusText}`);
       })
     }
   }

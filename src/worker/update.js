@@ -18,10 +18,10 @@ function Update (cb) {
       process.exit(1)
     } else {
       if (version === pkg.version) {
-        LogWorker.info('You have the last version: ' + version)
+        LogWorker.info(`You have the last version: ${version}`)
         cb()
       } else {
-        LogWorker.warning("You don't have the last version: " + version)
+        LogWorker.warning(`You don\'t have the last version: ${version}`)
         if (__config.autoUpdate) {
           LogWorker.info('Auto updating the app.')
           var pull = spawn('git', ['pull'])
@@ -33,7 +33,7 @@ function Update (cb) {
           })
           pull.on('exit', function (code) {
             if (code) {
-              LogWorker.error('Git pull fail with code: ' + code)
+              LogWorker.error(`Git pull fail with code: ${code}`)
               process.exit(1)
             }
             var install = spawn('npm', ['install'])
@@ -45,10 +45,10 @@ function Update (cb) {
             })
             install.on('exit', (code) => {
               if (code) {
-                LogWorker.error('Npm install fail with code: ' + code)
+                LogWorker.error(`Npm install fail with code: ${code}`)
                 process.exit(1)
               }
-              LogWorker.info('Update to ' + version + ' succeed.')
+              LogWorker.info(`Update to ${version} succeed.`)
               cb()
             })
           })

@@ -72,11 +72,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in Directory.getDir()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error(`Error in Directory.getDir() : ${err.statusText}`);
     })
   }
 
@@ -95,7 +91,7 @@
 
     var lines = [{
       name: '..',
-      href: '#' + previousDir,
+      href: `#${previousDir}`,
       type: 'file',
       size: App.Format.size(0),
       date: App.Format.date(new Date()),
@@ -108,7 +104,7 @@
         value.name = index
         lines.push({
           name: index,
-          href: value.isfile ? null : '#' + App.hash + index + '/',
+          href: value.isfile ? null : `#${App.hash}${index}/`,
           type: 'file',
           extension: App.Format.extention(value),
           size: App.Format.size(value.size),
@@ -143,7 +139,7 @@
 
     $('.top-menu .action').unbind()
       .on('click', '#download', function () {
-        window.open('files/?f=' + document.location.hash.substring(1) + file.name)
+        window.open(`files/?f=${document.location.hash.substring(1)}${file.name}`)
       })
       .on('click', '#rename', function () {
         self.rename(file.name, file.isdir)
@@ -176,14 +172,14 @@
     var extension
     if (oldname.length > 1 && !dir) {
       extension = oldname.pop()
-      extension = extension.length > 0 ? '.' + extension : ''
+      extension = extension.length > 0 ? `.${extension}` : ''
     } else {
       extension = ''
     }
-    var name = prompt('New name for: ' + oldname.join(' '), oldname.join(' '))
+    var name = prompt(`New name for: ${oldname.join(' ')}`, oldname.join(' '))
     if (name) {
       name = name.trim()
-      name = name.split('/').pop() + extension
+      name = `${name.split('/').pop()}${extension}`
       $.ajax({
         type: 'post',
         url: '/rename-d',
@@ -205,7 +201,7 @@
             App.List.updateLine({
               name: fileName,
               newname: data.newname,
-              href: '#' + App.hash + data.newname + '/'
+              href: dir ? `#${App.hash}${data.newname}/` : null
             })
           }
         }
@@ -213,11 +209,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        $.notify.error({
-          title: 'Error in Directory.rename()',
-          text: err.statusText,
-          duration: 5
-        })
+        console.error(`Error in Directory.rename() : ${err.statusText}`);
       })
     } else {
       App.Loading.hide('action')
@@ -231,12 +223,12 @@
   _Directory.prototype.remove = function (fileName) {
     var self = this
     App.Loading.show('action')
-    if (confirm('Confirmer la suppression de ' + fileName + ' ?')) {
+    if (confirm(`Confirmer la suppression de ${fileName} ?`)) {
       $.ajax({
         type: 'post',
         url: '/remove-d',
         data: {
-          file: App.hash + fileName
+          file: `${App.hash}${fileName}`
         },
         dataType: 'json',
         success: function (file) {
@@ -257,11 +249,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        $.notify.error({
-          title: 'Error in Directory.remove()',
-          text: err.statusText,
-          duration: 5
-        })
+        console.error(`Error in Directory.remove() : ${err.statusText}`);
       })
     } else {
       App.Loading.hide('action')
@@ -300,7 +288,7 @@
           } else {
             App.List.addLine({
               name: file.name,
-              href: App.hash + file.name + '/',
+              href: `${App.hash}${file.name}/`,
               type: 'file',
               extension: 'dir',
               size: App.Format.size(0),
@@ -317,11 +305,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        $.notify.error({
-          title: 'Error in Directory.newFolder()',
-          text: err.statusText,
-          duration: 5
-        })
+        console.error(`Error in Directory.newFolder() : ${err.statusText}`);
       })
     } else {
       App.Loading.hide('action')

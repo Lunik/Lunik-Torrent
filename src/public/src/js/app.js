@@ -103,7 +103,7 @@ var App
               $(window).keydown(function (event) {
                 switch (event.keyCode) {
                   case 13:
-                    $('.left-menu .action .' + App.LeftMenu.vue.$data.currentAction).trigger('click')
+                    $(`.left-menu .action .${App.LeftMenu.vue.$data.currentAction}`).trigger('click')
                     break
                 }
               })
