@@ -58,7 +58,7 @@ var App = {}
       $(window).keydown(function (event) {
         switch (event.keyCode) {
           case 13:
-            $(`.auth . ${self.getCurrentSubmit()} button`).trigger('click')
+            $(`.auth .${self.getCurrentSubmit()} button`).trigger('click')
             break
         }
       })
