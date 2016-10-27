@@ -24,6 +24,7 @@
     "popupjs": "^1.1.5",
     "vue": "^1.0.24",
     "local-storage-api": "^1.0.1",
-    "crypto-js": "^3.1.5"
+    "crypto-js": "^3.1.5",
+    "clipboard": "^1.5.15"
   }
 }

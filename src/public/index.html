@@ -77,6 +77,7 @@
               <a class="button" href="{{ l.href }}">{{ l.name }}</a>
               <i class="fa" v-bind:class="{'fa-lock locked': l.lock}"></i>
               <i class="fa" v-bind:class="{'fa-download download': l.download}">{{ l.download }}</i>
+              <i class="fa fa-clipboard clip-but button" data-clipboard-text="{{ l.url }}"></i>
             </td>
             <td id="size">{{ l.size }}</td>
             <td id="date" v-show="tabs[1].state">{{ l.date }}</td>
