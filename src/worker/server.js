@@ -10,20 +10,12 @@ var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
   module: 'Server'
 })
-var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
-var Directory = require(Path.join(__base, 'src/worker/directory.js'))
-var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
-var Auth = require(Path.join(__base, 'src/worker/auth.js'))
-var SearchEngine = require(Path.join(__base, 'src/worker/searchT.js'))
-var InfoEngine = require(Path.join(__base, 'src/worker/mediaInfo.js'))
-
-Torrent.Directory = Directory
 
 /**
  * Deserve http requests.
  * @constructor
 */
-function Server () {
+function Server (Worker) {
   this.app = express()
   this.app.use(compression())
   this.app.use(cookieParser())
@@ -33,13 +25,13 @@ function Server () {
   }))
   this.app.use(function (req, res, next) {
     if (req.url === '/login.html' || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)) {
-      if (req.url === '/login.html' && req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)) {
+      if (req.url === '/login.html' && req.cookies && Worker.Auth.checkLogged(req.cookies.user, req.cookies.token)) {
         res.redirect('/')
       } else {
         next()
       }
     } else {
-      if (req.cookies && Auth.checkLogged(req.cookies.user, req.cookies.token)) {
+      if (req.cookies && Worker.Auth.checkLogged(req.cookies.user, req.cookies.token)) {
         next()
       } else {
         res.redirect('/login.html')
@@ -58,9 +50,9 @@ function Server () {
     if (req.query.f) {
       req.query.f = req.query.f.split('..').join('')
       LogWorker.info(`${req.cookies.user} download file: ${req.query.f}`)
-      Directory.setDownloading(req.query.f)
-      var transfert = new FileTransfert(req, res, function () {
-        Directory.finishDownloading(req.query.f)
+      Worker.Directory.setDownloading(req.query.f)
+      var transfert = new Worker.FileTransfert(req, res, function () {
+        Worker.Directory.finishDownloading(req.query.f)
       })
     } else {
       res.end(JSON.stringify({
@@ -73,8 +65,8 @@ function Server () {
   this.app.post('/download-t', function (req, res) {
     if (req.body.url) {
       LogWorker.info(`${req.cookies.user} download torrent: ${req.body.url}`)
-      Torrent.setDownloader(req.cookies.user, req.body.url)
-      Torrent.start(req.body.url)
+      Worker.Torrent.setDownloader(req.cookies.user, req.body.url)
+      Worker.Torrent.start(req.body.url)
       res.end(JSON.stringify({}))
     } else {
       res.end(JSON.stringify({
@@ -85,14 +77,14 @@ function Server () {
 
   // client ask list of torrent active
   this.app.post('/list-t', function (req, res) {
-    res.end(JSON.stringify(Torrent.getInfo()))
+    res.end(JSON.stringify(Worker.Torrent.getInfo()))
   })
 
   // client ask list of directory
   this.app.post('/list-d', function (req, res) {
     if (req.body.dir) {
       req.body.dir = req.body.dir.replace(/%20/g, ' ')
-      Directory.list(req.body.dir, function (dir) {
+      Worker.Directory.list(req.body.dir, function (dir) {
         res.end(JSON.stringify(dir))
       })
     } else {
@@ -106,7 +98,7 @@ function Server () {
   this.app.post('/remove-t', function (req, res) {
     if (req.body.hash) {
       LogWorker.info(`${req.cookies.user} remove torrent: ${req.body.hash}`)
-      Torrent.remove(req.body.hash)
+      Worker.Torrent.remove(req.body.hash)
       res.end(JSON.stringify({
         hash: req.body.hash
       }))
@@ -121,7 +113,7 @@ function Server () {
   this.app.post('/remove-d', function (req, res) {
     if (req.body.file) {
       req.body.file = req.body.file.replace(/%20/g, ' ')
-      if (Directory.remove(req.body.file) !== -1) {
+      if (Worker.Directory.remove(req.body.file) !== -1) {
         LogWorker.info(`${req.cookies.user} remove file: ${req.body.file}`)
         res.end(JSON.stringify({
           file: req.body.file.split('/')[req.body.file.split('/').length - 1]
@@ -144,14 +136,14 @@ function Server () {
       req.body.path = req.body.path.replace(/%20/g, ' ')
       req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
       req.body.newname = req.body.newname.replace(/%20/g, ' ')
-      if (Directory.rename(req.body.path, req.body.oldname, req.body.newname) !== -1) {
+      if (Worker.Directory.rename(req.body.path, req.body.oldname, req.body.newname) !== -1) {
         LogWorker.info(`${req.cookies.user} rename file: ${Path.join(req.body.path, req.body.oldname)} in: ${req.body.newname}`)
         res.end(JSON.stringify({
           path: req.body.path,
           oldname: req.body.oldname,
           newname: req.body.newname
         }))
-        Directory.setOwner(Path.join(req.body.path, req.body.newname), req.cookies.user)
+        Worker.Directory.setOwner(Path.join(req.body.path, req.body.newname), req.cookies.user)
       } else {
         res.end(JSON.stringify({
           err: 'Cannot rename, someone is downloading the file.'
@@ -170,11 +162,11 @@ function Server () {
       req.body.path = req.body.path.replace(/%20/g, ' ')
       req.body.name = req.body.name.replace(/%20/g, ' ')
       LogWorker.info(`${req.cookies.user} create directory: ${Path.join(req.body.path, req.body.name)}`)
-      Directory.mkdir(req.body.path, req.body.name)
+      Worker.Directory.mkdir(req.body.path, req.body.name)
       res.end(JSON.stringify({
         name: req.body.name
       }))
-      Directory.setOwner(Path.join(req.body.path, req.body.name), req.cookies.user)
+      Worker.Directory.setOwner(Path.join(req.body.path, req.body.name), req.cookies.user)
     } else {
       res.end(JSON.stringify({
         err: 'Wrong name.'
@@ -188,12 +180,12 @@ function Server () {
       req.body.path = req.body.path.replace(/%20/g, ' ')
       req.body.file = req.body.file.replace(/%20/g, ' ')
       req.body.folder = req.body.folder.replace(/%20/g, ' ')
-      if (Directory.mv(req.body.path, req.body.file, req.body.folder) !== -1) {
+      if (Worker.Directory.mv(req.body.path, req.body.file, req.body.folder) !== -1) {
         LogWorker.info(`${req.cookies.user} move: ${Path.join(req.body.path, req.body.file)} in: ${Path.join(req.body.path, req.body.folder)}`)
         res.end(JSON.stringify({
           file: req.body.file
         }))
-        Directory.setOwner(Path.join(req.body.path, req.body.folder, req.body.file), req.cookies.user)
+        Worker.Directory.setOwner(Path.join(req.body.path, req.body.folder, req.body.file), req.cookies.user)
       } else {
         res.end(JSON.stringify({
           err: 'Cannot move, someone is downloading the file.'
@@ -211,11 +203,11 @@ function Server () {
     if (req.body.query && req.body.query !== '') {
       req.body.query = req.body.query.replace(/%20/g, ' ')
       LogWorker.info(`${req.cookies.user} search: ${req.body.query}`)
-      SearchEngine.search(req.body.query, function (data) {
+      Worker.SearchEngine.search(req.body.query, function (data) {
         res.end(JSON.stringify(data))
       })
     } else {
-      SearchEngine.latest(function (data) {
+      Worker.SearchEngine.latest(function (data) {
         res.end(JSON.stringify(data))
       })
     }
@@ -226,7 +218,7 @@ function Server () {
     if (req.body.type && req.body.query) {
       req.body.type = req.body.type.replace(/%20/g, ' ')
       req.body.query = req.body.query.replace(/%20/g, ' ')
-      InfoEngine.getInfo(req.body.type, req.body.query, function (data) {
+      Worker.InfoEngine.getInfo(req.body.type, req.body.query, function (data) {
         res.end(JSON.stringify(data))
       })
     } else {
@@ -240,7 +232,7 @@ function Server () {
   this.app.get('/lock-d', function (req, res) {
     if (req.query.f) {
       req.query.f = req.query.f.replace(/%20/g, ' ')
-      res.end(Directory.isDownloading(req.query.f).toString())
+      res.end(Worker.Directory.isDownloading(req.query.f).toString())
     } else {
       res.end(JSON.stringify({
         err: 'File not set.'
@@ -263,7 +255,7 @@ function Server () {
       switch (req.query.todo) {
         case 'login':
           if (data.user && data.pass) {
-            var token = Auth.login(data.user, data.pass)
+            var token = Worker.Auth.login(data.user, data.pass)
             if (token) {
               res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
@@ -285,7 +277,7 @@ function Server () {
 
         case 'logout':
           if (data.user && data.token) {
-            if (Auth.logout(data.user, data.token)) {
+            if (Worker.Auth.logout(data.user, data.token)) {
               reponse = {
                 err: false
               }
@@ -299,7 +291,7 @@ function Server () {
 
         case 'register':
           if (data.user && data.pass && data.invite) {
-            var token = Auth.register(data.user, data.pass, data.invite)
+            var token = Worker.Auth.register(data.user, data.pass, data.invite)
             if (token) {
               res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
@@ -321,7 +313,7 @@ function Server () {
 
         case 'invite':
           if (data.invitationKey) {
-            var invite = Auth.createInvite(data.invitationKey)
+            var invite = Worker.Auth.createInvite(data.invitationKey)
             if (invite) {
               reponse = {
                 err: false,
@@ -341,7 +333,7 @@ function Server () {
 
         case 'changepass':
           if (data.user && data.oldpass && data.newPass) {
-            if (Auth.changePass(data.user, data.oldpass, data.newPass)) {
+            if (Worker.Auth.changePass(data.user, data.oldpass, data.newPass)) {
               reponse = {
                 err: false
               }
@@ -366,4 +358,4 @@ function Server () {
   })
 }
 
-module.exports = new Server()
+module.exports = Server
