@@ -213,7 +213,7 @@ describe('Backend', function () {
     })
   })
   describe('Server', function () {
-    var Server = require(path.join(__base, 'src/worker/server.js'))
+    var Index = require(path.join(__base, 'src/index.js'))
     var url = 'http://localhost:' + __config.server.port
     var user = 'test' + rand.rand()
     var pass = 'test'
