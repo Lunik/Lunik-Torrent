@@ -15,6 +15,7 @@ var Directory = require(Path.join(__base, 'src/worker/directory.js'))
 var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
 var Auth = require(Path.join(__base, 'src/worker/auth.js'))
 var SearchEngine = require(Path.join(__base, 'src/worker/searchT.js'))
+var InfoEngine = require(Path.join(__base, 'src/worker/mediaInfo.js'))
 
 Torrent.Directory = Directory
 
@@ -225,8 +226,7 @@ function Server () {
     if (req.body.type && req.body.query) {
       req.body.type = req.body.type.replace(/%20/g, ' ')
       req.body.query = req.body.query.replace(/%20/g, ' ')
-      var infoEngine = require('./mediaInfo.js')
-      infoEngine.getInfo(req.body.type, req.body.query, function (data) {
+      InfoEngine.getInfo(req.body.type, req.body.query, function (data) {
         res.end(JSON.stringify(data))
       })
     } else {
