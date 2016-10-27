@@ -14,6 +14,7 @@ var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
 var Directory = require(Path.join(__base, 'src/worker/directory.js'))
 var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
 var Auth = require(Path.join(__base, 'src/worker/auth.js'))
+var SearchEngine = require(Path.join(__base, 'src/worker/searchT.js'))
 
 Torrent.Directory = Directory
 
@@ -206,15 +207,14 @@ function Server () {
 
   // client search torrent
   this.app.post('/search-t', function (req, res) {
-    var searchEngine = require('./searchT.js')
     if (req.body.query && req.body.query !== '') {
       req.body.query = req.body.query.replace(/%20/g, ' ')
       LogWorker.info(`${req.cookies.user} search: ${req.body.query}`)
-      searchEngine.search(req.body.query, function (data) {
+      SearchEngine.search(req.body.query, function (data) {
         res.end(JSON.stringify(data))
       })
     } else {
-      searchEngine.latest(function (data) {
+      SearchEngine.latest(function (data) {
         res.end(JSON.stringify(data))
       })
     }
