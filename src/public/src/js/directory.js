@@ -105,6 +105,7 @@
         lines.push({
           name: index,
           href: value.isfile ? null : `#${App.hash}${index}/`,
+          url: `${window.location.host}/files/?f=${document.location.hash.substring(1)}${index}`,
           type: 'file',
           extension: App.Format.extention(value),
           size: App.Format.size(value.size),
