@@ -156,7 +156,7 @@ Auth.prototype.deleteInvite = function (invite, cb) {
   var self = this
 
   var deleteInvite = function(){
-    var index = this.invites.indexOf(invite)
+    var index = self.invites.indexOf(invite)
     if (index !== -1) {
       self.invites.splice(index, 1)
     }
