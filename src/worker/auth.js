@@ -11,13 +11,23 @@ var LogWorker = new Log({
 })
 
 function Auth () {
-  this.passwords = require(Path.join(__base, 'data/passwords.json'))
+  var self = this
+  var passwords
+  try {
+    passwords = require(Path.join(__base, 'data/passwords.json'))
+  } catch (e) {
+    passwords = {}
+    self.savePasswords()
+  } finally {
+    self.passwords = passwords
+  }
+
   this.invites = []
 }
 
 Auth.prototype.login = function (user, pass, cb) {
   var self = this
-  var login = function(user, pass){
+  var login = function(){
     if (self.passwords[user] && self.passwords[user].pass === pass) {
       LogWorker.info(`${user} login.`)
       if (typeof self.passwords[user].token === 'undefined') {
@@ -30,33 +40,34 @@ Auth.prototype.login = function (user, pass, cb) {
         self.passwords[user].token = self.passwords[user].token.slice(length - 10, length);
       }
       self.savePasswords()
-      return token
+      cb(token)
     } else {
-      return false
+      cb(false)
     }
   }
 
-  cb(login(user, pass))
+  setTimeout(login)
 }
 
 Auth.prototype.logout = function (user, token, cb) {
   var self = this
-  var logout = function(user, token){
+  var logout = function(){
     LogWorker.info(`${user} logout.`)
     var encryptedToken = Crypto.SHA256(token).toString()
     if (self.passwords[user] && self.passwords[user].token && self.passwords[user].token.indexOf(encryptedToken) !== -1) {
       delete self.passwords[user].token.splice(self.passwords[user].token.indexOf(encryptedToken), 1)
-      return true
+      cb(true)
     } else {
-      return false
+      cb(false)
     }
   }
-  cb(logout(user, token))
+
+  setTimeout(logout)
 }
 
 Auth.prototype.register = function (user, pass, invite, cb) {
   var self = this
-  var register = function(user, pass, invite){
+  var register = function(){
     if (self.invites.indexOf(invite) !== -1 && typeof self.passwords[user] === 'undefined') {
       LogWorker.info(`${user} register with invitation: ${invite}.`)
       self.deleteInvite(invite)
@@ -67,29 +78,29 @@ Auth.prototype.register = function (user, pass, invite, cb) {
       }
       self.savePasswords()
 
-      return token
+      cb(token)
     } else {
-      return false
+      cb(false)
     }
   }
 
-  cb(register(user, pass, invite))
+  setTimeout(register)
 }
 
 Auth.prototype.changePass = function (user, pass, newPass, cb) {
   var self = this
-  var changePass = function(user, pass, newPass){
+  var changePass = function(){
     if (self.passwords[user] && self.passwords[user].pass === pass) {
       LogWorker.info(`${user} change his password.`)
       self.passwords[user].pass = newPass
       self.savePasswords()
-      return true
+      cb(true)
     } else {
-      return false
+      cb(false)
     }
   }
 
-  cb(changePass(user, pass, newPass))
+  setTimeout(changePass)
 }
 
 Auth.prototype.checkLogged = function (user, token) {
@@ -111,37 +122,47 @@ Auth.prototype.genToken = function (user, pass) {
 */
 Auth.prototype.savePasswords = function () {
   var self = this
-  var passwords = JSON.parse(JSON.stringify(self.passwords))
-  fs.writeFile('data/passwords.json', JSON.stringify(passwords), function (err) {
-    if (err) {
-      LogWorker.error(err)
-      return
-    }
-  })
+
+  var savePasswords = function(){
+    var passwords = JSON.parse(JSON.stringify(self.passwords))
+    fs.writeFile('data/passwords.json', JSON.stringify(passwords), function (err) {
+      if (err) {
+        LogWorker.error(err)
+        return
+      }
+    })
+  }
+
+  setTimeout(savePasswords)
 }
 
 Auth.prototype.createInvite = function (inviteKey, cb) {
   var self = this
-  var createInvite = function(inviteKey){
+  var createInvite = function(){
     if (inviteKey === __config.server.invitationKey) {
       var invite = self.genToken(Rand.rand(), Rand.rand())
       LogWorker.info(`Invite generated: ${invite}.`)
       self.invites.push(invite)
-      return invite
+      cb(invite)
     } else {
-      return false
+      cb(false)
     }
   }
 
-  cb(createInvite(inviteKey))
+  setTimeout(createInvite)
 }
 
-Auth.prototype.deleteInvite = function (invite) {
-  var index = this.invites.indexOf(invite)
-  if (index !== -1) {
-    this.invites.splice(index, 1)
+Auth.prototype.deleteInvite = function (invite, cb) {
+  var self = this
+
+  var deleteInvite = function(){
+    var index = self.invites.indexOf(invite)
+    if (index !== -1) {
+      self.invites.splice(index, 1)
+    }
   }
-  return true
+
+  setTimeout(deleteInvite)
 }
 
 module.exports = new Auth()

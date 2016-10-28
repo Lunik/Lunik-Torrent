@@ -28,22 +28,26 @@ function Directory () {
 */
 Directory.prototype.list = function (dir, cb) {
   var self = this
-  // save directory informations into app cache
-  self.getDir(dir, function (folder) {
-    for (var f in folder.files) {
-      var file = Path.join(dir, f)
-      file = file[0] === '/' ? file.substring(1) : file
-      if (self.fileInfo[file] !== -1) {
-        for (var i in self.fileInfo[file]) {
-          folder.files[f][i] = self.fileInfo[file][i]
+  var list = function () {
+    // save directory informations into app cache
+    self.getDir(dir, function (folder) {
+      for (var f in folder.files) {
+        var file = Path.join(dir, f)
+        file = file[0] === '/' ? file.substring(1) : file
+        if (self.fileInfo[file] !== -1) {
+          for (var i in self.fileInfo[file]) {
+            folder.files[f][i] = self.fileInfo[file][i]
+          }
         }
       }
-    }
-    cb({
-      'totalSize': folder.totalSize,
-      'files': folder.files
+      cb({
+        'totalSize': folder.totalSize,
+        'files': folder.files
+      })
     })
-  })
+  }
+
+  setTimeout(list)
 }
 
 /**
@@ -54,66 +58,69 @@ Directory.prototype.list = function (dir, cb) {
 Directory.prototype.getDir = function (dir, cb) {
   var self = this
 
-  var list = {}
-  var totalSize = 0
-  var files = fs.readdir(Path.join(__config.directory.path, dir), function (err, files) {
-    if (err) {
-      cb({
-        'mtime': 0,
-        'totalSize': 0,
-        'files': []
-      })
-      LogWorker.error(err)
-      return
-    }
-    if (files && files.length > 0) {
-      var length = files.length
-      var i = 0
-      files.forEach(function (file) {
-        self.getInfo(Path.join(__config.directory.path, dir, file), function (stats) {
-          list[file] = stats
-          totalSize += stats.size
-
-          i++
-          if (i === length) {
-            fs.stat(Path.join(__config.directory.path, dir), function (err, s) {
-              if (err) {
-                LogWorker.error(err)
-                cb({
-                  'mtime': 0,
-                  'totalSize': 0,
-                  'files': []
-                })
-                return
-              }
-              cb({
-                'mtime': s.mtime,
-                'totalSize': totalSize,
-                'files': list
-              })
-            })
-          }
-        })
-      })
-    } else {
-      fs.stat(Path.join(__config.directory.path, dir), function (err, s) {
-        if (err) {
-          LogWorker.error(err)
-          cb({
-            'mtime': 0,
-            'totalSize': 0,
-            'files': []
-          })
-          return
-        }
+  var getDir = function () {
+    var list = {}
+    var totalSize = 0
+    var files = fs.readdir(Path.join(__config.directory.path, dir), function (err, files) {
+      if (err) {
         cb({
-          'mtime': s.mtime,
-          'totalSize': totalSize,
-          'files': list
+          'mtime': 0,
+          'totalSize': 0,
+          'files': []
         })
-      })
-    }
-  })
+        LogWorker.error(err)
+        return
+      }
+      if (files && files.length > 0) {
+        var length = files.length
+        var i = 0
+        files.forEach(function (file) {
+          self.getInfo(Path.join(__config.directory.path, dir, file), function (stats) {
+            list[file] = stats
+            totalSize += stats.size
+
+            i++
+            if (i === length) {
+              fs.stat(Path.join(__config.directory.path, dir), function (err, s) {
+                if (err) {
+                  LogWorker.error(err)
+                  cb({
+                    'mtime': 0,
+                    'totalSize': 0,
+                    'files': []
+                  })
+                  return
+                }
+                cb({
+                  'mtime': s.mtime,
+                  'totalSize': totalSize,
+                  'files': list
+                })
+              })
+            }
+          })
+        })
+      } else {
+        fs.stat(Path.join(__config.directory.path, dir), function (err, s) {
+          if (err) {
+            LogWorker.error(err)
+            cb({
+              'mtime': 0,
+              'totalSize': 0,
+              'files': []
+            })
+            return
+          }
+          cb({
+            'mtime': s.mtime,
+            'totalSize': totalSize,
+            'files': list
+          })
+        })
+      }
+    })
+  }
+  setTimeout(getDir)
 }
 
 /**
@@ -122,24 +129,28 @@ Directory.prototype.getDir = function (dir, cb) {
  * @return {object} - File / Directory informations.
 */
 Directory.prototype.getInfo = function (file, cb) {
-  fs.stat(file, function (err, stats) {
-    if (err) {
-      cb({})
-      LogWorker.error(err)
-      return
-    }
-    var sfile = {}
-    // get size if it's a Directory
-    if (stats.isFile()) {
-      sfile = stats
-    } else {
-      stats.size = sizeRecursif(file)
-      sfile = stats
-    }
-    sfile.isfile = stats.isFile()
-    sfile.isdir = stats.isDirectory()
-    cb(sfile)
-  })
+  var getInfo = function () {
+    fs.stat(file, function (err, stats) {
+      if (err) {
+        cb({})
+        LogWorker.error(err)
+        return
+      }
+      var sfile = {}
+      // get size if it's a Directory
+      if (stats.isFile()) {
+        sfile = stats
+      } else {
+        stats.size = sizeRecursif(file)
+        sfile = stats
+      }
+      sfile.isfile = stats.isFile()
+      sfile.isdir = stats.isDirectory()
+      cb(sfile)
+    })
+  }
+
+  setTimeout(getInfo)
 }
 
 /**
@@ -148,16 +159,19 @@ Directory.prototype.getInfo = function (file, cb) {
 */
 Directory.prototype.setDownloading = function (file) {
   var self = this
-  // file info default value
-  self.fileInfo[file] = self.fileInfo[file] || {}
-  // increment file download
-  self.fileInfo[file].download = self.fileInfo[file].download + 1 || 1
-  // increment file current downloading and set the current date
-  self.fileInfo[file].downloading = self.fileInfo[file].downloading
-    ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
-    : {date: new Date(), count: 1}
+  var setDownloading = function () {
+    // file info default value
+    self.fileInfo[file] = self.fileInfo[file] || {}
+    // increment file download
+    self.fileInfo[file].download = self.fileInfo[file].download + 1 || 1
+    // increment file current downloading and set the current date
+    self.fileInfo[file].downloading = self.fileInfo[file].downloading
+      ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
+      : {date: new Date(), count: 1}
 
-  self.saveFileInfo()
+    self.saveFileInfo()
+  }
+  setTimeout(setDownloading)
 }
 
 /**
@@ -166,14 +180,18 @@ Directory.prototype.setDownloading = function (file) {
 */
 Directory.prototype.finishDownloading = function (file) {
   var self = this
-  // decrement file downloading
-  self.fileInfo[file].downloading = self.fileInfo[file].downloading
-    ? {date: self.fileInfo[file].downloading.date, count: self.fileInfo[file].downloading.count - 1}
-    : {date: new Date(), count: 0}
+  var finishDownloading = function () {
+    // decrement file downloading
+    self.fileInfo[file].downloading = self.fileInfo[file].downloading
+      ? {date: self.fileInfo[file].downloading.date, count: self.fileInfo[file].downloading.count - 1}
+      : {date: new Date(), count: 0}
 
-  if (self.fileInfo[file].downloading.count >= 0) {
-    delete self.fileInfo[file].downloading
+    if (self.fileInfo[file].downloading.count >= 0) {
+      delete self.fileInfo[file].downloading
+    }
   }
+
+  setTimeout(finishDownloading)
 }
 
 /**
@@ -181,15 +199,18 @@ Directory.prototype.finishDownloading = function (file) {
 */
 Directory.prototype.updateDownloads = function () {
   var self = this
-  var curDate = new Date()
-  for (var key in self.fileInfo) {
-    if (self.fileInfo[key] && self.fileInfo[key].downloading) {
-      // if downloading for more than 1 hour remove
-      if (curDate - self.fileInfo[key].downloading.date > 3600000) {
-        delete self.fileInfo[key].downloading
+  var updateDownloads = function () {
+    var curDate = new Date()
+    for (var key in self.fileInfo) {
+      if (self.fileInfo[key] && self.fileInfo[key].downloading) {
+        // if downloading for more than 1 hour remove
+        if (curDate - self.fileInfo[key].downloading.date > 3600000) {
+          delete self.fileInfo[key].downloading
+        }
       }
     }
   }
+  setTimeout(updateDownloads)
 }
 
 /**
@@ -207,25 +228,30 @@ Directory.prototype.isDownloading = function (file) {
  * @param {string} file - File to remove.
 */
 Directory.prototype.remove = function (file) {
-  if (this.isDownloading(file)) return -1
-  fs.stat(Path.join(__base, __config.directory.path, file), function (err, stats) {
-    if (err) {
-      LogWorker.error(err)
-      return
-    }
-    if (stats) {
-      if (stats.isDirectory()) {
-        removeRecursif(Path.join(__base, __config.directory.path, file))
-      } else {
-        fs.unlink(Path.join(__base, __config.directory.path, file), function (err) {
-          if (err) {
-            LogWorker.error(err)
-            return
-          }
-        })
+  var self = this
+  var remove = function () {
+    if (self.isDownloading(file)) return -1
+    fs.stat(Path.join(__base, __config.directory.path, file), function (err, stats) {
+      if (err) {
+        LogWorker.error(err)
+        return
       }
-    }
-  })
+      if (stats) {
+        if (stats.isDirectory()) {
+          removeRecursif(Path.join(__base, __config.directory.path, file))
+        } else {
+          fs.unlink(Path.join(__base, __config.directory.path, file), function (err) {
+            if (err) {
+              LogWorker.error(err)
+              return
+            }
+          })
+        }
+      }
+    })
+  }
+
+  setTimeout(remove)
 }
 
 /**
@@ -236,23 +262,28 @@ Directory.prototype.remove = function (file) {
 */
 Directory.prototype.rename = function (path, oldname, newname) {
   var self = this
-  if (this.isDownloading(Path.join(path,oldname))) return -1
-  fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
-    if (err) {
-      LogWorker.error(err)
-      return
-    }
-    var oldfile = Path.join(path, oldname)
-    oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
 
-    var newfile = Path.join(path, newname)
-    newfile = newfile[0] === '/' ? newfile.substring(1) : newfile
+  var rename = function () {
+    if (self.isDownloading(Path.join(path, oldname))) return -1
+    fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
+      if (err) {
+        LogWorker.error(err)
+        return
+      }
+      var oldfile = Path.join(path, oldname)
+      oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
 
-    self.fileInfo[newfile] = self.fileInfo[oldfile]
-    delete self.fileInfo[oldfile]
+      var newfile = Path.join(path, newname)
+      newfile = newfile[0] === '/' ? newfile.substring(1) : newfile
 
-    self.saveFileInfo()
-  })
+      self.fileInfo[newfile] = self.fileInfo[oldfile]
+      delete self.fileInfo[oldfile]
+
+      self.saveFileInfo()
+    })
+  }
+
+  setTimeout(rename)
 }
 
 /**
@@ -261,12 +292,15 @@ Directory.prototype.rename = function (path, oldname, newname) {
  * @param {string} name - Directory name.
 */
 Directory.prototype.mkdir = function (path, name) {
-  fs.mkdir(Path.join(__base, __config.directory.path, path, name), function (err) {
-    if (err) {
-      LogWorker.error(err)
-      return
-    }
-  })
+  var mkdir = function () {
+    fs.mkdir(Path.join(__base, __config.directory.path, path, name), function (err) {
+      if (err) {
+        LogWorker.error(err)
+        return
+      }
+    })
+  }
+  setTimeout(mkdir)
 }
 
 /**
@@ -276,13 +310,17 @@ Directory.prototype.mkdir = function (path, name) {
  * @param {string} folder - Destination directory.
 */
 Directory.prototype.mv = function (path, file, folder) {
-  if (this.isDownloading(Path.join(path, file))) return -1
-  fs.rename(Path.join(__base, __config.directory.path, path, file), Path.join(__base, __config.directory.path, path, folder, file), function (err) {
-    if (err) {
-      LogWorker.error(err)
-      return
-    }
-  })
+  var self = this
+  var mv = function () {
+    if (self.isDownloading(Path.join(path, file))) return -1
+    fs.rename(Path.join(__base, __config.directory.path, path, file), Path.join(__base, __config.directory.path, path, folder, file), function (err) {
+      if (err) {
+        LogWorker.error(err)
+        return
+      }
+    })
+  }
+  setTimeout(mv)
 }
 
 /**
@@ -292,25 +330,42 @@ Directory.prototype.mv = function (path, file, folder) {
 */
 Directory.prototype.setOwner = function (file, user) {
   var self = this
-  file = file[0] === '/' ? file.slice(1) : file
-  // set owner defalt value
-  self.fileInfo[file] = self.fileInfo[file] || {}
-  // prevent override current user
-  if (self.fileInfo[file].owner == null) {
-    self.fileInfo[file].owner = user
+
+  var setOwner = function () {
+    file = file[0] === '/' ? file.slice(1) : file
+    // set owner defalt value
+    self.fileInfo[file] = self.fileInfo[file] || {}
+    // prevent override current user
+    if (self.fileInfo[file].owner == null) {
+      self.fileInfo[file].owner = user
+    }
+    self.saveFileInfo()
   }
-  self.saveFileInfo()
+  setTimeout(setOwner)
 }
 
 /**
  * Load data/fileInfo.json into Directory.fileInfo.
 */
 Directory.prototype.loadFileInfo = function () {
-  var fileInfo = require(Path.join(__base, 'data/fileInfo.json'))
-  for (var key in fileInfo) {
-    delete fileInfo[key].downloading
+  var self = this
+
+  var loadFileInfo = function(){
+    var fileInfo
+    try {
+      fileInfo = require(Path.join(__base, 'data/fileInfo.json'))
+    } catch (e) {
+      fileInfo = {}
+      self.saveFileInfo()
+    } finally {
+      for (var key in fileInfo) {
+        delete fileInfo[key].downloading
+      }
+      self.fileInfo = fileInfo
+    }
   }
-  this.fileInfo = fileInfo
+
+  setTimeout(loadFileInfo)
 }
 
 /**
@@ -318,16 +373,21 @@ Directory.prototype.loadFileInfo = function () {
 */
 Directory.prototype.saveFileInfo = function () {
   var self = this
-  if (!self.saving) {
-    self.saving = true
-    fs.writeFile(Path.join(__base, 'data/fileInfo.json'), JSON.stringify(self.fileInfo), function (err) {
-      self.saving = false
-      if (err) {
-        LogWorker.error(err)
-        return
-      }
-    })
+
+  var saveFileInfo = function(){
+    if (!self.saving) {
+      self.saving = true
+      fs.writeFile(Path.join(__base, 'data/fileInfo.json'), JSON.stringify(self.fileInfo), function (err) {
+        self.saving = false
+        if (err) {
+          LogWorker.error(err)
+          return
+        }
+      })
+    }
   }
+
+  setTimeout(saveFileInfo)
 }
 
 /**
@@ -335,17 +395,22 @@ Directory.prototype.saveFileInfo = function () {
  * @param {string} path - Directory to remove.
 */
 function removeRecursif (path) {
-  if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function (file, index) {
-      var curPath = Path.join(path, file)
-      if (fs.lstatSync(curPath).isDirectory()) { // recurse
-        removeRecursif(curPath)
-      } else { // delete file
-        fs.unlinkSync(curPath)
-      }
-    })
-    fs.rmdirSync(path)
+
+  var removeRecursif = function(){
+    if (fs.existsSync(path)) {
+      fs.readdirSync(path).forEach(function (file, index) {
+        var curPath = Path.join(path, file)
+        if (fs.lstatSync(curPath).isDirectory()) { // recurse
+          removeRecursif(curPath)
+        } else { // delete file
+          fs.unlinkSync(curPath)
+        }
+      })
+      fs.rmdirSync(path)
+    }
   }
+
+  setTimeout(removeRecursif)
 }
 
 /**
