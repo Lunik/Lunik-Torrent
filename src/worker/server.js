@@ -366,6 +366,28 @@ function Server (Worker) {
       }))
     }
   })
+
+  this.app.get('/invitation', function(req, res){
+    if(req.query.invitationkey){
+      var invitationKey = req.query.invitationkey
+      Worker.Auth.createInvite(invitationKey, function(invite){
+        if (invite) {
+          res.end(JSON.stringify({
+            err: false,
+            invitationCode: invite
+          }))
+        } else {
+          res.end(JSON.stringify({
+            err: 'Wrong Invitation Key.'
+          }))
+        }
+      })
+    } else {
+      res.end(JSON.stringify({
+        err: 'Missing Invitation Key.'
+      }))
+    }
+  })
 }
 
 module.exports = Server
