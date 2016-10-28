@@ -278,15 +278,17 @@ function Server (Worker) {
 
         case 'logout':
           if (data.user && data.token) {
-            if (Worker.Auth.logout(data.user, data.token)) {
-              res.end(JSON.stringify({
-                err: false
-              }))
-            } else {
-              res.end(JSON.stringify({
-                err: 'Wrong User or Token.'
-              }))
-            }
+            Worker.Auth.logout(data.user, data.token, function(loggedOut){
+              if (loggedOut) {
+                res.end(JSON.stringify({
+                  err: false
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User or Token.'
+                }))
+              }
+            })
           } else {
             res.end(JSON.stringify({
               err: 'Missing User or Token.'
@@ -296,19 +298,20 @@ function Server (Worker) {
 
         case 'register':
           if (data.user && data.pass && data.invite) {
-            var token = Worker.Auth.register(data.user, data.pass, data.invite)
-            if (token) {
-              res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.end(JSON.stringify({
-                err: false,
-                token: token
-              }))
-            } else {
-              res.end(JSON.stringify({
-                err: 'Wrong User, Pass or Invitation code.'
-              }))
-            }
+            Worker.Auth.register(data.user, data.pass, data.invite, function(token){
+              if (token) {
+                res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.end(JSON.stringify({
+                  err: false,
+                  token: token
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User, Pass or Invitation code.'
+                }))
+              }
+            })
           } else {
             res.end(JSON.stringify({
               err: 'Missing User, Pass or Invitation code.'
@@ -318,17 +321,18 @@ function Server (Worker) {
 
         case 'invite':
           if (data.invitationKey) {
-            var invite = Worker.Auth.createInvite(data.invitationKey)
-            if (invite) {
-              res.end(JSON.stringify({
-                err: false,
-                invitationCode: invite
-              }))
-            } else {
-              res.end(JSON.stringify({
-                err: 'Wrong Invitation Key.'
-              }))
-            }
+            Worker.Auth.createInvite(data.invitationKey, function(invite){
+              if (invite) {
+                res.end(JSON.stringify({
+                  err: false,
+                  invitationCode: invite
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong Invitation Key.'
+                }))
+              }
+            })
           } else {
             res.end(JSON.stringify({
               err: 'Missing Invitation Key.'
@@ -338,15 +342,17 @@ function Server (Worker) {
 
         case 'changepass':
           if (data.user && data.oldpass && data.newPass) {
-            if (Worker.Auth.changePass(data.user, data.oldpass, data.newPass)) {
-              res.end(JSON.stringify({
-                err: false
-              }))
-            } else {
-              res.end(JSON.stringify({
-                err: 'Wrong User or Pass.'
-              }))
-            }
+            Worker.Auth.changePass(data.user, data.oldpass, data.newPass, function(passwordChanged){
+              if (passwordChanged) {
+                res.end(JSON.stringify({
+                  err: false
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User or Pass.'
+                }))
+              }
+            })
           } else {
             res.end(JSON.stringify({
               err: 'Missing User, Pass or new Pass.'
