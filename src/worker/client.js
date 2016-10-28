@@ -91,9 +91,11 @@ Client.prototype.stop = function () {
       if(self.torrent.pause){
           self.torrent.pause()
       }
-      setTimeout(function () {
-        self.torrent.destroy()
-      }, 1000)
+      if(self.torrent.destroy){
+        setTimeout(function () {
+          self.torrent.destroy()
+        }, 1000)
+      }
     }
   }
 
