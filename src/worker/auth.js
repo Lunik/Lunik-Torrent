@@ -9,13 +9,17 @@ var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
   module: 'Auth'
 })
-
+var Etcd = require('etcd-node/src/client')
+var EtcdWorker = new Etcd({
+  host: __config.etcd.host,
+  port:  __config.etcd.port
+})
 function Auth () {
   this.passwords = require(Path.join(__base, 'data/passwords.json'))
   this.invites = []
 }
 
-Auth.prototype.login = function (user, pass) {
+Auth.prototype.login = function (user, pass, cb) {
   if (this.passwords[user] && this.passwords[user].pass === pass) {
     LogWorker.info(`${user} login.`)
     if (typeof this.passwords[user].token === 'undefined') {
@@ -28,9 +32,9 @@ Auth.prototype.login = function (user, pass) {
       this.passwords[user].token = this.passwords[user].token.slice(length - 10, length);
     }
     this.savePasswords()
-    return token
+    cb(token)
   } else {
-    return false
+    cb(false)
   }
 }
 

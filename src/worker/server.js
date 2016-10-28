@@ -255,37 +255,42 @@ function Server (Worker) {
       switch (req.query.todo) {
         case 'login':
           if (data.user && data.pass) {
-            var token = Worker.Auth.login(data.user, data.pass)
-            if (token) {
-              res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              reponse = {
-                err: false,
-                token: token
+            Worker.Auth.login(data.user, data.pass, function(token){
+              if (token) {
+                res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.end(JSON.stringify({
+                  err: false,
+                  token: token
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User or Pass.'
+                }))
               }
-            } else {
-              reponse = {
-                err: 'Wrong User or Pass.'
-              }
-            }
+            })
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing User or Pass.'
-            }
+            }))
           }
           break
 
         case 'logout':
           if (data.user && data.token) {
             if (Worker.Auth.logout(data.user, data.token)) {
-              reponse = {
+              res.end(JSON.stringify({
                 err: false
-              }
+              }))
             } else {
-              err: 'Wrong User or Token.'
+              res.end(JSON.stringify({
+                err: 'Wrong User or Token.'
+              }))
             }
           } else {
-            err: 'Missing User or Token.'
+            res.end(JSON.stringify({
+              err: 'Missing User or Token.'
+            }))
           }
           break
 
@@ -295,19 +300,19 @@ function Server (Worker) {
             if (token) {
               res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
               res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              reponse = {
+              res.end(JSON.stringify({
                 err: false,
                 token: token
-              }
+              }))
             } else {
-              reponse = {
+              res.end(JSON.stringify({
                 err: 'Wrong User, Pass or Invitation code.'
-              }
+              }))
             }
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing User, Pass or Invitation code.'
-            }
+            }))
           }
           break
 
@@ -315,46 +320,45 @@ function Server (Worker) {
           if (data.invitationKey) {
             var invite = Worker.Auth.createInvite(data.invitationKey)
             if (invite) {
-              reponse = {
+              res.end(JSON.stringify({
                 err: false,
                 invitationCode: invite
-              }
+              }))
             } else {
-              reponse = {
+              res.end(JSON.stringify({
                 err: 'Wrong Invitation Key.'
-              }
+              }))
             }
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing Invitation Key.'
-            }
+            }))
           }
           break
 
         case 'changepass':
           if (data.user && data.oldpass && data.newPass) {
             if (Worker.Auth.changePass(data.user, data.oldpass, data.newPass)) {
-              reponse = {
+              res.end(JSON.stringify({
                 err: false
-              }
+              }))
             } else {
-              reponse = {
+              res.end(JSON.stringify({
                 err: 'Wrong User or Pass.'
-              }
+              }))
             }
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing User, Pass or new Pass.'
-            }
+            }))
           }
           break
       }
     } else {
-      response = {
+      res.end(JSON.stringify({
         err: 'Missing Todo.'
-      }
+      }))
     }
-    res.end(JSON.stringify(reponse))
   })
 }
 
