@@ -238,7 +238,7 @@ describe('Backend', function () {
       })
     })
     describe('Dowload()', function () {
-      this.timeout(300000)
+      this.timeout(305000)
       it('Dowload sintel', function (done) {
         ClientWorker.on('done', function (err, hash, name) {
           ClientWorker.stop()
@@ -695,7 +695,7 @@ describe('Backend', function () {
     var Torrent = require(path.join(__base, 'src/worker/torrent.js'))
     describe('Start()', function () {
       it('startPointTorrent()', function (done) {
-        this.timeout(300000)
+        this.timeout(305000)
         Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:13d22ec551069369502a3100a99b991dd56389d4&dn=ubuntu-16.04.1-desktop-i386.iso')
         fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
           'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso'
