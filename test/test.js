@@ -41,8 +41,10 @@ describe('Backend', function () {
     var Auth = require(path.join(__base, 'src/worker/auth.js'))
     describe('createInvite()', function () {
       it('Invite key: ' + __config.server.invitationKey, function (done) {
-        assert.typeOf(Auth.createInvite(__config.server.invitationKey), 'string')
-        done()
+        Auth.createInvite(__config.server.invitationKey, function(invite){
+          assert.typeOf(invite, 'string')
+          done()
+        })
       })
       it('Invite key: Unknown', function (done) {
         assert(!Auth.createInvite(''))
@@ -51,73 +53,105 @@ describe('Backend', function () {
     })
     describe('Register()', function () {
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
-        var invite = Auth.createInvite(__config.server.invitationKey)
-        assert.typeOf(Auth.register(username, 'bar', invite), 'string')
-        done()
+        Auth.createInvite(__config.server.invitationKey, function(invite){
+          Auth.register(username, 'bar', invite, function(token){
+            assert.typeOf(token, 'string')
+            done()
+          })
+        })
       })
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
-        var invite = Auth.createInvite(__config.server.invitationKey)
-        assert(!Auth.register(username, 'bar', invite))
-        done()
+        Auth.createInvite(__config.server.invitationKey, function(invite){
+          Auth.register(username, 'bar', invite, function(token){
+            assert.typeOf(!token, 'string')
+            done()
+          })
+        })
       })
       it('User: foo, Pass: bar, Invite: Invalid invitation', function (done) {
-        assert(!Auth.register(username2, 'bar', ''))
-        done()
+        Auth.register(username2, 'bar', '', function(token){
+          assert.typeOf(!token, 'string')
+          done()
+        })
       })
     })
     describe('Loggin()', function () {
       it('User: foo, Pass: bar', function (done) {
-        assert.typeOf(Auth.login(username, 'bar'), 'string')
-        done()
+        Auth.login(username, 'bar', function(token){
+          assert.typeOf(token, 'string')
+          done()
+        })
       })
       it('User: Unknown, Pass: bar', function (done) {
-        assert(!Auth.login(username2, 'bar'))
-        done()
+        Auth.login(username2, 'bar', function(token){
+          assert.typeOf(!token, 'string')
+          done()
+        })
       })
       it('User: foo, Pass: Wrong', function (done) {
-        assert(!Auth.login(username, 'test'))
-        done()
+        Auth.login(username, 'test', function(token){
+          assert.typeOf(!token, 'string')
+          done()
+        })
       })
     })
     describe('Logout()', function () {
       it('User: foo, Token: valid', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(Auth.logout(username, token))
-        done()
+        Auth.login(username, 'bar', function(token){
+          Auth.logout(username, token, function(loggedOut){
+            assert(loggedOut)
+            done()
+          })
+        })
       })
       it('User: Unknown, Token: valid', function (done) {
-        assert(!Auth.logout(username2, ''))
-        done()
+          Auth.logout(username2, '', function(loggedOut){
+            assert(!loggedOut)
+            done()
+          })
+
       })
       it('User: foo, Token: invalid', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(!Auth.logout(username, token + '1'))
-        done()
+        Auth.login(username, 'bar', function(token){
+          Auth.logout(username, token + '1', function(loggedOut){
+            assert(!loggedOut)
+            done()
+          })
+        })
       })
     })
     describe('ChangePass()', function () {
       it('Change password User: foo, OldPass: bar, NewPass: rab', function (done) {
-        assert(Auth.changePass(username, 'bar', 'rab'))
-        done()
+        Auth.changePass(username, 'bar', 'rab', function(passwordChanged){
+          assert(passwordChanged)
+          done()
+        })
       })
       it('Change password User: Unknown, OldPass: bar, NewPass: rab', function (done) {
-        assert(!Auth.changePass(username2, 'bar', 'rab'))
-        done()
+        Auth.changePass(username2, 'bar', 'rab', function(passwordChanged){
+          assert(!passwordChanged)
+          done()
+        })
       })
       it('Change password User: foo, OldPass: Wrong, NewPass: rab', function (done) {
-        assert(!Auth.changePass(username, 'bar1', 'rab'))
-        done()
+        Auth.changePass(username, 'bar1', 'rab', function(passwordChanged){
+          assert(!passwordChanged)
+          done()
+        })
       })
       it('Change password User: foo, OldPass: rad, NewPass: bar', function (done) {
-        assert(Auth.changePass(username, 'rab', 'bar'))
-        done()
+        Auth.changePass(username, 'rab', 'bar', function(passwordChanged){
+          assert(passwordChanged)
+          done()
+        })
       })
     })
     describe('CheckLogged()', function () {
       it('User: foo', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(Auth.checkLogged(username, token))
-        done()
+        Auth.login(username, 'bar', function(token){
+          assert(Auth.checkLogged(username, token))
+          done()
+        })
       })
       it('User: Unknown', function (done) {
         assert(!Auth.checkLogged(username2, ''))
