@@ -36,10 +36,13 @@ Log.prototype.error = function (text) {
 */
 Log.prototype.save = function (text) {
   var self = this
-  var name = Path.join(__config.log.path, `log-${(new Date()).getDate()}-${((new Date()).getMonth() + 1)}`)
-  fs.appendFile(name, `[${getDate()}] ${text}\n`, 'utf8', function (err) {
-    if (err) self.echo(`${colors.red.bold('[Error] ')}${err}`)
-  })
+  var save = function(){
+    var name = Path.join(__config.log.path, `log-${(new Date()).getDate()}-${((new Date()).getMonth() + 1)}`)
+    fs.appendFile(name, `[${getDate()}] ${text}\n`, 'utf8', function (err) {
+      if (err) self.echo(`${colors.red.bold('[Error] ')}${err}`)
+    })
+  }
+  setTimeout(save)
 }
 
 /**

@@ -65,8 +65,10 @@ function Server (Worker) {
   this.app.post('/download-t', function (req, res) {
     if (req.body.url) {
       LogWorker.info(`${req.cookies.user} download torrent: ${req.body.url}`)
-      Worker.Torrent.setDownloader(req.cookies.user, req.body.url)
+      //Worker.Torrent.setDownloader(req.cookies.user, req.body.url)
+      console.log("outside")
       Worker.Torrent.start(req.body.url)
+      console.log("outside")
       res.end(JSON.stringify({}))
     } else {
       res.end(JSON.stringify({
