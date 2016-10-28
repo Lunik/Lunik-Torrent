@@ -255,106 +255,138 @@ function Server (Worker) {
       switch (req.query.todo) {
         case 'login':
           if (data.user && data.pass) {
-            var token = Worker.Auth.login(data.user, data.pass)
-            if (token) {
-              res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              reponse = {
-                err: false,
-                token: token
+            Worker.Auth.login(data.user, data.pass, function(token){
+              if (token) {
+                res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.end(JSON.stringify({
+                  err: false,
+                  token: token
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User or Pass.'
+                }))
               }
-            } else {
-              reponse = {
-                err: 'Wrong User or Pass.'
-              }
-            }
+            })
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing User or Pass.'
-            }
+            }))
           }
           break
 
         case 'logout':
           if (data.user && data.token) {
-            if (Worker.Auth.logout(data.user, data.token)) {
-              reponse = {
-                err: false
+            Worker.Auth.logout(data.user, data.token, function(loggedOut){
+              if (loggedOut) {
+                res.end(JSON.stringify({
+                  err: false
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User or Token.'
+                }))
               }
-            } else {
-              err: 'Wrong User or Token.'
-            }
+            })
           } else {
-            err: 'Missing User or Token.'
+            res.end(JSON.stringify({
+              err: 'Missing User or Token.'
+            }))
           }
           break
 
         case 'register':
           if (data.user && data.pass && data.invite) {
-            var token = Worker.Auth.register(data.user, data.pass, data.invite)
-            if (token) {
-              res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-              reponse = {
-                err: false,
-                token: token
+            Worker.Auth.register(data.user, data.pass, data.invite, function(token){
+              if (token) {
+                res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+                res.end(JSON.stringify({
+                  err: false,
+                  token: token
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User, Pass or Invitation code.'
+                }))
               }
-            } else {
-              reponse = {
-                err: 'Wrong User, Pass or Invitation code.'
-              }
-            }
+            })
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing User, Pass or Invitation code.'
-            }
+            }))
           }
           break
 
         case 'invite':
           if (data.invitationKey) {
-            var invite = Worker.Auth.createInvite(data.invitationKey)
-            if (invite) {
-              reponse = {
-                err: false,
-                invitationCode: invite
+            Worker.Auth.createInvite(data.invitationKey, function(invite){
+              if (invite) {
+                res.end(JSON.stringify({
+                  err: false,
+                  invitationCode: invite
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong Invitation Key.'
+                }))
               }
-            } else {
-              reponse = {
-                err: 'Wrong Invitation Key.'
-              }
-            }
+            })
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing Invitation Key.'
-            }
+            }))
           }
           break
 
         case 'changepass':
           if (data.user && data.oldpass && data.newPass) {
-            if (Worker.Auth.changePass(data.user, data.oldpass, data.newPass)) {
-              reponse = {
-                err: false
+            Worker.Auth.changePass(data.user, data.oldpass, data.newPass, function(passwordChanged){
+              if (passwordChanged) {
+                res.end(JSON.stringify({
+                  err: false
+                }))
+              } else {
+                res.end(JSON.stringify({
+                  err: 'Wrong User or Pass.'
+                }))
               }
-            } else {
-              reponse = {
-                err: 'Wrong User or Pass.'
-              }
-            }
+            })
           } else {
-            reponse = {
+            res.end(JSON.stringify({
               err: 'Missing User, Pass or new Pass.'
-            }
+            }))
           }
           break
       }
     } else {
-      response = {
+      res.end(JSON.stringify({
         err: 'Missing Todo.'
-      }
+      }))
     }
-    res.end(JSON.stringify(reponse))
+  })
+
+  this.app.get('/invitation', function(req, res){
+    if(req.query.invitationkey){
+      var invitationKey = req.query.invitationkey
+      Worker.Auth.createInvite(invitationKey, function(invite){
+        if (invite) {
+          res.end(JSON.stringify({
+            err: false,
+            invitationCode: invite
+          }))
+        } else {
+          res.end(JSON.stringify({
+            err: 'Wrong Invitation Key.'
+          }))
+        }
+      })
+    } else {
+      res.end(JSON.stringify({
+        err: 'Missing Invitation Key.'
+      }))
+    }
   })
 }
 
