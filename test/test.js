@@ -47,8 +47,10 @@ describe('Backend', function () {
         })
       })
       it('Invite key: Unknown', function (done) {
-        assert(!Auth.createInvite(''))
-        done()
+        Auth.createInvite('', function(invite){
+          assert(!invite)
+          done()
+        })
       })
     })
     describe('Register()', function () {
@@ -63,14 +65,14 @@ describe('Backend', function () {
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
         Auth.createInvite(__config.server.invitationKey, function(invite){
           Auth.register(username, 'bar', invite, function(token){
-            assert.typeOf(!token, 'string')
+            assert(!token)
             done()
           })
         })
       })
       it('User: foo, Pass: bar, Invite: Invalid invitation', function (done) {
         Auth.register(username2, 'bar', '', function(token){
-          assert.typeOf(!token, 'string')
+          assert(!token)
           done()
         })
       })
@@ -84,13 +86,13 @@ describe('Backend', function () {
       })
       it('User: Unknown, Pass: bar', function (done) {
         Auth.login(username2, 'bar', function(token){
-          assert.typeOf(!token, 'string')
+          assert(!token)
           done()
         })
       })
       it('User: foo, Pass: Wrong', function (done) {
         Auth.login(username, 'test', function(token){
-          assert.typeOf(!token, 'string')
+          assert(!token)
           done()
         })
       })
