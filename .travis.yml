@@ -15,7 +15,7 @@ before_install:
 - transmission-create ~/p2p alpine-uboot-3.4.5-armhf.tar.gz -t udp://tracker.openbittorrent.com:80
 - transmission-daemon -c ~/p2p
 
-- sudo npm install parse-torrent -g
+- npm install parse-torrent -g
 
 script:
 - npm test
