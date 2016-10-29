@@ -698,11 +698,11 @@ describe('Backend', function () {
         this.timeout(305000)
         Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz')
         fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz1'
-          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz2'
-          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz3'
-          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz4'
-          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz5', function (err) {
+          'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz1\n'
+          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz2\n'
+          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz3\n'
+          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz4\n'
+          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz5\n', function (err) {
             assert(!err)
             Torrent.startPointTorrent(Torrent)
             setTimeout(function () {
