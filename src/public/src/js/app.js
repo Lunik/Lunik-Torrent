@@ -76,7 +76,6 @@ var App
               }
 
               // Start with directory
-              self.TopMenu.setAriane(self.getDirFromHash())
               self.Directory.getDir(function (dir) {
                 self.Directory.append(dir)
               })
@@ -89,7 +88,6 @@ var App
                   self.hash += '/'
                 }
 
-                self.TopMenu.setAriane(self.getDirFromHash())
                 App.TopMenu.setActions({
                   download: false,
                   rename: false,

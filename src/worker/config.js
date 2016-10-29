@@ -10,8 +10,6 @@ Config.prototype.load = function (path) {
 
   assert(config, messageError('config'))
 
-  assert(config.autoUpdate === false || config.autoUpdate === true, messageError('autoUpdate'))
-
   assert(config.log, messageError('log'))
   assert(config.log.path, messageError('log.path'))
 

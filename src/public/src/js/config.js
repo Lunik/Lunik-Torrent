@@ -43,9 +43,7 @@
               title: 'Logout',
               text: 'Successfully logged out.'
             })
-            setTimeout(function () {
-              document.location = '/login.html'
-            }, 2000)
+            window.location = '/login.html'
           }
         }
       }).done(function () {

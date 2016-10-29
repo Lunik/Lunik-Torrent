@@ -29,7 +29,7 @@ function Client () {
 Client.prototype.download = function (torrentLink, cb) {
   var self = this
 
-  var dl = function (torrentLink) {
+  var download = function () {
     self.torrentLink = torrentLink
     LogWorker.info(`Start: ${torrentLink}`)
 
@@ -73,12 +73,11 @@ Client.prototype.download = function (torrentLink, cb) {
       torrent.on('error', function (err) {
         LogWorker.error(err)
         self.doneFunction(true, null, null)
-        return
       })
     })
   }
 
-  cb(dl(torrentLink))
+  setTimeout(download)
 }
 
 /**
@@ -86,12 +85,21 @@ Client.prototype.download = function (torrentLink, cb) {
 */
 Client.prototype.stop = function () {
   var self = this
-  if (self.torrent) {
-    self.torrent.pause()
-    setTimeout(function () {
-      self.torrent.destroy()
-    }, 1000)
+
+  var stop = function(){
+    if (self.torrent) {
+      if(self.torrent.pause){
+          self.torrent.pause()
+      }
+      if(self.torrent.destroy){
+        setTimeout(function () {
+          self.torrent.destroy()
+        }, 1000)
+      }
+    }
   }
+
+  setTimeout(stop)
 }
 
 /**

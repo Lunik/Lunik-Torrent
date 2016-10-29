@@ -41,83 +41,119 @@ describe('Backend', function () {
     var Auth = require(path.join(__base, 'src/worker/auth.js'))
     describe('createInvite()', function () {
       it('Invite key: ' + __config.server.invitationKey, function (done) {
-        assert.typeOf(Auth.createInvite(__config.server.invitationKey), 'string')
-        done()
+        Auth.createInvite(__config.server.invitationKey, function(invite){
+          assert.typeOf(invite, 'string')
+          done()
+        })
       })
       it('Invite key: Unknown', function (done) {
-        assert(!Auth.createInvite(''))
-        done()
+        Auth.createInvite('', function(invite){
+          assert(!invite)
+          done()
+        })
       })
     })
     describe('Register()', function () {
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
-        var invite = Auth.createInvite(__config.server.invitationKey)
-        assert.typeOf(Auth.register(username, 'bar', invite), 'string')
-        done()
+        Auth.createInvite(__config.server.invitationKey, function(invite){
+          Auth.register(username, 'bar', invite, function(token){
+            assert.typeOf(token, 'string')
+            done()
+          })
+        })
       })
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
-        var invite = Auth.createInvite(__config.server.invitationKey)
-        assert(!Auth.register(username, 'bar', invite))
-        done()
+        Auth.createInvite(__config.server.invitationKey, function(invite){
+          Auth.register(username, 'bar', invite, function(token){
+            assert(!token)
+            done()
+          })
+        })
       })
       it('User: foo, Pass: bar, Invite: Invalid invitation', function (done) {
-        assert(!Auth.register(username2, 'bar', ''))
-        done()
+        Auth.register(username2, 'bar', '', function(token){
+          assert(!token)
+          done()
+        })
       })
     })
     describe('Loggin()', function () {
       it('User: foo, Pass: bar', function (done) {
-        assert.typeOf(Auth.login(username, 'bar'), 'string')
-        done()
+        Auth.login(username, 'bar', function(token){
+          assert.typeOf(token, 'string')
+          done()
+        })
       })
       it('User: Unknown, Pass: bar', function (done) {
-        assert(!Auth.login(username2, 'bar'))
-        done()
+        Auth.login(username2, 'bar', function(token){
+          assert(!token)
+          done()
+        })
       })
       it('User: foo, Pass: Wrong', function (done) {
-        assert(!Auth.login(username, 'test'))
-        done()
+        Auth.login(username, 'test', function(token){
+          assert(!token)
+          done()
+        })
       })
     })
     describe('Logout()', function () {
       it('User: foo, Token: valid', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(Auth.logout(username, token))
-        done()
+        Auth.login(username, 'bar', function(token){
+          Auth.logout(username, token, function(loggedOut){
+            assert(loggedOut)
+            done()
+          })
+        })
       })
       it('User: Unknown, Token: valid', function (done) {
-        assert(!Auth.logout(username2, ''))
-        done()
+          Auth.logout(username2, '', function(loggedOut){
+            assert(!loggedOut)
+            done()
+          })
+
       })
       it('User: foo, Token: invalid', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(!Auth.logout(username, token + '1'))
-        done()
+        Auth.login(username, 'bar', function(token){
+          Auth.logout(username, token + '1', function(loggedOut){
+            assert(!loggedOut)
+            done()
+          })
+        })
       })
     })
     describe('ChangePass()', function () {
       it('Change password User: foo, OldPass: bar, NewPass: rab', function (done) {
-        assert(Auth.changePass(username, 'bar', 'rab'))
-        done()
+        Auth.changePass(username, 'bar', 'rab', function(passwordChanged){
+          assert(passwordChanged)
+          done()
+        })
       })
       it('Change password User: Unknown, OldPass: bar, NewPass: rab', function (done) {
-        assert(!Auth.changePass(username2, 'bar', 'rab'))
-        done()
+        Auth.changePass(username2, 'bar', 'rab', function(passwordChanged){
+          assert(!passwordChanged)
+          done()
+        })
       })
       it('Change password User: foo, OldPass: Wrong, NewPass: rab', function (done) {
-        assert(!Auth.changePass(username, 'bar1', 'rab'))
-        done()
+        Auth.changePass(username, 'bar1', 'rab', function(passwordChanged){
+          assert(!passwordChanged)
+          done()
+        })
       })
       it('Change password User: foo, OldPass: rad, NewPass: bar', function (done) {
-        assert(Auth.changePass(username, 'rab', 'bar'))
-        done()
+        Auth.changePass(username, 'rab', 'bar', function(passwordChanged){
+          assert(passwordChanged)
+          done()
+        })
       })
     })
     describe('CheckLogged()', function () {
       it('User: foo', function (done) {
-        var token = Auth.login(username, 'bar')
-        assert(Auth.checkLogged(username, token))
-        done()
+        Auth.login(username, 'bar', function(token){
+          assert(Auth.checkLogged(username, token))
+          done()
+        })
       })
       it('User: Unknown', function (done) {
         assert(!Auth.checkLogged(username2, ''))
@@ -202,18 +238,18 @@ describe('Backend', function () {
       })
     })
     describe('Dowload()', function () {
-      this.timeout(300000)
-      it('Dowload sintel', function (done) {
+      this.timeout(305000)
+      it('Dowload ubuntu', function (done) {
         ClientWorker.on('done', function (err, hash, name) {
           ClientWorker.stop()
           done()
         })
-        ClientWorker.download('magnet:?xt=urn:btih:6a9759bffd5c0af65319979fb7832189f4f3c35d&dn=sintel.mp4&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel-1024-surround.mp4', function(){})
+        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511', function(){})
       })
     })
   })
   describe('Server', function () {
-    var Server = require(path.join(__base, 'src/worker/server.js'))
+    var Index = require(path.join(__base, 'src/index.js'))
     var url = 'http://localhost:' + __config.server.port
     var user = 'test' + rand.rand()
     var pass = 'test'
@@ -553,7 +589,7 @@ describe('Backend', function () {
               Cookie: 'user=' + user + ';token=' + token
             },
             form: {
-              url: 'magnet:?xt=urn:btih:9f9165d9a281a9b8e782cd5176bbcc8256fd1871&dn=ubuntu-16.04.1-desktop-amd64.iso'
+              url: 'magnet:?xt=urn:btih:fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4&dn=CentOS-6.8-i386-netinstall'
             }
           }, function (err, res, body) {
             if (!err && res.statusCode == 200) {
@@ -565,12 +601,12 @@ describe('Backend', function () {
                   Cookie: 'user=' + user + ';token=' + token
                 },
                 form: {
-                  hash: '9f9165d9a281a9b8e782cd5176bbcc8256fd1871'
+                  hash: 'fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4'
                 }
               }, function (err, res, body) {
                 if (!err && res.statusCode == 200) {
                   body = JSON.parse(body)
-                  assert.equal(body.hash, '9f9165d9a281a9b8e782cd5176bbcc8256fd1871')
+                  assert.equal(body.hash, 'fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4')
                   assert(!body.err)
                 }
                 done()
@@ -659,14 +695,13 @@ describe('Backend', function () {
     var Torrent = require(path.join(__base, 'src/worker/torrent.js'))
     describe('Start()', function () {
       it('startPointTorrent()', function (done) {
-        this.timeout(300000)
-        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:13d22ec551069369502a3100a99b991dd56389d4&dn=ubuntu-16.04.1-desktop-i386.iso')
+        this.timeout(305000)
+        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:6377717b47564ca965283ed240c1b766eedb5a19&dn=CentOS-6.8-x86_64-netinstall')
         fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso'
-          + 'magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso'
-          + 'magnet:?xt=urn:btih:34930674ef3bb9317fb5f263cca830f52685235b&dn=ubuntu-14.04.5-desktop-amd64.iso'
-          + 'magnet:?xt=urn:btih:5ee7e1dc3e01f362b0e53bfee9e4d6dcdedad61b&dn=ubuntu-14.04.5-desktop-i386.iso'
-          + 'magnet:?xt=urn:btih:0a4193f50658c7f195288bfd84a1b067697e21a2&dn=ubuntu-14.04.5-server-amd64.iso', function (err) {
+          'magnet:?xt=urn:btih:406bcd979f0f2650e859324d97efd0a1139328a0&dn=CentOS-5.11-i386-netinstall\n'
+          + 'magnet:?xt=urn:btih:2700d4801a22ab198428bf1b4a85b097bf0497d3&dn=CentOS-5.11-x86_64-netinstall\n'
+          + 'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso\n'
+          + 'magnet:?xt=urn:btih:6bf4c6b4b86dbfcc79180b042abc2bd60a9ca3a4&dn=ubuntu-16.10-server-i386.iso\n', function (err) {
             assert(!err)
             Torrent.startPointTorrent(Torrent)
             setTimeout(function () {
@@ -678,11 +713,11 @@ describe('Backend', function () {
     describe('remove()', function () {
       it('start and remove', function (done) {
         this.timeout(300000)
-        Torrent.start('magnet:?xt=urn:btih:f67c13cbd11a00bccd1edddf8c7b0e3db80e6312&dn=ubuntu-14.04.5-server-i386.iso')
+        Torrent.start('magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso')
         setTimeout(function () {
           assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('f67c13cbd11a00bccd1edddf8c7b0e3db80e6312')
-          Torrent.remove('f67c13cbd11a00bccd1edddf8c7b0e3db80e6312')
+          Torrent.getUrlFromHash('288f8018277b8c474f304a059b064e017bd55e9f')
+          Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
           done()
         }, 10000)
       })

@@ -72,14 +72,16 @@ $ docker run -d \
 You need an inscription code provided by the server admin.
 
 ##### Create an invitation code
+Goto to `http://myapp.com/invitation?invitationkey=MY_INVITATION_KEY`
+
+For more advanced user
 ```
 $ ./scripts/getinvite.sh
 OR
-$ curl --data "invitationkey=mykey" http://localhost:5000/auth?todo=invite
+$ curl --data "invitationkey=MY_INVITATION_KEY" http://localhost:5000/auth?todo=invite
 {
   "err":false,
   "invitationCode":"your_invitation_code"
 }
 ```
 To register go to `http://localhost:5000/login.html#your_invitation_code`
- 
