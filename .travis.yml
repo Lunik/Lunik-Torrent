@@ -9,6 +9,14 @@ env:
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install curl wget
+
+- sudo apt-get install transmission-cli transmission-daemon
+- wget http://dl-cdn.alpinelinux.org/alpine/v3.4/releases/armhf/alpine-uboot-3.4.5-armhf.tar.gz -O ~/p2p
+- transmission-create ~/p2p alpine-uboot-3.4.5-armhf.tar.gz -t udp://tracker.openbittorrent.com:80
+- transmission-daemon -c ~/p2p
+
+- sudo npm install parse-torrent -g
+
 script:
 - npm test
 cache:
