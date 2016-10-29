@@ -244,7 +244,7 @@ describe('Backend', function () {
           ClientWorker.stop()
           done()
         })
-        ClientWorker.download('magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz', function(){})
+        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511', function(){})
       })
     })
   })
@@ -589,7 +589,7 @@ describe('Backend', function () {
               Cookie: 'user=' + user + ';token=' + token
             },
             form: {
-              url: 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz'
+              url: 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511'
             }
           }, function (err, res, body) {
             if (!err && res.statusCode == 200) {
@@ -601,12 +601,12 @@ describe('Backend', function () {
                   Cookie: 'user=' + user + ';token=' + token
                 },
                 form: {
-                  hash: 'ec35802a0a1b152b52583a8ef03914fa38e80962'
+                  hash: '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b'
                 }
               }, function (err, res, body) {
                 if (!err && res.statusCode == 200) {
                   body = JSON.parse(body)
-                  assert.equal(body.hash, 'ec35802a0a1b152b52583a8ef03914fa38e80962')
+                  assert.equal(body.hash, '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
                   assert(!body.err)
                 }
                 done()
@@ -696,13 +696,13 @@ describe('Backend', function () {
     describe('Start()', function () {
       it('startPointTorrent()', function (done) {
         this.timeout(305000)
-        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz')
+        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511')
         fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz1\n'
-          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz2\n'
-          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz3\n'
-          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz4\n'
-          + 'magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz5\n', function (err) {
+          'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15111\n'
+          + 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15112\n'
+          + 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15113\n'
+          + 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15114\n'
+          + 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15115\n', function (err) {
             assert(!err)
             Torrent.startPointTorrent(Torrent)
             setTimeout(function () {
@@ -714,11 +714,11 @@ describe('Backend', function () {
     describe('remove()', function () {
       it('start and remove', function (done) {
         this.timeout(300000)
-        Torrent.start('magnet:?xt=urn:btih:ec35802a0a1b152b52583a8ef03914fa38e80962&dn=alpine-uboot-3.4.5-armhf.tar.gz')
+        Torrent.start('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511')
         setTimeout(function () {
           assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('ec35802a0a1b152b52583a8ef03914fa38e80962')
-          Torrent.remove('ec35802a0a1b152b52583a8ef03914fa38e80962')
+          Torrent.getUrlFromHash('63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
+          Torrent.remove('63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
           done()
         }, 10000)
       })
