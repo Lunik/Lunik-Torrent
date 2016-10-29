@@ -589,7 +589,7 @@ describe('Backend', function () {
               Cookie: 'user=' + user + ';token=' + token
             },
             form: {
-              url: 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511'
+              url: 'magnet:?xt=urn:btih:fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4&dn=CentOS-6.8-i386-netinstall'
             }
           }, function (err, res, body) {
             if (!err && res.statusCode == 200) {
@@ -601,12 +601,12 @@ describe('Backend', function () {
                   Cookie: 'user=' + user + ';token=' + token
                 },
                 form: {
-                  hash: '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b'
+                  hash: 'fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4'
                 }
               }, function (err, res, body) {
                 if (!err && res.statusCode == 200) {
                   body = JSON.parse(body)
-                  assert.equal(body.hash, '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
+                  assert.equal(body.hash, 'fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4')
                   assert(!body.err)
                 }
                 done()
@@ -696,13 +696,12 @@ describe('Backend', function () {
     describe('Start()', function () {
       it('startPointTorrent()', function (done) {
         this.timeout(305000)
-        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511')
+        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:6377717b47564ca965283ed240c1b766eedb5a19&dn=CentOS-6.8-x86_64-netinstall')
         fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15111\n'
-          + 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15112\n'
-          + 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15113\n'
-          + 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15114\n'
-          + 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-15115\n', function (err) {
+          'magnet:?xt=urn:btih:406bcd979f0f2650e859324d97efd0a1139328a0&dn=CentOS-5.11-i386-netinstall\n'
+          + 'magnet:?xt=urn:btih:2700d4801a22ab198428bf1b4a85b097bf0497d3&dn=CentOS-5.11-x86_64-netinstall\n'
+          + 'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso\n'
+          + 'magnet:?xt=urn:btih:6bf4c6b4b86dbfcc79180b042abc2bd60a9ca3a4&dn=ubuntu-16.10-server-i386.iso\n', function (err) {
             assert(!err)
             Torrent.startPointTorrent(Torrent)
             setTimeout(function () {
@@ -714,11 +713,11 @@ describe('Backend', function () {
     describe('remove()', function () {
       it('start and remove', function (done) {
         this.timeout(300000)
-        Torrent.start('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511')
+        Torrent.start('magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso')
         setTimeout(function () {
           assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
-          Torrent.remove('63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
+          Torrent.getUrlFromHash('288f8018277b8c474f304a059b064e017bd55e9f')
+          Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
           done()
         }, 10000)
       })
