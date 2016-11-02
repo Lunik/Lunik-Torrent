@@ -13,7 +13,8 @@ var App
         'vue': '../bower_components/vue/dist/vue.min',
         'jquery.ui.touch-punch': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
         'notify-me': '../bower_components/notify.me/dist/js/notify-me',
-        'popup': '../bower_components/popupjs/dist/popup.min'
+        'popup': '../bower_components/popupjs/dist/popup.min',
+        'clipboard': '../bower_components/clipboard/dist/clipboard.min'
       }
     })
 
@@ -23,11 +24,12 @@ var App
       'localstorage',
       'jquery',
       'jquery-ui',
-      'format'
-    ], function (v, ls, jq, jqui, f) {
+      'format',
+      'clipboard'
+    ], function (v, ls, jq, jqui, f, clip) {
       self.Vue = v
       self.Storage = new Storage()
-
+      self.Clipboard = new clip('.clip-but')
       /**
        * Get The index of an object into an array
        * @param {array} array - The array
@@ -74,7 +76,6 @@ var App
               }
 
               // Start with directory
-              self.TopMenu.setAriane(self.getDirFromHash())
               self.Directory.getDir(function (dir) {
                 self.Directory.append(dir)
               })
@@ -87,7 +88,6 @@ var App
                   self.hash += '/'
                 }
 
-                self.TopMenu.setAriane(self.getDirFromHash())
                 App.TopMenu.setActions({
                   download: false,
                   rename: false,
@@ -103,7 +103,7 @@ var App
               $(window).keydown(function (event) {
                 switch (event.keyCode) {
                   case 13:
-                    $('.left-menu .action .' + App.LeftMenu.vue.$data.currentAction).trigger('click')
+                    $(`.left-menu .action .${App.LeftMenu.vue.$data.currentAction}`).trigger('click')
                     break
                 }
               })

@@ -29,9 +29,9 @@ function Client () {
 Client.prototype.download = function (torrentLink, cb) {
   var self = this
 
-  var dl = function (torrentLink) {
+  var download = function () {
     self.torrentLink = torrentLink
-    LogWorker.info('Start: ' + torrentLink)
+    LogWorker.info(`Start: ${torrentLink}`)
 
     var timeout = setTimeout(function () {
       self.client.destroy(function () {
@@ -45,7 +45,7 @@ Client.prototype.download = function (torrentLink, cb) {
       clearTimeout(timeout)
       // On torrent start
       self.torrent = torrent
-      LogWorker.info('Start torrent: ' + torrent.name)
+      LogWorker.info(`Start torrent: ${torrent.name}`)
       // emit start function with infoHash
       self.startFunction(torrent.infoHash)
 
@@ -59,13 +59,13 @@ Client.prototype.download = function (torrentLink, cb) {
       })
 
       torrent.on('done', function () {
-        LogWorker.info('Finish torrent: ' + self.torrent.name)
+        LogWorker.info(`Finish torrent: ${self.torrent.name}`)
         // emit done function with torrent hash and name
         self.doneFunction(false, torrent.infoHash, torrent.name)
       })
 
       torrent.on('noPeers', function () {
-        LogWorker.warning('No peers: ' + torrent.name)
+        LogWorker.warning(`No peers: ${torrent.name}`)
         // emit done function with torrent hash and name
         self.doneFunction(false, torrent.infoHash, torrent.name)
       })
@@ -73,12 +73,11 @@ Client.prototype.download = function (torrentLink, cb) {
       torrent.on('error', function (err) {
         LogWorker.error(err)
         self.doneFunction(true, null, null)
-        return
       })
     })
   }
 
-  cb(dl(torrentLink))
+  setTimeout(download)
 }
 
 /**
@@ -86,12 +85,21 @@ Client.prototype.download = function (torrentLink, cb) {
 */
 Client.prototype.stop = function () {
   var self = this
-  if (self.torrent) {
-    self.torrent.pause()
-    setTimeout(function () {
-      self.torrent.destroy()
-    }, 1000)
+
+  var stop = function(){
+    if (self.torrent) {
+      if(self.torrent.pause){
+          self.torrent.pause()
+      }
+      if(self.torrent.destroy){
+        setTimeout(function () {
+          self.torrent.destroy()
+        }, 1000)
+      }
+    }
   }
+
+  setTimeout(stop)
 }
 
 /**

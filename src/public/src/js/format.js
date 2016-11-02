@@ -14,7 +14,7 @@
     var sizes = ['b', 'kb', 'mb', 'gb', 'tb']
     if (bytes === 0) { return '0 b' }
     var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
-    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
+    return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`
   }
 
   /**
@@ -23,7 +23,7 @@
    * @return {float} - Formated speed.
   */
   _Format.prototype.speed = function (bytes) {
-    return this.size(bytes) + '/s'
+    return `${this.size(bytes)}/s`
   }
 
   /**
@@ -33,7 +33,7 @@
   */
   _Format.prototype.date = function (date) {
     date = new Date(date)
-    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() /* + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() */
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` /* + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() */
   }
 
   /**

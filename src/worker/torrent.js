@@ -31,69 +31,74 @@ function Torrent () {
 */
 Torrent.prototype.start = function (url) {
   var self = this
-  // evite de lancer deux fois le meme torrent
-  if (self.client[url] == null) {
-    // Si trop de torrent en cours
-    if (Object.keys(self.client).length < __config.torrent.max) {
-      if (self.client[url] == null) {
-        self.client[url] = {count: 1}
-      } else {
-        self.client[url].count++
-      }
 
-      if (self.client[url].count > __config.client.maxTry) {
-        return -1
-      }
-      var c = new Client()
-      c.download(url, function () {})
-
-      c.on('start', function (hash) {
-        if (self.client[url]) {
-          self.client[url].hash = hash
+  var start = function (url) {
+    // evite de lancer deux fois le meme torrent
+    if (self.client[url] == null) {
+      // Si trop de torrent en cours
+      if (Object.keys(self.client).length < __config.torrent.max) {
+        if (self.client[url] == null) {
+          self.client[url] = {count: 1}
+        } else {
+          self.client[url].count++
         }
-      })
 
-      c.on('download', function (infos) {
-        if (self.client[url]) {
-          self.client[url].infos = infos
+        if (self.client[url].count > __config.client.maxTry) {
+          return -1
         }
-      })
+        var c = new Client()
+        c.download(url, function () {})
 
-      c.on('done', function (err, hash, name) {
-        if (self.client[url]) {
-          if (err) {
-            LogWorker.error('Fail downloading: ' + url)
+        c.on('start', function (hash) {
+          if (self.client[url]) {
+            self.client[url].hash = hash
+          }
+        })
+
+        c.on('download', function (infos) {
+          if (self.client[url]) {
+            self.client[url].infos = infos
+          }
+        })
+
+        c.on('done', function (err, hash, name) {
+          if (self.client[url]) {
+            if (err) {
+              LogWorker.error(`Fail downloading: ${url}`)
+              delete self.client[url]
+              return
+            }
+            self.client[url].peer.stop()
+            // Deplace les fichies
+            LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, name)} to ${Path.join(__config.directory.path, name)}`)
+            fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
+            // Defini l'owner
+            if (self.dowloader[url]) {
+              self.Directory.setOwner(name, self.dowloader[url])
+            }
             delete self.client[url]
-            return
+            // Relance un torrent si il y en a en attente
+            if (self.waitList.length > 0) {
+              LogWorker.info(`Start torrent into waitList (left: ${(self.waitList.length - 1)})`)
+              self.start(self.waitList.shift())
+            }
           }
-          self.client[url].peer.stop()
-          // Deplace les fichies
-          LogWorker.info('Moving: ' + Path.join(__config.torrent.downloads, name) + ' to ' + Path.join(__config.directory.path, name))
-          fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
-          // Defini l'owner
-          if (self.dowloader[url]) {
-            self.Directory.setOwner(name, self.dowloader[url])
-          }
-          delete self.client[url]
-          // Relance un torrent si il y en a en attente
-          if (self.waitList.length > 0) {
-            LogWorker.info('Start torrent into waitList (left: ' + (self.waitList.length - 1) + ')')
-            self.start(self.waitList.shift())
-          }
-        }
-      })
+        })
 
-      self.client[url].peer = c
-    } else {
-      LogWorker.warning('Too much client. Adding torrent to the waitlist.')
-      // On push dans la liste d'attente
-      if (self.waitList.indexOf(url) === -1) {
-        self.waitList.push(url)
+        self.client[url].peer = c
+      } else {
+        LogWorker.warning('Too much client. Adding torrent to the waitlist.')
+        // On push dans la liste d'attente
+        if (self.waitList.indexOf(url) === -1) {
+          self.waitList.push(url)
+        }
       }
+    } else {
+      LogWorker.warning('Torrent is already downloading.')
     }
-  } else {
-    LogWorker.warning('Torrent is already downloading.')
   }
+
+  setTimeout(function(){start(url)})
 }
 
 /**
@@ -127,13 +132,23 @@ Torrent.prototype.getUrlFromHash = function (hash) {
  * @param {object} self - Torrent instance.
 */
 Torrent.prototype.startPointTorrent = function (self) {
-  var data = fs.readFileSync(Path.join(__base, __config.torrent.scanTorrent), 'utf-8')
-  var torrents = data.split('\n')
-  fs.writeFileSync(Path.join(__base, __config.torrent.scanTorrent), '', 'utf-8')
-  torrents.forEach(function (element) {
-    if (element !== '') {
-      self.start(element)
+  fs.readFile(Path.join(__base, __config.torrent.scanTorrent), 'utf-8', function (err, data) {
+    if (err) {
+      LogWorker.error(err)
+      return
     }
+    var torrents = data.split('\n')
+    fs.writeFile(Path.join(__base, __config.torrent.scanTorrent), '', 'utf-8', function (err) {
+      if (err) {
+        LogWorker.error(err)
+        return
+      }
+      torrents.forEach(function (element) {
+        if (element !== '') {
+          self.start(element)
+        }
+      })
+    })
   })
 }
 

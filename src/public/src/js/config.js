@@ -43,20 +43,14 @@
               title: 'Logout',
               text: 'Successfully logged out.'
             })
-            setTimeout(function () {
-              document.location = '/login.html'
-            }, 2000)
+            window.location = '/login.html'
           }
         }
       }).done(function () {
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        $.notify.error({
-          title: 'Error in Config.logout()',
-          text: err.statusText,
-          duration: 5
-        })
+        console.error(`Error in Config.logout() : ${err.statusText}`);
       })
     })
   }

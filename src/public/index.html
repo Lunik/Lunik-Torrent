@@ -12,6 +12,7 @@
   </head>
 
   <body>
+    <!-- Loading -->
     <div class="loading">
       <div class="loading-app" v-show="app.state"><div class="logo"></div></div>
       <div class="loading-actions" v-show="action.state">
@@ -20,15 +21,9 @@
         </svg>
       </div>
     </div>
+    <!-- Top Menu -->
     <div class="top-menu">
       <a href="#" class="logo button"><div class="logo"></div></a>
-      <div class="ariane">
-        <a class="button" href="#" data-file="/">Home</a>
-        <div v-for="dir in ariane">
-          <span class="delimiter">&gt;</span>
-          <a class="button" href="#{{ dir.path }}">{{ dir.name }}</a>
-        </div>
-      </div>
       <div class="folder-size">{{ folderSize }}</div>
       <div class="logout">
         <i class="fa fa-sign-out button" id="logout"></i>
@@ -40,6 +35,7 @@
         <i class="fa {{ a.icon }} {{ a.state }} button" id="{{ a.id }}" v-show="a.state" v-for="a in actions"></i>
       </div>
     </div>
+    <!-- Left Menu -->
     <div class="left-menu" id="{{ state }}">
       <div class="menu">
         <i class="fa fa-arrow-left close button" id="{{ state }}"></i>
@@ -64,6 +60,7 @@
         <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
       </div>
     </div>
+    <!-- Center List -->
     <div class="list">
       <table>
         <thead>
@@ -75,6 +72,7 @@
           <tr class="button {{ l.type }}" v-for="l in lines">
             <td id="name" extension="{{ l.extension }}" data-file="{{ l.name }}" hash="{{ l.hash }}" lock="{{ l.lock }}">
               <a class="button" href="{{ l.href }}">{{ l.name }}</a>
+              <i class="fa fa-clipboard clip-but button" data-clipboard-text="{{ l.url }}"></i>
               <i class="fa" v-bind:class="{'fa-lock locked': l.lock}"></i>
               <i class="fa" v-bind:class="{'fa-download download': l.download}">{{ l.download }}</i>
             </td>
@@ -92,9 +90,11 @@
         </tbody>
       </table>
     </div>
+    <!-- Scroll top button -->
     <div class="scrollTop">
         <i class="fa fa-arrow-up button"></i>
       </div>
+    <!-- Popups -->
     <div class="popup hide">
       <div class="config-pop">
         <input class="submit button" type="submit" value="Save"></input>

@@ -1,6 +1,6 @@
 {
   "name": "lunik-torrent",
-  "version": "2.18.10",
+  "version": "2.19.3",
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
   "scripts": {
@@ -23,11 +23,10 @@
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "cpasbien-api": "^1.1.1",
-    "crypto-js": "^3.1.6",
+    "crypto-js": "^3.1.7",
     "crypto-rand": "0.0.2",
     "express": "^4.14.0",
     "forever": "^0.15.2",
-    "version": "^0.1.2",
     "webtorrent": "^0.97.1"
   },
   "devDependencies": {

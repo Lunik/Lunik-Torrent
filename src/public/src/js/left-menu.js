@@ -76,6 +76,7 @@
     $('.left-menu').on('click', '.nav-bar li', function () {
       self.switchTab($(this).attr('id'))
       App.List.switchTab($(this).attr('id'))
+      App.List.sortLines('name', 'asc')
     })
 
     $('.left-menu').on('click', '.open', function () {

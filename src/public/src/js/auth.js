@@ -58,7 +58,7 @@ var App = {}
       $(window).keydown(function (event) {
         switch (event.keyCode) {
           case 13:
-            $('.auth .' + self.getCurrentSubmit() + ' button').trigger('click')
+            $(`.auth .${self.getCurrentSubmit()} button`).trigger('click')
             break
         }
       })
@@ -122,7 +122,7 @@ var App = {}
         $('.auth .invite input').keyup(function () {
           var code = $(this).val()
           if (code.length === 64) {
-            document.location.hash = '#' + code
+            document.location.hash = `#${code}`
           }
         })
 
@@ -222,11 +222,7 @@ var App = {}
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in Auth.login()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error(`Error in Auth.login() : ${err.statusText}`)
     })
   }
 
@@ -261,11 +257,7 @@ var App = {}
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in Auth.register()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error(`Error in Auth.register() : ${err.statusText}`);
     })
   }
 
@@ -301,11 +293,7 @@ var App = {}
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      $.notify.error({
-        title: 'Error in Auth.changePass()',
-        text: err.statusText,
-        duration: 5
-      })
+      console.error(`Error in Auth.changePass() : ${err.statusText}`);
     })
   }
   App = new _App()

@@ -29,7 +29,6 @@
             state: false
           }
         ],
-        ariane: [],
         folderSize: '0b'
       }
     })
@@ -46,23 +45,6 @@
         self.vue.$data.actions[index].state = actions[value.id]
       }
     })
-  }
-
-  /**
-   * Update Ariane link
-   * @param {object} list - List sorted of directories
-  */
-  _TopMenu.prototype.setAriane = function (list) {
-    var self = this
-    self.vue.$data.ariane = []
-    var profDir = ''
-    for (var key in list) {
-      profDir += list[key] + '/'
-      self.vue.$data.ariane.push({
-        path: profDir,
-        name: list[key]
-      })
-    }
   }
 
   /**
