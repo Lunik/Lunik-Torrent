@@ -14,7 +14,7 @@
       })
     })
 
-    $('.left-menu').on('click', '.start', function () {
+    $('body').on('click', '.left-menu .start', function () {
       var input = $('.left-menu .torrent-input input')
       if (input.val()) {
         self.download(input.val())
@@ -23,7 +23,7 @@
       }
     })
 
-    $('.left-menu').on('click', '.search', function () {
+    $('body').on('click', '.left-menu .search', function () {
       var input = $('.left-menu .torrent-input input')
       App.SearchTorrent.search(input.val())
       App.LeftMenu.addInputList('torrent-input', input.val())

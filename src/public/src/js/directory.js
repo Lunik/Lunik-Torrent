@@ -20,7 +20,7 @@
       $(this).children('#name').draggable('enable')
     })
 
-    $('.left-menu').on('click', '.new', function () {
+    $('body').on('click', '.left-menu .new', function () {
       self.newFolder()
     })
   }
@@ -299,7 +299,8 @@
               date: App.Format.date(new Date()),
               owner: '-',
               lock: false,
-              download: ''
+              download: '',
+              progress: 0
             })
 
             App.List.sortLines('name', 'asc')
