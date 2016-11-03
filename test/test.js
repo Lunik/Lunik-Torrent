@@ -645,8 +645,10 @@ describe('Backend', function () {
         var dir = 'ok' + rand.rand()
         Directory.mkdir('/', recip)
         Directory.mkdir('/', dir)
-        Directory.mv('/', dir, recip)
-        done()
+        Directory.mv('/', dir, recip, function(err){
+          assert(!err)
+          done()
+        })
       })
     })
     describe('Rename()', function () {
@@ -654,8 +656,10 @@ describe('Backend', function () {
         var dir = 'ok' + rand.rand()
         var newname = 'ok' + rand.rand()
         Directory.mkdir('/', dir)
-        Directory.rename('/', dir, newname)
-        done()
+        Directory.rename('/', dir, newname, function(err){
+          assert(!err)
+          done()
+        })
       })
     })
     describe('SetOwner()', function () {
@@ -670,8 +674,10 @@ describe('Backend', function () {
       it('remove dir', function (done) {
         var dir = 'ok' + rand.rand()
         Directory.mkdir('/', dir)
-        Directory.remove(dir)
-        done()
+        Directory.remove(dir, function(err){
+          assert(!err)
+          done()
+        })
       })
     })
     describe('Downloading()', function () {

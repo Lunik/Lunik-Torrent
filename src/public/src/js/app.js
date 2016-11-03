@@ -45,74 +45,63 @@ var App
       }
 
       // load secondary modules
+      // load app modules
       requirejs([
         'jquery.ui.touch-punch',
         'notify-me',
-        'popup'
-      ], function (jquit, notif, pop) {
-        // load 1st layer app modules
-        requirejs([
-          'loading',
-          'top-menu',
-          'config',
-          'list',
-          'mediainfo',
-          'searchtorrent'
-        ], function (load, tm, conf, l, mi, st) {
-          // load 2nd layer app modules
-          requirejs([
-            'directory',
-            'torrent'
-          ], function (dir, tor) {
-            // load last layer app modules
-            requirejs([
-              'left-menu'
-            ], function (lm) {
-              // Get hash
-              window.location = '#'
-              self.hash = document.location.hash.substring(1)
-              if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
-                self.hash += '/'
-              }
+        'popup',
+        'loading',
+        'top-menu',
+        'config',
+        'list',
+        'mediainfo',
+        'searchtorrent',
+        'directory',
+        'torrent',
+        'left-menu'
+      ], function (jqui, notif, pop, load, tm, conf, l, mi, st, dir, tor, lm) {
+        // Get hash
+        window.location = '#'
+        self.hash = document.location.hash.substring(1)
+        if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
+          self.hash += '/'
+        }
 
-              // Start with directory
-              self.Directory.getDir(function (dir) {
-                self.Directory.append(dir)
-              })
-              self.Directory.setRefresh(true, 30000)
+        // Start with directory
+        self.Directory.getDir(function (dir) {
+          self.Directory.append(dir)
+        })
+        self.Directory.setRefresh(true, 30000)
 
-              // on hash change set hash and reload directory
-              $(window).bind('hashchange', function () {
-                self.hash = document.location.hash.substring(1)
-                if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
-                  self.hash += '/'
-                }
+        // on hash change set hash and reload directory
+        $(window).bind('hashchange', function () {
+          self.hash = document.location.hash.substring(1)
+          if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
+            self.hash += '/'
+          }
 
-                App.TopMenu.setActions({
-                  download: false,
-                  rename: false,
-                  remove: false,
-                  info: false
-                })
-                self.Directory.getDir(function (dir) {
-                  self.Directory.append(dir)
-                })
-              })
-
-              // Trigger keydown event
-              $(window).keydown(function (event) {
-                switch (event.keyCode) {
-                  case 13:
-                    $(`.left-menu .action .${App.LeftMenu.vue.$data.currentAction}`).trigger('click')
-                    break
-                }
-              })
-
-              // Everithing is loaded
-              self.Loading.hide('app')
-            })
+          App.TopMenu.setActions({
+            download: false,
+            rename: false,
+            remove: false,
+            info: false
+          })
+          self.Directory.getDir(function (dir) {
+            self.Directory.append(dir)
           })
         })
+
+        // Trigger keydown event
+        $(window).keydown(function (event) {
+          switch (event.keyCode) {
+            case 13:
+              $(`.left-menu .action .${App.LeftMenu.vue.$data.currentAction}`).trigger('click')
+              break
+          }
+        })
+
+        // Everithing is loaded
+        self.Loading.hide('app')
       })
     })
   }

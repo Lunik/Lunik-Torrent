@@ -38,32 +38,22 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
         return
       }
       if (stats) {
-        res.setHeader('Content-disposition', `attachment; filename="${req.query.f.split('/').pop()}"`)
-        res.setHeader('Content-Length', stats.size)
-        res.setHeader('Content-type', 'application/octet-stream')
+        res.download(filename, function(err){
+          if(err){
+            LogWorker.error(`${req.cookies.user} error during download file: ${req.query.f}\n ${err}`)
+            callback()
 
-        var fReadStream = fs.createReadStream(filename)
+            res.status(500)
+            res.end()
+          } else {
+            LogWorker.info(`${req.cookies.user} finish download file: ${req.query.f}`)
+            callback()
 
-        fReadStream.pipe(res)
-        fReadStream.on('end', function () {
-          LogWorker.info(`${req.cookies.user} finish download file: ${req.query.f}`)
-          callback()
-
-          res.end()
-        })
-        fReadStream.on('close', function () {
-          LogWorker.info(`${req.cookies.user} stop download file: ${req.query.f}`)
-          callback()
-
-          res.end()
-        })
-        fReadStream.on('error', function (err) {
-          LogWorker.error(`${req.cookies.user} error during download file: ${req.query.f}\n err: ${err}`)
-          callback()
-
-          res.end()
+            res.end()
+          }
         })
       } else {
+        res.status(404)
         res.end("Le fichier n'existe pas.")
       }
     })
