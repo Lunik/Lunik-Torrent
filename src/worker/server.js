@@ -55,9 +55,8 @@ function Server (Worker) {
         Worker.Directory.finishDownloading(req.query.f)
       })
     } else {
-      res.status(404)
       res.end(JSON.stringify({
-        err: 'File doesn\'t exist.'
+        err: "File doesn't exist."
       }))
     }
   })
@@ -70,7 +69,6 @@ function Server (Worker) {
       Worker.Torrent.start(req.body.url)
       res.end(JSON.stringify({}))
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong url.'
       }))
@@ -90,7 +88,6 @@ function Server (Worker) {
         res.end(JSON.stringify(dir))
       })
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Undefined directory.'
       }))
@@ -106,7 +103,6 @@ function Server (Worker) {
         hash: req.body.hash
       }))
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong hash.'
       }))
@@ -117,19 +113,19 @@ function Server (Worker) {
   this.app.post('/remove-d', function (req, res) {
     if (req.body.file) {
       req.body.file = req.body.file.replace(/%20/g, ' ')
-      if (Worker.Directory.remove(req.body.file) !== -1) {
-        LogWorker.info(`${req.cookies.user} remove file: ${req.body.file}`)
-        res.end(JSON.stringify({
-          file: req.body.file.split('/')[req.body.file.split('/').length - 1]
-        }))
-      } else {
-        res.status(423)
-        res.end(JSON.stringify({
-          err: 'Cannot remove, someone is downloading the file.'
-        }))
-      }
+      Worker.Directory.remove(req.body.file, function (error) {
+        if (!error) {
+          LogWorker.info(`${req.cookies.user} remove file: ${req.body.file}`)
+          res.end(JSON.stringify({
+            file: req.body.file.split('/')[req.body.file.split('/').length - 1]
+          }))
+        } else {
+          res.end(JSON.stringify({
+            err: 'Cannot remove, someone is downloading the file.'
+          }))
+        }
+      })
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong file.'
       }))
@@ -142,22 +138,22 @@ function Server (Worker) {
       req.body.path = req.body.path.replace(/%20/g, ' ')
       req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
       req.body.newname = req.body.newname.replace(/%20/g, ' ')
-      if (Worker.Directory.rename(req.body.path, req.body.oldname, req.body.newname) !== -1) {
-        LogWorker.info(`${req.cookies.user} rename file: ${Path.join(req.body.path, req.body.oldname)} in: ${req.body.newname}`)
-        res.end(JSON.stringify({
-          path: req.body.path,
-          oldname: req.body.oldname,
-          newname: req.body.newname
-        }))
-        Worker.Directory.setOwner(Path.join(req.body.path, req.body.newname), req.cookies.user)
-      } else {
-        res.status(423)
-        res.end(JSON.stringify({
-          err: 'Cannot rename, someone is downloading the file.'
-        }))
-      }
+      Worker.Directory.rename(req.body.path, req.body.oldname, req.body.newname, function(error){
+        if (!error) {
+          LogWorker.info(`${req.cookies.user} rename file: ${Path.join(req.body.path, req.body.oldname)} in: ${req.body.newname}`)
+          res.end(JSON.stringify({
+            path: req.body.path,
+            oldname: req.body.oldname,
+            newname: req.body.newname
+          }))
+          Worker.Directory.setOwner(Path.join(req.body.path, req.body.newname), req.cookies.user)
+        } else {
+          res.end(JSON.stringify({
+            err: 'Cannot rename, someone is downloading the file.'
+          }))
+        }
+      })
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong name.'
       }))
@@ -176,7 +172,6 @@ function Server (Worker) {
       }))
       Worker.Directory.setOwner(Path.join(req.body.path, req.body.name), req.cookies.user)
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong name.'
       }))
@@ -189,20 +184,20 @@ function Server (Worker) {
       req.body.path = req.body.path.replace(/%20/g, ' ')
       req.body.file = req.body.file.replace(/%20/g, ' ')
       req.body.folder = req.body.folder.replace(/%20/g, ' ')
-      if (Worker.Directory.mv(req.body.path, req.body.file, req.body.folder) !== -1) {
-        LogWorker.info(`${req.cookies.user} move: ${Path.join(req.body.path, req.body.file)} in: ${Path.join(req.body.path, req.body.folder)}`)
-        res.end(JSON.stringify({
-          file: req.body.file
-        }))
-        Worker.Directory.setOwner(Path.join(req.body.path, req.body.folder, req.body.file), req.cookies.user)
-      } else {
-        res.status(423)
-        res.end(JSON.stringify({
-          err: 'Cannot move, someone is downloading the file.'
-        }))
-      }
+      Worker.Directory.mv(req.body.path, req.body.file, req.body.folder, function(error){
+        if (!error) {
+          LogWorker.info(`${req.cookies.user} move: ${Path.join(req.body.path, req.body.file)} in: ${Path.join(req.body.path, req.body.folder)}`)
+          res.end(JSON.stringify({
+            file: req.body.file
+          }))
+          Worker.Directory.setOwner(Path.join(req.body.path, req.body.folder, req.body.file), req.cookies.user)
+        } else {
+          res.end(JSON.stringify({
+            err: 'Cannot move, someone is downloading the file.'
+          }))
+        }
+      })
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong name.'
       }))
@@ -233,7 +228,6 @@ function Server (Worker) {
         res.end(JSON.stringify(data))
       })
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Type or query not set.'
       }))
@@ -246,7 +240,6 @@ function Server (Worker) {
       req.query.f = req.query.f.replace(/%20/g, ' ')
       res.end(Worker.Directory.isDownloading(req.query.f).toString())
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'File not set.'
       }))
@@ -268,7 +261,7 @@ function Server (Worker) {
       switch (req.query.todo) {
         case 'login':
           if (data.user && data.pass) {
-            Worker.Auth.login(data.user, data.pass, function(token){
+            Worker.Auth.login(data.user, data.pass, function (token) {
               if (token) {
                 res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
                 res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
@@ -277,14 +270,12 @@ function Server (Worker) {
                   token: token
                 }))
               } else {
-                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong User or Pass.'
                 }))
               }
             })
           } else {
-            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing User or Pass.'
             }))
@@ -293,20 +284,18 @@ function Server (Worker) {
 
         case 'logout':
           if (data.user && data.token) {
-            Worker.Auth.logout(data.user, data.token, function(loggedOut){
+            Worker.Auth.logout(data.user, data.token, function (loggedOut) {
               if (loggedOut) {
                 res.end(JSON.stringify({
                   err: false
                 }))
               } else {
-                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong User or Token.'
                 }))
               }
             })
           } else {
-            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing User or Token.'
             }))
@@ -315,7 +304,7 @@ function Server (Worker) {
 
         case 'register':
           if (data.user && data.pass && data.invite) {
-            Worker.Auth.register(data.user, data.pass, data.invite, function(token){
+            Worker.Auth.register(data.user, data.pass, data.invite, function (token) {
               if (token) {
                 res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
                 res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
@@ -324,14 +313,12 @@ function Server (Worker) {
                   token: token
                 }))
               } else {
-                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong User, Pass or Invitation code.'
                 }))
               }
             })
           } else {
-            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing User, Pass or Invitation code.'
             }))
@@ -340,21 +327,19 @@ function Server (Worker) {
 
         case 'invite':
           if (data.invitationKey) {
-            Worker.Auth.createInvite(data.invitationKey, function(invite){
+            Worker.Auth.createInvite(data.invitationKey, function (invite) {
               if (invite) {
                 res.end(JSON.stringify({
                   err: false,
                   invitationCode: invite
                 }))
               } else {
-                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong Invitation Key.'
                 }))
               }
             })
           } else {
-            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing Invitation Key.'
             }))
@@ -363,20 +348,18 @@ function Server (Worker) {
 
         case 'changepass':
           if (data.user && data.oldpass && data.newPass) {
-            Worker.Auth.changePass(data.user, data.oldpass, data.newPass, function(passwordChanged){
+            Worker.Auth.changePass(data.user, data.oldpass, data.newPass, function (passwordChanged) {
               if (passwordChanged) {
                 res.end(JSON.stringify({
                   err: false
                 }))
               } else {
-                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong User or Pass.'
                 }))
               }
             })
           } else {
-            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing User, Pass or new Pass.'
             }))
@@ -384,31 +367,28 @@ function Server (Worker) {
           break
       }
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Missing Todo.'
       }))
     }
   })
 
-  this.app.get('/invitation', function(req, res){
-    if(req.query.invitationkey){
+  this.app.get('/invitation', function (req, res) {
+    if (req.query.invitationkey) {
       var invitationKey = req.query.invitationkey
-      Worker.Auth.createInvite(invitationKey, function(invite){
+      Worker.Auth.createInvite(invitationKey, function (invite) {
         if (invite) {
           res.end(JSON.stringify({
             err: false,
             invitationCode: invite
           }))
         } else {
-          res.status(403)
           res.end(JSON.stringify({
             err: 'Wrong Invitation Key.'
           }))
         }
       })
     } else {
-      res.status(400)
       res.end(JSON.stringify({
         err: 'Missing Invitation Key.'
       }))
