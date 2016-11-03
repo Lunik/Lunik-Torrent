@@ -227,22 +227,32 @@ Directory.prototype.isDownloading = function (file) {
  * Remove a file.
  * @param {string} file - File to remove.
 */
-Directory.prototype.remove = function (file) {
+Directory.prototype.remove = function (file, cb) {
   var self = this
   var remove = function () {
-    if (self.isDownloading(file)) return -1
+    if (self.isDownloading(file)){
+        cb(-1)
+        return
+    }
     fs.stat(Path.join(__base, __config.directory.path, file), function (err, stats) {
       if (err) {
         LogWorker.error(err)
+        cb(-1)
         return
       }
       if (stats) {
         if (stats.isDirectory()) {
           removeRecursif(Path.join(__base, __config.directory.path, file))
+          cb()
+          return
         } else {
           fs.unlink(Path.join(__base, __config.directory.path, file), function (err) {
             if (err) {
               LogWorker.error(err)
+              cb(-1)
+              return
+            } else {
+              cb()
               return
             }
           })
@@ -260,14 +270,18 @@ Directory.prototype.remove = function (file) {
  * @param {string} oldname - File old name.
  * @param {string} newname - File new name.
 */
-Directory.prototype.rename = function (path, oldname, newname) {
+Directory.prototype.rename = function (path, oldname, newname, cb) {
   var self = this
 
   var rename = function () {
-    if (self.isDownloading(Path.join(path, oldname))) return -1
+    if (self.isDownloading(Path.join(path, oldname))){
+      cb(-1)
+      return
+    }
     fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
       if (err) {
         LogWorker.error(err)
+        cb(-1)
         return
       }
       var oldfile = Path.join(path, oldname)
@@ -280,6 +294,9 @@ Directory.prototype.rename = function (path, oldname, newname) {
       delete self.fileInfo[oldfile]
 
       self.saveFileInfo()
+
+      cb()
+      return
     })
   }
 
@@ -309,14 +326,20 @@ Directory.prototype.mkdir = function (path, name) {
  * @param {string} file - File / Directory name.
  * @param {string} folder - Destination directory.
 */
-Directory.prototype.mv = function (path, file, folder) {
+Directory.prototype.mv = function (path, file, folder, cb) {
   var self = this
   var mv = function () {
-    if (self.isDownloading(Path.join(path, file))) return -1
+    if (self.isDownloading(Path.join(path, file))){
+      cb(-1)
+      return
+    }
     fs.rename(Path.join(__base, __config.directory.path, path, file), Path.join(__base, __config.directory.path, path, folder, file), function (err) {
       if (err) {
         LogWorker.error(err)
+        cb(-1)
         return
+      } else {
+        cb()
       }
     })
   }
