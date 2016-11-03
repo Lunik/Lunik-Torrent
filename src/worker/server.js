@@ -55,6 +55,7 @@ function Server (Worker) {
         Worker.Directory.finishDownloading(req.query.f)
       })
     } else {
+      res.status(404)
       res.end(JSON.stringify({
         err: 'File doesn\'t exist.'
       }))
@@ -69,6 +70,7 @@ function Server (Worker) {
       Worker.Torrent.start(req.body.url)
       res.end(JSON.stringify({}))
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong url.'
       }))
@@ -88,6 +90,7 @@ function Server (Worker) {
         res.end(JSON.stringify(dir))
       })
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Undefined directory.'
       }))
@@ -103,6 +106,7 @@ function Server (Worker) {
         hash: req.body.hash
       }))
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong hash.'
       }))
@@ -119,11 +123,13 @@ function Server (Worker) {
           file: req.body.file.split('/')[req.body.file.split('/').length - 1]
         }))
       } else {
+        res.status(423)
         res.end(JSON.stringify({
           err: 'Cannot remove, someone is downloading the file.'
         }))
       }
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong file.'
       }))
@@ -145,11 +151,13 @@ function Server (Worker) {
         }))
         Worker.Directory.setOwner(Path.join(req.body.path, req.body.newname), req.cookies.user)
       } else {
+        res.status(423)
         res.end(JSON.stringify({
           err: 'Cannot rename, someone is downloading the file.'
         }))
       }
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong name.'
       }))
@@ -168,6 +176,7 @@ function Server (Worker) {
       }))
       Worker.Directory.setOwner(Path.join(req.body.path, req.body.name), req.cookies.user)
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong name.'
       }))
@@ -187,11 +196,13 @@ function Server (Worker) {
         }))
         Worker.Directory.setOwner(Path.join(req.body.path, req.body.folder, req.body.file), req.cookies.user)
       } else {
+        res.status(423)
         res.end(JSON.stringify({
           err: 'Cannot move, someone is downloading the file.'
         }))
       }
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Wrong name.'
       }))
@@ -222,6 +233,7 @@ function Server (Worker) {
         res.end(JSON.stringify(data))
       })
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Type or query not set.'
       }))
@@ -234,6 +246,7 @@ function Server (Worker) {
       req.query.f = req.query.f.replace(/%20/g, ' ')
       res.end(Worker.Directory.isDownloading(req.query.f).toString())
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'File not set.'
       }))
@@ -264,12 +277,14 @@ function Server (Worker) {
                   token: token
                 }))
               } else {
+                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong User or Pass.'
                 }))
               }
             })
           } else {
+            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing User or Pass.'
             }))
@@ -284,12 +299,14 @@ function Server (Worker) {
                   err: false
                 }))
               } else {
+                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong User or Token.'
                 }))
               }
             })
           } else {
+            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing User or Token.'
             }))
@@ -307,12 +324,14 @@ function Server (Worker) {
                   token: token
                 }))
               } else {
+                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong User, Pass or Invitation code.'
                 }))
               }
             })
           } else {
+            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing User, Pass or Invitation code.'
             }))
@@ -328,12 +347,14 @@ function Server (Worker) {
                   invitationCode: invite
                 }))
               } else {
+                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong Invitation Key.'
                 }))
               }
             })
           } else {
+            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing Invitation Key.'
             }))
@@ -348,12 +369,14 @@ function Server (Worker) {
                   err: false
                 }))
               } else {
+                res.status(403)
                 res.end(JSON.stringify({
                   err: 'Wrong User or Pass.'
                 }))
               }
             })
           } else {
+            res.status(400)
             res.end(JSON.stringify({
               err: 'Missing User, Pass or new Pass.'
             }))
@@ -361,6 +384,7 @@ function Server (Worker) {
           break
       }
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Missing Todo.'
       }))
@@ -377,12 +401,14 @@ function Server (Worker) {
             invitationCode: invite
           }))
         } else {
+          res.status(403)
           res.end(JSON.stringify({
             err: 'Wrong Invitation Key.'
           }))
         }
       })
     } else {
+      res.status(400)
       res.end(JSON.stringify({
         err: 'Missing Invitation Key.'
       }))
