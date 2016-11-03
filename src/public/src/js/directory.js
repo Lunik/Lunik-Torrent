@@ -20,7 +20,7 @@
       $(this).children('#name').draggable('enable')
     })
 
-    $('.left-menu').on('click', '.new', function () {
+    $('body').on('click', '.left-menu .new', function () {
       self.newFolder()
     })
   }
@@ -96,7 +96,8 @@
       size: App.Format.size(0),
       date: App.Format.date(new Date()),
       owner: '-',
-      extension: 'dir'
+      extension: 'dir',
+      progress: 0
     }]
     var i = 0
     if (Object.keys(dir.files).length > 0) {
@@ -112,7 +113,8 @@
           date: App.Format.date(value.ctime),
           owner: value.owner || '-',
           lock: typeof value.downloading !== 'undefined',
-          download: value.download
+          download: value.download,
+          progress: 0
         })
 
         i++
@@ -297,7 +299,8 @@
               date: App.Format.date(new Date()),
               owner: '-',
               lock: false,
-              download: ''
+              download: '',
+              progress: 0
             })
 
             App.List.sortLines('name', 'asc')

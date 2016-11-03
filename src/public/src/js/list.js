@@ -67,14 +67,14 @@
             sort: 'asc'
           },
           {
-            name: 'Up',
-            id: 'up',
+            name: 'Down',
+            id: 'down',
             state: false,
             sort: 'asc'
           },
           {
-            name: 'Down',
-            id: 'down',
+            name: 'Up',
+            id: 'up',
             state: false,
             sort: 'asc'
           }
