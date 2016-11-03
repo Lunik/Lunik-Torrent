@@ -73,6 +73,11 @@
       }
     })
 
+    $('.top-menu').on('click', '.logo', function(){
+      self.switchTab('directories')
+      App.List.switchTab('directories')
+    })
+
     $('.left-menu').on('click', '.nav-bar li', function () {
       self.switchTab($(this).attr('id'))
       App.List.switchTab($(this).attr('id'))

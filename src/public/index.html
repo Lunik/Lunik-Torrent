@@ -32,28 +32,28 @@
         <i class="fa fa-gear button" id="parameter"></i>
       </div>
       <div class="action">
-        <i class="fa {{ a.icon }} {{ a.state }} button" id="{{ a.id }}" v-show="a.state" v-for="a in actions"></i>
+        <i class="fa button" :class="a.icon" :class="a.state" :id="a.id" v-show="a.state" v-for="a in actions"></i>
       </div>
     </div>
     <!-- Left Menu -->
-    <div class="left-menu" id="{{ state }}">
+    <div class="left-menu" :id="state">
       <div class="menu">
-        <i class="fa fa-arrow-left close button" id="{{ state }}"></i>
-        <i class="fa fa-bars open button" id="{{ reverseState }}"></i>
+        <i class="fa fa-arrow-left close button" :id="state"></i>
+        <i class="fa fa-bars open button" :id="reverseState"></i>
       </div>
       <div class="nav-bar">
         <ul>
-          <li class="button" v-bind:class="{'active': t.state}" id="{{ t.id }}" v-for="t in tabs">{{ t.name }}</li>
+          <li class="button" :class="{'active': t.state}" :id="t.id" v-for="t in tabs">{{ t.name }}</li>
         </ul>
       </div>
       <div class="action">
-        <div class="{{ i.class }}" v-for="i in inputs" v-show="i.state">
-          <input type="{{ i.type }}" placeholder="{{ i.placeholder }}" list="{{ i.class }}">
-          <datalist id="{{ i.class }}">
-            <option value="{{ option }}" v-for="option in i.dataList">
+        <div :class="i.class" v-for="i in inputs" v-show="i.state">
+          <input :type="i.type" :placeholder="i.placeholder" :list="i.class">
+          <datalist :id="i.class">
+            <option :value="option" v-for="option in i.dataList">
           </datalist>
         </div>
-        <div class="button {{ a.class }}" v-for="a in actions" v-show="a.state">{{ a.name }}</div>
+        <div class="button" :class="a.class" v-for="a in actions" v-show="a.state">{{ a.name }}</div>
       </div>
       <div class="footer">
         <p><a target="_blank" href="https://github.com/Lunik/Lunik-Torrent/issues">FeedBack</a></p>
@@ -65,22 +65,22 @@
       <table>
         <thead>
           <tr>
-            <th class="button" id="{{ c.id }}" v-for="c in columns" v-show="c.state">{{ c.name }}</th>
+            <th class="button" :id="c.id" v-for="c in columns" v-show="c.state">{{ c.name }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="button {{ l.type }}" v-for="l in lines">
-            <td id="name" extension="{{ l.extension }}" data-file="{{ l.name }}" hash="{{ l.hash }}" lock="{{ l.lock }}">
-              <a class="button" href="{{ l.href }}">{{ l.name }}</a>
-              <i class="fa fa-clipboard clip-but button" data-clipboard-text="{{ l.url }}"></i>
-              <i class="fa" v-bind:class="{'fa-lock locked': l.lock}"></i>
-              <i class="fa" v-bind:class="{'fa-download download': l.download}">{{ l.download }}</i>
+          <tr class="button" :class="l.type" v-for="l in lines">
+            <td id="name" :extension="l.extension" :data-file="l.name" :hash="l.hash" :lock="l.lock">
+              <a class="button" :href="l.href">{{ l.name }}</a>
+              <i class="fa fa-clipboard clip-but button" :data-clipboard-text="l.url"></i>
+              <i class="fa" :class="{'fa-lock locked': l.lock}"></i>
+              <i class="fa" :class="{'fa-download download': l.download}">{{ l.download }}</i>
             </td>
             <td id="size">{{ l.size }}</td>
             <td id="date" v-show="tabs[1].state">{{ l.date }}</td>
             <td id="owner" v-show="tabs[1].state">{{ l.owner }}</td>
             <td id="progress" v-show="tabs[0].state">
-              <progress max="1" value="{{ l.progress }}"></progress>
+              <progress max="1" :value="l.progress"></progress>
               <p class="percent">{{ l.percent }}</p>
               <p class="remaining-time">{{ l.timeRemaining }}</p>
             </td>
@@ -100,13 +100,13 @@
         <input class="submit button" type="submit" value="Save"></input>
       </div>
       <div class="mediainfo-pop">
-        <img src="{{ info.poster }}" alt="{{ info.title }} poster">
+        <img :src="info.poster" :alt="info.title" alt="poster">
         <div class="infos">
           <div class="rating">{{ info.rating }}</div>
           <div class="synopsis">
             {{ info.description }}
             <br>
-            <a class="button" target="_blank" href="{{ info.link }}">Fiche Allocine...</a>
+            <a class="button" target="_blank" :href="info.link">Fiche Allocine...</a>
           </div>
         </div>
       </div>
@@ -116,9 +116,9 @@
             <th class="search-header">Films</th>
           </thead>
           <tbody>
-            <tr class="search-item button" data-torrent="{{ e.torrent }}" v-for="e in results.films">
+            <tr class="search-item button" :data-torrent="e.torrent" v-for="e in results.films">
               <td class="img">
-                <img src="{{ e.cover }}">
+                <img :src="e.cover">
               </td>
               <td>{{ e.title }}</td>
               <td>{{ e.size }}</td>
@@ -136,9 +136,9 @@
             <th class="search-header">Series</th>
           </thead>
           <tbody>
-            <tr class="search-item button" data-torrent="{{ e.torrent }}" v-for="e in results.series">
+            <tr class="search-item button" :data-torrent="e.torrent" v-for="e in results.series">
               <td class="img">
-                <img src="{{ e.cover }}">
+                <img :src="e.cover">
               </td>
               <td>{{ e.title }}</td>
               <td>{{ e.size }}</td>
