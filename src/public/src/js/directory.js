@@ -5,7 +5,7 @@
   */
   function _Directory () {
     var self = this
-    $('.list').on('click', '.file', function () {
+    $('body').on('click', '.list .file', function () {
       $('.list .file').removeClass('selected')
       $(this).addClass('selected')
       self.setActions({

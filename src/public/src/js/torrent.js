@@ -5,7 +5,7 @@
   */
   function _Torrent () {
     var self = this
-    $('.list').on('click', '.torrent', function () {
+    $('body').on('click', '.list .torrent', function () {
       $('.list .torrent').removeClass('selected')
       $(this).addClass('selected')
       self.setActions({
