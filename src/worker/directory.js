@@ -340,6 +340,8 @@ Directory.prototype.mv = function (path, file, folder, cb) {
         LogWorker.error(err)
         cb(-1)
         return
+      } else {
+        cb()
       }
       // If dir modify also all file in this dir
 

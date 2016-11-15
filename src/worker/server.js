@@ -24,7 +24,7 @@ function Server (Worker) {
     extended: true
   }))
   this.app.use(function (req, res, next) {
-    if (req.url === '/login.html' || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)) {
+    if (req.url === '/login.html' || req.url.match(/\/invitation\?invitationkey=.*/g) || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)) {
       if (req.url === '/login.html' && req.cookies && Worker.Auth.checkLogged(req.cookies.user, req.cookies.token)) {
         res.redirect('/')
       } else {
