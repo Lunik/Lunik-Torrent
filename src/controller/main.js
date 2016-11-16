@@ -15,7 +15,7 @@ var LogWorker = new Log({
  * Deserve http requests.
  * @constructor
 */
-function Server (Worker) {
+function Server () {
   this.app = express()
   this.app.use(compression())
   this.app.use(cookieParser())
