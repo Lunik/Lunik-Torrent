@@ -27,7 +27,7 @@
     "crypto-rand": "0.0.2",
     "express": "^4.14.0",
     "forever": "^0.15.2",
-    "nosql": "^4.1.0",
+    "nosql": "^4.2.0",
     "webtorrent": "^0.97.1"
   },
   "devDependencies": {
