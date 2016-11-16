@@ -11,11 +11,4 @@ global.__config = ConfigWorker.load(Path.join(__base, 'configs/config.json'))
 
 var Server = require(Path.join(__base, 'src/controller/main.js'))
 
-var ServerWorker = new Server({
-  Torrent: Torrent,
-  Directory: Directory,
-  FileTransfert: FileTransfert,
-  Auth: Auth,
-  SearchEngine: SearchEngine,
-  InfoEngine: InfoEngine
-})
+var ServerWorker = new Server()
