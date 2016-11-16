@@ -185,8 +185,8 @@ describe('Backend', function () {
       })
     })
   })
-  describe('SearchT', function () {
-    var SearchT = require(path.join(__base, 'src/worker/searchT.js'))
+  describe('SearchTorrent', function () {
+    var SearchT = require(path.join(__base, 'src/worker/searchtorrent.js'))
     describe('Search()', function () {
       this.timeout(30000)
       it('Search: Game of thrones', function (done) {
