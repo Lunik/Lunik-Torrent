@@ -51,8 +51,8 @@
   _Directory.prototype.getDir = function (cb) {
     App.Loading.show('action')
     $.ajax({
-      type: 'post',
-      url: '/list-d',
+      type: 'get',
+      url: '/directory/list',
       data: {
         dir: App.hash || '/'
       },
@@ -185,7 +185,7 @@
       name = `${name.split('/').pop()}${extension}`
       $.ajax({
         type: 'post',
-        url: '/rename-d',
+        url: '/directory/rename',
         data: {
           'path': App.hash || '/',
           'oldname': fileName,
@@ -230,7 +230,7 @@
     if (confirm(`Confirmer la suppression de ${fileName} ?`)) {
       $.ajax({
         type: 'post',
-        url: '/remove-d',
+        url: '/directory/remove',
         data: {
           file: `${App.hash}${fileName}`
         },
@@ -275,7 +275,7 @@
     if (name) {
       $.ajax({
         type: 'post',
-        url: '/mkdir-d',
+        url: '/directory/mkdir',
         data: {
           'path': App.hash || '/',
           'name': name

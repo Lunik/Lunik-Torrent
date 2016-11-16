@@ -266,7 +266,7 @@
 
         $.ajax({
           type: 'post',
-          url: '/mv-d',
+          url: '/directory/mv',
           data: {
             'file': file,
             'path': path,

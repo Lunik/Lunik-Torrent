@@ -28,7 +28,7 @@
     $('body .top-menu .logout').click(function () {
       $.ajax({
         type: 'post',
-        url: '/auth?todo=logout',
+        url: '/auth/logout',
         data: {},
         dataType: 'json',
         success: function (data) {

@@ -7,14 +7,14 @@ var CpasbienApi = new CPBAPI()
  * Search torrent.
  * @constructor
 */
-function SearchT () {}
+function SearchTorrent () {}
 
 /**
  * Search a torrent.
  * @param {string} query - Torrent name to search.
  * @param {function} callback - Return function with informations.
 */
-SearchT.prototype.search = function (query, callback) {
+SearchTorrent.prototype.search = function (query, callback) {
 
   var search = function(){
     CpasbienApi.Search(query, {
@@ -46,7 +46,7 @@ SearchT.prototype.search = function (query, callback) {
  * Search the latest torrents.
  * @param {function} callback - Return function with informations.
 */
-SearchT.prototype.latest = function (callback) {
+SearchTorrent.prototype.latest = function (callback) {
 
   var latest = function(){
     CpasbienApi.Latest({
@@ -68,4 +68,4 @@ SearchT.prototype.latest = function (callback) {
   setTimeout(latest)
 }
 
-module.exports = new SearchT()
+module.exports = new SearchTorrent()

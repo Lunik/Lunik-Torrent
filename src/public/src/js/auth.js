@@ -196,7 +196,7 @@ var App = {}
     App.Loading.show('action')
     $.ajax({
       type: 'post',
-      url: '/auth?todo=login',
+      url: '/auth/login',
       data: {
         user: user,
         pass: pass
@@ -230,7 +230,7 @@ var App = {}
     App.Loading.show('action')
     $.ajax({
       type: 'post',
-      url: '/auth?todo=register',
+      url: '/auth/register',
       data: {
         user: user,
         pass: pass,
@@ -266,7 +266,7 @@ var App = {}
     App.Loading.show('action')
     $.ajax({
       type: 'post',
-      url: '/auth?todo=changepass',
+      url: '/auth/changepass',
       data: {
         user: user,
         oldpass: oldpass,
