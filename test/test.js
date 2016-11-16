@@ -266,7 +266,7 @@ describe('Backend', function () {
       it('genInvite + register + login + changePass + logout', function (done) {
         // gentoken
         request.post({
-          url: url + '/auth?todo=invite',
+          url: url + '/auth/invite',
           form: {
             invitationkey: __config.server.invitationKey
           }
@@ -277,7 +277,7 @@ describe('Backend', function () {
             assert(invite)
             // register
             request.post({
-              url: url + '/auth?todo=register',
+              url: url + '/auth/register',
               form: {
                 user: user,
                 pass: pass,
@@ -290,7 +290,7 @@ describe('Backend', function () {
                 assert(token)
                 // login
                 request.post({
-                  url: url + '/auth?todo=login',
+                  url: url + '/auth/login',
                   form: {
                     user: user,
                     pass: pass
@@ -302,7 +302,7 @@ describe('Backend', function () {
                     assert(token)
                     // logout
                     request.post({
-                      url: url + '/auth?todo=logout',
+                      url: url + '/auth/logout',
                       form: {
                         user: user,
                         token: token
@@ -313,7 +313,7 @@ describe('Backend', function () {
                         var err = JSON.parse(body).err
                         assert(!err)
                         request.post({
-                          url: url + '/auth?todo=changepass',
+                          url: url + '/auth/changepass',
                           form: {
                             user: user,
                             oldpass: pass,
@@ -325,7 +325,7 @@ describe('Backend', function () {
                             var err = JSON.parse(body).err
                             assert(!err)
                             request.post({
-                              url: url + '/auth?todo=changepass',
+                              url: url + '/auth/changepass',
                               form: {
                                 user: user,
                                 oldpass: pass+1,
@@ -374,8 +374,8 @@ describe('Backend', function () {
       })
       it('POST List-t', function (done) {
         Auth(url, user, pass, function (token) {
-          request.post({
-            url: url + '/list-t',
+          request.get({
+            url: url + '/torrent/list',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             }
@@ -394,8 +394,8 @@ describe('Backend', function () {
           var dir = 'ok' + rand.rand()
           fs.mkdir(path.join(__base, __config.directory.path, dir), function (err) {
             assert(!err)
-            request.post({
-              url: url + '/list-d',
+            request.get({
+              url: url + '/directory/list',
               headers: {
                 Cookie: 'user=' + user + ';token=' + token
               },
@@ -419,7 +419,7 @@ describe('Backend', function () {
           fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
             assert(!err)
             request.post({
-              url: url + '/remove-d',
+              url: url + '/directory/remove',
               headers: {
                 Cookie: 'user=' + user + ';token=' + token
               },
@@ -444,7 +444,7 @@ describe('Backend', function () {
           fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
             assert(!err)
             request.post({
-              url: url + '/rename-d',
+              url: url + '/directory/rename',
               headers: {
                 Cookie: 'user=' + user + ';token=' + token
               },
@@ -469,7 +469,7 @@ describe('Backend', function () {
         Auth(url, user, pass, function (token) {
           var dir = 'ok' + rand.rand()
           request.post({
-            url: url + '/mkdir-d',
+            url: url + '/directory/mkdir',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             },
@@ -496,7 +496,7 @@ describe('Backend', function () {
             fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
               assert(!err)
               request.post({
-                url: url + '/mv-d',
+                url: url + '/directory/mv',
                 headers: {
                   Cookie: 'user=' + user + ';token=' + token
                 },
@@ -521,7 +521,7 @@ describe('Backend', function () {
         this.timeout(30000)
         Auth(url, user, pass, function (token) {
           request.post({
-            url: url + '/search-t',
+            url: url + '/torrent/search',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             },
@@ -541,8 +541,8 @@ describe('Backend', function () {
       it('POST info-d', function (done) {
         this.timeout(30000)
         Auth(url, user, pass, function (token) {
-          request.post({
-            url: url + '/info-d',
+          request.get({
+            url: url + '/directory/info',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             },
@@ -566,7 +566,7 @@ describe('Backend', function () {
           fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
             assert(!err)
             request.get({
-              url: url + '/lock-d?f='+file,
+              url: url + '/directory/lock?f='+file,
               headers: {
                 Cookie: 'user=' + user + ';token=' + token
               }
@@ -584,7 +584,7 @@ describe('Backend', function () {
         this.timeout(30000)
         Auth(url, user, pass, function (token) {
           request.post({
-            url: url + '/download-t',
+            url: url + '/torrent/download',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             },
@@ -596,7 +596,7 @@ describe('Backend', function () {
               body = JSON.parse(body)
               assert(!body.err)
               request.post({
-                url: url + '/remove-t',
+                url: url + '/torrent/remove',
                 headers: {
                   Cookie: 'user=' + user + ';token=' + token
                 },
@@ -733,7 +733,7 @@ describe('Backend', function () {
 
 function Auth (url, user, pass, cb) {
   request.post({
-    url: url + '/auth?todo=login',
+    url: url + '/auth/login',
     form: {
       user: user,
       pass: pass

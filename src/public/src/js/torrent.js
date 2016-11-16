@@ -58,8 +58,8 @@
     App.Loading.show('action')
     var self = this
     $.ajax({
-      type: 'post',
-      url: '/list-t',
+      type: 'get',
+      url: '/torrent/list',
       data: {},
       dataType: 'json',
       success: function (torrents) {
@@ -147,7 +147,7 @@
     if (confirm(`Confirmer la suppression de ${torrent.name} ?`)) {
       $.ajax({
         type: 'post',
-        url: '/remove-t',
+        url: '/torrent/remove',
         data: {
           hash: torrent.hash
         },
@@ -185,7 +185,7 @@
     App.Loading.show('action')
     $.ajax({
       type: 'post',
-      url: '/download-t',
+      url: '/torrent/download',
       data: {
         url: url
       },

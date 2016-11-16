@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "scripts/init.sh && bower install --allow-root",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js -w src/worker/ --ignore src/public",
+    "dev": "nodemon src/index.js -w src/worker/ -w src/controller --ignore src/public",
     "deamon": "forever -a start src/index.js",
     "test": "istanbul cover _mocha -- -R spec test/*"
   },

@@ -30,8 +30,8 @@
       }, 1000)
     } else {
       $.ajax({
-        type: 'post',
-        url: '/info-d',
+        type: 'get',
+        url: '/directory/info',
         data: {
           type: type,
           query: title.toLowerCase()
