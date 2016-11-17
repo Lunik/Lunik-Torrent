@@ -151,13 +151,17 @@ describe('Backend', function () {
     describe('CheckLogged()', function () {
       it('User: foo', function (done) {
         Auth.login(username, 'bar', function(token){
-          assert(Auth.checkLogged(username, token))
-          done()
+          Auth.checkLogged(username, token, function(isLogged){
+            assert(isLogged)
+            done()
+          })
         })
       })
       it('User: Unknown', function (done) {
-        assert(!Auth.checkLogged(username2, ''))
-        done()
+        Auth.checkLogged(username2, '', function(isLogged){
+          assert(!isLogged)
+          done()
+        })
       })
     })
   })
