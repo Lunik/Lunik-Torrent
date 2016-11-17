@@ -69,22 +69,31 @@ Auth.prototype.logout = function (user, token, cb) {
       user: user,
       token: Crypto.SHA256(token).toString()
     }, function(err, res){
-      DB.user.update({
-        user: user,
-        token: Crypto.SHA256(token).toString()
-      }, {
-        $unset: {
-          token: Crypto.SHA256(token).toString()
-        }
-      }, {}, function(err){
-        if(err){
-          LogWorker.error(err)
+      if(err){
+        LogWorker.error(err)
+        cb(false)
+      } else {
+        if(res <= 0){
           cb(false)
         } else {
-          LogWorker.info(`${user} logout.`)
-          cb(true)
+          DB.user.update({
+            user: user,
+            token: Crypto.SHA256(token).toString()
+          }, {
+            $unset: {
+              token: Crypto.SHA256(token).toString()
+            }
+          }, {}, function(err){
+            if(err){
+              LogWorker.error(err)
+              cb(false)
+            } else {
+              LogWorker.info(`${user} logout.`)
+              cb(true)
+            }
+          })
         }
-      })
+      }
     })
   }
 
