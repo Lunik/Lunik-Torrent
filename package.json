@@ -34,7 +34,7 @@
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
     "nodemon": "^1.10.0",
-    "request": "^2.74.0"
+    "request": "^2.79.0"
   },
   "standard": {
     "ignore": [
