@@ -218,37 +218,16 @@ describe('Backend', function () {
   describe('Client', function () {
     var Client = require(path.join(__base, 'src/worker/client.js'))
     var ClientWorker = new Client()
-    describe('On()', function () {
-      it('Add startFunction', function (done) {
-        ClientWorker.on('start', function (hash) {
-          assert.typeOf(hash, 'string')
-        })
-        done()
-      })
-      it('Add updateFunction', function (done) {
-        ClientWorker.on('download', function (torrent) {
-          assert.typeOf(torrent, 'object')
-          assert.typeOf(torrent.name, 'string')
-        })
-        done()
-      })
-      it('Add doneFunction', function (done) {
-        ClientWorker.on('done', function (err, hash, name) {
-          assert(!err)
-          assert.typeOf(hash, 'string')
-          assert.typeOf(name, 'string')
-        })
-        done()
-      })
-    })
     describe('Dowload()', function () {
       this.timeout(305000)
       it('Dowload ubuntu', function (done) {
-        ClientWorker.on('done', function (err, hash, name) {
+        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511',
+        function(hash){
+          assert.equal(hash, '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
+        }, function(){
           ClientWorker.stop()
           done()
         })
-        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511', function(){})
       })
     })
   })
@@ -387,6 +366,7 @@ describe('Backend', function () {
             if (!err && res.statusCode == 200) {
               body = JSON.parse(body)
               assert(!body.err)
+              console.log("coucou", typeof body)
               assert.typeOf(body, 'object')
             }
             done()
@@ -725,10 +705,12 @@ describe('Backend', function () {
         this.timeout(300000)
         Torrent.start('magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso')
         setTimeout(function () {
-          assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('288f8018277b8c474f304a059b064e017bd55e9f')
-          Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
-          done()
+          Torrent.getInfo(function(data){
+            assert.typeOf(data, 'object')
+            Torrent.getUrlFromHash('288f8018277b8c474f304a059b064e017bd55e9f')
+            Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
+            done()
+          })
         }, 10000)
       })
     })
