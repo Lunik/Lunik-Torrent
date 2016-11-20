@@ -169,7 +169,7 @@ Directory.prototype.finishDownloading = function (file) {
 Directory.prototype.isDownloading = function (file, cb) {
   var isDownloading = function(){
     file = file.split('/')
-    if(file[file.length-1] === '' && parent.length > 2) file.pop()
+    if(file[file.length-1] === '' && file.length > 2) file.pop()
     var name = file[file.length - 1]
     var parent = file[file.length - 2]
     DB.directory.find({
@@ -219,7 +219,7 @@ Directory.prototype.remove = function (file, cb) {
             cb(true)
           } else {
             file = file.split('/')
-            if(file[file.length-1] === '' && parent.length > 2) file.pop()
+            if(file[file.length-1] === '' && file.length > 2) file.pop()
             var name = file[file.length - 1]
             var parent = file[file.length - 2]
 

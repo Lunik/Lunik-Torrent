@@ -623,12 +623,6 @@ describe('Backend', function () {
   })
   describe('Directory', function () {
     var Directory = require(path.join(__base, 'src/worker/directory.js'))
-    describe('saveFileInfo()', function () {
-      it('Save', function (done) {
-        Directory.saveFileInfo()
-        done()
-      })
-    })
     describe('Mkdir()', function () {
       it('Create dir', function (done) {
         Directory.mkdir('/', 'ok' + rand.rand())
@@ -691,15 +685,11 @@ describe('Backend', function () {
         Directory.setDownloading(dir)
         Directory.setDownloading(dir)
         Directory.isDownloading(dir, function(isdl){
-          assert(isql)
+          assert(isdl)
           Directory.finishDownloading(dir)
           Directory.finishDownloading(dir)
           done()
         })
-      })
-      it('updateDownloads', function (done) {
-        Directory.updateDownloads()
-        done()
       })
     })
   })
