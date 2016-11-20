@@ -94,13 +94,13 @@ Directory.prototype.list = function (dir, cb) {
  * Lock a file.
  * @param {string} file - File to lock.
 */
-Directory.prototype.setDownloading = function (file) {
+Directory.prototype.setDownloading = function (file, cb) {
   var self = this
   var setDownloading = function () {
     file = file.split('/')
     if(file[file.length-1] === '' && parent.length > 2) file.pop()
     var name = file[file.length - 1]
-    var parent = file[file.length - 2]
+    var parent = file[file.length - 2] || ""
     DB.directory.update({
       name: name,
       parent: parent
@@ -112,6 +112,8 @@ Directory.prototype.setDownloading = function (file) {
     }, {}, function(err){
       if(err){
         LogWorker.error(err)
+        cb(true)
+      } else {
         cb(false)
       }
     })
@@ -123,7 +125,7 @@ Directory.prototype.setDownloading = function (file) {
  * Unlock a file.
  * @param {string} file - File to unlock.
 */
-Directory.prototype.finishDownloading = function (file) {
+Directory.prototype.finishDownloading = function (file, cb) {
   var self = this
   var finishDownloading = function () {
     file = file.split('/')
@@ -140,6 +142,8 @@ Directory.prototype.finishDownloading = function (file) {
     }, {}, function(err){
       if(err){
         LogWorker.error(err)
+        cb(true)
+      } else {
         cb(false)
       }
     })
@@ -171,7 +175,7 @@ Directory.prototype.isDownloading = function (file, cb) {
     file = file.split('/')
     if(file[file.length-1] === '' && file.length > 2) file.pop()
     var name = file[file.length - 1]
-    var parent = file[file.length - 2]
+    var parent = file[file.length - 2] || ""
     DB.directory.find({
       $or: [{
           name: name,
@@ -343,7 +347,6 @@ Directory.prototype.mkdir = function (path, name, user) {
  * @param {string} folder - Destination directory.
 */
 Directory.prototype.mv = function (path, file, folder, cb) {
-  console.log(path, file, folder)
   var self = this
   var mv = function () {
     self.isDownloading(Path.join(path, file), function(isDownloading){

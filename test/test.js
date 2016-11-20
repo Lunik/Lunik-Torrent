@@ -432,6 +432,8 @@ describe('Backend', function () {
               }
             }, function (err, res, body) {
               if (!err && res.statusCode == 200) {
+                console.log("\n\n\nBODY\n\n\n")
+                console.log(body)
                 body = JSON.parse(body)
                 assert(!body.err)
                 assert.equal(body.file, file)
@@ -682,13 +684,22 @@ describe('Backend', function () {
       it('setDownloading', function (done) {
         var dir = 'ok' + rand.rand()
         Directory.mkdir('/', dir)
-        Directory.setDownloading(dir)
-        Directory.setDownloading(dir)
-        Directory.isDownloading(dir, function(isdl){
-          assert(isdl)
-          Directory.finishDownloading(dir)
-          Directory.finishDownloading(dir)
-          done()
+        Directory.setDownloading(dir, function(err){
+          assert(!err)
+          Directory.setDownloading(dir, function(err){
+            assert(!err)
+            Directory.isDownloading(dir, function(isdl){
+              console.log('\n\n\n\nRES\n\n\n\n', isdl)
+              assert(isdl)
+              Directory.finishDownloading(dir, function(err){
+                assert(!err)
+                Directory.finishDownloading(dir, function(err){
+                  assert(!err)
+                  done()
+                })
+              })
+            })
+          })
         })
       })
     })

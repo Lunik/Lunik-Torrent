@@ -44,11 +44,12 @@ router.get('/directory/list', function (req, res) {
 router.post('/directory/remove', function (req, res) {
   if (req.body.file) {
     req.body.file = req.body.file.replace(/%20/g, ' ')
+
     Directory.remove(req.body.file, function (err) {
       if (!err) {
         LogWorker.info(`${req.cookies.user} remove file: ${req.body.file}`)
         res.end(JSON.stringify({
-          file: req.body.file.split('/')[req.body.file.split('/').length - 2]
+          file: req.body.file.split('/')[req.body.file.split('/').length - 1]
         }))
       } else {
         res.end(JSON.stringify({
@@ -139,7 +140,9 @@ router.post('/directory/mv', function (req, res) {
 router.get('/directory/lock', function (req, res) {
   if (req.query.f) {
     req.query.f = req.query.f.replace(/%20/g, ' ')
-    res.end(Directory.isDownloading(req.query.f).toString())
+    Directory.isDownloading(req.query.f, function(isdl){
+      res.end(isdl.toString())
+    })
   } else {
     res.end(JSON.stringify({
       err: 'File not set.'
