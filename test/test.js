@@ -620,7 +620,7 @@ describe('Backend', function () {
         })
       })
     })
-  })/*
+  })
   describe('Directory', function () {
     var Directory = require(path.join(__base, 'src/worker/directory.js'))
     describe('saveFileInfo()', function () {
@@ -690,10 +690,12 @@ describe('Backend', function () {
         Directory.mkdir('/', dir)
         Directory.setDownloading(dir)
         Directory.setDownloading(dir)
-        Directory.isDownloading(dir)
-        Directory.finishDownloading(dir)
-        Directory.finishDownloading(dir)
-        done()
+        Directory.isDownloading(dir, function(isdl){
+          assert(isql)
+          Directory.finishDownloading(dir)
+          Directory.finishDownloading(dir)
+          done()
+        })
       })
       it('updateDownloads', function (done) {
         Directory.updateDownloads()
@@ -732,7 +734,7 @@ describe('Backend', function () {
         }, 10000)
       })
     })
-  })*/
+  })
 })
 
 function Auth (url, user, pass, cb) {
