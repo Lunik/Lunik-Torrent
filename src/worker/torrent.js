@@ -21,6 +21,13 @@ var Client = require(Path.join(__base, 'src/worker/client.js'))
 function Torrent () {
   var self = this
 
+  DB.torrent.loadDatabase()
+  DB.torrent.remove({}, { multi: true }, function(err){
+    if(err){
+      LogWorker.error(err)
+    }
+  })
+
   this.client = {}
   this.waitList = []
 
