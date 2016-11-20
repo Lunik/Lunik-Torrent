@@ -8,8 +8,6 @@ var DB = {
   directory: new Datastore({ filename: Path.join(__base, 'data/directory.db') }),
 }
 
-DB.directory.loadDatabase()
-
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
   module: 'Directory'
@@ -20,6 +18,8 @@ var LogWorker = new Log({
  */
 function Directory () {
   var self = this
+
+  DB.directory.loadDatabase()
   DB.directory.update({}, {
     $set: {
       downloading: 0
@@ -63,6 +63,8 @@ Directory.prototype.list = function (dir, cb) {
         var parent = dir.split('/')
         if(parent[parent.length-1] === '' && parent.length > 2) parent.pop()
         parent = parent[parent.length - 1]
+
+        DB.directory.loadDatabase()
         DB.directory.find({
           parent: parent
         }, function(err, files){
@@ -101,6 +103,8 @@ Directory.prototype.setDownloading = function (file, cb) {
     if(file[file.length-1] === '' && parent.length > 2) file.pop()
     var name = file[file.length - 1]
     var parent = file[file.length - 2] || ""
+
+    DB.directory.loadDatabase()
     DB.directory.update({
       name: name,
       parent: parent
@@ -132,6 +136,8 @@ Directory.prototype.finishDownloading = function (file, cb) {
     if(file[file.length-1] === '' && parent.length > 2) file.pop()
     var name = file[file.length - 1]
     var parent = file[file.length - 2]
+
+    DB.directory.loadDatabase()
     DB.directory.update({
       name: name,
       parent: parent
@@ -147,6 +153,7 @@ Directory.prototype.finishDownloading = function (file, cb) {
         cb(false)
       }
     })
+    DB.directory.loadDatabase()
     DB.directory.update({
       name: name,
       parent: parent
@@ -176,6 +183,8 @@ Directory.prototype.isDownloading = function (file, cb) {
     if(file[file.length-1] === '' && file.length > 2) file.pop()
     var name = file[file.length - 1]
     var parent = file[file.length - 2] || ""
+
+    DB.directory.loadDatabase()
     DB.directory.find({
       $or: [{
           name: name,
@@ -227,6 +236,7 @@ Directory.prototype.remove = function (file, cb) {
             var name = file[file.length - 1]
             var parent = file[file.length - 2]
 
+            DB.directory.loadDatabase()
             DB.directory.remove({
               $or: [{
                   name: name,
@@ -275,6 +285,7 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
             if(parent[parent.length-1] === '' && parent.length > 2) parent.pop()
             parent = parent[parent.length - 1]
 
+            DB.directory.loadDatabase()
             DB.directory.update({
               name: oldname,
               parent: parent
@@ -287,6 +298,7 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
                 LogWorker.error(err)
                 cb(true)
               } else {
+                DB.directory.loadDatabase()
                 DB.directory.update({
                   parent: oldname
                 }, {
@@ -327,6 +339,7 @@ Directory.prototype.mkdir = function (path, name, user) {
         if(parent[parent.length-1] === '' && parent.length > 2) parent.pop()
         parent = parent[parent.length - 1]
 
+        DB.directory.loadDatabase()
         DB.directory.insert({
           parent: parent,
           name: name,
@@ -363,6 +376,7 @@ Directory.prototype.mv = function (path, file, folder, cb) {
             if(parent[parent.length-1] === '' && parent.length > 2) parent.pop()
             parent = parent[parent.length - 1]
 
+            DB.directory.loadDatabase()
             DB.directory.update({
               name: file,
               parent: parent
@@ -405,6 +419,7 @@ Directory.prototype.setOwner = function (file, user) {
     var name = file[file.length - 1]
     var parent = file[file.length - 2]
 
+    DB.directory.loadDatabase()
     DB.directory.update({
       name: name,
       parent: parent

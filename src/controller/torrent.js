@@ -31,8 +31,7 @@ router.get('/torrent', function(req, res){
 router.post('/torrent/download', function (req, res) {
   if (req.body.url) {
     LogWorker.info(`${req.cookies.user} download torrent: ${req.body.url}`)
-    Torrent.setDownloader(req.cookies.user, req.body.url)
-    Torrent.start(req.body.url)
+    Torrent.start(req.cookies.user, req.body.url)
     res.end(JSON.stringify({}))
   } else {
     res.end(JSON.stringify({
@@ -43,7 +42,9 @@ router.post('/torrent/download', function (req, res) {
 
 // client ask list of torrent active
 router.get('/torrent/list', function (req, res) {
-  res.end(JSON.stringify(Torrent.getInfo()))
+  Torrent.getInfo(function(data){
+    res.end(JSON.stringify(data))
+  })
 })
 
 // client remove torrent

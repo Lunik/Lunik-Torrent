@@ -1,7 +1,12 @@
 'use strict'
 
-var fs = require('fs')
+var fs = require('fs-extra')
 var Path = require('path')
+var Datastore = require('nedb')
+
+var DB = {
+  torrent: new Datastore({ filename: Path.join(__base, 'data/torrent.db') })
+}
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
@@ -15,9 +20,8 @@ var Client = require(Path.join(__base, 'src/worker/client.js'))
 */
 function Torrent () {
   var self = this
-  this.client = {}
 
-  this.dowloader = {}
+  this.client = {}
   this.waitList = []
 
   setInterval(function () {
@@ -29,68 +33,50 @@ function Torrent () {
  * Start downloadind torrent.
  * @param {string} url - Url / magnet of the torrent.
 */
-Torrent.prototype.start = function (url) {
+Torrent.prototype.start = function (user, url) {
   var self = this
 
-  var start = function (url) {
+  var start = function () {
     // evite de lancer deux fois le meme torrent
     if (self.client[url] == null) {
       // Si trop de torrent en cours
       if (Object.keys(self.client).length < __config.torrent.max) {
-        if (self.client[url] == null) {
-          self.client[url] = {count: 1}
-        } else {
-          self.client[url].count++
-        }
-
-        if (self.client[url].count > __config.client.maxTry) {
-          return -1
-        }
         var c = new Client()
-        c.download(url, function () {})
 
-        c.on('start', function (hash) {
-          if (self.client[url]) {
-            self.client[url].hash = hash
+        self.client[url] = c
+
+        c.download(url, function(hash){
+          self.client[hash] = c
+        }, function(err, torrent){
+          delete self.client[url]
+          delete self.client[torrent.infoHash]
+          if(err){
+            LogWorker.error(`Fail downloading: ${url}`)
+          } else {
+            c.stop()
+            LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, torrent.name)} to ${Path.join(__config.directory.path, torrent.name)}`)
+            fs.move(Path.join(__config.torrent.downloads, torrent.name), Path.join(__config.directory.path, torrent.name), function(err){
+              if(err){
+                LogWorker.error(err)
+              } else {
+                if (self.waitList.length > 0) {
+                  LogWorker.info(`Start torrent into waitList (left: ${(self.waitList.length - 1)})`)
+                  var next = self.waitList.shift()
+                  self.start(next.user, next.url)
+                }
+              }
+            })
           }
         })
 
-        c.on('download', function (infos) {
-          if (self.client[url]) {
-            self.client[url].infos = infos
-          }
-        })
-
-        c.on('done', function (err, hash, name) {
-          if (self.client[url]) {
-            if (err) {
-              LogWorker.error(`Fail downloading: ${url}`)
-              delete self.client[url]
-              return
-            }
-            self.client[url].peer.stop()
-            // Deplace les fichies
-            LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, name)} to ${Path.join(__config.directory.path, name)}`)
-            fs.renameSync(Path.join(__base, __config.torrent.downloads, name), Path.join(__base, __config.directory.path, name))
-            // Defini l'owner
-            if (self.dowloader[url]) {
-              self.Directory.setOwner(name, self.dowloader[url])
-            }
-            delete self.client[url]
-            // Relance un torrent si il y en a en attente
-            if (self.waitList.length > 0) {
-              LogWorker.info(`Start torrent into waitList (left: ${(self.waitList.length - 1)})`)
-              self.start(self.waitList.shift())
-            }
-          }
-        })
-
-        self.client[url].peer = c
       } else {
         LogWorker.warning('Too much client. Adding torrent to the waitlist.')
         // On push dans la liste d'attente
         if (self.waitList.indexOf(url) === -1) {
-          self.waitList.push(url)
+          self.waitList.push({
+            url: url,
+            user: user
+          })
         }
       }
     } else {
@@ -98,7 +84,7 @@ Torrent.prototype.start = function (url) {
     }
   }
 
-  setTimeout(function(){start(url)})
+  setTimeout(start)
 }
 
 /**
@@ -106,25 +92,9 @@ Torrent.prototype.start = function (url) {
  * @param {string} hash - Torrent to remove Hash.
 */
 Torrent.prototype.remove = function (hash) {
-  var url = this.getUrlFromHash(hash)
-  if (url && this.client[url]) {
-    this.client[url].peer.stop()
-    delete this.client[url]
+  if(this.client[hash]){
+    this.client[hash].stop()
   }
-}
-
-/**
- * Get torrent url from hash.
- * @param {string} hash - Torrent Hash.
- * @return {string} - Torrent turl.
-*/
-Torrent.prototype.getUrlFromHash = function (hash) {
-  for (var key in this.client) {
-    if (this.client[key].hash === hash) {
-      return key
-    }
-  }
-  return null
 }
 
 /**
@@ -132,39 +102,36 @@ Torrent.prototype.getUrlFromHash = function (hash) {
  * @param {object} self - Torrent instance.
 */
 Torrent.prototype.startPointTorrent = function (self) {
-  fs.readFile(Path.join(__base, __config.torrent.scanTorrent), 'utf-8', function (err, data) {
+  fs.readFile(Path.join(__config.torrent.scanTorrent), 'utf-8', function (err, data) {
     if (err) {
       LogWorker.error(err)
-      return
-    }
-    var torrents = data.split('\n')
-    fs.writeFile(Path.join(__base, __config.torrent.scanTorrent), '', 'utf-8', function (err) {
-      if (err) {
-        LogWorker.error(err)
-        return
-      }
-      torrents.forEach(function (element) {
-        if (element !== '') {
-          self.start(element)
+    } else {
+      var torrents = data.split('\n')
+      fs.writeFile(Path.join(__config.torrent.scanTorrent), '', 'utf-8', function (err) {
+        if (err) {
+          LogWorker.error(err)
+        } else {
+          torrents.forEach(function (element) {
+            if (element !== '') {
+              self.start('-', element)
+            }
+          })
         }
       })
-    })
+    }
   })
 }
 
-/**
- * Get infos about all current clients.
- * @return {object} - All torrent infos.
-*/
-Torrent.prototype.getInfo = function () {
-  var torrents = {}
-  for (var key in this.client) {
-    var t = this.client[key].infos
-    if (t) {
-      torrents[t.hash] = t
+Torrent.prototype.getInfo = function (cb) {
+  DB.torrent.loadDatabase()
+  DB.torrent.find({}, function(err, files){
+    if (err) {
+      LogWorker.error(err)
+      cb([])
+    } else {
+      cb(files)
     }
-  }
-  return torrents
+  })
 }
 
 /**
@@ -173,6 +140,6 @@ Torrent.prototype.getInfo = function () {
  * @param {string} url - Torrent url.
 */
 Torrent.prototype.setDownloader = function (user, url) {
-  this.dowloader[url] = user
+
 }
 module.exports = new Torrent()

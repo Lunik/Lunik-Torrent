@@ -11,9 +11,6 @@ var DB = {
   user: new Datastore({ filename: Path.join(__base, 'data/password.db') })
 }
 
-DB.invitation.loadDatabase()
-DB.user.loadDatabase()
-
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
   module: 'Auth'
@@ -26,6 +23,7 @@ function Auth () {
 Auth.prototype.login = function (user, pass, cb) {
   var self = this
   var login = function(){
+    DB.user.loadDatabase()
     DB.user.find({
       user: user,
       password: pass
@@ -38,6 +36,7 @@ Auth.prototype.login = function (user, pass, cb) {
           cb(false)
         } else {
           var token = self.genToken(user, pass)
+          DB.user.loadDatabase()
           DB.user.update({
             user: user,
             password: pass
@@ -65,6 +64,7 @@ Auth.prototype.login = function (user, pass, cb) {
 Auth.prototype.logout = function (user, token, cb) {
   var self = this
   var logout = function(){
+    DB.user.loadDatabase()
     DB.user.find({
       user: user,
       token: Crypto.SHA256(token).toString()
@@ -76,6 +76,7 @@ Auth.prototype.logout = function (user, token, cb) {
         if(res <= 0){
           cb(false)
         } else {
+          DB.user.loadDatabase()
           DB.user.update({
             user: user,
             token: Crypto.SHA256(token).toString()
@@ -103,6 +104,7 @@ Auth.prototype.logout = function (user, token, cb) {
 Auth.prototype.register = function (user, pass, invite, cb) {
   var self = this
   var register = function(){
+    DB.invitation.loadDatabase()
     DB.invitation.find({hash: invite}, function(err, res){
       if(err){
         LogWorker.error(err)
@@ -111,6 +113,7 @@ Auth.prototype.register = function (user, pass, invite, cb) {
         if(res.length <= 0){
           cb(false)
         } else {
+          DB.user.loadDatabase()
           DB.user.find({user: user}, function(err, res){
             if(err){
               LogWorker.error(err)
@@ -119,8 +122,10 @@ Auth.prototype.register = function (user, pass, invite, cb) {
               if(res.length > 0){
                 cb(false)
               } else {
+                DB.invitation.loadDatabase()
                 DB.invitation.remove({hash: invite})
                 var token = self.genToken(user, pass)
+                DB.user.loadDatabase()
                 DB.user.insert({
                   user: user,
                   password: pass,
@@ -148,6 +153,7 @@ Auth.prototype.register = function (user, pass, invite, cb) {
 Auth.prototype.changePass = function (user, pass, newPass, cb) {
   var self = this
   var changePass = function(){
+    DB.user.loadDatabase()
     DB.user.find({
       user: user,
       password: pass
@@ -159,6 +165,7 @@ Auth.prototype.changePass = function (user, pass, newPass, cb) {
         if(res.length <= 0){
           cb(false)
         } else {
+          DB.user.loadDatabase()
           DB.user.update({
             user: user,
             password: pass
@@ -184,6 +191,7 @@ Auth.prototype.changePass = function (user, pass, newPass, cb) {
 
 Auth.prototype.checkLogged = function (user, token, cb) {
   var encryptedToken = Crypto.SHA256(token).toString()
+  DB.user.loadDatabase()
   DB.user.find({
     user: user,
     token: Crypto.SHA256(token).toString()
@@ -211,6 +219,7 @@ Auth.prototype.createInvite = function (inviteKey, cb) {
   var createInvite = function(){
     if (inviteKey === __config.server.invitationKey) {
       var invite = self.genToken(Rand.rand(), Rand.rand())
+      DB.invitation.loadDatabase()
       DB.invitation.insert({hash: invite}, function(err){
         if(err){
           LogWorker.error(err)
@@ -232,6 +241,7 @@ Auth.prototype.deleteInvite = function (invite, cb) {
   var self = this
 
   var deleteInvite = function(){
+    DB.invitation.loadDatabase()
     DB.invitation.remove({hash: invite}, function(err){
       if(err){
         LogWorker.error(err)
