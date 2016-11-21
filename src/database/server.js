@@ -23,15 +23,9 @@ function DatabaseServer(port, token){
     extended: true
   }))
 
-  if(process.env.DEBUG === "true"){
-    this.app.listen(port, function () {
-      LogWorker.info(`Database listening at port ${port}`)
-    })
-  } else {
-    this.app.listen(port, '127.0.0.1', function () {
-      LogWorker.info(`Database listening at port ${port}`)
-    })
-  }
+  this.app.listen(port, '127.0.0.1', function () {
+    LogWorker.info(`Database listening at port ${port}`)
+  })
 
   this.app.use(function(request, response, next){
     if(request.headers.authorization == self.token){
