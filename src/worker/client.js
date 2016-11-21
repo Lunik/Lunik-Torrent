@@ -1,6 +1,10 @@
 'use strict'
 var Path = require('path')
 var WebTorrent = require('webtorrent')
+var Database = require(Path.join(__base, 'src/database/client.js'))
+var DB = {
+  torrent: new Database('torrent', '127.0.0.1', __config.database.port, __DBtoken),
+}
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
@@ -119,7 +123,7 @@ Client.prototype.updateFunction = function(torrent){
   if(torrent){
     var torrentInfo = this.getTorrent(torrent)
 
-    __DB.torrent.find({
+    DB.torrent.find({
       hash: torrentInfo.hash
     }, function(err, t){
       if(err){
@@ -127,10 +131,10 @@ Client.prototype.updateFunction = function(torrent){
       } else {
         if(t.length <= 0){
 
-          __DB.torrent.insert(torrentInfo)
+          DB.torrent.insert(torrentInfo)
         } else {
 
-          __DB.torrent.update({
+          DB.torrent.update({
             hash: torrentInfo.hash
           }, {
             $set: torrentInfo
@@ -147,7 +151,7 @@ Client.prototype.updateFunction = function(torrent){
 
 Client.prototype.doneFunction = function(torrent){
   if(torrent){
-    __DB.torrent.remove({
+    DB.torrent.remove({
       hash: torrent.hash
     }, function(err){
       if(err){
