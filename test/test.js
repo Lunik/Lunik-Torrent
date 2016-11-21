@@ -16,7 +16,7 @@ var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
 var token = Crypto.SHA256(Rand.rand().toString()).toString()
 
-var Database = require(Path.join(__base, 'src/database/server.js'))
+var Database = require(path.join(__base, 'src/database/server.js'))
 var DBPort = process.env.DB_PORT || __config.database.port
 var DB = new Database(DBPort, token)
 
