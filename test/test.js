@@ -12,6 +12,16 @@ var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
 global.__config.server.port = process.env.PORT || global.__config.server.port
 
+var Rand = require('crypto-rand')
+var Crypto = require('crypto-js')
+var token = Crypto.SHA256(Rand.rand().toString()).toString()
+
+var Database = require(Path.join(__base, 'src/database/server.js'))
+var DBPort = process.env.DB_PORT || __config.database.port
+var DB = new Database(DBPort, token)
+
+global.__DBtoken = token
+
 var assert = require('chai').assert
 
 describe('Fontend', function () {})
