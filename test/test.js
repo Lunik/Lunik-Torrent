@@ -238,6 +238,7 @@ describe('Backend', function () {
     var pass = 'test'
     describe('POST and GET Auth', function () {
       it('get / without login', function (done) {
+        this.timeout(30000)
         request(url, function (err, res, body) {
           assert(!err)
           if (!err && res.statusCode == 200) {

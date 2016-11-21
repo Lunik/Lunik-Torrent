@@ -84,11 +84,15 @@ Client.prototype.stop = function () {
   var self = this
 
   var stop = function(){
-    self.client.destroy(function(err){
-      if(err){
-        LogWorker.error(err)
-      }
-    })
+    try {
+      self.client.destroy(function(err){
+        if(err){
+          LogWorker.error(err)
+        }
+      })
+    } catch (err){
+      LogWorker.error(err)
+    }
   }
 
   setTimeout(stop)
