@@ -2,6 +2,10 @@
 
 var fs = require('fs-extra')
 var Path = require('path')
+var Database = require(Path.join(__base, 'src/database/client.js'))
+var DB = {
+  torrent: new Database('torrent', '127.0.0.1', __config.database.port, __DBtoken),
+}
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
@@ -17,7 +21,7 @@ function Torrent () {
   var self = this
 
 
-  __DB.torrent.remove({}, { multi: true }, function(err){
+  DB.torrent.remove({}, { multi: true }, function(err){
     if(err){
       LogWorker.error(err)
     }
@@ -126,7 +130,7 @@ Torrent.prototype.startPointTorrent = function (self) {
 
 Torrent.prototype.getInfo = function (cb) {
 
-  __DB.torrent.find({}, function(err, files){
+  DB.torrent.find({}, function(err, files){
     if (err) {
       LogWorker.error(err)
       cb([])

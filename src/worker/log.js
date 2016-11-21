@@ -27,7 +27,7 @@ Log.prototype.warning = function (text) {
 
 Log.prototype.error = function (text) {
   text = `[${this.module}] ${colors.red.bold('[Error] ')}${colors.red(text)}`
-  this.echo(text)
+  this.trace(text)
   this.save(colors.strip(text))
 }
 /**
@@ -53,6 +53,10 @@ Log.prototype.echo = function (text) {
   console.log(text)
 }
 
+Log.prototype.trace = function(text){
+  console.log(text)
+  console.trace()
+}
 function getDate () {
   var date = new Date()
   return formatDateNumbers(`${formatDateNumbers(date.getDate())}/${formatDateNumbers(date.getMonth() + 1)}/${formatDateNumbers(date.getFullYear())} ${formatDateNumbers(date.getHours())}:${formatDateNumbers(date.getMinutes())}:${formatDateNumbers(date.getSeconds())}`)

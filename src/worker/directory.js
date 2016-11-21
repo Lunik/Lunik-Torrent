@@ -2,6 +2,10 @@
 
 var fs = require('fs-extra')
 var Path = require('path')
+var Database = require(Path.join(__base, 'src/database/client.js'))
+var DB = {
+  directory: new Database('directory', '127.0.0.1', __config.database.port, __DBtoken),
+}
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
@@ -15,7 +19,7 @@ function Directory () {
   var self = this
 
 
-  __DB.directory.update({}, {
+  DB.directory.update({}, {
     $set: {
       downloading: 0
     }
@@ -60,7 +64,7 @@ Directory.prototype.list = function (dir, cb) {
         parent = parent[parent.length - 1]
 
 
-        __DB.directory.find({
+        DB.directory.find({
           parent: parent
         }, function(err, files){
           if(err){
@@ -69,7 +73,7 @@ Directory.prototype.list = function (dir, cb) {
           } else {
             for(var f in response.files){
               if(!files.find(function(e){ return e.name == f && e.parent == parent })){
-                __DB.directory.insert({
+                DB.directory.insert({
                   parent: parent,
                   name: f,
                   download: 0,
@@ -100,7 +104,7 @@ Directory.prototype.setDownloading = function (file, cb) {
     var parent = file[file.length - 2] || ""
 
 
-    __DB.directory.update({
+    DB.directory.update({
       name: name,
       parent: parent
     }, {
@@ -133,7 +137,7 @@ Directory.prototype.finishDownloading = function (file, cb) {
     var parent = file[file.length - 2]
 
 
-    __DB.directory.update({
+    DB.directory.update({
       name: name,
       parent: parent
     }, {
@@ -149,7 +153,7 @@ Directory.prototype.finishDownloading = function (file, cb) {
       }
     })
 
-    __DB.directory.update({
+    DB.directory.update({
       name: name,
       parent: parent
     }, {
@@ -180,7 +184,7 @@ Directory.prototype.isDownloading = function (file, cb) {
     var parent = file[file.length - 2] || ""
 
 
-    __DB.directory.find({
+    DB.directory.find({
       $or: [{
           name: name,
           parent: parent
@@ -232,7 +236,7 @@ Directory.prototype.remove = function (file, cb) {
             var parent = file[file.length - 2]
 
 
-            __DB.directory.remove({
+            DB.directory.remove({
               $or: [{
                   name: name,
                   parent: parent
@@ -281,7 +285,7 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
             parent = parent[parent.length - 1]
 
 
-            __DB.directory.update({
+            DB.directory.update({
               name: oldname,
               parent: parent
             }, {
@@ -294,7 +298,7 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
                 cb(true)
               } else {
 
-                __DB.directory.update({
+                DB.directory.update({
                   parent: oldname
                 }, {
                   $set: {
@@ -335,7 +339,7 @@ Directory.prototype.mkdir = function (path, name, user) {
         parent = parent[parent.length - 1]
 
 
-        __DB.directory.insert({
+        DB.directory.insert({
           parent: parent,
           name: name,
           download: 0,
@@ -372,7 +376,7 @@ Directory.prototype.mv = function (path, file, folder, cb) {
             parent = parent[parent.length - 1]
 
 
-            __DB.directory.update({
+            DB.directory.update({
               name: file,
               parent: parent
             }, {
@@ -415,7 +419,7 @@ Directory.prototype.setOwner = function (file, user) {
     var parent = file[file.length - 2]
 
 
-    __DB.directory.update({
+    DB.directory.update({
       name: name,
       parent: parent
     }, {

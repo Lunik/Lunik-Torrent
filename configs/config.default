@@ -2,15 +2,18 @@
   "log": {
     "path": "logs/"
   },
+  "server": {
+    "port": 8080,
+    "invitationKey": "MY_KEY"
+  },
+  "database": {
+    "port": 33066
+  }
   "client": {
     "downloads": "downloads/",
     "updateTimeout": 3000,
     "timeout": 30000,
     "maxTry": 3
-  },
-  "server": {
-    "port": 8080,
-    "invitationKey": "MY_KEY"
   },
   "directory": {
     "path": "files/"
