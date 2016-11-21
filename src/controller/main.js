@@ -15,7 +15,7 @@ var LogWorker = new Log({
  * Deserve http requests.
  * @constructor
 */
-function Server (id) {
+function Server () {
   this.app = express()
   this.app.use(compression())
   this.app.use(cookieParser())
@@ -33,7 +33,7 @@ function Server (id) {
 
   var port = process.env.PORT || __config.server.port
   this.app.listen(port, function () {
-    LogWorker.info(`Server ${id} listening at port ${port}`)
+    LogWorker.info(`Server listening at port ${port}`)
   })
 }
 
