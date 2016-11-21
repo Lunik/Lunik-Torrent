@@ -8,7 +8,7 @@
   },
   "database": {
     "port": 33066
-  }
+  },
   "client": {
     "downloads": "downloads/",
     "updateTimeout": 3000,
