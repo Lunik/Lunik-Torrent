@@ -366,8 +366,7 @@ describe('Backend', function () {
             if (!err && res.statusCode == 200) {
               body = JSON.parse(body)
               assert(!body.err)
-              console.log("coucou", typeof body)
-              assert.typeOf(body, 'object')
+              assert(Array.isArray(body))
             }
             done()
           })
@@ -706,7 +705,7 @@ describe('Backend', function () {
         Torrent.start('magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso')
         setTimeout(function () {
           Torrent.getInfo(function(data){
-            assert.typeOf(data, 'object')
+            assert(Array.isArray(data))
             Torrent.getUrlFromHash('288f8018277b8c474f304a059b064e017bd55e9f')
             Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
             done()
