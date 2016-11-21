@@ -11,7 +11,7 @@ before_install:
 - sudo apt-get install curl wget
 
 script:
-- npm test
+- sudo npm test
 cache:
   directories:
   - "$(pwd)/node_modules"
