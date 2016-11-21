@@ -706,7 +706,6 @@ describe('Backend', function () {
         setTimeout(function () {
           Torrent.getInfo(function(data){
             assert(Array.isArray(data))
-            Torrent.getUrlFromHash('288f8018277b8c474f304a059b064e017bd55e9f')
             Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
             done()
           })
