@@ -27,7 +27,7 @@
     "crypto-rand": "0.0.2",
     "express": "^4.14.0",
     "forever": "^0.15.2",
-    "webtorrent": "^0.97.1"
+    "webtorrent": "^0.98.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
