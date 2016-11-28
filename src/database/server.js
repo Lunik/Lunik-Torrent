@@ -11,14 +11,22 @@ var LogWorker = new Log({
   module: 'DatabaseServer'
 })
 
+function parseJSON(json){
+  json = JSON.stringify(json)
+  return JSON.parse(json, function(k, v) {
+    return (typeof v === "object" || isNaN(v) || v === '') ? v : parseInt(v, 10);
+  })
+}
+
 function DatabaseServer(port, token){
+
   var self = this
   self.token = token
   this.databases = {}
 
   this.app = express()
   this.app.use(compression())
-  this.app.use(bodyParser.json())
+
   this.app.use(bodyParser.urlencoded({
     extended: true
   }))
@@ -37,10 +45,12 @@ function DatabaseServer(port, token){
   })
 
   this.app.get('/api/find', function(request, response){
-    self.loadDB(request.query.__database, function(){
-      var db = request.query.__database
-      delete request.query.__database
-      self.databases[db].find(request.query || {}, function(err, res){
+    var query = parseJSON(request.query)
+    self.loadDB(query.__database, function(){
+      var db = query.__database
+      delete query.__database
+
+      self.databases[db].find(query || {}, function(err, res){
           response.end(JSON.stringify({
             err: err ? err.toString() : "",
             data: res
@@ -49,10 +59,12 @@ function DatabaseServer(port, token){
     })
   })
   this.app.post('/api/insert', function(request, response){
-    self.loadDB(request.body.__database, function(){
-      var db = request.body.__database
-      delete request.body.__database
-      self.databases[db].insert(request.body || {}, function(err){
+    var body = parseJSON(request.body)
+    self.loadDB(body.__database, function(){
+      var db = body.__database
+      delete body.__database
+
+      self.databases[db].insert(body || {}, function(err){
           response.end(JSON.stringify({
             err: err ? err.toString() : ""
           }))
@@ -60,15 +72,15 @@ function DatabaseServer(port, token){
     })
   })
   this.app.post('/api/update', function(request, response){
-    self.loadDB(request.body.__database, function(){
-      var db = request.body.__database
-      delete request.body.__database
-      for(var element in request.body.data.$inc){
-        request.body.data.$inc[element] = parseInt(request.body.data.$inc[element])
-      }
-      self.databases[db].update(request.body.query || {},
-        request.body.data || {},
-        request.body.options || {}, function(err){
+    var body = parseJSON(request.body)
+    self.loadDB(body.__database, function(){
+      var db = body.__database
+      delete body.__database
+
+      console.log(body)
+      self.databases[db].update(body.query || {},
+        body.data || {},
+        body.options || {}, function(err){
           response.end(JSON.stringify({
             err: err ? err.toString() : ""
           }))
@@ -76,11 +88,13 @@ function DatabaseServer(port, token){
     })
   })
   this.app.post('/api/remove', function(request, response){
-    self.loadDB(request.body.__database, function(){
-      var db = request.body.__database
-      delete request.body.__database
-      self.databases[db].remove(request.body.query || {},
-        request.body.options || {}, function(err){
+    var body = parseJSON(request.body)
+    self.loadDB(body.__database, function(){
+      var db = body.__database
+      delete body.__database
+
+      self.databases[db].remove(body.query || {},
+        body.options || {}, function(err){
           response.end(JSON.stringify({
             err: err ? err.toString() : ""
           }))
