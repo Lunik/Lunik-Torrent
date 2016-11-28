@@ -5,21 +5,25 @@ var router = express.Router()
 var Auth = require(Path.join(__base, 'src/worker/auth'))
 
 router.use(function (req, res, next) {
-  Auth.checkLogged(req.cookies.user, req.cookies.token, function (isLogged) {
-    if (req.url === '/login.html' || req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)) {
-      if (req.url === '/login.html' && req.cookies && isLogged) {
-        res.redirect('/')
+  if(req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)){
+    next()
+  } else {
+    Auth.checkLogged(req.cookies.user, req.cookies.token, function (isLogged) {
+      if (req.url === '/login.html') {
+        if (req.url === '/login.html' && req.cookies && isLogged) {
+          res.redirect('/')
+        } else {
+          next()
+        }
       } else {
-        next()
+        if (req.cookies && isLogged) {
+          next()
+        } else {
+          res.redirect('/login.html')
+        }
       }
-    } else {
-      if (req.cookies && isLogged) {
-        next()
-      } else {
-        res.redirect('/login.html')
-      }
-    }
-  })
+    })
+  }
 })
 
 router.get('/auth', function (req, res) {
