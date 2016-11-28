@@ -19,7 +19,7 @@ var token = Crypto.SHA256(Rand.rand().toString()).toString()
 global.__DBtoken = token
 
 var Database = require(path.join(__base, 'src/database/server.js'))
-var DBPort = 33067
+var DBPort = process.env.DB_PORT || global.__config.database.port
 var DB = new Database(DBPort, token)
 
 var assert = require('chai').assert
@@ -242,7 +242,8 @@ describe('Backend', function () {
     })
   })
   describe('Server', function () {
-    var Index = require(path.join(__base, 'src/index.js'))
+    var Server = require(path.join(__base, 'src/controller/main.js'))
+    var ServerWorker = new Server(1)
     var url = 'http://localhost:' + __config.server.port
     var user = 'test' + rand.rand()
     var pass = 'test'
