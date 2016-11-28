@@ -6,7 +6,7 @@ var Auth = require(Path.join(__base, 'src/worker/auth'))
 
 router.use(function (req, res, next) {
   Auth.checkLogged(req.cookies.user, req.cookies.token, function (isLogged) {
-    if (req.url === '/login.html' || req.url.match(/\/invitation\?invitationkey=.*/g) || req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)) {
+    if (req.url === '/login.html' || req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)) {
       if (req.url === '/login.html' && req.cookies && isLogged) {
         res.redirect('/')
       } else {
@@ -109,6 +109,30 @@ router.post('/auth/register', function (req, res) {
   } else {
     res.end(JSON.stringify({
       err: 'Missing User, Pass or Invitation code.'
+    }))
+  }
+})
+
+router.get('/auth/invite', function (req, res) {
+  var data = {
+    invitationKey: req.query.invitationkey
+  }
+  if (data.invitationKey) {
+    Auth.createInvite(data.invitationKey, function (invite) {
+      if (invite) {
+        res.end(JSON.stringify({
+          err: false,
+          invitationCode: invite
+        }))
+      } else {
+        res.end(JSON.stringify({
+          err: 'Wrong Invitation Key.'
+        }))
+      }
+    })
+  } else {
+    res.end(JSON.stringify({
+      err: 'Missing Invitation Key.'
     }))
   }
 })
