@@ -19,7 +19,7 @@ var token = Crypto.SHA256(Rand.rand().toString()).toString()
 global.__DBtoken = token
 
 var Database = require(path.join(__base, 'src/database/server.js'))
-var DBPort = process.env.DB_PORT || __config.database.port
+var DBPort = 33067
 var DB = new Database(DBPort, token)
 
 var assert = require('chai').assert
