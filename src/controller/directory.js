@@ -44,8 +44,9 @@ router.get('/directory/list', function (req, res) {
 router.post('/directory/remove', function (req, res) {
   if (req.body.file) {
     req.body.file = req.body.file.replace(/%20/g, ' ')
-    Directory.remove(req.body.file, function (error) {
-      if (!error) {
+
+    Directory.remove(req.body.file, function (err) {
+      if (!err) {
         LogWorker.info(`${req.cookies.user} remove file: ${req.body.file}`)
         res.end(JSON.stringify({
           file: req.body.file.split('/')[req.body.file.split('/').length - 1]
@@ -69,8 +70,8 @@ router.post('/directory/rename', function (req, res) {
     req.body.path = req.body.path.replace(/%20/g, ' ')
     req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
     req.body.newname = req.body.newname.replace(/%20/g, ' ')
-    Directory.rename(req.body.path, req.body.oldname, req.body.newname, function(error){
-      if (!error) {
+    Directory.rename(req.body.path, req.body.oldname, req.body.newname, function(err){
+      if (!err) {
         LogWorker.info(`${req.cookies.user} rename file: ${Path.join(req.body.path, req.body.oldname)} in: ${req.body.newname}`)
         res.end(JSON.stringify({
           path: req.body.path,
@@ -97,7 +98,7 @@ router.post('/directory/mkdir', function (req, res) {
     req.body.path = req.body.path.replace(/%20/g, ' ')
     req.body.name = req.body.name.replace(/%20/g, ' ')
     LogWorker.info(`${req.cookies.user} create directory: ${Path.join(req.body.path, req.body.name)}`)
-    Directory.mkdir(req.body.path, req.body.name)
+    Directory.mkdir(req.body.path, req.body.name, req.cookies.user)
     res.end(JSON.stringify({
       name: req.body.name
     }))
@@ -139,7 +140,9 @@ router.post('/directory/mv', function (req, res) {
 router.get('/directory/lock', function (req, res) {
   if (req.query.f) {
     req.query.f = req.query.f.replace(/%20/g, ' ')
-    res.end(Directory.isDownloading(req.query.f).toString())
+    Directory.isDownloading(req.query.f, function(isdl){
+      res.end(isdl.toString())
+    })
   } else {
     res.end(JSON.stringify({
       err: 'File not set.'

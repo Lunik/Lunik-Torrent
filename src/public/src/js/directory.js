@@ -93,7 +93,7 @@
       name: '..',
       href: `#${previousDir}`,
       type: 'file',
-      size: App.Format.size(0),
+      size: '-',
       date: App.Format.date(new Date()),
       owner: '-',
       extension: 'dir',
@@ -109,7 +109,7 @@
           url: encodeURI(`${window.location.host}/files/?f=${document.location.hash.substring(1)}${index}`),
           type: 'file',
           extension: App.Format.extention(value),
-          size: App.Format.size(value.size),
+          size: value.isfile ? App.Format.size(value.size) : '-',
           date: App.Format.date(value.ctime),
           owner: value.owner || '-',
           lock: typeof value.downloading !== 'undefined',
@@ -232,7 +232,7 @@
         type: 'post',
         url: '/directory/remove',
         data: {
-          file: `${App.hash}${fileName}`
+          file: `${App.hash}${fileName}/`
         },
         dataType: 'json',
         success: function (file) {

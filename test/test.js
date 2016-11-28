@@ -12,6 +12,16 @@ var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
 global.__config.server.port = process.env.PORT || global.__config.server.port
 
+var Rand = require('crypto-rand')
+var Crypto = require('crypto-js')
+var token = Crypto.SHA256(Rand.rand().toString()).toString()
+
+global.__DBtoken = token
+
+var Database = require(path.join(__base, 'src/database/server.js'))
+var DBPort = process.env.DB_PORT || global.__config.database.port
+var DB = new Database(DBPort, token)
+
 var assert = require('chai').assert
 
 describe('Fontend', function () {})
@@ -151,13 +161,17 @@ describe('Backend', function () {
     describe('CheckLogged()', function () {
       it('User: foo', function (done) {
         Auth.login(username, 'bar', function(token){
-          assert(Auth.checkLogged(username, token))
-          done()
+          Auth.checkLogged(username, token, function(isLogged){
+            assert(isLogged)
+            done()
+          })
         })
       })
       it('User: Unknown', function (done) {
-        assert(!Auth.checkLogged(username2, ''))
-        done()
+        Auth.checkLogged(username2, '', function(isLogged){
+          assert(!isLogged)
+          done()
+        })
       })
     })
   })
@@ -214,47 +228,28 @@ describe('Backend', function () {
   describe('Client', function () {
     var Client = require(path.join(__base, 'src/worker/client.js'))
     var ClientWorker = new Client()
-    describe('On()', function () {
-      it('Add startFunction', function (done) {
-        ClientWorker.on('start', function (hash) {
-          assert.typeOf(hash, 'string')
-        })
-        done()
-      })
-      it('Add updateFunction', function (done) {
-        ClientWorker.on('download', function (torrent) {
-          assert.typeOf(torrent, 'object')
-          assert.typeOf(torrent.name, 'string')
-        })
-        done()
-      })
-      it('Add doneFunction', function (done) {
-        ClientWorker.on('done', function (err, hash, name) {
-          assert(!err)
-          assert.typeOf(hash, 'string')
-          assert.typeOf(name, 'string')
-        })
-        done()
-      })
-    })
     describe('Dowload()', function () {
       this.timeout(305000)
       it('Dowload ubuntu', function (done) {
-        ClientWorker.on('done', function (err, hash, name) {
+        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511',
+        function(hash){
+          assert.equal(hash, '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
+        }, function(){
           ClientWorker.stop()
           done()
         })
-        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511', function(){})
       })
     })
   })
   describe('Server', function () {
-    var Index = require(path.join(__base, 'src/index.js'))
+    var Server = require(path.join(__base, 'src/controller/main.js'))
+    var ServerWorker = new Server(1)
     var url = 'http://localhost:' + __config.server.port
     var user = 'test' + rand.rand()
     var pass = 'test'
     describe('POST and GET Auth', function () {
       it('get / without login', function (done) {
+        this.timeout(30000)
         request(url, function (err, res, body) {
           assert(!err)
           if (!err && res.statusCode == 200) {
@@ -383,7 +378,7 @@ describe('Backend', function () {
             if (!err && res.statusCode == 200) {
               body = JSON.parse(body)
               assert(!body.err)
-              assert.typeOf(body, 'object')
+              assert(Array.isArray(body))
             }
             done()
           })
@@ -616,15 +611,9 @@ describe('Backend', function () {
         })
       })
     })
-  })/*
+  })
   describe('Directory', function () {
     var Directory = require(path.join(__base, 'src/worker/directory.js'))
-    describe('saveFileInfo()', function () {
-      it('Save', function (done) {
-        Directory.saveFileInfo()
-        done()
-      })
-    })
     describe('Mkdir()', function () {
       it('Create dir', function (done) {
         Directory.mkdir('/', 'ok' + rand.rand())
@@ -684,16 +673,22 @@ describe('Backend', function () {
       it('setDownloading', function (done) {
         var dir = 'ok' + rand.rand()
         Directory.mkdir('/', dir)
-        Directory.setDownloading(dir)
-        Directory.setDownloading(dir)
-        Directory.isDownloading(dir)
-        Directory.finishDownloading(dir)
-        Directory.finishDownloading(dir)
-        done()
-      })
-      it('updateDownloads', function (done) {
-        Directory.updateDownloads()
-        done()
+        Directory.setDownloading(dir, function(err){
+          assert(!err)
+          Directory.setDownloading(dir, function(err){
+            assert(!err)
+            Directory.isDownloading(dir, function(isdl){
+              assert(isdl)
+              Directory.finishDownloading(dir, function(err){
+                assert(!err)
+                Directory.finishDownloading(dir, function(err){
+                  assert(!err)
+                  done()
+                })
+              })
+            })
+          })
+        })
       })
     })
   })
@@ -721,14 +716,15 @@ describe('Backend', function () {
         this.timeout(300000)
         Torrent.start('magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso')
         setTimeout(function () {
-          assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('288f8018277b8c474f304a059b064e017bd55e9f')
-          Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
-          done()
+          Torrent.getInfo(function(data){
+            assert(Array.isArray(data))
+            Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
+            done()
+          })
         }, 10000)
       })
     })
-  })*/
+  })
 })
 
 function Auth (url, user, pass, cb) {
