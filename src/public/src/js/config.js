@@ -18,14 +18,14 @@
 
     this.setConfig(App.Storage.readData('config'))
 
-    $('.parameter .button').click(function () {
+    $('.parameter .button').on('click', function () {
       self.showConfig()
     })
-    $('.config-pop .submit').click(function () { self.submit() })
+    $('.config-pop .submit').on('click', function () { self.submit() })
 
     // Logout
 
-    $('body').click('.top-menu .logout', function () {
+    $('body').on('click', '.top-menu .logout', function () {
       $.ajax({
         type: 'post',
         url: '/auth/logout',
