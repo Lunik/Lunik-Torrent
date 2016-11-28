@@ -232,7 +232,7 @@
         type: 'post',
         url: '/directory/remove',
         data: {
-          file: `${App.hash}${fileName}/`
+          file: `${App.hash}${fileName}`
         },
         dataType: 'json',
         success: function (file) {
