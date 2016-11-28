@@ -70,7 +70,8 @@ Directory.prototype.list = function (dir, cb) {
             cb(false)
           } else {
             for (var f in response.files) {
-              if (!files.find(function (e) { return e.name == f && e.parent == parent })) {
+              var find = files.find(function (e) { return e.name == f && e.parent == parent })
+              if (find == null) {
                 DB.directory.insert({
                   parent: parent,
                   name: f,
@@ -78,11 +79,15 @@ Directory.prototype.list = function (dir, cb) {
                   downloading: 0,
                   owner: null
                 })
+              } else {
+                response.files[f].download = find.download
+                response.files[f].downloading = find.downloading
+                response.files[f].owner = find.owner
               }
             }
+            cb(response)
           }
         })
-        cb(response)
       })
   }
 

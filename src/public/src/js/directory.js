@@ -112,8 +112,8 @@
           size: value.isfile ? App.Format.size(value.size) : '-',
           date: App.Format.date(value.ctime),
           owner: value.owner || '-',
-          lock: typeof value.downloading !== 'undefined',
-          download: value.download,
+          lock: value.downloading > 0,
+          download: value.download > 0 ? value.download : null,
           progress: 0
         })
 
