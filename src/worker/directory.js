@@ -59,7 +59,7 @@ Directory.prototype.list = function (dir, cb) {
       })
       .on('end', function () {
         var parent = dir.split('/')
-        if (parent[parent.length - 1] === '' && parent.length > 2) parent.pop()
+        if (parent[parent.length - 1] === '' && parent.length > 1) parent.pop()
         parent = parent[parent.length - 1]
 
         DB.directory.find({
@@ -368,7 +368,11 @@ Directory.prototype.mv = function (path, file, folder, cb) {
             return
           } else {
             var parent = path.split('/')
-            if (parent[parent.length - 1] === '' && parent.length > 2) parent.pop()
+            if (parent[parent.length - 1] === '' && parent.length > 1){
+              parent.pop()
+              parent.pop()
+            }
+            var gp = parent[parent.length - 2] || ""
             parent = parent[parent.length - 1]
 
             DB.directory.update({
@@ -378,7 +382,7 @@ Directory.prototype.mv = function (path, file, folder, cb) {
               $set: {
                 parent: folder == '..'
                   ? parent.length > 1
-                    ? parent[parent.length - 2]
+                    ? gp
                     : ''
                   : folder
               }
