@@ -292,7 +292,7 @@
           } else {
             App.List.addLine({
               name: file.name,
-              href: `${App.hash}${file.name}/`,
+              href: `#${App.hash}${file.name}/`,
               type: 'file',
               extension: 'dir',
               size: App.Format.size(0),
