@@ -77,7 +77,6 @@ function DatabaseServer(port, token){
       var db = body.__database
       delete body.__database
 
-      console.log(body)
       self.databases[db].update(body.query || {},
         body.data || {},
         body.options || {}, function(err){
