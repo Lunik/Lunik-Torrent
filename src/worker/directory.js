@@ -4,7 +4,7 @@ var fs = require('fs-extra')
 var Path = require('path')
 var Database = require(Path.join(__base, 'src/database/client.js'))
 var DB = {
-  directory: new Database('directory', '127.0.0.1', __config.database.port, __DBtoken),
+  directory: new Database('directory', '127.0.0.1', __config.database.port, __DBtoken)
 }
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
@@ -18,13 +18,12 @@ var LogWorker = new Log({
 function Directory () {
   var self = this
 
-
   DB.directory.update({}, {
     $set: {
       downloading: 0
     }
-  }, {}, function(err){
-    if(err){
+  }, {}, function (err) {
+    if (err) {
       LogWorker.error(err)
     }
   })
@@ -44,12 +43,12 @@ Directory.prototype.list = function (dir, cb) {
   var list = function () {
     var childrens = []
     fs.walk(Path.join(__config.directory.path, dir))
-      .on('data', function(child){
-        var reChild = new RegExp(Path.join(__config.directory.path, dir)+'[^\/]*$', 'g')
+      .on('data', function (child) {
+        var reChild = new RegExp(Path.join(__config.directory.path, dir) + '[^\/]*$', 'g')
 
-        if(child.path.match(reChild)){
+        if (child.path.match(reChild)) {
           var name = child.path.split('/')
-          if(name[name.length-1] === '' && parent.length > 2) name.pop()
+          if (name[name.length - 1] === '' && parent.length > 2) name.pop()
           name = name[name.length - 1]
           child.stats.isfile = fs.lstatSync(child.path).isFile()
           child.stats.isdir = fs.lstatSync(child.path).isDirectory()
@@ -58,21 +57,20 @@ Directory.prototype.list = function (dir, cb) {
 
         response.totalSize += child.stats.size
       })
-      .on('end', function(){
+      .on('end', function () {
         var parent = dir.split('/')
-        if(parent[parent.length-1] === '' && parent.length > 2) parent.pop()
+        if (parent[parent.length - 1] === '' && parent.length > 2) parent.pop()
         parent = parent[parent.length - 1]
-
 
         DB.directory.find({
           parent: parent
-        }, function(err, files){
-          if(err){
+        }, function (err, files) {
+          if (err) {
             LogWorker.error(err)
             cb(false)
           } else {
-            for(var f in response.files){
-              if(!files.find(function(e){ return e.name == f && e.parent == parent })){
+            for (var f in response.files) {
+              if (!files.find(function (e) { return e.name == f && e.parent == parent })) {
                 DB.directory.insert({
                   parent: parent,
                   name: f,
@@ -99,10 +97,9 @@ Directory.prototype.setDownloading = function (file, cb) {
   var self = this
   var setDownloading = function () {
     file = file.split('/')
-    if(file[file.length-1] === '' && parent.length > 2) file.pop()
+    if (file[file.length - 1] === '' && parent.length > 2) file.pop()
     var name = file[file.length - 1]
-    var parent = file[file.length - 2] || ""
-
+    var parent = file[file.length - 2] || ''
 
     DB.directory.update({
       name: name,
@@ -112,8 +109,8 @@ Directory.prototype.setDownloading = function (file, cb) {
         download: 1,
         downloading: 1
       }
-    }, {}, function(err){
-      if(err){
+    }, {}, function (err) {
+      if (err) {
         LogWorker.error(err)
         cb(true)
       } else {
@@ -132,10 +129,9 @@ Directory.prototype.finishDownloading = function (file, cb) {
   var self = this
   var finishDownloading = function () {
     file = file.split('/')
-    if(file[file.length-1] === '' && parent.length > 2) file.pop()
+    if (file[file.length - 1] === '' && parent.length > 2) file.pop()
     var name = file[file.length - 1]
     var parent = file[file.length - 2]
-
 
     DB.directory.update({
       name: name,
@@ -144,8 +140,8 @@ Directory.prototype.finishDownloading = function (file, cb) {
       $inc: {
         downloading: -1
       }
-    }, {}, function(err){
-      if(err){
+    }, {}, function (err) {
+      if (err) {
         LogWorker.error(err)
         cb(true)
       } else {
@@ -160,8 +156,8 @@ Directory.prototype.finishDownloading = function (file, cb) {
       $max: {
         downloading: 0
       }
-    }, {}, function(err){
-      if(err){
+    }, {}, function (err) {
+      if (err) {
         LogWorker.error(err)
         cb(false)
       }
@@ -177,31 +173,30 @@ Directory.prototype.finishDownloading = function (file, cb) {
  * @return {bool} - File lock state.
 */
 Directory.prototype.isDownloading = function (file, cb) {
-  var isDownloading = function(){
+  var isDownloading = function () {
     file = file.split('/')
-    if(file[file.length-1] === '' && file.length > 2) file.pop()
+    if (file[file.length - 1] === '' && file.length > 2) file.pop()
     var name = file[file.length - 1]
-    var parent = file[file.length - 2] || ""
-
+    var parent = file[file.length - 2] || ''
 
     DB.directory.find({
       $or: [{
-          name: name,
-          parent: parent
+        name: name,
+        parent: parent
       }, {
         parent: name
       }]
-    }, function(err, files){
-      if(err){
+    }, function (err, files) {
+      if (err) {
         LogWorker.error(err)
         cb(false)
       } else {
-        if(files.length <= 0){
+        if (files.length <= 0) {
           cb(false)
         } else {
           var isdl = false
-          for(var f in files){
-            if(files[f].downloading > 0){
+          for (var f in files) {
+            if (files[f].downloading > 0) {
               isdl = true || isdl
             }
           }
@@ -221,30 +216,29 @@ Directory.prototype.isDownloading = function (file, cb) {
 Directory.prototype.remove = function (file, cb) {
   var self = this
   var remove = function () {
-    self.isDownloading(file, function(isDownloading){
-      if(isDownloading){
+    self.isDownloading(file, function (isDownloading) {
+      if (isDownloading) {
         cb(true)
       } else {
-        fs.remove(Path.join(__config.directory.path, file), function(err){
-          if(err){
+        fs.remove(Path.join(__config.directory.path, file), function (err) {
+          if (err) {
             LogWorker.error(err)
             cb(true)
           } else {
             file = file.split('/')
-            if(file[file.length-1] === '' && file.length > 2) file.pop()
+            if (file[file.length - 1] === '' && file.length > 2) file.pop()
             var name = file[file.length - 1]
             var parent = file[file.length - 2]
 
-
             DB.directory.remove({
               $or: [{
-                  name: name,
-                  parent: parent
+                name: name,
+                parent: parent
               }, {
                 parent: name
               }]
-            }, { multi: true }, function(err){
-              if(err){
+            }, { multi: true }, function (err) {
+              if (err) {
                 LogWorker.error(err)
                 cb(true)
               } else {
@@ -270,8 +264,8 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
   var self = this
 
   var rename = function () {
-    self.isDownloading(Path.join(path, oldname), function(isDownloading){
-      if(isDownloading){
+    self.isDownloading(Path.join(path, oldname), function (isDownloading) {
+      if (isDownloading) {
         cb(true)
       } else {
         fs.rename(Path.join(__config.directory.path, path, oldname), Path.join(__config.directory.path, path, newname), function (err) {
@@ -281,9 +275,8 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
             return
           } else {
             var parent = path.split('/')
-            if(parent[parent.length-1] === '' && parent.length > 2) parent.pop()
+            if (parent[parent.length - 1] === '' && parent.length > 2) parent.pop()
             parent = parent[parent.length - 1]
-
 
             DB.directory.update({
               name: oldname,
@@ -292,20 +285,19 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
               $set: {
                 name: newname
               }
-            }, {}, function(err){
-              if(err){
+            }, {}, function (err) {
+              if (err) {
                 LogWorker.error(err)
                 cb(true)
               } else {
-
                 DB.directory.update({
                   parent: oldname
                 }, {
                   $set: {
                     parent: newname
                   }
-                }, {}, function(err){
-                  if(err){
+                }, {}, function (err) {
+                  if (err) {
                     LogWorker.error(err)
                     cb(true)
                   } else {
@@ -335,9 +327,8 @@ Directory.prototype.mkdir = function (path, name, user) {
         LogWorker.error(err)
       } else {
         var parent = path.split('/')
-        if(parent[parent.length-1] === '' && parent.length > 2) parent.pop()
+        if (parent[parent.length - 1] === '' && parent.length > 2) parent.pop()
         parent = parent[parent.length - 1]
-
 
         DB.directory.insert({
           parent: parent,
@@ -361,8 +352,8 @@ Directory.prototype.mkdir = function (path, name, user) {
 Directory.prototype.mv = function (path, file, folder, cb) {
   var self = this
   var mv = function () {
-    self.isDownloading(Path.join(path, file), function(isDownloading){
-      if(isDownloading){
+    self.isDownloading(Path.join(path, file), function (isDownloading) {
+      if (isDownloading) {
         cb(true)
       } else {
         fs.rename(Path.join(__config.directory.path, path, file), Path.join(__config.directory.path, path, folder, file), function (err) {
@@ -372,24 +363,22 @@ Directory.prototype.mv = function (path, file, folder, cb) {
             return
           } else {
             var parent = path.split('/')
-            if(parent[parent.length-1] === '' && parent.length > 2) parent.pop()
+            if (parent[parent.length - 1] === '' && parent.length > 2) parent.pop()
             parent = parent[parent.length - 1]
-
 
             DB.directory.update({
               name: file,
               parent: parent
             }, {
               $set: {
-                parent: folder == ".."
+                parent: folder == '..'
                   ? parent.length > 1
                     ? parent[parent.length - 2]
-                    : ""
+                    : ''
                   : folder
-
               }
-            }, {}, function(err){
-              if(err){
+            }, {}, function (err) {
+              if (err) {
                 LogWorker.error(err)
                 cb(true)
               } else {
@@ -414,10 +403,9 @@ Directory.prototype.setOwner = function (file, user) {
 
   var setOwner = function () {
     file = file.split('/')
-    if(file[file.length-1] === '' && parent.length > 2) file.pop()
+    if (file[file.length - 1] === '' && parent.length > 2) file.pop()
     var name = file[file.length - 1]
     var parent = file[file.length - 2]
-
 
     DB.directory.update({
       name: name,
@@ -426,8 +414,8 @@ Directory.prototype.setOwner = function (file, user) {
       $set: {
         owner: user
       }
-    }, {}, function(err){
-      if(err){
+    }, {}, function (err) {
+      if (err) {
         LogWorker.error(err)
       }
     })

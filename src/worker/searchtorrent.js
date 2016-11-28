@@ -15,8 +15,7 @@ function SearchTorrent () {}
  * @param {function} callback - Return function with informations.
 */
 SearchTorrent.prototype.search = function (query, callback) {
-
-  var search = function(){
+  var search = function () {
     CpasbienApi.Search(query, {
       scope: 'tvshow',
       language: 'EN'
@@ -47,8 +46,7 @@ SearchTorrent.prototype.search = function (query, callback) {
  * @param {function} callback - Return function with informations.
 */
 SearchTorrent.prototype.latest = function (callback) {
-
-  var latest = function(){
+  var latest = function () {
     CpasbienApi.Latest({
       scope: 'tvshow'
     }).then(function (data1) {

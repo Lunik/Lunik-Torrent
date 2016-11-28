@@ -4,7 +4,7 @@ var fs = require('fs-extra')
 var Path = require('path')
 var Database = require(Path.join(__base, 'src/database/client.js'))
 var DB = {
-  torrent: new Database('torrent', '127.0.0.1', __config.database.port, __DBtoken),
+  torrent: new Database('torrent', '127.0.0.1', __config.database.port, __DBtoken)
 }
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
@@ -20,9 +20,8 @@ var Client = require(Path.join(__base, 'src/worker/client.js'))
 function Torrent () {
   var self = this
 
-
-  DB.torrent.remove({}, { multi: true }, function(err){
-    if(err){
+  DB.torrent.remove({}, { multi: true }, function (err) {
+    if (err) {
       LogWorker.error(err)
     }
   })
@@ -51,18 +50,18 @@ Torrent.prototype.start = function (user, url) {
 
         self.client[url] = c
 
-        c.download(url, function(hash){
+        c.download(url, function (hash) {
           self.client[hash] = c
-        }, function(err, torrent){
+        }, function (err, torrent) {
           delete self.client[url]
           delete self.client[torrent.infoHash]
-          if(err){
+          if (err) {
             LogWorker.error(`Fail downloading: ${url}`)
           } else {
             c.stop()
             LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, torrent.name)} to ${Path.join(__config.directory.path, torrent.name)}`)
-            fs.move(Path.join(__config.torrent.downloads, torrent.name), Path.join(__config.directory.path, torrent.name), function(err){
-              if(err){
+            fs.move(Path.join(__config.torrent.downloads, torrent.name), Path.join(__config.directory.path, torrent.name), function (err) {
+              if (err) {
                 LogWorker.error(err)
               } else {
                 if (self.waitList.length > 0) {
@@ -74,7 +73,6 @@ Torrent.prototype.start = function (user, url) {
             })
           }
         })
-
       } else {
         LogWorker.warning('Too much client. Adding torrent to the waitlist.')
         // On push dans la liste d'attente
@@ -98,7 +96,7 @@ Torrent.prototype.start = function (user, url) {
  * @param {string} hash - Torrent to remove Hash.
 */
 Torrent.prototype.remove = function (hash) {
-  if(this.client[hash]){
+  if (this.client[hash]) {
     this.client[hash].stop()
   }
 }
@@ -129,8 +127,7 @@ Torrent.prototype.startPointTorrent = function (self) {
 }
 
 Torrent.prototype.getInfo = function (cb) {
-
-  DB.torrent.find({}, function(err, files){
+  DB.torrent.find({}, function (err, files) {
     if (err) {
       LogWorker.error(err)
       cb([])
@@ -145,7 +142,5 @@ Torrent.prototype.getInfo = function (cb) {
  * @param {string} user - User who download the torrent.
  * @param {string} url - Torrent url.
 */
-Torrent.prototype.setDownloader = function (user, url) {
-
-}
+Torrent.prototype.setDownloader = function (user, url) {}
 module.exports = new Torrent()

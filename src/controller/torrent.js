@@ -13,7 +13,7 @@ var LogWorker = new Log({
   module: 'Server'
 })
 
-router.get('/torrent', function(req, res){
+router.get('/torrent', function (req, res) {
   res.header('Content-Type', 'application/json')
   res.end(JSON.stringify({
     GET: [
@@ -42,7 +42,7 @@ router.post('/torrent/download', function (req, res) {
 
 // client ask list of torrent active
 router.get('/torrent/list', function (req, res) {
-  Torrent.getInfo(function(data){
+  Torrent.getInfo(function (data) {
     res.end(JSON.stringify(data))
   })
 })

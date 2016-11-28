@@ -3,7 +3,7 @@ var Path = require('path')
 var WebTorrent = require('webtorrent')
 var Database = require(Path.join(__base, 'src/database/client.js'))
 var DB = {
-  torrent: new Database('torrent', '127.0.0.1', __config.database.port, __DBtoken),
+  torrent: new Database('torrent', '127.0.0.1', __config.database.port, __DBtoken)
 }
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
@@ -38,13 +38,13 @@ Client.prototype.download = function (torrentLink, cbStart, cbDone) {
 
     self.client.add(torrentLink, {
       path: __config.torrent.downloads
-    }, function(torrent){
+    }, function (torrent) {
       clearTimeout(timeout)
 
-       LogWorker.info(`Start torrent: ${torrent.name}`)
-       cbStart(torrent.infoHash)
+      LogWorker.info(`Start torrent: ${torrent.name}`)
+      cbStart(torrent.infoHash)
 
-       torrent.on('download', function (chunkSize) {
+      torrent.on('download', function (chunkSize) {
         var currentTime = new Date().getTime()
         if ((currentTime - self.timeout) > __config.client.updateTimeout) {
           // emit update function with torrent infos
@@ -53,7 +53,7 @@ Client.prototype.download = function (torrentLink, cbStart, cbDone) {
         }
       })
 
-      torrent.on('done', function(){
+      torrent.on('done', function () {
         LogWorker.info(`Finish torrent: ${torrent.name}`)
         self.doneFunction(torrent)
         cbDone(null, self.getTorrent(torrent))
@@ -82,14 +82,14 @@ Client.prototype.download = function (torrentLink, cbStart, cbDone) {
 Client.prototype.stop = function () {
   var self = this
 
-  var stop = function(){
+  var stop = function () {
     try {
-      self.client.destroy(function(err){
-        if(err){
+      self.client.destroy(function (err) {
+        if (err) {
           LogWorker.error(err)
         }
       })
-    } catch (err){
+    } catch (err) {
       LogWorker.error(err)
     }
   }
@@ -119,27 +119,25 @@ Client.prototype.getTorrent = function (torrent) {
   return t
 }
 
-Client.prototype.updateFunction = function(torrent){
-  if(torrent){
+Client.prototype.updateFunction = function (torrent) {
+  if (torrent) {
     var torrentInfo = this.getTorrent(torrent)
 
     DB.torrent.find({
       hash: torrentInfo.hash
-    }, function(err, t){
-      if(err){
+    }, function (err, t) {
+      if (err) {
         LogWorker.error(err)
       } else {
-        if(t.length <= 0){
-
+        if (t.length <= 0) {
           DB.torrent.insert(torrentInfo)
         } else {
-
           DB.torrent.update({
             hash: torrentInfo.hash
           }, {
             $set: torrentInfo
-          }, {}, function(err){
-            if(err){
+          }, {}, function (err) {
+            if (err) {
               LogWorker.error(err)
             }
           })
@@ -149,12 +147,12 @@ Client.prototype.updateFunction = function(torrent){
   }
 }
 
-Client.prototype.doneFunction = function(torrent){
-  if(torrent){
+Client.prototype.doneFunction = function (torrent) {
+  if (torrent) {
     DB.torrent.remove({
       hash: torrent.hash
-    }, function(err){
-      if(err){
+    }, function (err) {
+      if (err) {
         LogWorker.error(err)
       }
     })

@@ -21,17 +21,16 @@ function Auth () {
 
 Auth.prototype.login = function (user, pass, cb) {
   var self = this
-  var login = function(){
-
+  var login = function () {
     DB.user.find({
       user: user,
       password: pass
-    }, function(err, res){
-      if(err){
+    }, function (err, res) {
+      if (err) {
         LogWorker.error(err)
         cb(false)
       } else {
-        if(res <= 0){
+        if (res <= 0) {
           cb(false)
         } else {
           var token = self.genToken(user, pass)
@@ -43,8 +42,8 @@ Auth.prototype.login = function (user, pass, cb) {
             $set: {
               token: Crypto.SHA256(token).toString()
             }
-          }, {}, function(err){
-            if(err){
+          }, {}, function (err) {
+            if (err) {
               LogWorker.error(err)
               cb(false)
             } else {
@@ -62,20 +61,18 @@ Auth.prototype.login = function (user, pass, cb) {
 
 Auth.prototype.logout = function (user, token, cb) {
   var self = this
-  var logout = function(){
-
+  var logout = function () {
     DB.user.find({
       user: user,
       token: Crypto.SHA256(token).toString()
-    }, function(err, res){
-      if(err){
+    }, function (err, res) {
+      if (err) {
         LogWorker.error(err)
         cb(false)
       } else {
-        if(res <= 0){
+        if (res <= 0) {
           cb(false)
         } else {
-
           DB.user.update({
             user: user,
             token: Crypto.SHA256(token).toString()
@@ -83,8 +80,8 @@ Auth.prototype.logout = function (user, token, cb) {
             $unset: {
               token: Crypto.SHA256(token).toString()
             }
-          }, {}, function(err){
-            if(err){
+          }, {}, function (err) {
+            if (err) {
               LogWorker.error(err)
               cb(false)
             } else {
@@ -102,26 +99,23 @@ Auth.prototype.logout = function (user, token, cb) {
 
 Auth.prototype.register = function (user, pass, invite, cb) {
   var self = this
-  var register = function(){
-
-    DB.invitation.find({hash: invite}, function(err, res){
-      if(err){
+  var register = function () {
+    DB.invitation.find({hash: invite}, function (err, res) {
+      if (err) {
         LogWorker.error(err)
         cb(false)
       } else {
-        if(res.length <= 0){
+        if (res.length <= 0) {
           cb(false)
         } else {
-
-          DB.user.find({user: user}, function(err, res){
-            if(err){
+          DB.user.find({user: user}, function (err, res) {
+            if (err) {
               LogWorker.error(err)
               cb(false)
             } else {
-              if(res.length > 0){
+              if (res.length > 0) {
                 cb(false)
               } else {
-
                 DB.invitation.remove({hash: invite})
                 var token = self.genToken(user, pass)
 
@@ -129,8 +123,8 @@ Auth.prototype.register = function (user, pass, invite, cb) {
                   user: user,
                   password: pass,
                   token: Crypto.SHA256(token).toString()
-                }, function(err){
-                  if(err){
+                }, function (err) {
+                  if (err) {
                     LogWorker.error(err)
                     cb(false)
                   } else {
@@ -151,20 +145,18 @@ Auth.prototype.register = function (user, pass, invite, cb) {
 
 Auth.prototype.changePass = function (user, pass, newPass, cb) {
   var self = this
-  var changePass = function(){
-
+  var changePass = function () {
     DB.user.find({
       user: user,
       password: pass
-    }, function(err, res){
-      if(err){
+    }, function (err, res) {
+      if (err) {
         LogWorker.error(err)
         cb(false)
-      } else {
-        if(res.length <= 0){
+      } else {
+        if (res.length <= 0) {
           cb(false)
         } else {
-
           DB.user.update({
             user: user,
             password: pass
@@ -172,8 +164,8 @@ Auth.prototype.changePass = function (user, pass, newPass, cb) {
             $set: {
               password: newPass
             }
-          }, {}, function(err){
-            if(err){
+          }, {}, function (err) {
+            if (err) {
               LogWorker.error(err)
               cb(false)
             } else {
@@ -194,12 +186,12 @@ Auth.prototype.checkLogged = function (user, token, cb) {
   DB.user.find({
     user: user,
     token: Crypto.SHA256(token).toString()
-  }, function(err, res){
-    if(err){
+  }, function (err, res) {
+    if (err) {
       LogWorker.error(err)
       cb(false)
     } else {
-      if(res.length <= 0){
+      if (res.length <= 0) {
         cb(false)
       } else {
         cb(true)
@@ -215,12 +207,12 @@ Auth.prototype.genToken = function (user, pass) {
 
 Auth.prototype.createInvite = function (inviteKey, cb) {
   var self = this
-  var createInvite = function(){
+  var createInvite = function () {
     if (inviteKey === __config.server.invitationKey) {
       var invite = self.genToken(Rand.rand(), Rand.rand())
 
-      DB.invitation.insert({hash: invite}, function(err){
-        if(err){
+      DB.invitation.insert({hash: invite}, function (err) {
+        if (err) {
           LogWorker.error(err)
           cb(false)
         } else {
@@ -239,10 +231,9 @@ Auth.prototype.createInvite = function (inviteKey, cb) {
 Auth.prototype.deleteInvite = function (invite, cb) {
   var self = this
 
-  var deleteInvite = function(){
-
-    DB.invitation.remove({hash: invite}, function(err){
-      if(err){
+  var deleteInvite = function () {
+    DB.invitation.remove({hash: invite}, function (err) {
+      if (err) {
         LogWorker.error(err)
         cb(false)
       }

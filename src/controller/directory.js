@@ -9,7 +9,7 @@ var LogWorker = new Log({
   module: 'Server'
 })
 
-router.get('/directory', function(req, res){
+router.get('/directory', function (req, res) {
   res.header('Content-Type', 'application/json')
   res.end(JSON.stringify({
     GET: [
@@ -70,7 +70,7 @@ router.post('/directory/rename', function (req, res) {
     req.body.path = req.body.path.replace(/%20/g, ' ')
     req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
     req.body.newname = req.body.newname.replace(/%20/g, ' ')
-    Directory.rename(req.body.path, req.body.oldname, req.body.newname, function(err){
+    Directory.rename(req.body.path, req.body.oldname, req.body.newname, function (err) {
       if (!err) {
         LogWorker.info(`${req.cookies.user} rename file: ${Path.join(req.body.path, req.body.oldname)} in: ${req.body.newname}`)
         res.end(JSON.stringify({
@@ -116,7 +116,7 @@ router.post('/directory/mv', function (req, res) {
     req.body.path = req.body.path.replace(/%20/g, ' ')
     req.body.file = req.body.file.replace(/%20/g, ' ')
     req.body.folder = req.body.folder.replace(/%20/g, ' ')
-    Directory.mv(req.body.path, req.body.file, req.body.folder, function(error){
+    Directory.mv(req.body.path, req.body.file, req.body.folder, function (error) {
       if (!error) {
         LogWorker.info(`${req.cookies.user} move: ${Path.join(req.body.path, req.body.file)} in: ${Path.join(req.body.path, req.body.folder)}`)
         res.end(JSON.stringify({
@@ -140,7 +140,7 @@ router.post('/directory/mv', function (req, res) {
 router.get('/directory/lock', function (req, res) {
   if (req.query.f) {
     req.query.f = req.query.f.replace(/%20/g, ' ')
-    Directory.isDownloading(req.query.f, function(isdl){
+    Directory.isDownloading(req.query.f, function (isdl) {
       res.end(isdl.toString())
     })
   } else {

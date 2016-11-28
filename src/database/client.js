@@ -8,16 +8,16 @@ var LogWorker = new Log({
   module: 'DatabaseClient'
 })
 
-function DatabaseClient(database, host, port, token){
+function DatabaseClient (database, host, port, token) {
   this.db = database
   this.host = host
   this.port = port
   this.token = token
 }
 
-DatabaseClient.prototype.find = function(query, cb){
+DatabaseClient.prototype.find = function (query, cb) {
   var self = this
-  cb = cb || function(){}
+  cb = cb || function () {}
 
   query['__database'] = self.db
   request.get({
@@ -27,31 +27,31 @@ DatabaseClient.prototype.find = function(query, cb){
     },
     qs: query
   }, function (err, res, body) {
-    if(err || res.statusCode == 403){
-      if(res.statusCode == 403){
+    if (err || res.statusCode == 403) {
+      if (res.statusCode == 403) {
         LogWorker.error('Unauthorized 403')
         cb(null, [])
       } else {
         cb(err, [])
       }
     } else {
-      try{
+      try {
         body = JSON.parse(body)
-        if(body.err){
+        if (body.err) {
           cb(body.err, [])
         } else {
           cb(null, body.data)
         }
-      } catch(err){
+      } catch(err) {
         cb(err, [])
       }
     }
   })
 }
 
-DatabaseClient.prototype.insert = function(data, cb){
+DatabaseClient.prototype.insert = function (data, cb) {
   var self = this
-  cb = cb || function(){}
+  cb = cb || function () {}
 
   data['__database'] = self.db
   request.post({
@@ -60,31 +60,31 @@ DatabaseClient.prototype.insert = function(data, cb){
       Authorization: `${self.token}`
     },
     form: data
-  }, function(err, res, body){
-    if(err || res.statusCode == 403){
-      if(res.statusCode == 403){
+  }, function (err, res, body) {
+    if (err || res.statusCode == 403) {
+      if (res.statusCode == 403) {
         cb('Database request unauthorized 403')
       } else {
         cb(err)
       }
     } else {
-      try{
+      try {
         body = JSON.parse(body)
-        if(body.err){
+        if (body.err) {
           cb(body.err)
         } else {
           cb(null)
         }
-      } catch(err){
+      } catch(err) {
         cb(err)
       }
     }
   })
 }
 
-DatabaseClient.prototype.update = function(query, data, options, cb){
+DatabaseClient.prototype.update = function (query, data, options, cb) {
   var self = this
-  cb = cb || function(){}
+  cb = cb || function () {}
 
   request.post({
     url: `http://${self.host}:${self.port}/api/update`,
@@ -97,31 +97,31 @@ DatabaseClient.prototype.update = function(query, data, options, cb){
       options: options,
       __database: self.db
     }
-  }, function(err, res, body){
-    if(err || res.statusCode == 403){
-      if(res.statusCode == 403){
+  }, function (err, res, body) {
+    if (err || res.statusCode == 403) {
+      if (res.statusCode == 403) {
         cb('Database request unauthorized 403')
       } else {
         cb(err)
       }
     } else {
-      try{
+      try {
         body = JSON.parse(body)
-        if(body.err){
+        if (body.err) {
           cb(body.err)
         } else {
           cb(null)
         }
-      } catch(err){
+      } catch(err) {
         cb(err)
       }
     }
   })
 }
 
-DatabaseClient.prototype.remove = function(query, options, cb){
+DatabaseClient.prototype.remove = function (query, options, cb) {
   var self = this
-  cb = cb || function(){}
+  cb = cb || function () {}
 
   request.post({
     url: `http://${self.host}:${self.port}/api/remove`,
@@ -133,22 +133,22 @@ DatabaseClient.prototype.remove = function(query, options, cb){
       options: options,
       __database: self.db
     }
-  }, function(err, res, body){
-    if(err || res.statusCode == 403){
-      if(res.statusCode == 403){
+  }, function (err, res, body) {
+    if (err || res.statusCode == 403) {
+      if (res.statusCode == 403) {
         cb('Database request unauthorized 403')
       } else {
         cb(err)
       }
     } else {
-      try{
+      try {
         body = JSON.parse(body)
-        if(body.err){
+        if (body.err) {
           cb(body.err)
         } else {
           cb(null)
         }
-      } catch(err){
+      } catch(err) {
         cb(err)
       }
     }

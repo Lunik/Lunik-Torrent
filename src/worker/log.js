@@ -36,9 +36,10 @@ Log.prototype.error = function (text) {
 */
 Log.prototype.save = function (text) {
   var self = this
-  var save = function(){
+  var save = function () {
     var name = Path.join(__config.log.path, `log-${(new Date()).getDate()}-${((new Date()).getMonth() + 1)}`)
-    fs.appendFile(name, `[${getDate()}] ${text}\n`, 'utf8', function (err) {
+    fs.appendFile(name, `[${getDate()}] ${text}
+`, 'utf8', function (err) {
       if (err) self.echo(`${colors.red.bold('[Error] ')}${err}`)
     })
   }
@@ -53,7 +54,7 @@ Log.prototype.echo = function (text) {
   console.log(text)
 }
 
-Log.prototype.trace = function(text){
+Log.prototype.trace = function (text) {
   console.log(text)
   console.trace()
 }
@@ -62,7 +63,7 @@ function getDate () {
   return formatDateNumbers(`${formatDateNumbers(date.getDate())}/${formatDateNumbers(date.getMonth() + 1)}/${formatDateNumbers(date.getFullYear())} ${formatDateNumbers(date.getHours())}:${formatDateNumbers(date.getMinutes())}:${formatDateNumbers(date.getSeconds())}`)
 }
 
-function formatDateNumbers(num){
+function formatDateNumbers (num) {
   num = num.toString()
   while (num.length < 2) {
     num = `0${num}`

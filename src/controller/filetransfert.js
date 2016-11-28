@@ -14,14 +14,14 @@ router.get('/files', function (req, res) {
   if (req.query.f) {
     req.query.f = req.query.f.split('..').join('')
     LogWorker.info(`${req.cookies.user} download file: ${req.query.f}`)
-    Directory.setDownloading(req.query.f, function(err){
-      if(err){
+    Directory.setDownloading(req.query.f, function (err) {
+      if (err) {
         LogWorker.error(err)
         res.end()
       } else {
         var transfert = new FileTransfert(req, res, function () {
-          Directory.finishDownloading(req.query.f, function(err){
-            if(err){
+          Directory.finishDownloading(req.query.f, function (err) {
+            if (err) {
               LogWorker.error(err)
             }
           })

@@ -5,7 +5,7 @@ var router = express.Router()
 var Auth = require(Path.join(__base, 'src/worker/auth'))
 
 router.use(function (req, res, next) {
-  Auth.checkLogged(req.cookies.user, req.cookies.token, function(isLogged){
+  Auth.checkLogged(req.cookies.user, req.cookies.token, function (isLogged) {
     if (req.url === '/login.html' || req.url.match(/\/invitation\?invitationkey=.*/g) || req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)) {
       if (req.url === '/login.html' && req.cookies && isLogged) {
         res.redirect('/')
@@ -22,7 +22,7 @@ router.use(function (req, res, next) {
   })
 })
 
-router.get('/auth', function(req, res){
+router.get('/auth', function (req, res) {
   res.end(JSON.stringify({
     POST: [
       'login',
@@ -34,7 +34,7 @@ router.get('/auth', function(req, res){
   }))
 })
 
-router.post('/auth/login', function(req, res){
+router.post('/auth/login', function (req, res) {
   var data = {
     user: req.body.user || req.cookies.user,
     pass: req.body.pass
@@ -61,7 +61,7 @@ router.post('/auth/login', function(req, res){
   }
 })
 
-router.post('/auth/logout', function(req, res){
+router.post('/auth/logout', function (req, res) {
   var data = {
     user: req.body.user || req.cookies.user,
     token: req.body.token || req.cookies.token
@@ -85,7 +85,7 @@ router.post('/auth/logout', function(req, res){
   }
 })
 
-router.post('/auth/register', function(req, res){
+router.post('/auth/register', function (req, res) {
   var data = {
     user: req.body.user || req.cookies.user,
     pass: req.body.pass,
@@ -113,7 +113,7 @@ router.post('/auth/register', function(req, res){
   }
 })
 
-router.post('/auth/invite', function(req, res){
+router.post('/auth/invite', function (req, res) {
   var data = {
     invitationKey: req.body.invitationkey
   }
@@ -137,7 +137,7 @@ router.post('/auth/invite', function(req, res){
   }
 })
 
-router.post('/auth/changepass', function(req, res){
+router.post('/auth/changepass', function (req, res) {
   var data = {
     user: req.body.user || req.cookies.user,
     oldpass: req.body.oldpass,
