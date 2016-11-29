@@ -14,7 +14,7 @@ var LogWorker = new Log({
 function parseJSON (json) {
   json = JSON.stringify(json)
   return JSON.parse(json, function (k, v) {
-    return (typeof v === 'object' || isNaN(v) || v === '') ? v : parseInt(v, 10)
+    return (typeof v === 'object' || isNaN(v) || v === '') ? v : parseFloat(v, 10)
   })
 }
 
