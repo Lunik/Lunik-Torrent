@@ -81,6 +81,10 @@ a {
   transition: left 0.3s ease-out;
 }
 
+.left-menu .new, .left-menu .search, .left-menu .start{
+  color: #EEE;
+}
+
 .left-menu .menu i.open {
   background-color: #151515;
 }
