@@ -31,14 +31,14 @@
     "fs-extra": "^1.0.0",
     "nedb": "^1.8.0",
     "request": "^2.79.0",
-    "webtorrent": "^0.97.1"
+    "webtorrent": "^0.98.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
     "nodemon": "^1.10.0",
-    "request": "^2.74.0"
+    "request": "^2.79.0"
   },
   "standard": {
     "ignore": [
