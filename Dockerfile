@@ -1,4 +1,4 @@
-FROM node:onbuild
+FROM lunik/node-alpine-onbuild:latest
 
 RUN npm run postinstall
 
