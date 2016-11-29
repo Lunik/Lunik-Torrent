@@ -259,6 +259,18 @@ describe('Backend', function () {
       })
       it('genInvite + register + login + changePass + logout', function (done) {
         // gentoken
+        request.get({
+          url: url + '/auth/invite',
+          qs: {
+            invitationkey: __config.server.invitationKey
+          }
+        }, function (err, res, body) {
+          assert(!err)
+          if (!err && res.statusCode == 200) {
+            var invite = JSON.parse(body).invitationCode
+            assert(invite)
+          }
+        })
         request.post({
           url: url + '/auth/invite',
           form: {
