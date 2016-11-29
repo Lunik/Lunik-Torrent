@@ -83,6 +83,7 @@ Client.prototype.stop = function () {
   var self = this
 
   var stop = function () {
+    self.doneFunction(self.client.torrents[0])
     try {
       self.client.destroy(function (err) {
         if (err) {
