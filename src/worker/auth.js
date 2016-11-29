@@ -130,6 +130,7 @@ Auth.prototype.register = function (user, pass, invite, cb) {
                   } else {
                     LogWorker.info(`${user} register with invitation: ${invite}.`)
                     cb(token)
+                    self.deleteInvite(invite)
                   }
                 })
               }
