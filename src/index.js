@@ -13,7 +13,7 @@ var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
 var Directory = require(Path.join(__base, 'src/worker/directory.js'))
 var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
 var Auth = require(Path.join(__base, 'src/worker/auth.js'))
-var SearchEngine = require(Path.join(__base, 'src/worker/SearchTorrent.js'))
+var SearchEngine = require(Path.join(__base, 'src/worker/searchTorrent.js'))
 var InfoEngine = require(Path.join(__base, 'src/worker/mediaInfo.js'))
 
 Torrent.Directory = Directory
