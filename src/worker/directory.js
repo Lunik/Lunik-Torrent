@@ -230,9 +230,9 @@ Directory.prototype.isDownloading = function (file) {
 Directory.prototype.remove = function (file, cb) {
   var self = this
   var remove = function () {
-    if (self.isDownloading(file)){
-        cb(-1)
-        return
+    if (self.isDownloading(file)) {
+      cb(-1)
+      return
     }
     fs.stat(Path.join(__base, __config.directory.path, file), function (err, stats) {
       if (err) {
@@ -274,7 +274,7 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
   var self = this
 
   var rename = function () {
-    if (self.isDownloading(Path.join(path, oldname))){
+    if (self.isDownloading(Path.join(path, oldname))) {
       cb(-1)
       return
     }
@@ -284,6 +284,8 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
         cb(-1)
         return
       }
+      // If dir modify also all file in this dir
+
       var oldfile = Path.join(path, oldname)
       oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
 
@@ -329,7 +331,7 @@ Directory.prototype.mkdir = function (path, name) {
 Directory.prototype.mv = function (path, file, folder, cb) {
   var self = this
   var mv = function () {
-    if (self.isDownloading(Path.join(path, file))){
+    if (self.isDownloading(Path.join(path, file))) {
       cb(-1)
       return
     }
@@ -341,6 +343,21 @@ Directory.prototype.mv = function (path, file, folder, cb) {
       } else {
         cb()
       }
+      // If dir modify also all file in this dir
+
+      var oldfile = Path.join(path, file)
+      oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
+
+      var newfile = Path.join(path, folder, file)
+      newfile = newfile[0] === '/' ? newfile.substring(1) : newfile
+
+      self.fileInfo[newfile] = self.fileInfo[oldfile]
+      delete self.fileInfo[oldfile]
+
+      self.saveFileInfo()
+
+      cb()
+      return
     })
   }
   setTimeout(mv)
@@ -373,7 +390,7 @@ Directory.prototype.setOwner = function (file, user) {
 Directory.prototype.loadFileInfo = function () {
   var self = this
 
-  var loadFileInfo = function(){
+  var loadFileInfo = function () {
     var fileInfo
     try {
       fileInfo = require(Path.join(__base, 'data/fileInfo.json'))
@@ -397,7 +414,7 @@ Directory.prototype.loadFileInfo = function () {
 Directory.prototype.saveFileInfo = function () {
   var self = this
 
-  var saveFileInfo = function(){
+  var saveFileInfo = function () {
     if (!self.saving) {
       self.saving = true
       fs.writeFile(Path.join(__base, 'data/fileInfo.json'), JSON.stringify(self.fileInfo), function (err) {
@@ -418,8 +435,7 @@ Directory.prototype.saveFileInfo = function () {
  * @param {string} path - Directory to remove.
 */
 function removeRecursif (path) {
-
-  var removeRecursif = function(){
+  var removeRecursif = function () {
     if (fs.existsSync(path)) {
       fs.readdirSync(path).forEach(function (file, index) {
         var curPath = Path.join(path, file)
