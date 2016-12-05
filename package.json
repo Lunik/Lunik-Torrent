@@ -27,7 +27,8 @@
     "express": "^4.14.0",
     "forever": "^0.15.2",
     "webtorrent": "^0.98.0",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "cherrio": "^0.22.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
