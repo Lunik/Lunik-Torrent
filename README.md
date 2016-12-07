@@ -1,4 +1,5 @@
 # Lunik-Torrent
+[![Rocket.Chat](http://chat.lunik.xyz/images/join-chat.svg)](http://chat.lunik.xyz/channel/lunik-torrent)
 [![npm](https://img.shields.io/npm/v/lunik-torrent.svg)](https://www.npmjs.com/package/lunik-torrent)
 [![Travis branch](https://img.shields.io/travis/Lunik/Lunik-Torrent/master.svg)](https://travis-ci.org/Lunik/Lunik-Torrent)
 [![Codecov branch](https://img.shields.io/codecov/c/github/Lunik/Lunik-Torrent/master.svg)](https://codecov.io/gh/Lunik/Lunik-Torrent)
