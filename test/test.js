@@ -205,8 +205,7 @@ describe('Backend', function () {
       it('Search: Game of thrones', function (done) {
         SearchT.search('Game of Thrones', function (res) {
           assert.typeOf(res, 'object')
-          assert(res.tven)
-          assert(res.tvfr)
+          assert(res.tv)
           assert(res.mv)
           done()
         })
