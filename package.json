@@ -18,15 +18,15 @@
   "dependencies": {
     "allocine-api": "^0.1.9",
     "body-parser": "^1.15.2",
-    "bower": "^1.7.9",
     "cluster": "^0.7.7",
+    "bower": "^1.8.0",
     "colors": "^1.1.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
-    "crypto-js": "^3.1.7",
+    "crypto-js": "^3.1.8",
     "crypto-rand": "0.0.2",
     "express": "^4.14.0",
-    "forever": "^0.15.2",
+    "forever": "^0.15.3",
     "fs-extra": "^1.0.0",
     "nedb": "^1.8.0",
     "request": "^2.79.0",
@@ -35,9 +35,9 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "istanbul": "^0.4.4",
-    "mocha": "^3.0.2",
-    "nodemon": "^1.10.0"
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0"
   },
   "standard": {
     "ignore": [
