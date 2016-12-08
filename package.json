@@ -26,14 +26,15 @@
     "crypto-rand": "0.0.2",
     "express": "^4.14.0",
     "forever": "^0.15.2",
-    "webtorrent": "^0.98.0"
+    "webtorrent": "^0.98.0",
+    "request": "^2.79.0",
+    "cheerio": "^0.22.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
-    "nodemon": "^1.10.0",
-    "request": "^2.79.0"
+    "nodemon": "^1.10.0"
   },
   "standard": {
     "ignore": [
