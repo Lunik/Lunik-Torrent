@@ -4,6 +4,11 @@ var fs = require('fs')
 var Path = require('path')
 var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
+var Database = require(Path.join(__base, 'src/database/client.js'))
+var DB = {
+  user: new Database('user', '127.0.0.1', __config.database.port, __DBtoken),
+  invitation: new Database('invitation', '127.0.0.1', __config.database.port, __DBtoken)
+}
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
@@ -12,38 +17,43 @@ var LogWorker = new Log({
 
 function Auth () {
   var self = this
-  var passwords
-  try {
-    passwords = require(Path.join(__base, 'data/passwords.json'))
-  } catch (e) {
-    passwords = {}
-    self.savePasswords()
-  } finally {
-    self.passwords = passwords
-  }
-
-  this.invites = []
 }
 
 Auth.prototype.login = function (user, pass, cb) {
   var self = this
-  var login = function(){
-    if (self.passwords[user] && self.passwords[user].pass === pass) {
-      LogWorker.info(`${user} login.`)
-      if (typeof self.passwords[user].token === 'undefined') {
-        self.passwords[user].token = []
+  var login = function () {
+    DB.user.find({
+      user: user,
+      password: pass
+    }, function (err, res) {
+      if (err) {
+        LogWorker.error(err)
+        cb(false)
+      } else {
+        if (res <= 0) {
+          cb(false)
+        } else {
+          var token = self.genToken(user, pass)
+
+          DB.user.update({
+            user: user,
+            password: pass
+          }, {
+            $set: {
+              token: Crypto.SHA256(token).toString()
+            }
+          }, {}, function (err) {
+            if (err) {
+              LogWorker.error(err)
+              cb(false)
+            } else {
+              LogWorker.info(`${user} login.`)
+              cb(token)
+            }
+          })
+        }
       }
-      var token = self.genToken(user, pass)
-      self.passwords[user].token.push(Crypto.SHA256(token).toString())
-      var length = self.passwords[user].token.length
-      if (length > 10) {
-        self.passwords[user].token = self.passwords[user].token.slice(length - 10, length);
-      }
-      self.savePasswords()
-      cb(token)
-    } else {
-      cb(false)
-    }
+    })
   }
 
   setTimeout(login)
@@ -51,15 +61,37 @@ Auth.prototype.login = function (user, pass, cb) {
 
 Auth.prototype.logout = function (user, token, cb) {
   var self = this
-  var logout = function(){
-    LogWorker.info(`${user} logout.`)
-    var encryptedToken = Crypto.SHA256(token).toString()
-    if (self.passwords[user] && self.passwords[user].token && self.passwords[user].token.indexOf(encryptedToken) !== -1) {
-      delete self.passwords[user].token.splice(self.passwords[user].token.indexOf(encryptedToken), 1)
-      cb(true)
-    } else {
-      cb(false)
-    }
+  var logout = function () {
+    DB.user.find({
+      user: user,
+      token: Crypto.SHA256(token).toString()
+    }, function (err, res) {
+      if (err) {
+        LogWorker.error(err)
+        cb(false)
+      } else {
+        if (res <= 0) {
+          cb(false)
+        } else {
+          DB.user.update({
+            user: user,
+            token: Crypto.SHA256(token).toString()
+          }, {
+            $unset: {
+              token: Crypto.SHA256(token).toString()
+            }
+          }, {}, function (err) {
+            if (err) {
+              LogWorker.error(err)
+              cb(false)
+            } else {
+              LogWorker.info(`${user} logout.`)
+              cb(true)
+            }
+          })
+        }
+      }
+    })
   }
 
   setTimeout(logout)
@@ -67,21 +99,46 @@ Auth.prototype.logout = function (user, token, cb) {
 
 Auth.prototype.register = function (user, pass, invite, cb) {
   var self = this
-  var register = function(){
-    if (self.invites.indexOf(invite) !== -1 && typeof self.passwords[user] === 'undefined') {
-      LogWorker.info(`${user} register with invitation: ${invite}.`)
-      self.deleteInvite(invite)
-      var token = self.genToken(user, pass)
-      self.passwords[user] = {
-        pass: pass,
-        token: [Crypto.SHA256(token).toString()]
-      }
-      self.savePasswords()
+  var register = function () {
+    DB.invitation.find({hash: invite}, function (err, res) {
+      if (err) {
+        LogWorker.error(err)
+        cb(false)
+      } else {
+        if (res.length <= 0) {
+          cb(false)
+        } else {
+          DB.user.find({user: user}, function (err, res) {
+            if (err) {
+              LogWorker.error(err)
+              cb(false)
+            } else {
+              if (res.length > 0) {
+                cb(false)
+              } else {
+                DB.invitation.remove({hash: invite})
+                var token = self.genToken(user, pass)
 
-      cb(token)
-    } else {
-      cb(false)
-    }
+                DB.user.insert({
+                  user: user,
+                  password: pass,
+                  token: Crypto.SHA256(token).toString()
+                }, function (err) {
+                  if (err) {
+                    LogWorker.error(err)
+                    cb(false)
+                  } else {
+                    LogWorker.info(`${user} register with invitation: ${invite}.`)
+                    cb(token)
+                    self.deleteInvite(invite)
+                  }
+                })
+              }
+            }
+          })
+        }
+      }
+    })
   }
 
   setTimeout(register)
@@ -89,27 +146,59 @@ Auth.prototype.register = function (user, pass, invite, cb) {
 
 Auth.prototype.changePass = function (user, pass, newPass, cb) {
   var self = this
-  var changePass = function(){
-    if (self.passwords[user] && self.passwords[user].pass === pass) {
-      LogWorker.info(`${user} change his password.`)
-      self.passwords[user].pass = newPass
-      self.savePasswords()
-      cb(true)
-    } else {
-      cb(false)
-    }
+  var changePass = function () {
+    DB.user.find({
+      user: user,
+      password: pass
+    }, function (err, res) {
+      if (err) {
+        LogWorker.error(err)
+        cb(false)
+      } else {
+        if (res.length <= 0) {
+          cb(false)
+        } else {
+          DB.user.update({
+            user: user,
+            password: pass
+          }, {
+            $set: {
+              password: newPass
+            }
+          }, {}, function (err) {
+            if (err) {
+              LogWorker.error(err)
+              cb(false)
+            } else {
+              cb(true)
+            }
+          })
+        }
+      }
+    })
   }
 
   setTimeout(changePass)
 }
 
-Auth.prototype.checkLogged = function (user, token) {
+Auth.prototype.checkLogged = function (user, token, cb) {
   var encryptedToken = Crypto.SHA256(token).toString()
-  if (this.passwords[user] && this.passwords[user].token && this.passwords[user].token.indexOf(encryptedToken) !== -1) {
-    return true
-  } else {
-    return false
-  }
+
+  DB.user.find({
+    user: user,
+    token: Crypto.SHA256(token).toString()
+  }, function (err, res) {
+    if (err) {
+      LogWorker.error(err)
+      cb(false)
+    } else {
+      if (res.length <= 0) {
+        cb(false)
+      } else {
+        cb(true)
+      }
+    }
+  })
 }
 
 Auth.prototype.genToken = function (user, pass) {
@@ -117,33 +206,21 @@ Auth.prototype.genToken = function (user, pass) {
   return Crypto.SHA256(seed).toString()
 }
 
-/**
- * Save passwords.fileInfo into data/fileInfo.json.
-*/
-Auth.prototype.savePasswords = function () {
-  var self = this
-
-  var savePasswords = function(){
-    var passwords = JSON.parse(JSON.stringify(self.passwords))
-    fs.writeFile('data/passwords.json', JSON.stringify(passwords), function (err) {
-      if (err) {
-        LogWorker.error(err)
-        return
-      }
-    })
-  }
-
-  setTimeout(savePasswords)
-}
-
 Auth.prototype.createInvite = function (inviteKey, cb) {
   var self = this
-  var createInvite = function(){
+  var createInvite = function () {
     if (inviteKey === __config.server.invitationKey) {
       var invite = self.genToken(Rand.rand(), Rand.rand())
-      LogWorker.info(`Invite generated: ${invite}.`)
-      self.invites.push(invite)
-      cb(invite)
+
+      DB.invitation.insert({hash: invite}, function (err) {
+        if (err) {
+          LogWorker.error(err)
+          cb(false)
+        } else {
+          LogWorker.info(`Invite generated: ${invite}.`)
+          cb(invite)
+        }
+      })
     } else {
       cb(false)
     }
@@ -155,11 +232,13 @@ Auth.prototype.createInvite = function (inviteKey, cb) {
 Auth.prototype.deleteInvite = function (invite, cb) {
   var self = this
 
-  var deleteInvite = function(){
-    var index = self.invites.indexOf(invite)
-    if (index !== -1) {
-      self.invites.splice(index, 1)
-    }
+  var deleteInvite = function () {
+    DB.invitation.remove({hash: invite}, function (err) {
+      if (err) {
+        LogWorker.error(err)
+        cb(false)
+      }
+    })
   }
 
   setTimeout(deleteInvite)

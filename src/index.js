@@ -9,22 +9,17 @@ var Config = require(Path.join(__base, 'src/worker/config.js'))
 var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(Path.join(__base, 'configs/config.json'))
 
-var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
-var Directory = require(Path.join(__base, 'src/worker/directory.js'))
-var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
-var Auth = require(Path.join(__base, 'src/worker/auth.js'))
-var SearchEngine = require(Path.join(__base, 'src/worker/searchTorrent.js'))
-var InfoEngine = require(Path.join(__base, 'src/worker/mediaInfo.js'))
+var cluster = require('cluster')
+var numCPUs = require('os').cpus().length
 
-Torrent.Directory = Directory
+var Rand = require('crypto-rand')
+var Crypto = require('crypto-js')
+var token = Crypto.SHA256(Rand.rand().toString()).toString()
+global.__DBtoken = token
 
-var Server = require(Path.join(__base, 'src/worker/server.js'))
+var Database = require(Path.join(__base, 'src/database/server.js'))
+var DBPort = process.env.DB_PORT || __config.database.port
+var DB = new Database(DBPort, token)
 
-var ServerWorker = new Server({
-  Torrent: Torrent,
-  Directory: Directory,
-  FileTransfert: FileTransfert,
-  Auth: Auth,
-  SearchEngine: SearchEngine,
-  InfoEngine: InfoEngine
-})
+var Server = require(Path.join(__base, 'src/controller/main.js'))
+var ServerWorker = new Server()

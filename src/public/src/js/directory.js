@@ -51,8 +51,8 @@
   _Directory.prototype.getDir = function (cb) {
     App.Loading.show('action')
     $.ajax({
-      type: 'post',
-      url: '/list-d',
+      type: 'get',
+      url: '/directory/list',
       data: {
         dir: App.hash || '/'
       },
@@ -93,7 +93,7 @@
       name: '..',
       href: `#${previousDir}`,
       type: 'file',
-      size: App.Format.size(0),
+      size: '-',
       date: App.Format.date(new Date()),
       owner: '-',
       extension: 'dir',
@@ -109,11 +109,11 @@
           url: encodeURI(`${window.location.host}/files/?f=${document.location.hash.substring(1)}${index}`),
           type: 'file',
           extension: App.Format.extention(value),
-          size: App.Format.size(value.size),
+          size: value.isfile ? App.Format.size(value.size) : '-',
           date: App.Format.date(value.ctime),
           owner: value.owner || '-',
-          lock: typeof value.downloading !== 'undefined',
-          download: value.download,
+          lock: value.downloading > 0,
+          download: value.download > 0 ? value.download : null,
           progress: 0
         })
 
@@ -185,7 +185,7 @@
       name = `${name.split('/').pop()}${extension}`
       $.ajax({
         type: 'post',
-        url: '/rename-d',
+        url: '/directory/rename',
         data: {
           'path': App.hash || '/',
           'oldname': fileName,
@@ -230,7 +230,7 @@
     if (confirm(`Confirmer la suppression de ${fileName} ?`)) {
       $.ajax({
         type: 'post',
-        url: '/remove-d',
+        url: '/directory/remove',
         data: {
           file: `${App.hash}${fileName}`
         },
@@ -275,7 +275,7 @@
     if (name) {
       $.ajax({
         type: 'post',
-        url: '/mkdir-d',
+        url: '/directory/mkdir',
         data: {
           'path': App.hash || '/',
           'name': name
@@ -292,7 +292,7 @@
           } else {
             App.List.addLine({
               name: file.name,
-              href: `${App.hash}${file.name}/`,
+              href: `#${App.hash}${file.name}/`,
               type: 'file',
               extension: 'dir',
               size: App.Format.size(0),

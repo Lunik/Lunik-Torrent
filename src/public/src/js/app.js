@@ -75,6 +75,9 @@ var App
 
         // on hash change set hash and reload directory
         $(window).bind('hashchange', function () {
+          $('.list .file').removeClass('selected')
+          $('.list .torrent').removeClass('selected')
+          
           self.hash = document.location.hash.substring(1)
           if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
             self.hash += '/'

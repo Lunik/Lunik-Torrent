@@ -12,24 +12,34 @@ var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
 global.__config.server.port = process.env.PORT || global.__config.server.port
 
+var Rand = require('crypto-rand')
+var Crypto = require('crypto-js')
+var token = Crypto.SHA256(Rand.rand().toString()).toString()
+
+global.__DBtoken = token
+
+var Database = require(path.join(__base, 'src/database/server.js'))
+var DBPort = process.env.DB_PORT || global.__config.database.port
+var DB = new Database(DBPort, token)
+
 var assert = require('chai').assert
 
 describe('Fontend', function () {})
 
 describe('Backend', function () {
-  describe('Log', function(){
+  describe('Log', function () {
     var Log = require(path.join(__base, 'src/worker/log.js'))
     var LogWorker = new Log()
     var LogWorker2 = new Log({})
-    it('Log info', function(done){
+    it('Log info', function (done) {
       LogWorker.info('This is an info.')
       done()
     })
-    it('Log warning', function(done){
+    it('Log warning', function (done) {
       LogWorker.warning('This is a warning.')
       done()
     })
-    it('Log error', function(done){
+    it('Log error', function (done) {
       LogWorker.error('This is an error.')
       done()
     })
@@ -41,13 +51,13 @@ describe('Backend', function () {
     var Auth = require(path.join(__base, 'src/worker/auth.js'))
     describe('createInvite()', function () {
       it('Invite key: ' + __config.server.invitationKey, function (done) {
-        Auth.createInvite(__config.server.invitationKey, function(invite){
+        Auth.createInvite(__config.server.invitationKey, function (invite) {
           assert.typeOf(invite, 'string')
           done()
         })
       })
       it('Invite key: Unknown', function (done) {
-        Auth.createInvite('', function(invite){
+        Auth.createInvite('', function (invite) {
           assert(!invite)
           done()
         })
@@ -55,23 +65,23 @@ describe('Backend', function () {
     })
     describe('Register()', function () {
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
-        Auth.createInvite(__config.server.invitationKey, function(invite){
-          Auth.register(username, 'bar', invite, function(token){
+        Auth.createInvite(__config.server.invitationKey, function (invite) {
+          Auth.register(username, 'bar', invite, function (token) {
             assert.typeOf(token, 'string')
             done()
           })
         })
       })
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
-        Auth.createInvite(__config.server.invitationKey, function(invite){
-          Auth.register(username, 'bar', invite, function(token){
+        Auth.createInvite(__config.server.invitationKey, function (invite) {
+          Auth.register(username, 'bar', invite, function (token) {
             assert(!token)
             done()
           })
         })
       })
       it('User: foo, Pass: bar, Invite: Invalid invitation', function (done) {
-        Auth.register(username2, 'bar', '', function(token){
+        Auth.register(username2, 'bar', '', function (token) {
           assert(!token)
           done()
         })
@@ -79,19 +89,19 @@ describe('Backend', function () {
     })
     describe('Loggin()', function () {
       it('User: foo, Pass: bar', function (done) {
-        Auth.login(username, 'bar', function(token){
+        Auth.login(username, 'bar', function (token) {
           assert.typeOf(token, 'string')
           done()
         })
       })
       it('User: Unknown, Pass: bar', function (done) {
-        Auth.login(username2, 'bar', function(token){
+        Auth.login(username2, 'bar', function (token) {
           assert(!token)
           done()
         })
       })
       it('User: foo, Pass: Wrong', function (done) {
-        Auth.login(username, 'test', function(token){
+        Auth.login(username, 'test', function (token) {
           assert(!token)
           done()
         })
@@ -99,23 +109,22 @@ describe('Backend', function () {
     })
     describe('Logout()', function () {
       it('User: foo, Token: valid', function (done) {
-        Auth.login(username, 'bar', function(token){
-          Auth.logout(username, token, function(loggedOut){
+        Auth.login(username, 'bar', function (token) {
+          Auth.logout(username, token, function (loggedOut) {
             assert(loggedOut)
             done()
           })
         })
       })
       it('User: Unknown, Token: valid', function (done) {
-          Auth.logout(username2, '', function(loggedOut){
-            assert(!loggedOut)
-            done()
-          })
-
+        Auth.logout(username2, '', function (loggedOut) {
+          assert(!loggedOut)
+          done()
+        })
       })
       it('User: foo, Token: invalid', function (done) {
-        Auth.login(username, 'bar', function(token){
-          Auth.logout(username, token + '1', function(loggedOut){
+        Auth.login(username, 'bar', function (token) {
+          Auth.logout(username, token + '1', function (loggedOut) {
             assert(!loggedOut)
             done()
           })
@@ -124,25 +133,25 @@ describe('Backend', function () {
     })
     describe('ChangePass()', function () {
       it('Change password User: foo, OldPass: bar, NewPass: rab', function (done) {
-        Auth.changePass(username, 'bar', 'rab', function(passwordChanged){
+        Auth.changePass(username, 'bar', 'rab', function (passwordChanged) {
           assert(passwordChanged)
           done()
         })
       })
       it('Change password User: Unknown, OldPass: bar, NewPass: rab', function (done) {
-        Auth.changePass(username2, 'bar', 'rab', function(passwordChanged){
+        Auth.changePass(username2, 'bar', 'rab', function (passwordChanged) {
           assert(!passwordChanged)
           done()
         })
       })
       it('Change password User: foo, OldPass: Wrong, NewPass: rab', function (done) {
-        Auth.changePass(username, 'bar1', 'rab', function(passwordChanged){
+        Auth.changePass(username, 'bar1', 'rab', function (passwordChanged) {
           assert(!passwordChanged)
           done()
         })
       })
       it('Change password User: foo, OldPass: rad, NewPass: bar', function (done) {
-        Auth.changePass(username, 'rab', 'bar', function(passwordChanged){
+        Auth.changePass(username, 'rab', 'bar', function (passwordChanged) {
           assert(passwordChanged)
           done()
         })
@@ -150,14 +159,18 @@ describe('Backend', function () {
     })
     describe('CheckLogged()', function () {
       it('User: foo', function (done) {
-        Auth.login(username, 'bar', function(token){
-          assert(Auth.checkLogged(username, token))
-          done()
+        Auth.login(username, 'bar', function (token) {
+          Auth.checkLogged(username, token, function (isLogged) {
+            assert(isLogged)
+            done()
+          })
         })
       })
       it('User: Unknown', function (done) {
-        assert(!Auth.checkLogged(username2, ''))
-        done()
+        Auth.checkLogged(username2, '', function (isLogged) {
+          assert(!isLogged)
+          done()
+        })
       })
     })
   })
@@ -185,8 +198,8 @@ describe('Backend', function () {
       })
     })
   })
-  describe('SearchT', function () {
-    var SearchT = require(path.join(__base, 'src/worker/searchTorrent.js'))
+  describe('SearchTorrent', function () {
+    var SearchT = require(path.join(__base, 'src/worker/searchtorrent.js'))
     describe('Search()', function () {
       this.timeout(30000)
       it('Search: Game of thrones', function (done) {
@@ -213,47 +226,28 @@ describe('Backend', function () {
   describe('Client', function () {
     var Client = require(path.join(__base, 'src/worker/client.js'))
     var ClientWorker = new Client()
-    describe('On()', function () {
-      it('Add startFunction', function (done) {
-        ClientWorker.on('start', function (hash) {
-          assert.typeOf(hash, 'string')
-        })
-        done()
-      })
-      it('Add updateFunction', function (done) {
-        ClientWorker.on('download', function (torrent) {
-          assert.typeOf(torrent, 'object')
-          assert.typeOf(torrent.name, 'string')
-        })
-        done()
-      })
-      it('Add doneFunction', function (done) {
-        ClientWorker.on('done', function (err, hash, name) {
-          assert(!err)
-          assert.typeOf(hash, 'string')
-          assert.typeOf(name, 'string')
-        })
-        done()
-      })
-    })
     describe('Dowload()', function () {
       this.timeout(305000)
       it('Dowload ubuntu', function (done) {
-        ClientWorker.on('done', function (err, hash, name) {
-          ClientWorker.stop()
-          done()
-        })
-        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511', function(){})
+        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511',
+          function (hash) {
+            assert.equal(hash, '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
+          }, function () {
+            ClientWorker.stop()
+            done()
+          })
       })
     })
   })
   describe('Server', function () {
-    var Index = require(path.join(__base, 'src/index.js'))
+    var Server = require(path.join(__base, 'src/controller/main.js'))
+    var ServerWorker = new Server(1)
     var url = 'http://localhost:' + __config.server.port
     var user = 'test' + rand.rand()
     var pass = 'test'
     describe('POST and GET Auth', function () {
       it('get / without login', function (done) {
+        this.timeout(30000)
         request(url, function (err, res, body) {
           assert(!err)
           if (!err && res.statusCode == 200) {
@@ -264,8 +258,20 @@ describe('Backend', function () {
       })
       it('genInvite + register + login + changePass + logout', function (done) {
         // gentoken
+        request.get({
+          url: url + '/auth/invite',
+          qs: {
+            invitationkey: __config.server.invitationKey
+          }
+        }, function (err, res, body) {
+          assert(!err)
+          if (!err && res.statusCode == 200) {
+            var invite = JSON.parse(body).invitationCode
+            assert(invite)
+          }
+        })
         request.post({
-          url: url + '/auth?todo=invite',
+          url: url + '/auth/invite',
           form: {
             invitationkey: __config.server.invitationKey
           }
@@ -276,7 +282,7 @@ describe('Backend', function () {
             assert(invite)
             // register
             request.post({
-              url: url + '/auth?todo=register',
+              url: url + '/auth/register',
               form: {
                 user: user,
                 pass: pass,
@@ -289,7 +295,7 @@ describe('Backend', function () {
                 assert(token)
                 // login
                 request.post({
-                  url: url + '/auth?todo=login',
+                  url: url + '/auth/login',
                   form: {
                     user: user,
                     pass: pass
@@ -301,7 +307,7 @@ describe('Backend', function () {
                     assert(token)
                     // logout
                     request.post({
-                      url: url + '/auth?todo=logout',
+                      url: url + '/auth/logout',
                       form: {
                         user: user,
                         token: token
@@ -312,11 +318,11 @@ describe('Backend', function () {
                         var err = JSON.parse(body).err
                         assert(!err)
                         request.post({
-                          url: url + '/auth?todo=changepass',
+                          url: url + '/auth/changepass',
                           form: {
                             user: user,
                             oldpass: pass,
-                            newpass: pass+1
+                            newpass: pass + 1
                           }
                         }, function (err, res, body) {
                           assert(!err)
@@ -324,10 +330,10 @@ describe('Backend', function () {
                             var err = JSON.parse(body).err
                             assert(!err)
                             request.post({
-                              url: url + '/auth?todo=changepass',
+                              url: url + '/auth/changepass',
                               form: {
                                 user: user,
-                                oldpass: pass+1,
+                                oldpass: pass + 1,
                                 newpass: pass
                               }
                             }, function (err, res, body) {
@@ -373,8 +379,8 @@ describe('Backend', function () {
       })
       it('POST List-t', function (done) {
         Auth(url, user, pass, function (token) {
-          request.post({
-            url: url + '/list-t',
+          request.get({
+            url: url + '/torrent/list',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             }
@@ -382,23 +388,23 @@ describe('Backend', function () {
             if (!err && res.statusCode == 200) {
               body = JSON.parse(body)
               assert(!body.err)
-              assert.typeOf(body, 'object')
+              assert(Array.isArray(body))
             }
             done()
           })
         })
       })
-      it('POST List-d', function (done) {
+      it('GET List-d', function (done) {
         Auth(url, user, pass, function (token) {
           var dir = 'ok' + rand.rand()
           fs.mkdir(path.join(__base, __config.directory.path, dir), function (err) {
             assert(!err)
-            request.post({
-              url: url + '/list-d',
+            request.get({
+              url: url + '/directory/list',
               headers: {
                 Cookie: 'user=' + user + ';token=' + token
               },
-              form: {
+              qs: {
                 dir: dir
               }
             }, function (err, res, body) {
@@ -418,7 +424,7 @@ describe('Backend', function () {
           fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
             assert(!err)
             request.post({
-              url: url + '/remove-d',
+              url: url + '/directory/remove',
               headers: {
                 Cookie: 'user=' + user + ';token=' + token
               },
@@ -443,7 +449,7 @@ describe('Backend', function () {
           fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
             assert(!err)
             request.post({
-              url: url + '/rename-d',
+              url: url + '/directory/rename',
               headers: {
                 Cookie: 'user=' + user + ';token=' + token
               },
@@ -468,7 +474,7 @@ describe('Backend', function () {
         Auth(url, user, pass, function (token) {
           var dir = 'ok' + rand.rand()
           request.post({
-            url: url + '/mkdir-d',
+            url: url + '/directory/mkdir',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             },
@@ -495,7 +501,7 @@ describe('Backend', function () {
             fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
               assert(!err)
               request.post({
-                url: url + '/mv-d',
+                url: url + '/directory/mv',
                 headers: {
                   Cookie: 'user=' + user + ';token=' + token
                 },
@@ -520,7 +526,7 @@ describe('Backend', function () {
         this.timeout(30000)
         Auth(url, user, pass, function (token) {
           request.post({
-            url: url + '/search-t',
+            url: url + '/torrent/search',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             },
@@ -537,15 +543,15 @@ describe('Backend', function () {
           })
         })
       })
-      it('POST info-d', function (done) {
+      it('GET info-d', function (done) {
         this.timeout(30000)
         Auth(url, user, pass, function (token) {
-          request.post({
-            url: url + '/info-d',
+          request.get({
+            url: url + '/directory/info',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             },
-            form: {
+            qs: {
               type: 'series',
               query: 'Game of Thrones'
             }
@@ -565,7 +571,7 @@ describe('Backend', function () {
           fs.writeFile(path.join(__base, __config.directory.path, file), 'ok', function (err) {
             assert(!err)
             request.get({
-              url: url + '/lock-d?f='+file,
+              url: url + '/directory/lock?f=' + file,
               headers: {
                 Cookie: 'user=' + user + ';token=' + token
               }
@@ -583,7 +589,7 @@ describe('Backend', function () {
         this.timeout(30000)
         Auth(url, user, pass, function (token) {
           request.post({
-            url: url + '/download-t',
+            url: url + '/torrent/download',
             headers: {
               Cookie: 'user=' + user + ';token=' + token
             },
@@ -595,7 +601,7 @@ describe('Backend', function () {
               body = JSON.parse(body)
               assert(!body.err)
               request.post({
-                url: url + '/remove-t',
+                url: url + '/torrent/remove',
                 headers: {
                   Cookie: 'user=' + user + ';token=' + token
                 },
@@ -618,12 +624,6 @@ describe('Backend', function () {
   })
   describe('Directory', function () {
     var Directory = require(path.join(__base, 'src/worker/directory.js'))
-    describe('saveFileInfo()', function () {
-      it('Save', function (done) {
-        Directory.saveFileInfo()
-        done()
-      })
-    })
     describe('Mkdir()', function () {
       it('Create dir', function (done) {
         Directory.mkdir('/', 'ok' + rand.rand())
@@ -632,7 +632,7 @@ describe('Backend', function () {
     })
     describe('List()', function () {
       it('Scan / ', function (done) {
-        Directory.list('/', function(folder){
+        Directory.list('/', function (folder) {
           assert.typeOf(folder, 'object')
           done()
         })
@@ -644,7 +644,7 @@ describe('Backend', function () {
         var dir = 'ok' + rand.rand()
         Directory.mkdir('/', recip)
         Directory.mkdir('/', dir)
-        Directory.mv('/', dir, recip, function(err){
+        Directory.mv('/', dir, recip, function (err) {
           assert(!err)
           done()
         })
@@ -655,7 +655,7 @@ describe('Backend', function () {
         var dir = 'ok' + rand.rand()
         var newname = 'ok' + rand.rand()
         Directory.mkdir('/', dir)
-        Directory.rename('/', dir, newname, function(err){
+        Directory.rename('/', dir, newname, function (err) {
           assert(!err)
           done()
         })
@@ -673,7 +673,7 @@ describe('Backend', function () {
       it('remove dir', function (done) {
         var dir = 'ok' + rand.rand()
         Directory.mkdir('/', dir)
-        Directory.remove(dir, function(err){
+        Directory.remove(dir, function (err) {
           assert(!err)
           done()
         })
@@ -683,16 +683,22 @@ describe('Backend', function () {
       it('setDownloading', function (done) {
         var dir = 'ok' + rand.rand()
         Directory.mkdir('/', dir)
-        Directory.setDownloading(dir)
-        Directory.setDownloading(dir)
-        Directory.isDownloading(dir)
-        Directory.finishDownloading(dir)
-        Directory.finishDownloading(dir)
-        done()
-      })
-      it('updateDownloads', function (done) {
-        Directory.updateDownloads()
-        done()
+        Directory.setDownloading(dir, function (err) {
+          assert(!err)
+          Directory.setDownloading(dir, function (err) {
+            assert(!err)
+            Directory.isDownloading(dir, function (isdl) {
+              assert(isdl)
+              Directory.finishDownloading(dir, function (err) {
+                assert(!err)
+                Directory.finishDownloading(dir, function (err) {
+                  assert(!err)
+                  done()
+                })
+              })
+            })
+          })
+        })
       })
     })
   })
@@ -720,10 +726,11 @@ describe('Backend', function () {
         this.timeout(300000)
         Torrent.start('magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso')
         setTimeout(function () {
-          assert.typeOf(Torrent.getInfo(), 'object')
-          Torrent.getUrlFromHash('288f8018277b8c474f304a059b064e017bd55e9f')
-          Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
-          done()
+          Torrent.getInfo(function (data) {
+            assert(Array.isArray(data))
+            Torrent.remove('288f8018277b8c474f304a059b064e017bd55e9f')
+            done()
+          })
         }, 10000)
       })
     })
@@ -732,7 +739,7 @@ describe('Backend', function () {
 
 function Auth (url, user, pass, cb) {
   request.post({
-    url: url + '/auth?todo=login',
+    url: url + '/auth/login',
     form: {
       user: user,
       pass: pass

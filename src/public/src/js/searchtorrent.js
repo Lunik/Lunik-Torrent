@@ -29,7 +29,7 @@
     var self = this
     $.ajax({
       type: 'post',
-      url: '/search-t',
+      url: '/torrent/search',
       data: {
         query: query
       },

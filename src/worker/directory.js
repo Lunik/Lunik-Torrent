@@ -1,7 +1,11 @@
 'use strict'
 
-var fs = require('fs')
+var fs = require('fs-extra')
 var Path = require('path')
+var Database = require(Path.join(__base, 'src/database/client.js'))
+var DB = {
+  directory: new Database('directory', '127.0.0.1', __config.database.port, __DBtoken)
+}
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
@@ -13,12 +17,16 @@ var LogWorker = new Log({
  */
 function Directory () {
   var self = this
-  this.fileInfo = {}
-  this.loadFileInfo()
 
-  setInterval(function () {
-    self.updateDownloads()
-  }, 30000)
+  DB.directory.update({}, {
+    $set: {
+      downloading: 0
+    }
+  }, {}, function (err) {
+    if (err) {
+      LogWorker.error(err)
+    }
+  })
 }
 
 /**
@@ -28,148 +36,92 @@ function Directory () {
 */
 Directory.prototype.list = function (dir, cb) {
   var self = this
+  var response = {
+    'totalSize': 0,
+    'files': {}
+  }
   var list = function () {
-    // save directory informations into app cache
-    self.getDir(dir, function (folder) {
-      for (var f in folder.files) {
-        var file = Path.join(dir, f)
-        file = file[0] === '/' ? file.substring(1) : file
-        if (self.fileInfo[file] !== -1) {
-          for (var i in self.fileInfo[file]) {
-            folder.files[f][i] = self.fileInfo[file][i]
-          }
+    var childrens = []
+    fs.walk(Path.join(__config.directory.path, dir))
+      .on('data', function (child) {
+        var reChild = new RegExp(Path.join(__config.directory.path, dir) + '[^\/]*$', 'g')
+
+        if (child.path.match(reChild)) {
+          var name = child.path.split('/')
+          if (name[name.length - 1] === '' && parent.length > 2) name.pop()
+          name = name[name.length - 1]
+          child.stats.isfile = fs.lstatSync(child.path).isFile()
+          child.stats.isdir = fs.lstatSync(child.path).isDirectory()
+          response.files[name] = child.stats
         }
-      }
-      cb({
-        'totalSize': folder.totalSize,
-        'files': folder.files
+
+        response.totalSize += child.stats.size
       })
-    })
+      .on('end', function () {
+        var parent = dir.split('/')
+        if (parent[parent.length - 1] === '' && parent.length > 1) parent.pop()
+        parent = parent[parent.length - 1]
+
+        DB.directory.find({
+          parent: parent
+        }, function (err, files) {
+          if (err) {
+            LogWorker.error(err)
+            cb(false)
+          } else {
+            for (var f in response.files) {
+              var find = files.find(function (e) { return e.name == f && e.parent == parent })
+              if (find == null) {
+                DB.directory.insert({
+                  parent: parent,
+                  name: f,
+                  download: 0,
+                  downloading: 0,
+                  owner: null
+                })
+              } else {
+                response.files[f].download = find.download
+                response.files[f].downloading = find.downloading
+                response.files[f].owner = find.owner
+              }
+            }
+            cb(response)
+          }
+        })
+      })
   }
 
   setTimeout(list)
 }
 
 /**
- * Get directory informations.
- * @param {string} dir - Directory to get informations.
- * @return {object} - Directory informations.
-*/
-Directory.prototype.getDir = function (dir, cb) {
-  var self = this
-
-  var getDir = function () {
-    var list = {}
-    var totalSize = 0
-    var files = fs.readdir(Path.join(__config.directory.path, dir), function (err, files) {
-      if (err) {
-        cb({
-          'mtime': 0,
-          'totalSize': 0,
-          'files': []
-        })
-        LogWorker.error(err)
-        return
-      }
-      if (files && files.length > 0) {
-        var length = files.length
-        var i = 0
-        files.forEach(function (file) {
-          self.getInfo(Path.join(__config.directory.path, dir, file), function (stats) {
-            list[file] = stats
-            totalSize += stats.size
-
-            i++
-            if (i === length) {
-              fs.stat(Path.join(__config.directory.path, dir), function (err, s) {
-                if (err) {
-                  LogWorker.error(err)
-                  cb({
-                    'mtime': 0,
-                    'totalSize': 0,
-                    'files': []
-                  })
-                  return
-                }
-                cb({
-                  'mtime': s.mtime,
-                  'totalSize': totalSize,
-                  'files': list
-                })
-              })
-            }
-          })
-        })
-      } else {
-        fs.stat(Path.join(__config.directory.path, dir), function (err, s) {
-          if (err) {
-            LogWorker.error(err)
-            cb({
-              'mtime': 0,
-              'totalSize': 0,
-              'files': []
-            })
-            return
-          }
-          cb({
-            'mtime': s.mtime,
-            'totalSize': totalSize,
-            'files': list
-          })
-        })
-      }
-    })
-  }
-  setTimeout(getDir)
-}
-
-/**
- * Get file informations.
- * @param {string} file - File / Directory to get informations.
- * @return {object} - File / Directory informations.
-*/
-Directory.prototype.getInfo = function (file, cb) {
-  var getInfo = function () {
-    fs.stat(file, function (err, stats) {
-      if (err) {
-        cb({})
-        LogWorker.error(err)
-        return
-      }
-      var sfile = {}
-      // get size if it's a Directory
-      if (stats.isFile()) {
-        sfile = stats
-      } else {
-        stats.size = sizeRecursif(file)
-        sfile = stats
-      }
-      sfile.isfile = stats.isFile()
-      sfile.isdir = stats.isDirectory()
-      cb(sfile)
-    })
-  }
-
-  setTimeout(getInfo)
-}
-
-/**
  * Lock a file.
  * @param {string} file - File to lock.
 */
-Directory.prototype.setDownloading = function (file) {
+Directory.prototype.setDownloading = function (file, cb) {
   var self = this
   var setDownloading = function () {
-    // file info default value
-    self.fileInfo[file] = self.fileInfo[file] || {}
-    // increment file download
-    self.fileInfo[file].download = self.fileInfo[file].download + 1 || 1
-    // increment file current downloading and set the current date
-    self.fileInfo[file].downloading = self.fileInfo[file].downloading
-      ? {date: new Date(), count: self.fileInfo[file].downloading.count + 1}
-      : {date: new Date(), count: 1}
+    file = file.split('/')
+    if (file[file.length - 1] === '' && parent.length > 2) file.pop()
+    var name = file[file.length - 1]
+    var parent = file[file.length - 2] || ''
 
-    self.saveFileInfo()
+    DB.directory.update({
+      name: name,
+      parent: parent
+    }, {
+      $inc: {
+        download: 1,
+        downloading: 1
+      }
+    }, {}, function (err) {
+      if (err) {
+        LogWorker.error(err)
+        cb(true)
+      } else {
+        cb(false)
+      }
+    })
   }
   setTimeout(setDownloading)
 }
@@ -178,39 +130,46 @@ Directory.prototype.setDownloading = function (file) {
  * Unlock a file.
  * @param {string} file - File to unlock.
 */
-Directory.prototype.finishDownloading = function (file) {
+Directory.prototype.finishDownloading = function (file, cb) {
   var self = this
   var finishDownloading = function () {
-    // decrement file downloading
-    self.fileInfo[file].downloading = self.fileInfo[file].downloading
-      ? {date: self.fileInfo[file].downloading.date, count: self.fileInfo[file].downloading.count - 1}
-      : {date: new Date(), count: 0}
+    file = file.split('/')
+    if (file[file.length - 1] === '' && parent.length > 2) file.pop()
+    var name = file[file.length - 1]
+    var parent = file[file.length - 2]
 
-    if (self.fileInfo[file].downloading.count >= 0) {
-      delete self.fileInfo[file].downloading
-    }
+    DB.directory.update({
+      name: name,
+      parent: parent
+    }, {
+      $inc: {
+        downloading: -1
+      }
+    }, {}, function (err) {
+      if (err) {
+        LogWorker.error(err)
+        cb(true)
+      } else {
+        cb(false)
+      }
+    })
+
+    DB.directory.update({
+      name: name,
+      parent: parent
+    }, {
+      $max: {
+        downloading: 0
+      }
+    }, {}, function (err) {
+      if (err) {
+        LogWorker.error(err)
+        cb(false)
+      }
+    })
   }
 
   setTimeout(finishDownloading)
-}
-
-/**
- * Auto Unlock a files after 1h.
-*/
-Directory.prototype.updateDownloads = function () {
-  var self = this
-  var updateDownloads = function () {
-    var curDate = new Date()
-    for (var key in self.fileInfo) {
-      if (self.fileInfo[key] && self.fileInfo[key].downloading) {
-        // if downloading for more than 1 hour remove
-        if (curDate - self.fileInfo[key].downloading.date > 3600000) {
-          delete self.fileInfo[key].downloading
-        }
-      }
-    }
-  }
-  setTimeout(updateDownloads)
 }
 
 /**
@@ -218,9 +177,41 @@ Directory.prototype.updateDownloads = function () {
  * @param {string} file - File to check.
  * @return {bool} - File lock state.
 */
-Directory.prototype.isDownloading = function (file) {
-  file = file[0] === '/' ? file.substring(1) : file
-  return this.fileInfo[file] && this.fileInfo[file].downloading ? true : false
+Directory.prototype.isDownloading = function (file, cb) {
+  var isDownloading = function () {
+    file = file.split('/')
+    if (file[file.length - 1] === '' && file.length > 2) file.pop()
+    var name = file[file.length - 1]
+    var parent = file[file.length - 2] || ''
+
+    DB.directory.find({
+      $or: [{
+        name: name,
+        parent: parent
+      }, {
+        parent: name
+      }]
+    }, function (err, files) {
+      if (err) {
+        LogWorker.error(err)
+        cb(false)
+      } else {
+        if (files.length <= 0) {
+          cb(false)
+        } else {
+          var isdl = false
+          for (var f in files) {
+            if (files[f].downloading > 0) {
+              isdl = true || isdl
+            }
+          }
+          cb(isdl)
+        }
+      }
+    })
+  }
+
+  setTimeout(isDownloading)
 }
 
 /**
@@ -230,33 +221,37 @@ Directory.prototype.isDownloading = function (file) {
 Directory.prototype.remove = function (file, cb) {
   var self = this
   var remove = function () {
-    if (self.isDownloading(file)) {
-      cb(-1)
-      return
-    }
-    fs.stat(Path.join(__base, __config.directory.path, file), function (err, stats) {
-      if (err) {
-        LogWorker.error(err)
-        cb(-1)
-        return
-      }
-      if (stats) {
-        if (stats.isDirectory()) {
-          removeRecursif(Path.join(__base, __config.directory.path, file))
-          cb()
-          return
-        } else {
-          fs.unlink(Path.join(__base, __config.directory.path, file), function (err) {
-            if (err) {
-              LogWorker.error(err)
-              cb(-1)
-              return
-            } else {
-              cb()
-              return
-            }
-          })
-        }
+    self.isDownloading(file, function (isDownloading) {
+      if (isDownloading) {
+        cb(true)
+      } else {
+        fs.remove(Path.join(__config.directory.path, file), function (err) {
+          if (err) {
+            LogWorker.error(err)
+            cb(true)
+          } else {
+            file = file.split('/')
+            if (file[file.length - 1] === '' && file.length > 2) file.pop()
+            var name = file[file.length - 1]
+            var parent = file[file.length - 2]
+
+            DB.directory.remove({
+              $or: [{
+                name: name,
+                parent: parent
+              }, {
+                parent: name
+              }]
+            }, { multi: true }, function (err) {
+              if (err) {
+                LogWorker.error(err)
+                cb(true)
+              } else {
+                cb(false)
+              }
+            })
+          }
+        })
       }
     })
   }
@@ -274,31 +269,51 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
   var self = this
 
   var rename = function () {
-    if (self.isDownloading(Path.join(path, oldname))) {
-      cb(-1)
-      return
-    }
-    fs.rename(Path.join(__base, __config.directory.path, path, oldname), Path.join(__base, __config.directory.path, path, newname), function (err) {
-      if (err) {
-        LogWorker.error(err)
-        cb(-1)
-        return
+    self.isDownloading(Path.join(path, oldname), function (isDownloading) {
+      if (isDownloading) {
+        cb(true)
+      } else {
+        fs.rename(Path.join(__config.directory.path, path, oldname), Path.join(__config.directory.path, path, newname), function (err) {
+          if (err) {
+            LogWorker.error(err)
+            cb(true)
+            return
+          } else {
+            var parent = path.split('/')
+            if (parent[parent.length - 1] === '' && parent.length > 2) parent.pop()
+            parent = parent[parent.length - 1]
+
+            DB.directory.update({
+              name: oldname,
+              parent: parent
+            }, {
+              $set: {
+                name: newname
+              }
+            }, {}, function (err) {
+              if (err) {
+                LogWorker.error(err)
+                cb(true)
+              } else {
+                DB.directory.update({
+                  parent: oldname
+                }, {
+                  $set: {
+                    parent: newname
+                  }
+                }, {}, function (err) {
+                  if (err) {
+                    LogWorker.error(err)
+                    cb(true)
+                  } else {
+                    cb(false)
+                  }
+                })
+              }
+            })
+          }
+        })
       }
-      // If dir modify also all file in this dir
-
-      var oldfile = Path.join(path, oldname)
-      oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
-
-      var newfile = Path.join(path, newname)
-      newfile = newfile[0] === '/' ? newfile.substring(1) : newfile
-
-      self.fileInfo[newfile] = self.fileInfo[oldfile]
-      delete self.fileInfo[oldfile]
-
-      self.saveFileInfo()
-
-      cb()
-      return
     })
   }
 
@@ -310,12 +325,23 @@ Directory.prototype.rename = function (path, oldname, newname, cb) {
  * @param {string} path - Parent directory path.
  * @param {string} name - Directory name.
 */
-Directory.prototype.mkdir = function (path, name) {
+Directory.prototype.mkdir = function (path, name, user) {
   var mkdir = function () {
-    fs.mkdir(Path.join(__base, __config.directory.path, path, name), function (err) {
+    fs.mkdir(Path.join(__config.directory.path, path, name), function (err) {
       if (err) {
         LogWorker.error(err)
-        return
+      } else {
+        var parent = path.split('/')
+        if (parent[parent.length - 1] === '' && parent.length > 2) parent.pop()
+        parent = parent[parent.length - 1]
+
+        DB.directory.insert({
+          parent: parent,
+          name: name,
+          download: 0,
+          downloading: 0,
+          owner: user
+        })
       }
     })
   }
@@ -331,33 +357,46 @@ Directory.prototype.mkdir = function (path, name) {
 Directory.prototype.mv = function (path, file, folder, cb) {
   var self = this
   var mv = function () {
-    if (self.isDownloading(Path.join(path, file))) {
-      cb(-1)
-      return
-    }
-    fs.rename(Path.join(__base, __config.directory.path, path, file), Path.join(__base, __config.directory.path, path, folder, file), function (err) {
-      if (err) {
-        LogWorker.error(err)
-        cb(-1)
-        return
+    self.isDownloading(Path.join(path, file), function (isDownloading) {
+      if (isDownloading) {
+        cb(true)
       } else {
-        cb()
+        fs.rename(Path.join(__config.directory.path, path, file), Path.join(__config.directory.path, path, folder, file), function (err) {
+          if (err) {
+            LogWorker.error(err)
+            cb(true)
+            return
+          } else {
+            var parent = path.split('/')
+            if (parent[parent.length - 1] === '' && parent.length > 1){
+              parent.pop()
+              parent.pop()
+            }
+            var gp = parent[parent.length - 2] || ""
+            parent = parent[parent.length - 1]
+
+            DB.directory.update({
+              name: file,
+              parent: parent
+            }, {
+              $set: {
+                parent: folder == '..'
+                  ? parent.length > 1
+                    ? gp
+                    : ''
+                  : folder
+              }
+            }, {}, function (err) {
+              if (err) {
+                LogWorker.error(err)
+                cb(true)
+              } else {
+                cb(false)
+              }
+            })
+          }
+        })
       }
-      // If dir modify also all file in this dir
-
-      var oldfile = Path.join(path, file)
-      oldfile = oldfile[0] === '/' ? oldfile.substring(1) : oldfile
-
-      var newfile = Path.join(path, folder, file)
-      newfile = newfile[0] === '/' ? newfile.substring(1) : newfile
-
-      self.fileInfo[newfile] = self.fileInfo[oldfile]
-      delete self.fileInfo[oldfile]
-
-      self.saveFileInfo()
-
-      cb()
-      return
     })
   }
   setTimeout(mv)
@@ -372,104 +411,25 @@ Directory.prototype.setOwner = function (file, user) {
   var self = this
 
   var setOwner = function () {
-    file = file[0] === '/' ? file.slice(1) : file
-    // set owner defalt value
-    self.fileInfo[file] = self.fileInfo[file] || {}
-    // prevent override current user
-    if (self.fileInfo[file].owner == null) {
-      self.fileInfo[file].owner = user
-    }
-    self.saveFileInfo()
-  }
-  setTimeout(setOwner)
-}
+    file = file.split('/')
+    if (file[file.length - 1] === '' && parent.length > 2) file.pop()
+    var name = file[file.length - 1]
+    var parent = file[file.length - 2]
 
-/**
- * Load data/fileInfo.json into Directory.fileInfo.
-*/
-Directory.prototype.loadFileInfo = function () {
-  var self = this
-
-  var loadFileInfo = function () {
-    var fileInfo
-    try {
-      fileInfo = require(Path.join(__base, 'data/fileInfo.json'))
-    } catch (e) {
-      fileInfo = {}
-      self.saveFileInfo()
-    } finally {
-      for (var key in fileInfo) {
-        delete fileInfo[key].downloading
+    DB.directory.update({
+      name: name,
+      parent: parent
+    }, {
+      $set: {
+        owner: user
       }
-      self.fileInfo = fileInfo
-    }
-  }
-
-  setTimeout(loadFileInfo)
-}
-
-/**
- * Save Directory.fileInfo into data/fileInfo.json.
-*/
-Directory.prototype.saveFileInfo = function () {
-  var self = this
-
-  var saveFileInfo = function () {
-    if (!self.saving) {
-      self.saving = true
-      fs.writeFile(Path.join(__base, 'data/fileInfo.json'), JSON.stringify(self.fileInfo), function (err) {
-        self.saving = false
-        if (err) {
-          LogWorker.error(err)
-          return
-        }
-      })
-    }
-  }
-
-  setTimeout(saveFileInfo)
-}
-
-/**
- * Remove Directory recursively.
- * @param {string} path - Directory to remove.
-*/
-function removeRecursif (path) {
-  var removeRecursif = function () {
-    if (fs.existsSync(path)) {
-      fs.readdirSync(path).forEach(function (file, index) {
-        var curPath = Path.join(path, file)
-        if (fs.lstatSync(curPath).isDirectory()) { // recurse
-          removeRecursif(curPath)
-        } else { // delete file
-          fs.unlinkSync(curPath)
-        }
-      })
-      fs.rmdirSync(path)
-    }
-  }
-
-  setTimeout(removeRecursif)
-}
-
-/**
- * Get the Directory size recursively.
- * @param {string} path - Directory to remove.
- * @return {int} - Directory size (bytes)
-*/
-function sizeRecursif (path) {
-  var size = 0
-  if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function (file, index) {
-      var curPath = Path.join(path, file)
-      if (fs.lstatSync(curPath).isDirectory()) { // recurse
-        size += sizeRecursif(curPath)
-      } else { // read size
-        size += fs.statSync(curPath).size
+    }, {}, function (err) {
+      if (err) {
+        LogWorker.error(err)
       }
     })
-    return size
   }
+  setTimeout(setOwner)
 }
 
 module.exports = new Directory()

@@ -80,21 +80,13 @@
    * @return {string} - Cleaned name.
   */
   _Format.prototype.name = function (name) {
-    var bannedWords = ['dvdrip', 'fr', 'vo', 'vostfr', 'hdtv', 'webrip', 'bdrip']
     name = name.toLowerCase()
       .replace(/\.[a-z0-9]*$/, '') // remove extension
       .replace(/\./g, ' ') // point
       .replace(/s[0-9][0-9]e[0-9][0-9]/g, '') // numero d'episode
       .replace(/ $/, '') // espace en fin de chaine
-    name = name.split(' ')
-    var newName = []
-    for (var key in name) {
-      var mot = name[key]
-      if (bannedWords.indexOf(mot) === -1) {
-        newName.push(mot)
-      }
-    }
-    return newName.join(' ')
+
+    return name
   }
 
   App.Format = new _Format()

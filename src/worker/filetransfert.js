@@ -28,7 +28,7 @@ function FileTransfert (req, res, callback) {
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
   var self = this
 
-  var transfertNode = function(){
+  var transfertNode = function () {
     var filename = Path.join(__base, `${__config.directory.path}${req.query.f}`)
     fs.stat(filename, function (err, stats) {
       if (err) {
@@ -38,9 +38,10 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
         return
       }
       if (stats) {
-        res.download(filename, function(err){
-          if(err){
-            LogWorker.error(`${req.cookies.user} error during download file: ${req.query.f}\n ${err}`)
+        res.download(filename, function (err) {
+          if (err) {
+            LogWorker.error(`${req.cookies.user} error during download file: ${req.query.f}
+ ${err}`)
             callback()
 
             res.status(500)

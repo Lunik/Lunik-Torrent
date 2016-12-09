@@ -16,8 +16,7 @@ function MediaInfo () {}
  * @param {function} callback - callback with iformation.
 */
 MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
-
-  var getMediaInfo = function(){
+  var getMediaInfo = function () {
     if (type === 'tvseries') {
       allocine.api('tvseries', {
         code: code
@@ -73,7 +72,7 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
 MediaInfo.prototype.search = function (type, query, callback) {
   var self = this
 
-  var search = function(){
+  var search = function () {
     if (type === 'tvseries') {
       allocine.api('search', {
         q: query,
@@ -133,7 +132,7 @@ MediaInfo.prototype.search = function (type, query, callback) {
 MediaInfo.prototype.getInfo = function (type, query, callback) {
   var self = this
 
-  var getInfo = function(){
+  var getInfo = function () {
     if (type === 'series') {
       self.search('tvseries', query, callback)
     } else if (type === 'films') {

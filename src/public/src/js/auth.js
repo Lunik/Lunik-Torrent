@@ -63,20 +63,20 @@ var App = {}
         }
       })
 
-      $('.auth .switch #login').click(function () {
+      $('.auth .switch #login').on('click', function () {
         App.switch('login')
       })
-      $('.auth .switch #register').click(function () {
+      $('.auth .switch #register').on('click', function () {
         App.switch('register')
       })
-      $('.auth .switch #changepass').click(function () {
+      $('.auth .switch #changepass').on('click', function () {
         App.switch('changepass')
       })
 
       requirejs(['notify-me', 'format', 'loading'], function (notif) {
         self.updateHash()
 
-        $('.auth .login .submit').click(function () {
+        $('.auth .login .submit').on('click', function () {
           var loginData = self.getLogin()
           if (loginData.user.length > 0 && loginData.pass.length) {
             self.login(loginData.user, loginData.pass)
@@ -85,7 +85,7 @@ var App = {}
           }
         })
 
-        $('.auth .register .submit').click(function () {
+        $('.auth .register .submit').on('click', function () {
           var registerData = self.getRegister()
           if (App.hash) {
             if (registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length) {
@@ -102,7 +102,7 @@ var App = {}
           }
         })
 
-        $('.auth .changepass .submit').click(function () {
+        $('.auth .changepass .submit').on('click', function () {
           var changePassData = self.getChangePass()
           if (changePassData.user.length > 0 && changePassData.oldpass.length && changePassData.newpass.length && changePassData.newpass2.length) {
             if (changePassData.newpass === changePassData.newpass2) {
@@ -196,7 +196,7 @@ var App = {}
     App.Loading.show('action')
     $.ajax({
       type: 'post',
-      url: '/auth?todo=login',
+      url: '/auth/login',
       data: {
         user: user,
         pass: pass
@@ -230,7 +230,7 @@ var App = {}
     App.Loading.show('action')
     $.ajax({
       type: 'post',
-      url: '/auth?todo=register',
+      url: '/auth/register',
       data: {
         user: user,
         pass: pass,
@@ -266,7 +266,7 @@ var App = {}
     App.Loading.show('action')
     $.ajax({
       type: 'post',
-      url: '/auth?todo=changepass',
+      url: '/auth/changepass',
       data: {
         user: user,
         oldpass: oldpass,
