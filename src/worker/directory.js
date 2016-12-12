@@ -69,23 +69,30 @@ Directory.prototype.list = function (dir, cb) {
             LogWorker.error(err)
             cb(false)
           } else {
-            for (var f in response.files) {
-              var find = files.find(function (e) { return e.name == f && e.parent == parent })
-              if (find == null) {
-                DB.directory.insert({
-                  parent: parent,
-                  name: f,
-                  download: 0,
-                  downloading: 0,
-                  owner: null
-                })
-              } else {
-                response.files[f].download = find.download
-                response.files[f].downloading = find.downloading
-                response.files[f].owner = find.owner
+            DB.directory.find({
+              name: parent
+            }, function(err, parents){
+              for (var f in response.files) {
+                var find = files.find(function (e) { return e.name == f && e.parent == parent })
+                if (find == null) {
+                  DB.directory.insert({
+                    parent: parent,
+                    name: f,
+                    download: 0,
+                    downloading: 0,
+                    owner: parents[0].owner
+                  })
+                  response.files[f].download = 0
+                  response.files[f].downloading = 0
+                  response.files[f].owner = parents[0].owner
+                } else {
+                  response.files[f].download = find.download
+                  response.files[f].downloading = find.downloading
+                  response.files[f].owner = find.owner
+                }
               }
-            }
-            cb(response)
+              cb(response)
+            })
           }
         })
       })
