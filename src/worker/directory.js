@@ -80,11 +80,11 @@ Directory.prototype.list = function (dir, cb) {
                     name: f,
                     download: 0,
                     downloading: 0,
-                    owner: parents[0].owner
+                    owner: parents[0] ? parents[0].owner : ""
                   })
                   response.files[f].download = 0
                   response.files[f].downloading = 0
-                  response.files[f].owner = parents[0].owner
+                  response.files[f].owner = parents[0] ? parents[0].owner : ""
                 } else {
                   response.files[f].download = find.download
                   response.files[f].downloading = find.downloading
