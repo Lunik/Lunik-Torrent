@@ -7,6 +7,7 @@ var DB = {
   torrent: new Database('torrent', '127.0.0.1', __config.database.port, __DBtoken)
 }
 
+var Directory = require(Path.join(__base, 'src/worker/directory'))
 var Log = require(Path.join(__base, 'src/worker/log.js'))
 var LogWorker = new Log({
   module: 'Torrent'
@@ -64,6 +65,7 @@ Torrent.prototype.start = function (user, url) {
               if (err) {
                 LogWorker.error(err)
               } else {
+                Directory.setOwner(torrent.name, user)
                 if (self.waitList.length > 0) {
                   LogWorker.info(`Start torrent into waitList (left: ${(self.waitList.length - 1)})`)
                   var next = self.waitList.shift()
