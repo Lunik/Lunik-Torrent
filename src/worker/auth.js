@@ -183,25 +183,22 @@ Auth.prototype.changePass = function (user, pass, newPass, cb) {
 
 Auth.prototype.checkLogged = function (user, token, cb) {
   var encryptedToken = Crypto.SHA256(token).toString()
-  if(__config.server.authentification){
-    DB.user.find({
-      user: user,
-      token: Crypto.SHA256(token).toString()
-    }, function (err, res) {
-      if (err) {
-        LogWorker.error(err)
+
+  DB.user.find({
+    user: user,
+    token: Crypto.SHA256(token).toString()
+  }, function (err, res) {
+    if (err) {
+      LogWorker.error(err)
+      cb(false)
+    } else {
+      if (res.length <= 0) {
         cb(false)
       } else {
-        if (res.length <= 0) {
-          cb(false)
-        } else {
-          cb(true)
-        }
+        cb(true)
       }
-    })
-  } else {
-    cb(true)
-  }
+    }
+  })
 }
 
 Auth.prototype.genToken = function (user, pass) {

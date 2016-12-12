@@ -4,7 +4,6 @@
   },
   "server": {
     "port": 8080,
-    "authentification": false,
     "invitationKey": "MY_KEY"
   },
   "database": {
