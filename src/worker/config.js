@@ -18,6 +18,7 @@ Config.prototype.load = function (path) {
 
   assert(config.server, messageError('server'))
   assert(config.server.port, messageError('server.port'))
+  assert(config.server.authentification === true || config.server.authentification === false ? true : false, messageError('server.authentification'))
   assert(config.server.invitationKey, messageError('server.invitationKey'))
 
   assert(config.client, messageError('client'))
