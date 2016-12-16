@@ -46,7 +46,7 @@ Directory.prototype.list = function (dir, cb) {
       .on('data', function (child) {
         var reChild = child.path.split(Path.join(__config.directory.path, dir))
 
-        if (reChild.length >= 2 && reChild[reChild.length-1].indexOf('/') == -1) {
+        if (reChild.length >= 2 && reChild[reChild.length - 1].indexOf('/') == -1) {
           var name = child.path.split('/')
           if (name[name.length - 1] === '' && parent.length > 2) name.pop()
           name = name[name.length - 1]
@@ -71,7 +71,7 @@ Directory.prototype.list = function (dir, cb) {
           } else {
             DB.directory.find({
               name: parent
-            }, function(err, parents){
+            }, function (err, parents) {
               for (var f in response.files) {
                 var find = files.find(function (e) { return e.name == f && e.parent == parent })
                 if (find == null) {
@@ -80,11 +80,11 @@ Directory.prototype.list = function (dir, cb) {
                     name: f,
                     download: 0,
                     downloading: 0,
-                    owner: parents[0] ? parents[0].owner : ""
+                    owner: parents[0] ? parents[0].owner : ''
                   })
                   response.files[f].download = 0
                   response.files[f].downloading = 0
-                  response.files[f].owner = parents[0] ? parents[0].owner : ""
+                  response.files[f].owner = parents[0] ? parents[0].owner : ''
                 } else {
                   response.files[f].download = find.download
                   response.files[f].downloading = find.downloading
@@ -375,11 +375,11 @@ Directory.prototype.mv = function (path, file, folder, cb) {
             return
           } else {
             var parent = path.split('/')
-            if (parent[parent.length - 1] === '' && parent.length > 1){
+            if (parent[parent.length - 1] === '' && parent.length > 1) {
               parent.pop()
               parent.pop()
             }
-            var gp = parent[parent.length - 2] || ""
+            var gp = parent[parent.length - 2] || ''
             parent = parent[parent.length - 1]
 
             DB.directory.update({
