@@ -12,3 +12,4 @@ logs/log*
 bower_components
 data/
 coverage/
+.idea/
