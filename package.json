@@ -24,7 +24,7 @@
     "colors": "^1.1.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
-    "crypto-js": "^3.1.8",
+    "crypto-js": "^3.1.9",
     "crypto-rand": "0.0.2",
     "express": "^4.14.0",
     "forever": "^0.15.3",
