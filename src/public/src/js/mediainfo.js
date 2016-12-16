@@ -21,13 +21,13 @@
     var self = this
     var type = self.getType(title)
     title = App.Format.name(title)
-    var data = App.Storage.readData(title)
+    var data = App.Storage.readData(title.toLowerCase())
     if (data != null) {
       self.vue.$data.info = data
       setTimeout(function () {
         App.Loading.hide('action')
         self.show()
-      }, 1000)
+      }, 500)
     } else {
       $.ajax({
         type: 'get',
@@ -39,13 +39,14 @@
         dataType: 'json',
         success: function (data) {
           if (!data.err) {
+            data.description = data.description.replace(/<[^>]*>/g, '')
             data.rating = `${Math.floor(data.rating * 100) / 100}/5`
             self.vue.$data.info = data
             App.Storage.storeData(data.query.toLowerCase(), data)
 
             setTimeout(function () {
               self.show()
-            }, 1000)
+            }, 500)
           } else {
             $.notify.error({
               title: 'Error in MediaInfo.get()',
