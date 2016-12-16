@@ -2,7 +2,7 @@
   "name": "lunik-torrent",
   "version": "2.20.5",
   "description": "Web torrent client with directory storage",
-  "author": "Guillaume Lunik <guillaume.lunik@gmail.com",
+  "author": "Guillaume Lunik <guillaume.lunik@gmail.com>",
   "scripts": {
     "postinstall": "scripts/init.sh && bower install --allow-root",
     "start": "node src/index.js",
