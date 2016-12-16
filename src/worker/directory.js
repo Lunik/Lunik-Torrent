@@ -44,9 +44,9 @@ Directory.prototype.list = function (dir, cb) {
     var childrens = []
     fs.walk(Path.join(__config.directory.path, dir))
       .on('data', function (child) {
-        var reChild = new RegExp(Path.join(__config.directory.path, dir) + '[^\/]*$', 'g')
+        var reChild = child.path.split(Path.join(__config.directory.path, dir))
 
-        if (child.path.match(reChild)) {
+        if (reChild.length >= 2 && reChild[reChild.length-1].indexOf('/') == -1) {
           var name = child.path.split('/')
           if (name[name.length - 1] === '' && parent.length > 2) name.pop()
           name = name[name.length - 1]
