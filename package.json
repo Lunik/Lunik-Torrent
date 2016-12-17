@@ -20,7 +20,6 @@
     "body-parser": "^1.15.2",
     "bower": "^1.8.0",
     "cheerio": "^0.22.0",
-    "cluster": "^0.7.7",
     "colors": "^1.1.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
