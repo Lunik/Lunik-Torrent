@@ -21,9 +21,9 @@ if (cluster.isMaster) {
   var DBPort = process.env.DB_PORT || __config.database.port
   var DB = new Database(DBPort, token)
 
+  cluster.schedulingPolicy = cluster.SCHED_RR
   var i = 0
-
-  while (i < numCPUs) {
+  while (i < numCPUs && i < __config.server.duplication) {
     cluster.fork()
     i++
   }

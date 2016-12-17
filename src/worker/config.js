@@ -19,6 +19,7 @@ Config.prototype.load = function (path) {
   assert(config.server, messageError('server'))
   assert(config.server.port, messageError('server.port'))
   assert(config.server.invitationKey, messageError('server.invitationKey'))
+  assert(config.server.duplication, messageError('server.duplication'))
 
   assert(config.client, messageError('client'))
   assert(config.client.downloads, messageError('client.downloads'))
