@@ -1,9 +1,10 @@
 .loading > div {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  transform: translateX(-50%) translateY(-50%);
 }
 
 .loading .loading-app {
@@ -37,14 +38,7 @@
   animation: rotate 2s linear infinite;
   height: 100px;
   transform-origin: center center;
-  width: 100px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  stroke-width: 4;
+  stroke-width: 2;
 }
 
 .path {
