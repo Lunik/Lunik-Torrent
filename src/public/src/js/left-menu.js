@@ -60,7 +60,8 @@
             dataList: App.Storage.readData('listInput-torrent-input') ? App.Storage.readData('listInput-torrent-input') : []
           }
         ],
-        currentAction: 'new'
+        currentAction: 'new',
+        version: 'v'
       }
     })
 
@@ -89,6 +90,24 @@
     })
     $('.left-menu').on('click', '.close', function () {
       self.close()
+    })
+
+    $.ajax({
+      type: 'get',
+      url: '/version',
+      dataType: 'json',
+      success: function(data){
+        if (data.err) {
+          $.notify.error({
+            title: 'Error',
+            text: data.err,
+            duration: 10
+          })
+        } else {
+          console.log(data.version)
+          self.vue.$data.version = `v${data.version}`
+        }
+      }
     })
   }
 
