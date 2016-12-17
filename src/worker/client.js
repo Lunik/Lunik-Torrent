@@ -62,7 +62,7 @@ Client.prototype.download = function (torrentLink, cbStart, cbDone) {
       torrent.on('noPeers', function () {
         LogWorker.warning(`No peers: ${torrent.name}`)
         self.doneFunction(torrent)
-        cbDone('No peers', self.getTorrent(torrent))
+        cbDone(null, self.getTorrent(torrent))
       })
 
       torrent.on('error', function (err) {
