@@ -104,7 +104,6 @@
             duration: 10
           })
         } else {
-          console.log(data.version)
           self.vue.$data.version = `v${data.version}`
         }
       }
