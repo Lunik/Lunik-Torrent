@@ -61,7 +61,6 @@ var App
         'left-menu'
       ], function (jqui, notif, pop, load, tm, conf, l, mi, st, dir, tor, lm) {
         // Get hash
-        window.location = '#'
         self.hash = document.location.hash.substring(1)
         if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
           self.hash += '/'
