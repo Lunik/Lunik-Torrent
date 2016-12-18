@@ -241,3 +241,7 @@ a {
     stroke: #f7a253;
   }
 }
+
+#flake{
+  z-index: 100;
+}

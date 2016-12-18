@@ -14,7 +14,8 @@ var App
         'jquery.ui.touch-punch': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
         'notify-me': '../bower_components/notify.me/dist/js/notify-me',
         'popup': '../bower_components/popupjs/dist/popup.min',
-        'clipboard': '../bower_components/clipboard/dist/clipboard.min'
+        'clipboard': '../bower_components/clipboard/dist/clipboard.min',
+        'snow': 'https://github.com/downloads/kopipejst/jqSnow/jquery.snow.min.1.0'
       }
     })
 
@@ -48,6 +49,7 @@ var App
       // load app modules
       requirejs([
         'jquery.ui.touch-punch',
+        'snow',
         'notify-me',
         'popup',
         'loading',
@@ -59,7 +61,7 @@ var App
         'directory',
         'torrent',
         'left-menu'
-      ], function (jqui, notif, pop, load, tm, conf, l, mi, st, dir, tor, lm) {
+      ], function (jqui, snow, notif, pop, load, tm, conf, l, mi, st, dir, tor, lm) {
         // Get hash
         self.hash = document.location.hash.substring(1)
         if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
@@ -104,6 +106,12 @@ var App
 
         // Everithing is loaded
         self.Loading.hide('app')
+
+        requirejs([
+          'special-event'
+        ], function(se){
+
+        })
       })
     })
   }
