@@ -175,7 +175,6 @@
       App.Directory.setRefresh(true, 30000)
       App.Torrent.setRefresh(false)
     } else if (tabId === 'torrents') {
-      window.location.hash = '#'
       self.switchTorrent(this.vue.$data.tabs[0].actions[0])
       App.Torrent.getTorrents(function (tor) {
         App.Torrent.append(tor)
