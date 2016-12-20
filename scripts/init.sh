@@ -21,3 +21,5 @@ if ! [ -f configs/config.json ]
     sed -i -e 's/MY_KEY/'$INVITATION_KEY'/' configs/config.json
   fi
 fi
+
+sed -i -e 's/invitationKey/masterKey/' configs/config.json

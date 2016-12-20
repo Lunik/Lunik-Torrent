@@ -4,7 +4,7 @@
   },
   "server": {
     "port": 8080,
-    "invitationKey": "MY_KEY",
+    "masterKey": "MY_KEY",
     "duplication": 1
   },
   "database": {

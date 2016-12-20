@@ -120,10 +120,10 @@ router.post('/auth/register', function (req, res) {
 
 router.get('/auth/invite', function (req, res) {
   var data = {
-    invitationKey: req.query.invitationkey
+    masterKey: req.query.masterKey
   }
-  if (data.invitationKey) {
-    Auth.createInvite(data.invitationKey, function (invite) {
+  if (data.masterKey) {
+    Auth.createInvite(data.masterKey, function (invite) {
       if (invite) {
         res.end(JSON.stringify({
           err: false,
@@ -144,10 +144,10 @@ router.get('/auth/invite', function (req, res) {
 
 router.post('/auth/invite', function (req, res) {
   var data = {
-    invitationKey: req.body.invitationkey
+    masterKey: req.body.masterKey
   }
-  if (data.invitationKey) {
-    Auth.createInvite(data.invitationKey, function (invite) {
+  if (data.masterKey) {
+    Auth.createInvite(data.masterKey, function (invite) {
       if (invite) {
         res.end(JSON.stringify({
           err: false,

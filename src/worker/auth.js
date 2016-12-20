@@ -221,10 +221,10 @@ Auth.prototype.genInvitation = function (seed1, seed2) {
   return Crypto.SHA256(seed).toString()
 }
 
-Auth.prototype.createInvite = function (inviteKey, cb) {
+Auth.prototype.createInvite = function (masterKey, cb) {
   var self = this
   var createInvite = function () {
-    if (inviteKey === __config.server.invitationKey) {
+    if (masterKey === __config.server.masterKey) {
       var invite = self.genInvitation(Rand.rand(), Rand.rand())
 
       DB.invitation.insert({hash: invite}, function (err) {
