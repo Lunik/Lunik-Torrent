@@ -100,6 +100,22 @@ var App
           }
         })
 
+        $.popupjs.init({
+          pos: {
+            x: null,
+            y: '5%'
+          },
+          width: '90%',
+          height: '90%',
+          title: 'Demo',
+          html: $('<div>').addClass('demo-pop').append(
+            $('<p>').css('margin-top', '50px').css('font-size', '20px').html(`This is a demo version of <a href="https://github.com/Lunik/Lunik-Torrent" style="color: #f7a253; font-size: 20px;">Lunik-Torrent</a><br>
+            See <a href="https://github.com/Lunik/Lunik-Torrent" style="color: #f7a253; font-size: 20px;">here</a> for more informations about how installing this app yourself ! :)`)
+          ),
+          closeBut: true
+        })
+        $.popupjs.draw()
+
         // Everithing is loaded
         self.Loading.hide('app')
       })
