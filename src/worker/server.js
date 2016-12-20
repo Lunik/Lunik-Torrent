@@ -24,19 +24,20 @@ function Server (Worker) {
     extended: true
   }))
   this.app.use(function (req, res, next) {
-    if (req.url === '/login.html' || req.url.match(/\/invitation\?invitationkey=.*/g) || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)) {
-      if (req.url === '/login.html' && req.cookies && Worker.Auth.checkLogged(req.cookies.user, req.cookies.token)) {
-        res.redirect('/')
-      } else {
-        next()
-      }
-    } else {
-      if (req.cookies && Worker.Auth.checkLogged(req.cookies.user, req.cookies.token)) {
-        next()
-      } else {
-        res.redirect('/login.html')
-      }
-    }
+    next()
+    //if (req.url === '/login.html' || req.url.match(/\/invitation\?invitationkey=.*/g) || req.url.match(/\/auth\?todo=.*/g) || req.url.match(/\/src\/.*/g)) {
+    //  if (req.url === '/login.html' && req.cookies && Worker.Auth.checkLogged(req.cookies.user, req.cookies.token)) {
+    //    res.redirect('/')
+    //  } else {
+    //    next()
+    //  }
+    //} else {
+    //  if (req.cookies && Worker.Auth.checkLogged(req.cookies.user, req.cookies.token)) {
+    //    next()
+    //  } else {
+    //    res.redirect('/login.html')
+    //  }
+    ///}
   })
   this.app.use(express.static(Path.join(__base, 'src/public')))
 
@@ -63,16 +64,19 @@ function Server (Worker) {
 
   // client start torrent
   this.app.post('/download-t', function (req, res) {
-    if (req.body.url) {
-      LogWorker.info(`${req.cookies.user} download torrent: ${req.body.url}`)
-      Worker.Torrent.setDownloader(req.cookies.user, req.body.url)
-      Worker.Torrent.start(req.body.url)
-      res.end(JSON.stringify({}))
-    } else {
-      res.end(JSON.stringify({
-        err: 'Wrong url.'
-      }))
-    }
+    res.end(JSON.stringify({
+      err: 'Demo version.'
+    }))
+    //if (req.body.url) {
+    //  LogWorker.info(`${req.cookies.user} download torrent: ${req.body.url}`)
+    //  Worker.Torrent.setDownloader(req.cookies.user, req.body.url)
+    //  Worker.Torrent.start(req.body.url)
+    //  res.end(JSON.stringify({}))
+    //} else {
+    //  res.end(JSON.stringify({
+    //    err: 'Wrong url.'
+    //  }))
+    ///}
   })
 
   // client ask list of torrent active
