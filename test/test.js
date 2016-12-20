@@ -50,8 +50,8 @@ describe('Backend', function () {
 
     var Auth = require(path.join(__base, 'src/worker/auth.js'))
     describe('createInvite()', function () {
-      it('Invite key: ' + __config.server.invitationKey, function (done) {
-        Auth.createInvite(__config.server.invitationKey, function (invite) {
+      it('Invite key: ' + __config.server.masterKey, function (done) {
+        Auth.createInvite(__config.server.masterKey, function (invite) {
           assert.typeOf(invite, 'string')
           done()
         })
@@ -65,7 +65,7 @@ describe('Backend', function () {
     })
     describe('Register()', function () {
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
-        Auth.createInvite(__config.server.invitationKey, function (invite) {
+        Auth.createInvite(__config.server.masterKey, function (invite) {
           Auth.register(username, 'bar', invite, function (token) {
             assert.typeOf(token, 'string')
             done()
@@ -73,7 +73,7 @@ describe('Backend', function () {
         })
       })
       it('User: foo, Pass: bar, Invite: Valid invitation', function (done) {
-        Auth.createInvite(__config.server.invitationKey, function (invite) {
+        Auth.createInvite(__config.server.masterKey, function (invite) {
           Auth.register(username, 'bar', invite, function (token) {
             assert(!token)
             done()
@@ -261,7 +261,7 @@ describe('Backend', function () {
         request.get({
           url: url + '/auth/invite',
           qs: {
-            invitationkey: __config.server.invitationKey
+            invitationkey: __config.server.masterKey
           }
         }, function (err, res, body) {
           assert(!err)
@@ -273,7 +273,7 @@ describe('Backend', function () {
         request.post({
           url: url + '/auth/invite',
           form: {
-            invitationkey: __config.server.invitationKey
+            invitationkey: __config.server.masterKey
           }
         }, function (err, res, body) {
           assert(!err)
