@@ -7,7 +7,8 @@ var Crypto = require('crypto-js')
 var Database = require(Path.join(__base, 'src/database/client.js'))
 var DB = {
   user: new Database('user', '127.0.0.1', __config.database.port, __DBtoken),
-  invitation: new Database('invitation', '127.0.0.1', __config.database.port, __DBtoken)
+  invitation: new Database('invitation', '127.0.0.1', __config.database.port, __DBtoken),
+  token: new Database('token', '127.0.0.1', __config.database.port, __DBtoken)
 }
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))
@@ -17,9 +18,11 @@ var LogWorker = new Log({
 
 function Auth () {
   var self = this
+
+  setInterval(self.cleanToken, 60000)
 }
 
-Auth.prototype.login = function (user, pass, cb) {
+Auth.prototype.login = function (user, pass, ip, cb) {
   var self = this
   var login = function () {
     DB.user.find({
@@ -33,23 +36,9 @@ Auth.prototype.login = function (user, pass, cb) {
         if (res <= 0) {
           cb(false)
         } else {
-          var token = self.genToken(user, pass)
-
-          DB.user.update({
-            user: user,
-            password: pass
-          }, {
-            $set: {
-              token: Crypto.SHA256(token).toString()
-            }
-          }, {}, function (err) {
-            if (err) {
-              LogWorker.error(err)
-              cb(false)
-            } else {
-              LogWorker.info(`${user} login.`)
-              cb(token)
-            }
+          self.genUserToken(user, pass, function(token){
+            LogWorker.info(`${user} login from ${ip}.`)
+            cb(token)
           })
         }
       }
@@ -62,7 +51,7 @@ Auth.prototype.login = function (user, pass, cb) {
 Auth.prototype.logout = function (user, token, cb) {
   var self = this
   var logout = function () {
-    DB.user.find({
+    DB.token.find({
       user: user,
       token: Crypto.SHA256(token).toString()
     }, function (err, res) {
@@ -73,14 +62,12 @@ Auth.prototype.logout = function (user, token, cb) {
         if (res <= 0) {
           cb(false)
         } else {
-          DB.user.update({
+          console.log("plop")
+          DB.token.remove({
             user: user,
             token: Crypto.SHA256(token).toString()
-          }, {
-            $unset: {
-              token: Crypto.SHA256(token).toString()
-            }
           }, {}, function (err) {
+            console.log("plop")
             if (err) {
               LogWorker.error(err)
               cb(false)
@@ -116,22 +103,20 @@ Auth.prototype.register = function (user, pass, invite, cb) {
               if (res.length > 0) {
                 cb(false)
               } else {
-                DB.invitation.remove({hash: invite})
-                var token = self.genToken(user, pass)
-
-                DB.user.insert({
-                  user: user,
-                  password: pass,
-                  token: Crypto.SHA256(token).toString()
-                }, function (err) {
-                  if (err) {
-                    LogWorker.error(err)
-                    cb(false)
-                  } else {
-                    LogWorker.info(`${user} register with invitation: ${invite}.`)
-                    cb(token)
-                    self.deleteInvite(invite)
-                  }
+                self.genUserToken(user, pass, function(token){
+                  DB.user.insert({
+                    user: user,
+                    password: pass
+                  }, function (err) {
+                    if (err) {
+                      LogWorker.error(err)
+                      cb(false)
+                    } else {
+                      LogWorker.info(`${user} register with invitation: ${invite}.`)
+                      cb(token)
+                      self.deleteInvite(invite)
+                    }
+                  })
                 })
               }
             }
@@ -184,7 +169,7 @@ Auth.prototype.changePass = function (user, pass, newPass, cb) {
 Auth.prototype.checkLogged = function (user, token, cb) {
   var encryptedToken = Crypto.SHA256(token).toString()
 
-  DB.user.find({
+  DB.token.find({
     user: user,
     token: Crypto.SHA256(token).toString()
   }, function (err, res) {
@@ -201,8 +186,38 @@ Auth.prototype.checkLogged = function (user, token, cb) {
   })
 }
 
-Auth.prototype.genToken = function (user, pass) {
+Auth.prototype.genUserToken = function (user, pass, cb) {
+  var self = this
   var seed = `${user}${pass}${Rand.rand().toString()}`
+  var token = Crypto.SHA256(seed).toString()
+  DB.token.insert({
+    user: user,
+    token: Crypto.SHA256(token).toString(),
+    "out-of-date": (new Date(Date.now() + 86400000)).getTime()
+  }, function(err){
+    if (err) {
+      LogWorker.error(err)
+      cb(false)
+    } else {
+      cb(token)
+    }
+  })
+}
+
+Auth.prototype.cleanToken = function(){
+  DB.token.remove({
+    "out-of-date" : {
+      $lte: (new Date()).getTime()
+    }
+  }, { multi: true }, function(err){
+    if(err){
+      LogWorker.error(err)
+    }
+  })
+}
+
+Auth.prototype.genInvitation = function (seed1, seed2) {
+  var seed = `${seed1}${seed2}${Rand.rand().toString()}`
   return Crypto.SHA256(seed).toString()
 }
 
@@ -210,7 +225,7 @@ Auth.prototype.createInvite = function (inviteKey, cb) {
   var self = this
   var createInvite = function () {
     if (inviteKey === __config.server.invitationKey) {
-      var invite = self.genToken(Rand.rand(), Rand.rand())
+      var invite = self.genInvitation(Rand.rand(), Rand.rand())
 
       DB.invitation.insert({hash: invite}, function (err) {
         if (err) {

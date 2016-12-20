@@ -44,7 +44,8 @@ router.post('/auth/login', function (req, res) {
     pass: req.body.pass
   }
   if (data.user && data.pass) {
-    Auth.login(data.user, data.pass, function (token) {
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    Auth.login(data.user, data.pass, ip, function (token) {
       if (token) {
         res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
         res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
