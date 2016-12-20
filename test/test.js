@@ -261,7 +261,7 @@ describe('Backend', function () {
         request.get({
           url: url + '/auth/invite',
           qs: {
-            invitationkey: __config.server.masterKey
+            masterKey: __config.server.masterKey
           }
         }, function (err, res, body) {
           assert(!err)
@@ -273,7 +273,7 @@ describe('Backend', function () {
         request.post({
           url: url + '/auth/invite',
           form: {
-            invitationkey: __config.server.masterKey
+            masterKey: __config.server.masterKey
           }
         }, function (err, res, body) {
           assert(!err)
