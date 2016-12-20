@@ -41,3 +41,9 @@ if ! [ -f configs/config.json ]
     sed -i -e 's/MY_KEY/'$INVITATION_KEY'/' configs/config.json
   fi
 fi
+
+mkdir files/folder
+mkdir files/folder2
+touch files/myimage.png
+touch files/mymovie.avi
+touch files/folder/randomstuff.txt
