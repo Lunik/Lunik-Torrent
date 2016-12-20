@@ -260,4 +260,18 @@ Auth.prototype.deleteInvite = function (invite, cb) {
   setTimeout(deleteInvite)
 }
 
+Auth.prototype.lastSeen = function(user, cb){
+  DB.token.find({
+    user: user
+  }, function(err, tokens){
+    if (err) {
+      LogWorker.error(err)
+      cb(false)
+    } else {
+        cb(Math.max.apply(Math,tokens.map(function(token){
+          return isNaN(token.creation)? 0:token.creation
+        })))
+    }
+  })
+}
 module.exports = new Auth()

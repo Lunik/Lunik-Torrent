@@ -173,6 +173,14 @@ describe('Backend', function () {
         })
       })
     })
+    describe('LastSeen()', function(){
+      if('User: foo', function(done){
+        Auth.lastSeen(username, function(timestamp){
+          assert(timestamp)
+          done()
+        })
+      })
+    })
   })
   describe('MediaInfo', function () {
     var MediaInfo = require(path.join(__base, 'src/worker/mediaInfo.js'))
