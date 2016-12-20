@@ -193,6 +193,7 @@ Auth.prototype.genUserToken = function (user, pass, cb) {
   DB.token.insert({
     user: user,
     token: Crypto.SHA256(token).toString(),
+    creation: Date.now(),
     "out-of-date": (new Date(Date.now() + 86400000)).getTime()
   }, function(err){
     if (err) {
