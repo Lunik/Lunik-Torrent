@@ -6,9 +6,9 @@ var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
 var Database = require(Path.join(__base, 'src/database/client.js'))
 var DB = {
-  user: new Database('user', '127.0.0.1', __config.database.port, __DBtoken),
-  invitation: new Database('invitation', '127.0.0.1', __config.database.port, __DBtoken),
-  token: new Database('token', '127.0.0.1', __config.database.port, __DBtoken)
+  user: new Database('user', __config.database.host, __config.database.port, __DBtoken),
+  invitation: new Database('invitation', __config.database.host, __config.database.port, __DBtoken),
+  token: new Database('token', __config.database.host, __config.database.port, __DBtoken)
 }
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))

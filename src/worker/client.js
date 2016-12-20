@@ -3,7 +3,7 @@ var Path = require('path')
 var WebTorrent = require('webtorrent')
 var Database = require(Path.join(__base, 'src/database/client.js'))
 var DB = {
-  torrent: new Database('torrent', '127.0.0.1', __config.database.port, __DBtoken)
+  torrent: new Database('torrent', __config.database.host, __config.database.port, __DBtoken)
 }
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))

@@ -4,7 +4,7 @@ var fs = require('fs-extra')
 var Path = require('path')
 var Database = require(Path.join(__base, 'src/database/client.js'))
 var DB = {
-  directory: new Database('directory', '127.0.0.1', __config.database.port, __DBtoken)
+  directory: new Database('directory', __config.database.host, __config.database.port, __DBtoken)
 }
 
 var Log = require(Path.join(__base, 'src/worker/log.js'))

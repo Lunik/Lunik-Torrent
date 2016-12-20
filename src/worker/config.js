@@ -15,6 +15,7 @@ Config.prototype.load = function (path) {
 
   assert(config.database, messageError('database'))
   assert(config.database.port, messageError('database.port'))
+  assert(config.database.host, messageError('database.host'))
 
   assert(config.server, messageError('server'))
   assert(config.server.port, messageError('server.port'))
