@@ -6,6 +6,7 @@ var App
     var self = this
     // Configure bower_components path
     requirejs.config({
+      priority: ['jquery'],
       paths: {
         'localstorage': '../bower_components/local-storage-api/dist/storage.min',
         'jquery': '../bower_components/jquery/dist/jquery.min',
@@ -15,7 +16,23 @@ var App
         'notify-me': '../bower_components/notify.me/dist/js/notify-me',
         'popup': '../bower_components/popupjs/dist/popup.min',
         'clipboard': '../bower_components/clipboard/dist/clipboard.min',
-        'snow': 'https://github.com/downloads/kopipejst/jqSnow/jquery.snow.min.1.0'
+        'snow': 'special-event/jquery.snow.min.1.0'
+      },
+      shim: {
+        'jquery.ui.touch-punch': ['jquery'],
+        'snow': ['jquery'],
+        'notify-me': ['jquery'],
+        'popup': ['jquery'],
+        'loading': ['jquery', 'vue'],
+        'top-menu': ['jquery', 'vue'],
+        'config': ['jquery', 'vue', 'notify-me', 'localstorage'],
+        'list': ['jquery', 'vue', 'notify-me', 'loading'],
+        'mediainfo': ['jquery', 'vue', 'notify-me', 'loading', 'format', 'localstorage'],
+        'searchtorrent': ['jquery', 'vue', 'popup', 'loading'],
+        'directory': ['jquery', 'notify-me', 'loading', 'format', 'list', 'top-menu'],
+        'torrent': ['jquery', 'notify-me', 'loading', 'format', 'list', 'top-menu'],
+        'left-menu': ['jquery', 'vue', 'notify-me', 'list', 'top-menu', 'torrent', 'directory', 'localstorage'],
+        'special-event': ['jquery', 'snow']
       }
     })
 
@@ -60,7 +77,8 @@ var App
         'searchtorrent',
         'directory',
         'torrent',
-        'left-menu'
+        'left-menu',
+        'special-event'
       ], function (jqui, snow, notif, pop, load, tm, conf, l, mi, st, dir, tor, lm) {
         // Get hash
         self.hash = document.location.hash.substring(1)
@@ -106,12 +124,6 @@ var App
 
         // Everithing is loaded
         self.Loading.hide('app')
-
-        requirejs([
-          'special-event'
-        ], function(se){
-
-        })
       })
     })
   }

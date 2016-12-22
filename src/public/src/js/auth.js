@@ -8,11 +8,18 @@ var App = {}
         'crypto-js': '../bower_components/crypto-js/crypto-js',
         'vue': '../bower_components/vue/dist/vue.min',
         'notify-me': '../bower_components/notify.me/dist/js/notify-me'
+      },
+      shim: {
+        'notify-me': ['jquery'],
+        'loading': ['jquery', 'vue']
       }
     })
 
     // load modules
-    requirejs(['jquery', 'crypto-js', 'vue'], function (jq, crypto, vue) {
+    requirejs([
+      'jquery',
+      'crypto-js',
+      'vue'], function (jq, crypto, vue) {
       self.Crypto = crypto
       self.Vue = vue
       self.v = new self.Vue({
@@ -73,7 +80,10 @@ var App = {}
         App.switch('changepass')
       })
 
-      requirejs(['notify-me', 'format', 'loading'], function (notif) {
+      requirejs([
+        'notify-me',
+        'format',
+        'loading'], function (notif) {
         self.updateHash()
 
         $('.auth .login .submit').on('click', function () {
@@ -257,7 +267,7 @@ var App = {}
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error(`Error in Auth.register() : ${err.statusText}`);
+      console.error(`Error in Auth.register() : ${err.statusText}`)
     })
   }
 
@@ -293,7 +303,7 @@ var App = {}
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error(`Error in Auth.changePass() : ${err.statusText}`);
+      console.error(`Error in Auth.changePass() : ${err.statusText}`)
     })
   }
   App = new _App()
