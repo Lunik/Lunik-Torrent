@@ -11,7 +11,7 @@
    * @return {float} - Formated size.
   */
   _Format.prototype.size = function (bytes) {
-    var sizes = ['b', 'kb', 'mb', 'gb', 'tb']
+    var sizes = ['o', 'ko', 'mo', 'go', 'to']
     if (bytes === 0) { return '0 b' }
     var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
     return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`
@@ -23,7 +23,11 @@
    * @return {float} - Formated speed.
   */
   _Format.prototype.speed = function (bytes) {
-    return `${this.size(bytes)}/s`
+    var bits = bytes * 8
+    var sizes = ['b', 'kb', 'mb', 'gb', 'tb']
+    if (bits === 0) { return '0 b' }
+    var i = parseInt(Math.floor(Math.log(bits) / Math.log(1024)), 10)
+    return `${Math.round(bits / Math.pow(1024, i), 2)} ${sizes[i]}/s`
   }
 
   /**
