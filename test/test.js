@@ -173,9 +173,9 @@ describe('Backend', function () {
         })
       })
     })
-    describe('LastSeen()', function(){
-      it('User: foo', function(done){
-        Auth.lastSeen(username, function(timestamp){
+    describe('LastSeen()', function () {
+      it('User: foo', function (done) {
+        Auth.lastSeen(username, function (timestamp) {
           assert(timestamp)
           done()
         })

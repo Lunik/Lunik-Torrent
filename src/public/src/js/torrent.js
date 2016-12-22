@@ -77,7 +77,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error(`Error in Torrent.getTorrents() : ${err.statusText}`);
+      console.error(`Error in Torrent.getTorrents() : ${err.statusText}`)
     })
   }
 
@@ -170,7 +170,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        console.error(`Error in Torrent.remove() : ${err.statusText}`);
+        console.error(`Error in Torrent.remove() : ${err.statusText}`)
       })
     } else {
       App.Loading.hide('action')
@@ -207,7 +207,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error(`Error Torrent.download() : ${err.statusText}`);
+      console.error(`Error Torrent.download() : ${err.statusText}`)
     })
   }
 

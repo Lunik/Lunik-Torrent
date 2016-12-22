@@ -65,7 +65,7 @@ Torrent.prototype.start = function (user, url) {
               if (err) {
                 LogWorker.error(err)
               } else {
-                Directory.list('', function(){
+                Directory.list('', function () {
                   Directory.setOwner(torrent.name, user)
                 })
                 if (self.waitList.length > 0) {

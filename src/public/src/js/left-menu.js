@@ -74,7 +74,7 @@
       }
     })
 
-    $('.top-menu').on('click', '.logo', function(){
+    $('.top-menu').on('click', '.logo', function () {
       self.switchTab('directories')
       App.List.switchTab('directories')
     })
@@ -96,7 +96,7 @@
       type: 'get',
       url: '/version',
       dataType: 'json',
-      success: function(data){
+      success: function (data) {
         if (data.err) {
           $.notify.error({
             title: 'Error',

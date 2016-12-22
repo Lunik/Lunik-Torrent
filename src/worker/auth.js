@@ -36,7 +36,7 @@ Auth.prototype.login = function (user, pass, ip, cb) {
         if (res <= 0) {
           cb(false)
         } else {
-          self.genUserToken(user, pass, function(token){
+          self.genUserToken(user, pass, function (token) {
             LogWorker.info(`${user} login from ${ip}.`)
             cb(token)
           })
@@ -62,12 +62,12 @@ Auth.prototype.logout = function (user, token, cb) {
         if (res <= 0) {
           cb(false)
         } else {
-          console.log("plop")
+          console.log('plop')
           DB.token.remove({
             user: user,
             token: Crypto.SHA256(token).toString()
           }, {}, function (err) {
-            console.log("plop")
+            console.log('plop')
             if (err) {
               LogWorker.error(err)
               cb(false)
@@ -103,7 +103,7 @@ Auth.prototype.register = function (user, pass, invite, cb) {
               if (res.length > 0) {
                 cb(false)
               } else {
-                self.genUserToken(user, pass, function(token){
+                self.genUserToken(user, pass, function (token) {
                   DB.user.insert({
                     user: user,
                     password: pass
@@ -194,8 +194,8 @@ Auth.prototype.genUserToken = function (user, pass, cb) {
     user: user,
     token: Crypto.SHA256(token).toString(),
     creation: Date.now(),
-    "out-of-date": (new Date(Date.now() + 86400000)).getTime()
-  }, function(err){
+    'out-of-date': (new Date(Date.now() + 86400000)).getTime()
+  }, function (err) {
     if (err) {
       LogWorker.error(err)
       cb(false)
@@ -205,13 +205,13 @@ Auth.prototype.genUserToken = function (user, pass, cb) {
   })
 }
 
-Auth.prototype.cleanToken = function(){
+Auth.prototype.cleanToken = function () {
   DB.token.remove({
-    "out-of-date" : {
+    'out-of-date': {
       $lte: (new Date()).getTime()
     }
-  }, { multi: true }, function(err){
-    if(err){
+  }, { multi: true }, function (err) {
+    if (err) {
       LogWorker.error(err)
     }
   })
@@ -260,17 +260,17 @@ Auth.prototype.deleteInvite = function (invite, cb) {
   setTimeout(deleteInvite)
 }
 
-Auth.prototype.lastSeen = function(user, cb){
+Auth.prototype.lastSeen = function (user, cb) {
   DB.token.find({
     user: user
-  }, function(err, tokens){
+  }, function (err, tokens) {
     if (err) {
       LogWorker.error(err)
       cb(false)
     } else {
-        cb(Math.max.apply(Math,tokens.map(function(token){
-          return isNaN(token.creation)? 0:token.creation
-        })))
+      cb(Math.max.apply(Math, tokens.map(function (token) {
+        return isNaN(token.creation) ? 0 : token.creation
+      })))
     }
   })
 }

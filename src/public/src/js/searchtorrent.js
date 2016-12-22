@@ -46,7 +46,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error(`Error in SearchTorrent.search() : ${err.statusText}`);
+      console.error(`Error in SearchTorrent.search() : ${err.statusText}`)
     })
   }
 

@@ -5,7 +5,7 @@ var router = express.Router()
 var Auth = require(Path.join(__base, 'src/worker/auth'))
 
 router.use(function (req, res, next) {
-  if(req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)){
+  if (req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)) {
     next()
   } else {
     Auth.checkLogged(req.cookies.user, req.cookies.token, function (isLogged) {
