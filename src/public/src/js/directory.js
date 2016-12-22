@@ -123,7 +123,7 @@
         }
       })
     } else {
-      App.List.updateLines({})
+      App.List.updateLines(lines)
     }
   }
 
