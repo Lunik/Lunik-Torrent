@@ -58,8 +58,8 @@
     App.Loading.show('action')
     var self = this
     $.ajax({
-      type: 'post',
-      url: '/list-t',
+      type: 'get',
+      url: '/torrent/list',
       data: {},
       dataType: 'json',
       success: function (torrents) {
@@ -77,7 +77,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error(`Error in Torrent.getTorrents() : ${err.statusText}`);
+      console.error(`Error in Torrent.getTorrents() : ${err.statusText}`)
     })
   }
 
@@ -147,7 +147,7 @@
     if (confirm(`Confirmer la suppression de ${torrent.name} ?`)) {
       $.ajax({
         type: 'post',
-        url: '/remove-t',
+        url: '/torrent/remove',
         data: {
           hash: torrent.hash
         },
@@ -170,7 +170,7 @@
         App.Loading.hide('action')
       }).fail(function (err) {
         App.Loading.hide('action')
-        console.error(`Error in Torrent.remove() : ${err.statusText}`);
+        console.error(`Error in Torrent.remove() : ${err.statusText}`)
       })
     } else {
       App.Loading.hide('action')
@@ -185,7 +185,7 @@
     App.Loading.show('action')
     $.ajax({
       type: 'post',
-      url: '/download-t',
+      url: '/torrent/download',
       data: {
         url: url
       },
@@ -207,7 +207,7 @@
       App.Loading.hide('action')
     }).fail(function (err) {
       App.Loading.hide('action')
-      console.error(`Error Torrent.download() : ${err.statusText}`);
+      console.error(`Error Torrent.download() : ${err.statusText}`)
     })
   }
 

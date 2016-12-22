@@ -1,13 +1,15 @@
 .loading > div {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  top: 50%;
+
+  transform: translateX(-50%) translateY(-50%);
 }
 
 .loading .loading-app {
   z-index: 500;
+  width: 100%;
+  height: 100%;
 }
 
 .loading .loading-actions {
@@ -20,7 +22,6 @@
   height: 100%;
   background-size: 20%;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   background-position: center;
 }
 
@@ -37,14 +38,7 @@
   animation: rotate 2s linear infinite;
   height: 100px;
   transform-origin: center center;
-  width: 100px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  stroke-width: 4;
+  stroke-width: 2;
 }
 
 .path {

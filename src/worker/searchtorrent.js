@@ -11,7 +11,7 @@ var cheerio = require('cheerio')
  * @constructor
 */
 function SearchTorrent () {
-  this.url = new Buffer("aHR0cDovL3d3dy50b3JyZW50OS5iaXo=", 'base64').toString()
+  this.url = new Buffer('aHR0cDovL3d3dy50b3JyZW50OS5iaXo=', 'base64').toString()
 }
 
 /**
@@ -25,11 +25,11 @@ SearchTorrent.prototype.search = function (query, callback) {
     var torrents = {
       tv: {
         items: [],
-        type: "films"
+        type: 'films'
       },
       mv: {
         items: [],
-        type: "series"
+        type: 'series'
       }
     }
 
@@ -64,11 +64,11 @@ SearchTorrent.prototype.latest = function (callback) {
     var torrents = {
       tv: {
         items: [],
-        type: "films"
+        type: 'films'
       },
       mv: {
         items: [],
-        type: "series"
+        type: 'series'
       }
     }
 
@@ -93,11 +93,11 @@ SearchTorrent.prototype.latest = function (callback) {
   setTimeout(latest)
 }
 
-SearchTorrent.prototype.parse = function($, tr) {
+SearchTorrent.prototype.parse = function ($, tr) {
   var self = this
   var array = []
   for (var key in tr) {
-    if(!isNaN(key)){
+    if (!isNaN(key)) {
       var $line = $(tr[key])
       var torrent = {}
       torrent.title = $($line.children()[0]).find('a').text()

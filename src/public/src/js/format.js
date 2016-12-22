@@ -11,7 +11,7 @@
    * @return {float} - Formated size.
   */
   _Format.prototype.size = function (bytes) {
-    var sizes = ['b', 'kb', 'mb', 'gb', 'tb']
+    var sizes = ['o', 'ko', 'mo', 'go', 'to']
     if (bytes === 0) { return '0 b' }
     var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
     return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`
@@ -23,7 +23,11 @@
    * @return {float} - Formated speed.
   */
   _Format.prototype.speed = function (bytes) {
-    return `${this.size(bytes)}/s`
+    var bits = bytes * 8
+    var sizes = ['b', 'kb', 'mb', 'gb', 'tb']
+    if (bits === 0) { return '0 b' }
+    var i = parseInt(Math.floor(Math.log(bits) / Math.log(1024)), 10)
+    return `${Math.round(bits / Math.pow(1024, i), 2)} ${sizes[i]}/s`
   }
 
   /**
@@ -80,21 +84,13 @@
    * @return {string} - Cleaned name.
   */
   _Format.prototype.name = function (name) {
-    var bannedWords = ['dvdrip', 'fr', 'vo', 'vostfr', 'hdtv', 'webrip', 'bdrip']
     name = name.toLowerCase()
       .replace(/\.[a-z0-9]*$/, '') // remove extension
       .replace(/\./g, ' ') // point
       .replace(/s[0-9][0-9]e[0-9][0-9]/g, '') // numero d'episode
       .replace(/ $/, '') // espace en fin de chaine
-    name = name.split(' ')
-    var newName = []
-    for (var key in name) {
-      var mot = name[key]
-      if (bannedWords.indexOf(mot) === -1) {
-        newName.push(mot)
-      }
-    }
-    return newName.join(' ')
+
+    return name
   }
 
   App.Format = new _Format()

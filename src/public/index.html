@@ -8,7 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <link rel="icon" href="src/image/favicon.ico">
-    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/style.css" async>
+    <link rel="stylesheet" href="src/bower_components/notify.me/dist/css/notify-me.min.css" async>
+    <link rel="stylesheet" href="src/bower_components/popupjs/dist/popup.min.css" async>
+    <link rel="stylesheet" href="src/css/loading.css" async>
+    <link rel="stylesheet" href="src/css/top-menu.css" async>
+    <link rel="stylesheet" href="src/css/left-menu.css" async>
+    <link rel="stylesheet" href="src/css/list.css" async>
+    <link rel="stylesheet" href="src/css/torrent.css" async>
+    <link rel="stylesheet" href="src/css/searchtorrent.css" async>
+    <link rel="stylesheet" href="src/css/mediainfo.css" async>
+    <link rel="stylesheet" href="src/css/config.css" async>
+    <link rel="stylesheet" href="src/css/themes/theme.css" async>
+    <link rel="stylesheet" href="src/css/themes/icon.css" async>
+    <link rel="stylesheet" href="src/bower_components/font-awesome/css/font-awesome.css" async>
   </head>
 
   <body>
@@ -56,6 +69,7 @@
         <div class="button" :class="a.class" v-for="a in actions" v-show="a.state">{{ a.name }}</div>
       </div>
       <div class="footer">
+        <p>Version {{version}}</p>
         <p><a target="_blank" href="https://github.com/Lunik/Lunik-Torrent/issues">FeedBack</a></p>
         <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
       </div>
@@ -153,6 +167,6 @@
         </table>
       </div>
     </div>
-    <script data-main="src/js/app" src="src/bower_components/requirejs/require.js"></script>
+    <script data-main="src/js/app" src="src/bower_components/requirejs/require.js" async></script>
   </body>
 </html>
