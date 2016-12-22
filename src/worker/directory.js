@@ -421,7 +421,7 @@ Directory.prototype.setOwner = function (file, user) {
     file = file.split('/')
     if (file[file.length - 1] === '' && parent.length > 2) file.pop()
     var name = file[file.length - 1]
-    var parent = file[file.length - 2]
+    var parent = file[file.length - 2] || ''
 
     DB.directory.update({
       name: name,
