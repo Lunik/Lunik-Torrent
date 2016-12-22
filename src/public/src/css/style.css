@@ -1,14 +1,3 @@
-@import url(../bower_components/notify.me/dist/css/notify-me.min.css);
-@import url(../bower_components/popupjs/dist/popup.min.css);
-@import url(loading.css);
-@import url(top-menu.css);
-@import url(left-menu.css);
-@import url(list.css);
-@import url(config.css);
-@import url(themes/theme.css);
-@import url(themes/icon.css);
-@import url(auth.css);
-
 * {
   outline: none;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
