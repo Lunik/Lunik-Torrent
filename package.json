@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "scripts/init.sh && bower install --allow-root",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js -w src/worker/ --ignore src/public",
+    "dev": "nodemon src/index.js -w src/ --ignore src/public",
     "deamon": "forever -a start src/index.js",
     "test": "istanbul cover _mocha -- -R spec test/*"
   },
@@ -19,6 +19,7 @@
     "allocine-api": "^0.1.9",
     "body-parser": "^1.15.2",
     "bower": "^1.8.0",
+    "cheerio": "^0.22.0",
     "colors": "^1.1.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
@@ -26,9 +27,10 @@
     "crypto-rand": "^0.0.2",
     "express": "^4.14.0",
     "forever": "^0.15.3",
-    "webtorrent": "^0.98.0",
+    "fs-extra": "^1.0.0",
+    "nedb": "^1.8.0",
     "request": "^2.79.0",
-    "cheerio": "^0.22.0"
+    "webtorrent": "^0.98.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

@@ -9,22 +9,37 @@ var Config = require(Path.join(__base, 'src/worker/config.js'))
 var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(Path.join(__base, 'configs/config.json'))
 
-var Torrent = require(Path.join(__base, 'src/worker/torrent.js'))
-var Directory = require(Path.join(__base, 'src/worker/directory.js'))
-var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert.js'))
-var Auth = require(Path.join(__base, 'src/worker/auth.js'))
-var SearchEngine = require(Path.join(__base, 'src/worker/searchTorrent.js'))
-var InfoEngine = require(Path.join(__base, 'src/worker/mediaInfo.js'))
+var cluster = require('cluster')
+var numCPUs = require('os').cpus().length
 
-Torrent.Directory = Directory
+if (cluster.isMaster) {
+  var Rand = require('crypto-rand')
+  var Crypto = require('crypto-js')
+  var token = Crypto.SHA256(Rand.rand().toString()).toString()
 
-var Server = require(Path.join(__base, 'src/worker/server.js'))
+  var Database = require(Path.join(__base, 'src/database/server.js'))
+  var DBPort = process.env.DB_PORT || __config.database.port
+  var DB = new Database(DBPort, token)
 
-var ServerWorker = new Server({
-  Torrent: Torrent,
-  Directory: Directory,
-  FileTransfert: FileTransfert,
-  Auth: Auth,
-  SearchEngine: SearchEngine,
-  InfoEngine: InfoEngine
-})
+  cluster.schedulingPolicy = cluster.SCHED_RR
+  var i = 0
+  while (i < numCPUs && i < __config.server.duplication) {
+    cluster.fork()
+    i++
+  }
+
+  cluster.on('online', function (worker) {
+    worker.send(token)
+  })
+
+  cluster.on('exit', function (worker, code, signal) {
+    console.log('Worker ' + worker.process.pid + ' died')
+    cluster.fork()
+  })
+} else {
+  var Server = require(Path.join(__base, 'src/controller/main.js'))
+  process.on('message', function (token) {
+    global.__DBtoken = token
+    var ServerWorker = new Server(cluster.worker.id)
+  })
+}

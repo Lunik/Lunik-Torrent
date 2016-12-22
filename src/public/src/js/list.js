@@ -95,7 +95,7 @@
     })
 
     // scrollTop button
-    $('.scrollTop').click(function () {
+    $('.scrollTop').on('click', function () {
       $('body').animate({
         scrollTop: 0
       }, 1000)
@@ -266,7 +266,7 @@
 
         $.ajax({
           type: 'post',
-          url: '/mv-d',
+          url: '/directory/mv',
           data: {
             'file': file,
             'path': path,
@@ -290,7 +290,7 @@
           App.Loading.hide('action')
         }).fail(function (err) {
           App.Loading.hide('action')
-          console.error(`Error in List.updateDragDrop() : ${err.statusText}`);
+          console.error(`Error in List.updateDragDrop() : ${err.statusText}`)
         })
       }
     })

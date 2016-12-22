@@ -77,6 +77,11 @@
   font-size: 15px;
 }
 
+@media only screen and (max-height: 290px) {
+  .left-menu .footer{
+    display: none;
+  }
+}
 .left-menu .footer p{
   margin: 2px;
 }
