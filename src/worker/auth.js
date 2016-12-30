@@ -62,12 +62,10 @@ Auth.prototype.logout = function (user, token, cb) {
         if (res <= 0) {
           cb(false)
         } else {
-          console.log('plop')
           DB.token.remove({
             user: user,
             token: Crypto.SHA256(token).toString()
           }, {}, function (err) {
-            console.log('plop')
             if (err) {
               LogWorker.error(err)
               cb(false)
