@@ -73,7 +73,7 @@ $ docker run -d \
 You need an inscription code provided by the server admin.
 
 ##### Create an invitation code
-Goto to `http://myapp.com/auth/invitation?masterKey=MY_MASTER_KEY`
+Goto to `http://myapp.com/auth/invite?masterKey=MY_MASTER_KEY`
 
 For more advanced user
 ```
