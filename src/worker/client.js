@@ -91,7 +91,7 @@ Client.prototype.stop = function () {
         }
       })
     } catch (err) {
-      LogWorker.error(err)
+      LogWorker.warning(err)
     }
   }
 
@@ -150,8 +150,9 @@ Client.prototype.updateFunction = function (torrent) {
 
 Client.prototype.doneFunction = function (torrent) {
   if (torrent) {
+    var torrentInfo = this.getTorrent(torrent)
     DB.torrent.remove({
-      hash: torrent.hash
+      hash: torrentInfo.hash
     }, function (err) {
       if (err) {
         LogWorker.error(err)

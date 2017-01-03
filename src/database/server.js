@@ -105,6 +105,7 @@ DatabaseServer.prototype.loadDB = function (db, cb) {
   if (this.databases[db] == null) {
     this.databases[db] = new Datastore({ filename: Path.join(__base, `data/${db}.db`) })
     this.databases[db].loadDatabase(cb)
+    this.databases[db].persistence.compactDatafile()
   } else {
     cb()
   }
