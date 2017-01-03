@@ -26,7 +26,6 @@ Config.prototype.load = function (path) {
   assert(config.client.downloads, messageError('client.downloads'))
   assert(config.client.updateTimeout, messageError('client.updateTimeout'))
   assert(config.client.timeout, messageError('client.timeout'))
-  assert(config.client.maxTry, messageError('client.maxTry'))
 
   assert(config.directory, messageError('directory'))
   assert(config.directory.path, messageError('directory.path'))
@@ -34,7 +33,6 @@ Config.prototype.load = function (path) {
   assert(config.torrent, messageError('torrent'))
   assert(config.torrent.downloads, messageError('torrent.downloads'))
   assert(config.torrent.scanTorrent, messageError('torrent.scanTorrent'))
-  assert(config.torrent.max, messageError('torrent.max'))
 
   return config
 }

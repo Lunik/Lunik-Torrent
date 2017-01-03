@@ -14,15 +14,13 @@
   "client": {
     "downloads": "downloads/",
     "updateTimeout": 3000,
-    "timeout": 30000,
-    "maxTry": 3
+    "timeout": 30000
   },
   "directory": {
     "path": "files/"
   },
   "torrent": {
     "downloads": "downloads/",
-    "scanTorrent": "torrents.txt",
-    "max": 3
+    "scanTorrent": "torrents.txt"
   }
 }
