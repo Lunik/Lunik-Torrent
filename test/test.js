@@ -732,7 +732,7 @@ describe('Backend', function () {
     describe('remove()', function () {
       it('start and remove', function (done) {
         this.timeout(300000)
-        Torrent.start('magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso')
+        Torrent.start('nobody', 'magnet:?xt=urn:btih:288f8018277b8c474f304a059b064e017bd55e9f&dn=ubuntu-16.04.1-server-i386.iso')
         setTimeout(function () {
           Torrent.getInfo(function (data) {
             assert(Array.isArray(data))
