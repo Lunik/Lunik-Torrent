@@ -196,7 +196,7 @@
   }
 
   /**
-   * Update one lines into the table
+   * Update one line into the table
    * @param {object} line - The line to update
   */
   _List.prototype.updateLine = function (line) {
@@ -211,6 +211,7 @@
       $.each(line, function (i, v) {
         l[i] = v
       })
+      self.sortLines('name', 'asc')
     }
   }
 
