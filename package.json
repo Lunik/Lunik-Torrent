@@ -27,7 +27,7 @@
     "crypto-rand": "^0.0.2",
     "express": "^4.14.0",
     "forever": "^0.15.3",
-    "fs-extra": "^1.0.0",
+    "fs-extra": "^2.0.0",
     "nedb": "^1.8.0",
     "request": "^2.79.0",
     "webtorrent": "^0.98.0"
