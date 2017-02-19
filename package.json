@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "allocine-api": "^0.1.9",
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.16.1",
     "bower": "^1.8.0",
     "cheerio": "^0.22.0",
     "cloudscraper": "^1.4.1",
