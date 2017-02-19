@@ -3,7 +3,7 @@
 /*var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 */
-var request = require('request')
+var cloudscraper = require('cloudscraper')
 var cheerio = require('cheerio')
 
 /**
@@ -33,13 +33,13 @@ SearchTorrent.prototype.search = function (query, callback) {
       }
     }
 
-    request.get(`${self.url}/search_torrent/films/${query}.html`, function (err, res, body) {
+    cloudscraper.get(`${self.url}/search_torrent/films/${query}.html`, function (err, res, body) {
       if (err) {
         console.error(err)
       }
       var $ = cheerio.load(body)
       torrents.mv.items = self.parse($, $('.table tbody tr'))
-      request.get(`${self.url}/search_torrent/series/${query}.html`, function (err, res, body) {
+      cloudscraper.get(`${self.url}/search_torrent/series/${query}.html`, function (err, res, body) {
         if (err) {
           console.error(err)
         }
@@ -72,13 +72,13 @@ SearchTorrent.prototype.latest = function (callback) {
       }
     }
 
-    request.get(`${self.url}/torrents_films.html`, function (err, res, body) {
+    cloudscraper.get(`${self.url}/torrents_films.html`, function (err, res, body) {
       if (err) {
         console.error(err)
       }
       var $ = cheerio.load(body)
       torrents.mv.items = self.parse($, $('.table-responsive tbody tr'))
-      request.get(`${self.url}/torrents_series.html`, function (err, res, body) {
+      cloudscraper.get(`${self.url}/torrents_series.html`, function (err, res, body) {
         if (err) {
           console.error(err)
         }
