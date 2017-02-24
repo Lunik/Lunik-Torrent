@@ -43,55 +43,28 @@ Torrent.prototype.start = function (user, url) {
   var self = this
 
   var start = function () {
-    // evite de lancer deux fois le meme torrent
-    if (self.client[url] == null) {
-      // Si trop de torrent en cours
-      if (Object.keys(self.client).length < __config.torrent.max) {
-        var c = new Client()
-
-        self.client[url] = c
-
-        c.download(url, function (hash) {
-          self.client[hash] = c
-        }, function (err, torrent) {
-          delete self.client[url]
-          delete self.client[torrent.infoHash]
+    var c = new Client()
+    c.download(url, function (hash) {
+      self.client[hash] = c
+    }, function (err, torrent) {
+      delete self.client[torrent.infoHash]
+      if (err) {
+        LogWorker.error(`Fail downloading: ${url}`)
+      } else {
+        c.stop()
+        LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, torrent.name)} to ${Path.join(__config.directory.path, torrent.name)}`)
+        fs.move(Path.join(__config.torrent.downloads, torrent.name), Path.join(__config.directory.path, torrent.name), function (err) {
           if (err) {
-            LogWorker.error(`Fail downloading: ${url}`)
+            LogWorker.error(err)
           } else {
-            c.stop()
-            LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, torrent.name)} to ${Path.join(__config.directory.path, torrent.name)}`)
-            fs.move(Path.join(__config.torrent.downloads, torrent.name), Path.join(__config.directory.path, torrent.name), function (err) {
-              if (err) {
-                LogWorker.error(err)
-              } else {
-                Directory.list('', function () {
-                  Directory.setOwner(torrent.name, user)
-                })
-                if (self.waitList.length > 0) {
-                  LogWorker.info(`Start torrent into waitList (left: ${(self.waitList.length - 1)})`)
-                  var next = self.waitList.shift()
-                  self.start(next.user, next.url)
-                }
-              }
+            Directory.list('', function () {
+              Directory.setOwner(torrent.name, user)
             })
           }
         })
-      } else {
-        LogWorker.warning('Too much client. Adding torrent to the waitlist.')
-        // On push dans la liste d'attente
-        if (self.waitList.indexOf(url) === -1) {
-          self.waitList.push({
-            url: url,
-            user: user
-          })
-        }
       }
-    } else {
-      LogWorker.warning('Torrent is already downloading.')
-    }
+    })
   }
-
   setTimeout(start)
 }
 

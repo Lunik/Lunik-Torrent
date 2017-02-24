@@ -1,6 +1,6 @@
 {
   "name": "lunik-torrent",
-  "version": "3.0.2",
+  "version": "3.0.6",
   "description": "Web torrent client with directory storage",
   "author": "Guillaume Lunik <guillaume.lunik@gmail.com>",
   "scripts": {
@@ -17,9 +17,10 @@
   },
   "dependencies": {
     "allocine-api": "^0.1.9",
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.16.1",
     "bower": "^1.8.0",
     "cheerio": "^0.22.0",
+    "cloudscraper": "^1.4.1",
     "colors": "^1.1.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
@@ -30,7 +31,7 @@
     "fs-extra": "^1.0.0",
     "nedb": "^1.8.0",
     "request": "^2.79.0",
-    "webtorrent": "^0.98.0"
+    "webtorrent": "^0.98.8"
   },
   "devDependencies": {
     "chai": "^3.5.0",
