@@ -26,7 +26,7 @@
     "cookie-parser": "^1.4.3",
     "crypto-js": "^3.1.8",
     "crypto-rand": "^0.0.2",
-    "express": "^4.14.0",
+    "express": "^4.15.0",
     "forever": "^0.15.3",
     "fs-extra": "^1.0.0",
     "nedb": "^1.8.0",
