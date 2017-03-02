@@ -31,7 +31,7 @@
     "fs-extra": "^1.0.0",
     "nedb": "^1.8.0",
     "request": "^2.79.0",
-    "webtorrent": "^0.98.8"
+    "webtorrent": "^0.98.9"
   },
   "devDependencies": {
     "chai": "^3.5.0",
