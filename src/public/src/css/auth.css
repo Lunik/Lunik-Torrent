@@ -43,7 +43,7 @@
   margin-bottom: 45px;
 }
 
-.auth label {
+.auth .input label {
   font-size: 18px;
   position: absolute;
   pointer-events: none;
@@ -52,9 +52,17 @@
   transition: 0.2s ease all;
 }
 
-.auth input {
+.auth .input input {
   font-size: 18px;
   padding: 10px 10px 10px 5px;
+  display: block;
+  width: 300px;
+}
+
+.auth .checkbox {
+  text-align: left;
+  font-size: 18px;
+  margin: -10px 0 10px 0;
   display: block;
   width: 300px;
 }
@@ -96,4 +104,12 @@
 
 .auth input:focus ~ .bar:after {
   width: 50%;
+}
+
+.auth .footer p{
+  margin: 2px;
+}
+
+.auth .footer .logs{
+  font-size: 10px;
 }

@@ -41,14 +41,19 @@ router.get('/auth', function (req, res) {
 router.post('/auth/login', function (req, res) {
   var data = {
     user: req.body.user || req.cookies.user,
-    pass: req.body.pass
+    pass: req.body.pass,
+    staylogged: req.body.staylogged
   }
   if (data.user && data.pass) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
     Auth.login(data.user, data.pass, ip, function (token) {
       if (token) {
-        res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
-        res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
+        var cookieExpire = 86400000 // One day
+        if(data.staylogged){
+          cookieExpire = 31536000000 // One year
+        }
+        res.cookie('token', token, { expires: new Date(Date.now() + cookieExpire), httpOnly: true, encode: String })
+        res.cookie('user', data.user, { expires: new Date(Date.now() + cookieExpire), httpOnly: true, encode: String })
         res.end(JSON.stringify({
           err: false,
           token: token

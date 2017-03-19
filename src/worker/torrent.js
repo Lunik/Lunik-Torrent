@@ -29,10 +29,6 @@ function Torrent () {
 
   this.client = {}
   this.waitList = []
-
-  setInterval(function () {
-    self.startPointTorrent(self)
-  }, 30000)
 }
 
 /**
@@ -76,31 +72,6 @@ Torrent.prototype.remove = function (hash) {
   if (this.client[hash]) {
     this.client[hash].stop()
   }
-}
-
-/**
- * Start torrent into configured torrent file.
- * @param {object} self - Torrent instance.
-*/
-Torrent.prototype.startPointTorrent = function (self) {
-  fs.readFile(Path.join(__config.torrent.scanTorrent), 'utf-8', function (err, data) {
-    if (err) {
-      LogWorker.error(err)
-    } else {
-      var torrents = data.split('\n')
-      fs.writeFile(Path.join(__config.torrent.scanTorrent), '', 'utf-8', function (err) {
-        if (err) {
-          LogWorker.error(err)
-        } else {
-          torrents.forEach(function (element) {
-            if (element !== '') {
-              self.start('-', element)
-            }
-          })
-        }
-      })
-    }
-  })
 }
 
 Torrent.prototype.getInfo = function (cb) {
