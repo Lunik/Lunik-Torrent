@@ -39,6 +39,10 @@
             <span class="bar"></span>
             <label for="login-pass">Password...</label>
           </div>
+          <div class="staylogged checkbox">
+            <input type="checkbox" name="staylogged" v-model="login.staylogged" id="login-stay-logged">
+            <label for="login-stay-logged"> Stay logged</label>
+          </div>
           <button class="submit button">Login</button>
         </div>
         <div class="register" v-show="register.state">

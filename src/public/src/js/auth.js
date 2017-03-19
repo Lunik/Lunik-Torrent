@@ -28,7 +28,8 @@ var App = {}
           login: {
             state: true,
             user: '',
-            pass: ''
+            pass: '',
+            staylogged: false
           },
           register: {
             state: false,
@@ -89,7 +90,7 @@ var App = {}
         $('.auth .login .submit').on('click', function () {
           var loginData = self.getLogin()
           if (loginData.user.length > 0 && loginData.pass.length) {
-            self.login(loginData.user, loginData.pass)
+            self.login(loginData.user, loginData.pass, loginData.staylogged)
           } else {
             self.setInfo('User and Password are required.')
           }
@@ -181,7 +182,8 @@ var App = {}
   _App.prototype.getLogin = function () {
     return {
       user: this.v.$data.login.user.toLowerCase(),
-      pass: App.Crypto.SHA256(this.v.$data.login.pass).toString()
+      pass: App.Crypto.SHA256(this.v.$data.login.pass).toString(),
+      staylogged: this.v.$data.login.staylogged
     }
   }
 
@@ -202,14 +204,15 @@ var App = {}
     }
   }
 
-  _App.prototype.login = function (user, pass) {
+  _App.prototype.login = function (user, pass, staylogged) {
     App.Loading.show('action')
     $.ajax({
       type: 'post',
       url: '/auth/login',
       data: {
         user: user,
-        pass: pass
+        pass: pass,
+        staylogged, staylogged
       },
       dataType: 'json',
       success: function (data) {
