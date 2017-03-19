@@ -105,3 +105,11 @@
 .auth input:focus ~ .bar:after {
   width: 50%;
 }
+
+.auth .footer p{
+  margin: 2px;
+}
+
+.auth .footer .logs{
+  font-size: 10px;
+}

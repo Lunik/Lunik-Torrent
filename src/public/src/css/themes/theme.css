@@ -231,6 +231,14 @@ a {
 .auth .info {
   color: #f75353;
 }
+
+.auth .footer {
+  color: #675f5f;
+}
+
+.auth .footer a:hover {
+  color: #f7a253;
+}
 /**********/
 /*  Other */
 /**********/

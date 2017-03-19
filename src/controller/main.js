@@ -29,6 +29,7 @@ function Server (id) {
   this.app.use(require(Path.join(__base, 'src/controller/filetransfert')))
   this.app.use(require(Path.join(__base, 'src/controller/torrent')))
   this.app.use(require(Path.join(__base, 'src/controller/directory')))
+  this.app.use(require(Path.join(__base, 'src/controller/logs')))
 
   this.app.use(express.static(Path.join(__base, 'src/public')))
 
