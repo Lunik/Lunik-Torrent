@@ -714,14 +714,14 @@ describe('Backend', function () {
     var Torrent = require(path.join(__base, 'src/worker/torrent.js'))
     describe('Start()', function () {
       it('start multiple torrent', function (done) {
-        this.timeout(305000)
+        this.timeout(300000)
         Torrent.start('nobody', 'magnet:?xt=urn:btih:406bcd979f0f2650e859324d97efd0a1139328a0&dn=CentOS-5.11-i386-netinstall')
         Torrent.start('nobody', 'magnet:?xt=urn:btih:2700d4801a22ab198428bf1b4a85b097bf0497d3&dn=CentOS-5.11-x86_64-netinstall')
         Torrent.start('nobody', 'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso')
         Torrent.start('nobody', 'magnet:?xt=urn:btih:6bf4c6b4b86dbfcc79180b042abc2bd60a9ca3a4&dn=ubuntu-16.10-server-i386.iso')
         setTimeout(function () {
           done()
-        }, 60000)
+        }, 10000)
       })
     })
     describe('remove()', function () {
