@@ -1,6 +1,6 @@
 'use strict'
 
-var fs = require('fs')
+var fs = require('fs-extra')
 var klaw = require('klaw')
 var Path = require('path')
 var Database = require(Path.join(__base, 'src/database/client.js'))
