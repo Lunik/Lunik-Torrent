@@ -16,8 +16,6 @@ var LogWorker = new Log({
  * @constructor
  */
 function Directory () {
-  var self = this
-
   DB.directory.update({}, {
     $set: {
       downloading: 0
@@ -35,67 +33,72 @@ function Directory () {
  * @return {object} - Directory informations.
 */
 Directory.prototype.list = function (dir, cb) {
-  var self = this
   var response = {
     'totalSize': 0,
     'files': {}
   }
   var list = function () {
-    var childrens = []
-    fs.walk(Path.join(__config.directory.path, dir))
-      .on('data', function (child) {
-        var reChild = child.path.split(Path.join(__config.directory.path, dir))
+    try {
+      fs.walk(Path.join(__config.directory.path, dir))
+        .on('data', function (child) {
+          var reChild = child.path.split(Path.join(__config.directory.path, dir))
 
-        if (reChild.length >= 2 && reChild[reChild.length - 1].indexOf('/') == -1) {
-          var name = child.path.split('/')
-          if (name[name.length - 1] === '' && parent.length > 2) name.pop()
-          name = name[name.length - 1]
-          child.stats.isfile = fs.lstatSync(child.path).isFile()
-          child.stats.isdir = fs.lstatSync(child.path).isDirectory()
-          response.files[name] = child.stats
-        }
-
-        response.totalSize += child.stats.size
-      })
-      .on('end', function () {
-        var parent = dir.split('/')
-        if (parent[parent.length - 1] === '' && parent.length > 1) parent.pop()
-        parent = parent[parent.length - 1]
-
-        DB.directory.find({
-          parent: parent
-        }, function (err, files) {
-          if (err) {
-            LogWorker.error(err)
-            cb(false)
-          } else {
-            DB.directory.find({
-              name: parent
-            }, function (err, parents) {
-              for (var f in response.files) {
-                var find = files.find(function (e) { return e.name == f && e.parent == parent })
-                if (find == null) {
-                  DB.directory.insert({
-                    parent: parent,
-                    name: f,
-                    download: 0,
-                    downloading: 0,
-                    owner: parents[0] ? parents[0].owner : ''
-                  })
-                  response.files[f].download = 0
-                  response.files[f].downloading = 0
-                  response.files[f].owner = parents[0] ? parents[0].owner : ''
-                } else {
-                  response.files[f].download = find.download
-                  response.files[f].downloading = find.downloading
-                  response.files[f].owner = find.owner
-                }
-              }
-              cb(response)
-            })
+          if (reChild.length >= 2 && reChild[reChild.length - 1].indexOf('/') === -1) {
+            var name = child.path.split('/')
+            if (name[name.length - 1] === '' && name.length > 2) name.pop()
+            name = name[name.length - 1]
+            child.stats.isfile = fs.lstatSync(child.path).isFile()
+            child.stats.isdir = fs.lstatSync(child.path).isDirectory()
+            response.files[name] = child.stats
           }
+
+          response.totalSize += child.stats.size
         })
-      })
+        .on('end', function () {
+          var parent = dir.split('/')
+          if (parent[parent.length - 1] === '' && parent.length > 1) parent.pop()
+          parent = parent[parent.length - 1]
+
+          DB.directory.find({
+            parent: parent
+          }, function (err, files) {
+            if (err) {
+              LogWorker.error(err)
+              cb(false)
+            } else {
+              DB.directory.find({
+                name: parent
+              }, function (err, parents) {
+                if (err) {
+                  LogWorker.error(err)
+                }
+                for (var f in response.files) {
+                  var find = files.find(function (e) { return e.name === f && e.parent === parent })
+                  if (find == null) {
+                    DB.directory.insert({
+                      parent: parent,
+                      name: f,
+                      download: 0,
+                      downloading: 0,
+                      owner: parents[0] ? parents[0].owner : ''
+                    })
+                    response.files[f].download = 0
+                    response.files[f].downloading = 0
+                    response.files[f].owner = parents[0] ? parents[0].owner : ''
+                  } else {
+                    response.files[f].download = find.download
+                    response.files[f].downloading = find.downloading
+                    response.files[f].owner = find.owner
+                  }
+                }
+                cb(response)
+              })
+            }
+          })
+        })
+    } catch (e) {
+      LogWorker.error(e)
+    }
   }
 
   setTimeout(list)
@@ -106,7 +109,6 @@ Directory.prototype.list = function (dir, cb) {
  * @param {string} file - File to lock.
 */
 Directory.prototype.setDownloading = function (file, cb) {
-  var self = this
   var setDownloading = function () {
     file = file.split('/')
     if (file[file.length - 1] === '' && parent.length > 2) file.pop()
@@ -138,7 +140,6 @@ Directory.prototype.setDownloading = function (file, cb) {
  * @param {string} file - File to unlock.
 */
 Directory.prototype.finishDownloading = function (file, cb) {
-  var self = this
   var finishDownloading = function () {
     file = file.split('/')
     if (file[file.length - 1] === '' && parent.length > 2) file.pop()
@@ -387,7 +388,7 @@ Directory.prototype.mv = function (path, file, folder, cb) {
               parent: parent
             }, {
               $set: {
-                parent: folder == '..'
+                parent: folder === '..'
                   ? parent.length > 1
                     ? gp
                     : ''
@@ -415,8 +416,6 @@ Directory.prototype.mv = function (path, file, folder, cb) {
  * @param {string} user - Owner.
 */
 Directory.prototype.setOwner = function (file, user) {
-  var self = this
-
   var setOwner = function () {
     file = file.split('/')
     if (file[file.length - 1] === '' && parent.length > 2) file.pop()
