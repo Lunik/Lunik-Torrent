@@ -33,6 +33,7 @@ Client.prototype.download = function (torrentLink, cbStart, cbDone) {
     self.client = new WebTorrent()
 
     var timeout = setTimeout(function () {
+      LogWorker.warning(`${torrentLink} didn't start on time, removing it.`)
       self.stop()
     }, __config.client.timeout)
 

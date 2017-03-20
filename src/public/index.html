@@ -39,13 +39,13 @@
       <a href="#" class="logo button"><div class="logo"></div></a>
       <div class="folder-size">{{ folderSize }}</div>
       <div class="logout">
-        <i class="fa fa-sign-out button" id="logout"></i>
+        <i class="fa fa-sign-out button" id="logout" title="logout"></i>
       </div>
       <div class="parameter">
         <i class="fa fa-gear button" id="parameter"></i>
       </div>
       <div class="action">
-        <i class="fa button" :class="a.icon" :class="a.state" :id="a.id" v-show="a.state" v-for="a in actions"></i>
+        <i class="fa button" :class="a.icon" :class="a.state" :id="a.id" v-show="a.state" v-for="a in actions" :title="a.id"></i>
       </div>
     </div>
     <!-- Left Menu -->
@@ -66,10 +66,10 @@
             <option :value="option" v-for="option in i.dataList">
           </datalist>
         </div>
-        <div class="button" :class="a.class" v-for="a in actions" v-show="a.state">{{ a.name }}</div>
+        <div class="button" :class="a.class" v-for="a in actions" v-show="a.state" :title="a.name">{{ a.name }}</div>
       </div>
       <div class="footer">
-        <p>Version {{version}}</p>
+        <p>Version {{version}} <a class="logs" target="_blank" href="/logs">logs</a></p>
         <p><a target="_blank" href="https://github.com/Lunik/Lunik-Torrent/issues">FeedBack</a></p>
         <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
       </div>
