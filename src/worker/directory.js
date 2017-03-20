@@ -1,6 +1,7 @@
 'use strict'
 
-var fs = require('fs-extra')
+var fs = require('fs')
+var klaw = require('klaw')
 var Path = require('path')
 var Database = require(Path.join(__base, 'src/database/client.js'))
 var DB = {
@@ -42,7 +43,7 @@ Directory.prototype.list = function (dir, cb) {
   }
   var list = function () {
     var childrens = []
-    fs.walk(Path.join(__config.directory.path, dir))
+    klaw(Path.join(__config.directory.path, dir))
       .on('data', function (child) {
         var reChild = child.path.split(Path.join(__config.directory.path, dir))
 
