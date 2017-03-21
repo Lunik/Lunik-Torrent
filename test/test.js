@@ -89,19 +89,19 @@ describe('Backend', function () {
     })
     describe('Loggin()', function () {
       it('User: foo, Pass: bar', function (done) {
-        Auth.login(username, 'bar', 'localhost', function (token) {
+        Auth.login(username, 'bar', 'localhost', 86400000, function (token) {
           assert.typeOf(token, 'string')
           done()
         })
       })
       it('User: Unknown, Pass: bar', function (done) {
-        Auth.login(username2, 'bar', 'localhost', function (token) {
+        Auth.login(username2, 'bar', 'localhost', 86400000, function (token) {
           assert(!token)
           done()
         })
       })
       it('User: foo, Pass: Wrong', function (done) {
-        Auth.login(username, 'test', 'localhost', function (token) {
+        Auth.login(username, 'test', 'localhost', 86400000, function (token) {
           assert(!token)
           done()
         })
@@ -109,7 +109,7 @@ describe('Backend', function () {
     })
     describe('Logout()', function () {
       it('User: foo, Token: valid', function (done) {
-        Auth.login(username, 'bar', 'localhost', function (token) {
+        Auth.login(username, 'bar', 'localhost', 86400000, function (token) {
           Auth.logout(username, token, function (loggedOut) {
             assert(loggedOut)
             done()
@@ -123,7 +123,7 @@ describe('Backend', function () {
         })
       })
       it('User: foo, Token: invalid', function (done) {
-        Auth.login(username, 'bar', 'localhost', function (token) {
+        Auth.login(username, 'bar', 'localhost', 86400000, function (token) {
           Auth.logout(username, token + '1', function (loggedOut) {
             assert(!loggedOut)
             done()
@@ -159,7 +159,7 @@ describe('Backend', function () {
     })
     describe('CheckLogged()', function () {
       it('User: foo', function (done) {
-        Auth.login(username, 'bar', 'localhost', function (token) {
+        Auth.login(username, 'bar', 'localhost', 86400000, function (token) {
           Auth.checkLogged(username, token, function (isLogged) {
             assert(isLogged)
             done()

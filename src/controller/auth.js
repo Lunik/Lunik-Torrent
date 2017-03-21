@@ -46,12 +46,12 @@ router.post('/auth/login', function (req, res) {
   }
   if (data.user && data.pass) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    Auth.login(data.user, data.pass, ip, function (token) {
+    var cookieExpire = 86400000 // One day
+    if(data.staylogged){
+      cookieExpire = 31536000000 // One year
+    }
+    Auth.login(data.user, data.pass, ip, cookieExpire, function (token) {
       if (token) {
-        var cookieExpire = 86400000 // One day
-        if(data.staylogged){
-          cookieExpire = 31536000000 // One year
-        }
         res.cookie('token', token, { expires: new Date(Date.now() + cookieExpire), httpOnly: true, encode: String })
         res.cookie('user', data.user, { expires: new Date(Date.now() + cookieExpire), httpOnly: true, encode: String })
         res.end(JSON.stringify({
