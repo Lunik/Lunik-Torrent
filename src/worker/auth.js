@@ -22,7 +22,7 @@ function Auth () {
   setInterval(self.cleanToken, 60000)
 }
 
-Auth.prototype.login = function (user, pass, ip, cb) {
+Auth.prototype.login = function (user, pass, ip, cookieExpire, cb) {
   var self = this
   var login = function () {
     DB.user.find({
@@ -36,7 +36,7 @@ Auth.prototype.login = function (user, pass, ip, cb) {
         if (res <= 0) {
           cb(false)
         } else {
-          self.genUserToken(user, pass, function (token) {
+          self.genUserToken(user, pass, cookieExpire, function (token) {
             LogWorker.info(`${user} login from ${ip}.`)
             cb(token)
           })
@@ -101,7 +101,7 @@ Auth.prototype.register = function (user, pass, invite, cb) {
               if (res.length > 0) {
                 cb(false)
               } else {
-                self.genUserToken(user, pass, function (token) {
+                self.genUserToken(user, pass, 86400000, function (token) {
                   DB.user.insert({
                     user: user,
                     password: pass
@@ -184,7 +184,7 @@ Auth.prototype.checkLogged = function (user, token, cb) {
   })
 }
 
-Auth.prototype.genUserToken = function (user, pass, cb) {
+Auth.prototype.genUserToken = function (user, pass, cookieExpire, cb) {
   var self = this
   var seed = `${user}${pass}${Rand.rand().toString()}`
   var token = Crypto.SHA256(seed).toString()
@@ -192,7 +192,7 @@ Auth.prototype.genUserToken = function (user, pass, cb) {
     user: user,
     token: Crypto.SHA256(token).toString(),
     creation: Date.now(),
-    'out-of-date': (new Date(Date.now() + 86400000)).getTime()
+    'out-of-date': (new Date(Date.now() + cookieExpire)).getTime()
   }, function (err) {
     if (err) {
       LogWorker.error(err)
