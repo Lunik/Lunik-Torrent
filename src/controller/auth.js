@@ -4,11 +4,11 @@ var router = express.Router()
 
 var Auth = require(Path.join(__workingDir, 'worker/auth'))
 
-router.use(function (req, res, next) {
+router.use((req, res, next) => {
   if (req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)) {
     next()
   } else {
-    Auth.checkLogged(req.cookies.user, req.cookies.token, function (isLogged) {
+    Auth.checkLogged(req.cookies.user, req.cookies.token, (isLogged) => {
       if (req.url === '/login.html') {
         if (req.url === '/login.html' && req.cookies && isLogged) {
           res.redirect('/')
@@ -26,7 +26,7 @@ router.use(function (req, res, next) {
   }
 })
 
-router.get('/auth', function (req, res) {
+router.get('/auth', (req, res) => {
   res.end(JSON.stringify({
     POST: [
       'login',
@@ -38,7 +38,7 @@ router.get('/auth', function (req, res) {
   }))
 })
 
-router.post('/auth/login', function (req, res) {
+router.post('/auth/login', (req, res) => {
   var data = {
     user: req.body.user || req.cookies.user,
     pass: req.body.pass,
@@ -50,7 +50,7 @@ router.post('/auth/login', function (req, res) {
     if (data.staylogged) {
       cookieExpire = 31536000000 // One year
     }
-    Auth.login(data.user, data.pass, ip, cookieExpire, function (token) {
+    Auth.login(data.user, data.pass, ip, cookieExpire, (token) => {
       if (token) {
         res.cookie('token', token, { expires: new Date(Date.now() + cookieExpire), httpOnly: true, encode: String })
         res.cookie('user', data.user, { expires: new Date(Date.now() + cookieExpire), httpOnly: true, encode: String })
@@ -71,13 +71,13 @@ router.post('/auth/login', function (req, res) {
   }
 })
 
-router.post('/auth/logout', function (req, res) {
+router.post('/auth/logout', (req, res) => {
   var data = {
     user: req.body.user || req.cookies.user,
     token: req.body.token || req.cookies.token
   }
   if (data.user && data.token) {
-    Auth.logout(data.user, data.token, function (loggedOut) {
+    Auth.logout(data.user, data.token, (loggedOut) => {
       if (loggedOut) {
         res.end(JSON.stringify({
           err: false
@@ -95,14 +95,14 @@ router.post('/auth/logout', function (req, res) {
   }
 })
 
-router.post('/auth/register', function (req, res) {
+router.post('/auth/register', (req, res) => {
   var data = {
     user: req.body.user || req.cookies.user,
     pass: req.body.pass,
     invite: req.body.invite
   }
   if (data.user && data.pass && data.invite) {
-    Auth.register(data.user, data.pass, data.invite, function (token) {
+    Auth.register(data.user, data.pass, data.invite, (token) => {
       if (token) {
         res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
         res.cookie('user', data.user, { expires: new Date(Date.now() + 86400000), httpOnly: true, encode: String })
@@ -123,12 +123,12 @@ router.post('/auth/register', function (req, res) {
   }
 })
 
-router.get('/auth/invite', function (req, res) {
+router.get('/auth/invite', (req, res) => {
   var data = {
     masterKey: req.query.masterKey
   }
   if (data.masterKey) {
-    Auth.createInvite(data.masterKey, function (invite) {
+    Auth.createInvite(data.masterKey, (invite) => {
       if (invite) {
         res.end(JSON.stringify({
           err: false,
@@ -147,12 +147,12 @@ router.get('/auth/invite', function (req, res) {
   }
 })
 
-router.post('/auth/invite', function (req, res) {
+router.post('/auth/invite', (req, res) => {
   var data = {
     masterKey: req.body.masterKey
   }
   if (data.masterKey) {
-    Auth.createInvite(data.masterKey, function (invite) {
+    Auth.createInvite(data.masterKey, (invite) => {
       if (invite) {
         res.end(JSON.stringify({
           err: false,
@@ -171,14 +171,14 @@ router.post('/auth/invite', function (req, res) {
   }
 })
 
-router.post('/auth/changepass', function (req, res) {
+router.post('/auth/changepass', (req, res) => {
   var data = {
     user: req.body.user || req.cookies.user,
     oldpass: req.body.oldpass,
     newPass: req.body.newpass
   }
   if (data.user && data.oldpass && data.newPass) {
-    Auth.changePass(data.user, data.oldpass, data.newPass, function (passwordChanged) {
+    Auth.changePass(data.user, data.oldpass, data.newPass, (passwordChanged) => {
       if (passwordChanged) {
         res.end(JSON.stringify({
           err: false

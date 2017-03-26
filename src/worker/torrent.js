@@ -18,75 +18,76 @@ var Client = require(Path.join(__workingDir, 'worker/client.js'))
  * Torrent manager.
  * @constructor
 */
-function Torrent () {
-  DB.torrent.remove({}, { multi: true }, function (err) {
-    if (err) {
-      LogWorker.error(err)
-    }
-  })
+class Torrent {
+  constructor () {
+    DB.torrent.remove({}, { multi: true }, (err) => {
+      if (err) {
+        LogWorker.error(err)
+      }
+    })
 
-  this.client = {}
-  this.waitList = []
-}
+    this.client = {}
+    this.waitList = []
+  }
 
 /**
  * Start downloadind torrent.
  * @param {string} url - Url / magnet of the torrent.
 */
-Torrent.prototype.start = function (user, url) {
-  var self = this
-
-  var start = function () {
-    var c = new Client()
-    c.download(url, function (hash) {
-      self.client[hash] = c
-    }, function (err, torrent) {
-      delete self.client[torrent.infoHash]
-      if (err) {
-        LogWorker.error(`Fail downloading: ${url}`)
-      } else {
-        c.stop()
-        LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, torrent.name)} to ${Path.join(__config.directory.path, torrent.name)}`)
-        fs.move(Path.join(__config.torrent.downloads, torrent.name), Path.join(__config.directory.path, torrent.name), function (err) {
-          if (err) {
-            LogWorker.error(err)
-          } else {
-            Directory.list('', function () {
-              Directory.setOwner(torrent.name, user)
-            })
-          }
-        })
-      }
-    })
+  start (user, url) {
+    var start = () => {
+      var c = new Client()
+      c.download(url, (hash) => {
+        this.client[hash] = c
+      }, (err, torrent) => {
+        delete this.client[torrent.infoHash]
+        if (err) {
+          LogWorker.error(`Fail downloading: ${url}`)
+        } else {
+          c.stop()
+          LogWorker.info(`Moving: ${Path.join(__config.torrent.downloads, torrent.name)} to ${Path.join(__config.directory.path, torrent.name)}`)
+          fs.move(Path.join(__config.torrent.downloads, torrent.name), Path.join(__config.directory.path, torrent.name), (err) => {
+            if (err) {
+              LogWorker.error(err)
+            } else {
+              Directory.list('', () => {
+                Directory.setOwner(torrent.name, user)
+              })
+            }
+          })
+        }
+      })
+    }
+    setTimeout(start)
   }
-  setTimeout(start)
-}
 
 /**
  * Stop and remove a torrent.
  * @param {string} hash - Torrent to remove Hash.
 */
-Torrent.prototype.remove = function (hash) {
-  if (this.client[hash]) {
-    this.client[hash].stop()
-  }
-}
-
-Torrent.prototype.getInfo = function (cb) {
-  DB.torrent.find({}, function (err, files) {
-    if (err) {
-      LogWorker.error(err)
-      cb([])
-    } else {
-      cb(files)
+  remove (hash) {
+    if (this.client[hash]) {
+      this.client[hash].stop()
     }
-  })
-}
+  }
+
+  getInfo (cb) {
+    DB.torrent.find({}, (err, files) => {
+      if (err) {
+        LogWorker.error(err)
+        cb([])
+      } else {
+        cb(files)
+      }
+    })
+  }
 
 /**
  * Define who download a torrent.
  * @param {string} user - User who download the torrent.
  * @param {string} url - Torrent url.
 */
-Torrent.prototype.setDownloader = function (user, url) {}
+  setDownloader (user, url) {}
+
+}
 module.exports = new Torrent()

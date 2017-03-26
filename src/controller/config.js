@@ -10,7 +10,7 @@ var LogWorker = new Log({
 }) */
 
 var packageFile = require(Path.join(__base, 'package.json'))
-router.get('/version', function (req, res) {
+router.get('/version', (req, res) => {
   res.header('Content-Type', 'application/json')
   res.end(JSON.stringify({
     version: packageFile.version

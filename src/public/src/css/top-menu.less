@@ -1,77 +1,68 @@
-.top-menu {
-  position: fixed;
-  top: 0;
-  height: 80px;
-  width: 100%;
-  z-index: 100;
-}
 
 .top-menu {
-  padding: 0 15px 0 15px;
-  height: 80px;
-  margin: auto;
-  font-size: 25px;
+	position: fixed;
+	top: 0;
+	height: 80px;
+	width: 100%;
+	z-index: 100;
+	padding: 0 15px 0 15px;
+	height: 80px;
+	margin: auto;
+	font-size: 25px;
+	>* {
+		display: inline-block;
+		padding-top: 25px;
+		height: 20px;
+	}
+	a.logo {
+		margin-left: 0;
+		padding-bottom: 25px;
+		width: 80px;
+		background-size: 100%;
+	}
+	.logo {
+		background-image: url(../image/logo.svg);
+	}
+	.ariane {
+		font-size: 20px;
+		display: none;
+		font-size: 20px;
+		a {
+			padding: 5px;
+		}
+		div {
+			display: inline-block;
+		}
+	}
+	.action {
+		position: absolute;
+		top: 0;
+		right: 55px;
+		margin-right: 20px;
+		font-size: 25px;
+	}
+	.parameter {
+		float: right;
+		margin-right: 25px;
+		font-size: 25px;
+	}
+	.logout {
+		float: right;
+		margin-right: 25px;
+		font-size: 25px;
+	}
+	.folder-size {
+		margin-top: 20px;
+		font-size: 15px;
+	}
+	i.fa {
+		border-radius: 100%;
+	}
 }
-
-.top-menu > * {
-  display: inline-block;
-  padding-top: 25px;
-  height: 20px;
-}
-
-.top-menu a.logo {
-  margin-left: 0;
-  padding-bottom: 25px;
-  width: 80px;
-  background-size: 100%;
-}
-
-.top-menu .logo {
-  background-image: url(../image/logo.svg);
-}
-
-.top-menu .ariane {
-  font-size: 20px;
-  display: none;
-}
-
 @media only screen and (max-width: 750px) {
-  .top-menu .ariane {
-    display: none;
-  }
-}
-
-.top-menu .ariane a {
-  padding: 5px;
-}
-
-.top-menu .ariane {
-  font-size: 20px;
-}
-
-.top-menu .ariane div {
-  display: inline-block;
-}
-
-.top-menu .action {
-  position: absolute;
-  top: 0;
-  right: 55px;
-  margin-right: 20px;
-  font-size: 25px;
-}
-
-.top-menu .parameter, .top-menu .logout {
-  float: right;
-  margin-right: 25px;
-  font-size: 25px;
-}
-
-.top-menu .folder-size {
-  margin-top: 20px;
-  font-size: 15px;
-}
-
-.top-menu i.fa {
-  border-radius: 100%;
+	.top-menu {
+		.ariane {
+			display: none;
+		}
+	}
 }

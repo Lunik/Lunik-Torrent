@@ -14,10 +14,10 @@ var LogWorker = new Log({
  * @param {object} res - http res object.
  * @param {callback} function - callback when transfert is complet.
  */
-function FileTransfert (req, res, callback) {
-  var self = this
-  self.transfertNode(req, res, callback)
-}
+class FileTransfert {
+  constructor (req, res, callback) {
+    this.transfertNode(req, res, callback)
+  }
 
 /**
  * Transfert file with js support.
@@ -25,40 +25,39 @@ function FileTransfert (req, res, callback) {
  * @param {object} res - http res object.
  * @param {callback} function - callback when transfert is complet.
  */
-FileTransfert.prototype.transfertNode = function (req, res, callback) {
-  var transfertNode = function () {
-    var filename = Path.join(__base, `${__config.directory.path}${req.query.f}`)
-    fs.stat(filename, function (err, stats) {
-      if (err) {
-        callback()
-        res.end()
-        LogWorker.error(err)
-        return
-      }
-      if (stats) {
-        res.download(filename, function (err) {
-          if (err) {
-            LogWorker.error(`${req.cookies.user} error during download file: ${req.query.f}
- ${err}`)
-            callback()
+  transfertNode (req, res, callback) {
+    var transfertNode = () => {
+      var filename = Path.join(__base, `${__config.directory.path}${req.query.f}`)
+      fs.stat(filename, (err, stats) => {
+        if (err) {
+          callback()
+          res.end()
+          LogWorker.error(err)
+          return
+        }
+        if (stats) {
+          res.download(filename, (err) => {
+            if (err) {
+              LogWorker.error(`${req.cookies.user} error during download file: ${req.query.f}\n${err}`)
+              callback()
 
-            res.status(500)
-            res.end()
-          } else {
-            LogWorker.info(`${req.cookies.user} finish download file: ${req.query.f}`)
-            callback()
+              res.status(500)
+              res.end()
+            } else {
+              LogWorker.info(`${req.cookies.user} finish download file: ${req.query.f}`)
+              callback()
 
-            res.end()
-          }
-        })
-      } else {
-        res.status(404)
-        res.end("Le fichier n'existe pas.")
-      }
-    })
+              res.end()
+            }
+          })
+        } else {
+          res.status(404)
+          res.end("Le fichier n'existe pas.")
+        }
+      })
+    }
+
+    setTimeout(transfertNode)
   }
-
-  setTimeout(transfertNode)
 }
-
 module.exports = FileTransfert

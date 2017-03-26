@@ -13,101 +13,102 @@ var LogWorker = new Log({
 
 function parseJSON (json) {
   json = JSON.stringify(json)
-  return JSON.parse(json, function (k, v) {
+  return JSON.parse(json, (k, v) => {
     return (typeof v === 'object' || isNaN(v) || v === '') ? v : parseFloat(v, 10)
   })
 }
 
-function DatabaseServer (port, token) {
-  var self = this
-  self.token = token
-  this.databases = {}
+class DatabaseServer {
+  constructor (port, token) {
+    this.token = token
+    this.databases = {}
 
-  this.app = express()
-  this.app.use(compression())
+    this.app = express()
+    this.app.use(compression())
 
-  this.app.use(bodyParser.urlencoded({
-    extended: true
-  }))
+    this.app.use(bodyParser.urlencoded({
+      extended: true
+    }))
 
-  this.app.listen(port, '127.0.0.1', function () {
-    LogWorker.info(`Database listening at port ${port}`)
-  })
+    this.app.listen(port, '127.0.0.1', () => {
+      LogWorker.info(`Database listening at port ${port}`)
+    })
 
-  this.app.use(function (request, response, next) {
-    if (request.headers.authorization === self.token) {
-      next()
-    } else {
-      response.status(403)
-      response.end()
-    }
-  })
+    this.app.use((request, response, next) => {
+      if (request.headers.authorization === this.token) {
+        next()
+      } else {
+        response.status(403)
+        response.end()
+      }
+    })
 
-  this.app.get('/api/find', function (request, response) {
-    var query = parseJSON(request.query)
-    self.loadDB(query.__database, function () {
-      var db = query.__database
-      delete query.__database
+    this.app.get('/api/find', (request, response) => {
+      var query = parseJSON(request.query)
+      this.loadDB(query.__database, () => {
+        var db = query.__database
+        delete query.__database
 
-      self.databases[db].find(query || {}, function (err, res) {
-        response.end(JSON.stringify({
-          err: err ? err.toString() : '',
-          data: res
-        }))
+        this.databases[db].find(query || {}, (err, res) => {
+          response.end(JSON.stringify({
+            err: err ? err.toString() : '',
+            data: res
+          }))
+        })
       })
     })
-  })
-  this.app.post('/api/insert', function (request, response) {
-    var body = parseJSON(request.body)
-    self.loadDB(body.__database, function () {
-      var db = body.__database
-      delete body.__database
+    this.app.post('/api/insert', (request, response) => {
+      var body = parseJSON(request.body)
+      this.loadDB(body.__database, () => {
+        var db = body.__database
+        delete body.__database
 
-      self.databases[db].insert(body || {}, function (err) {
-        response.end(JSON.stringify({
-          err: err ? err.toString() : ''
-        }))
+        this.databases[db].insert(body || {}, (err) => {
+          response.end(JSON.stringify({
+            err: err ? err.toString() : ''
+          }))
+        })
       })
     })
-  })
-  this.app.post('/api/update', function (request, response) {
-    var body = parseJSON(request.body)
-    self.loadDB(body.__database, function () {
-      var db = body.__database
-      delete body.__database
+    this.app.post('/api/update', (request, response) => {
+      var body = parseJSON(request.body)
+      this.loadDB(body.__database, () => {
+        var db = body.__database
+        delete body.__database
 
-      self.databases[db].update(body.query || {},
+        this.databases[db].update(body.query || {},
         body.data || {},
-        body.options || {}, function (err) {
+        body.options || {}, (err) => {
           response.end(JSON.stringify({
             err: err ? err.toString() : ''
           }))
         })
+      })
     })
-  })
-  this.app.post('/api/remove', function (request, response) {
-    var body = parseJSON(request.body)
-    self.loadDB(body.__database, function () {
-      var db = body.__database
-      delete body.__database
+    this.app.post('/api/remove', (request, response) => {
+      var body = parseJSON(request.body)
+      this.loadDB(body.__database, () => {
+        var db = body.__database
+        delete body.__database
 
-      self.databases[db].remove(body.query || {},
-        body.options || {}, function (err) {
+        this.databases[db].remove(body.query || {},
+        body.options || {}, (err) => {
           response.end(JSON.stringify({
             err: err ? err.toString() : ''
           }))
         })
+      })
     })
-  })
-}
+  }
 
-DatabaseServer.prototype.loadDB = function (db, cb) {
-  if (this.databases[db] == null) {
-    this.databases[db] = new Datastore({ filename: Path.join(__base, `data/${db}.db`) })
-    this.databases[db].loadDatabase(cb)
-    this.databases[db].persistence.compactDatafile()
-  } else {
-    cb()
+  loadDB (db, cb) {
+    if (this.databases[db] == null) {
+      this.databases[db] = new Datastore({ filename: Path.join(__base, `data/${db}.db`) })
+      this.databases[db].loadDatabase(cb)
+      this.databases[db].persistence.compactDatafile()
+    } else {
+      cb()
+    }
   }
 }
 module.exports = DatabaseServer
