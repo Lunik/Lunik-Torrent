@@ -1,17 +1,17 @@
 'use strict'
 
-var fs = require('fs')
 var Path = require('path')
 var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
-var Database = require(Path.join(__base, __workingDir, 'database/client.js'))
+
+var Database = require(Path.join(__workingDir, 'database/client.js'))
 var DB = {
   user: new Database('user', __config.database.host, __config.database.port, __DBtoken),
   invitation: new Database('invitation', __config.database.host, __config.database.port, __DBtoken),
   token: new Database('token', __config.database.host, __config.database.port, __DBtoken)
 }
 
-var Log = require(Path.join(__base, __workingDir, 'worker/log.js'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Auth'
 })
@@ -49,7 +49,6 @@ Auth.prototype.login = function (user, pass, ip, cookieExpire, cb) {
 }
 
 Auth.prototype.logout = function (user, token, cb) {
-  var self = this
   var logout = function () {
     DB.token.find({
       user: user,
@@ -128,7 +127,6 @@ Auth.prototype.register = function (user, pass, invite, cb) {
 }
 
 Auth.prototype.changePass = function (user, pass, newPass, cb) {
-  var self = this
   var changePass = function () {
     DB.user.find({
       user: user,
@@ -169,7 +167,7 @@ Auth.prototype.checkLogged = function (user, token, cb) {
 
   DB.token.find({
     user: user,
-    token: Crypto.SHA256(token).toString()
+    token: encryptedToken
   }, function (err, res) {
     if (err) {
       LogWorker.error(err)
@@ -185,7 +183,6 @@ Auth.prototype.checkLogged = function (user, token, cb) {
 }
 
 Auth.prototype.genUserToken = function (user, pass, cookieExpire, cb) {
-  var self = this
   var seed = `${user}${pass}${Rand.rand().toString()}`
   var token = Crypto.SHA256(seed).toString()
   DB.token.insert({
@@ -244,8 +241,6 @@ Auth.prototype.createInvite = function (masterKey, cb) {
 }
 
 Auth.prototype.deleteInvite = function (invite, cb) {
-  var self = this
-
   var deleteInvite = function () {
     DB.invitation.remove({hash: invite}, function (err) {
       if (err) {

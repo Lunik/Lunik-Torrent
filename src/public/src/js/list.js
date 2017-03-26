@@ -108,13 +108,14 @@
   */
   _List.prototype.switchTab = function (tabId) {
     $('.list tr').removeClass('selected')
+    var c, column
     for (var t in this.vue.$data.tabs) {
       var tab = this.vue.$data.tabs[t]
 
       if (tab.id === tabId) {
         tab.state = true
-        for (var c in this.vue.$data.columns) {
-          var column = this.vue.$data.columns[c]
+        for (c in this.vue.$data.columns) {
+          column = this.vue.$data.columns[c]
 
           if (tab.columns.indexOf(column.id) !== -1) {
             column.state = true
@@ -122,8 +123,8 @@
         }
       } else {
         tab.state = false
-        for (var c in this.vue.$data.columns) {
-          var column = this.vue.$data.columns[c]
+        for (c in this.vue.$data.columns) {
+          column = this.vue.$data.columns[c]
 
           if (tab.columns.indexOf(column.id) !== -1 && !column.important) {
             column.state = false

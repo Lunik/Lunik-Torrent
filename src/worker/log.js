@@ -40,8 +40,8 @@ Log.prototype.save = function (text) {
     var name = self.getFile()
     fs.appendFile(name, `[${getDate()}] ${text}
 `, 'utf8', function (err) {
-      if (err) self.echo(`${colors.red.bold('[Error] ')}${err}`)
-    })
+  if (err) self.echo(`${colors.red.bold('[Error] ')}${err}`)
+})
   }
   setTimeout(save)
 }
@@ -59,7 +59,7 @@ Log.prototype.trace = function (text) {
   console.trace()
 }
 
-Log.prototype.getFile = function(){
+Log.prototype.getFile = function () {
   var date = new Date()
   return Path.join(__config.log.path, `log-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
 }

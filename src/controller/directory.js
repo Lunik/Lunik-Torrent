@@ -2,9 +2,9 @@ var Path = require('path')
 var express = require('express')
 var router = express.Router()
 
-var Directory = require(Path.join(__base, __workingDir, 'worker/directory'))
-var InfoEngine = require(Path.join(__base, __workingDir, 'worker/mediaInfo'))
-var Log = require(Path.join(__base, __workingDir, 'worker/log.js'))
+var Directory = require(Path.join(__workingDir, 'worker/directory'))
+var InfoEngine = require(Path.join(__workingDir, 'worker/mediaInfo'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Server'
 })

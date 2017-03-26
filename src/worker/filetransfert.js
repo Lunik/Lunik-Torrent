@@ -2,7 +2,7 @@
 var fs = require('fs')
 var Path = require('path')
 
-var Log = require(Path.join(__base, __workingDir, 'worker/log.js'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'FileTransfert'
 })
@@ -26,8 +26,6 @@ function FileTransfert (req, res, callback) {
  * @param {callback} function - callback when transfert is complet.
  */
 FileTransfert.prototype.transfertNode = function (req, res, callback) {
-  var self = this
-
   var transfertNode = function () {
     var filename = Path.join(__base, `${__config.directory.path}${req.query.f}`)
     fs.stat(filename, function (err, stats) {

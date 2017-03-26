@@ -2,13 +2,13 @@ var Path = require('path')
 var express = require('express')
 var router = express.Router()
 
-var Torrent = require(Path.join(__base, __workingDir, 'worker/torrent'))
-var Directory = require(Path.join(__base, __workingDir, 'worker/directory'))
+var Torrent = require(Path.join(__workingDir, 'worker/torrent'))
+var Directory = require(Path.join(__workingDir, 'worker/directory'))
 
 Torrent.Directory = Directory
 
-var SearchEngine = require(Path.join(__base, __workingDir, 'worker/searchtorrent'))
-var Log = require(Path.join(__base, __workingDir, 'worker/log.js'))
+var SearchEngine = require(Path.join(__workingDir, 'worker/searchtorrent'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Server'
 })

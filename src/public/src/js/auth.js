@@ -212,7 +212,7 @@ var App = {}
       data: {
         user: user,
         pass: pass,
-        staylogged, staylogged
+        staylogged: staylogged
       },
       dataType: 'json',
       success: function (data) {

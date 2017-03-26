@@ -6,7 +6,7 @@ var bodyParser = require('body-parser')
 var Datastore = require('nedb')
 var Path = require('path')
 
-var Log = require(Path.join(__base, __workingDir, 'worker/log.js'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'DatabaseServer'
 })
@@ -35,7 +35,7 @@ function DatabaseServer (port, token) {
   })
 
   this.app.use(function (request, response, next) {
-    if (request.headers.authorization == self.token) {
+    if (request.headers.authorization === self.token) {
       next()
     } else {
       response.status(403)

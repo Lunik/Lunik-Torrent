@@ -1,6 +1,6 @@
 'use strict'
 
-/*var CPBAPI = require('cpasbien-api')
+/* var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 */
 var cloudscraper = require('cloudscraper')
