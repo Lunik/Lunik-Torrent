@@ -1,27 +1,35 @@
 'use strict'
 // launch the server
 
+var Rand = require('crypto-rand')
 var Path = require('path')
+var Crypto = require('crypto-js')
 
 global.__base = Path.join(__dirname, '..', '/')
 
-var Config = require(Path.join(__base, 'src/worker/config.js'))
+if (__dirname.match(/([^/]*\/)*\/build/g)) {
+  global.__workingDir = Path.join(__base, 'build')
+} else {
+  global.__workingDir = Path.join(__base, 'src')
+}
+
+var Config = require(Path.join(__workingDir, 'worker/config.js'))
 var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(Path.join(__base, 'configs/config.json'))
 
+var Server = require(Path.join(__workingDir, 'controller/main.js'))
+var Database = require(Path.join(__workingDir, 'database/server.js'))
+var DBPort = process.env.DB_PORT || __config.database.port
+var token, DB
 
-if (__config.server.duplication > 1){
+if (__config.server.duplication > 1) {
   var cluster = require('cluster')
   var numCPUs = require('os').cpus().length
 
   if (cluster.isMaster) {
-    var Rand = require('crypto-rand')
-    var Crypto = require('crypto-js')
-    var token = Crypto.SHA256(Rand.rand().toString()).toString()
+    token = Crypto.SHA256(Rand.rand().toString()).toString()
 
-    var Database = require(Path.join(__base, 'src/database/server.js'))
-    var DBPort = process.env.DB_PORT || __config.database.port
-    var DB = new Database(DBPort, token)
+    DB = new Database(DBPort, token)
 
     cluster.schedulingPolicy = cluster.SCHED_RR
     var i = 0
@@ -39,22 +47,15 @@ if (__config.server.duplication > 1){
       cluster.fork()
     })
   } else {
-    var Server = require(Path.join(__base, 'src/controller/main.js'))
     process.on('message', function (token) {
       global.__DBtoken = token
       var ServerWorker = new Server(cluster.worker.id)
     })
   }
 } else {
-  var Rand = require('crypto-rand')
-  var Crypto = require('crypto-js')
-  var token = Crypto.SHA256(Rand.rand().toString()).toString()
+  token = Crypto.SHA256(Rand.rand().toString()).toString()
 
-  var Database = require(Path.join(__base, 'src/database/server.js'))
-  var DBPort = process.env.DB_PORT || __config.database.port
-  var DB = new Database(DBPort, token)
-
-  var Server = require(Path.join(__base, 'src/controller/main.js'))
+  DB = new Database(DBPort, token)
 
   global.__DBtoken = token
   var ServerWorker = new Server(1)

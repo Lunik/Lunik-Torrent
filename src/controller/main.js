@@ -6,7 +6,7 @@ var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 var Path = require('path')
 
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Server'
 })
@@ -24,14 +24,14 @@ function Server (id) {
     extended: true
   }))
 
-  this.app.use(require(Path.join(__base, 'src/controller/auth.js')))
-  this.app.use(require(Path.join(__base, 'src/controller/config.js')))
-  this.app.use(require(Path.join(__base, 'src/controller/filetransfert')))
-  this.app.use(require(Path.join(__base, 'src/controller/torrent')))
-  this.app.use(require(Path.join(__base, 'src/controller/directory')))
-  this.app.use(require(Path.join(__base, 'src/controller/logs')))
+  this.app.use(require(Path.join(__workingDir, 'controller/auth.js')))
+  this.app.use(require(Path.join(__workingDir, 'controller/config.js')))
+  this.app.use(require(Path.join(__workingDir, 'controller/filetransfert')))
+  this.app.use(require(Path.join(__workingDir, 'controller/torrent')))
+  this.app.use(require(Path.join(__workingDir, 'controller/directory')))
+  this.app.use(require(Path.join(__workingDir, 'controller/logs')))
 
-  this.app.use(express.static(Path.join(__base, 'src/public')))
+  this.app.use(express.static(Path.join(__workingDir, 'public')))
 
   var port = process.env.PORT || __config.server.port
   this.app.listen(port, function () {

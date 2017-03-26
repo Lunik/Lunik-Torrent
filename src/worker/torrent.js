@@ -2,25 +2,23 @@
 
 var fs = require('fs-extra')
 var Path = require('path')
-var Database = require(Path.join(__base, 'src/database/client.js'))
+var Database = require(Path.join(__workingDir, 'database/client.js'))
 var DB = {
   torrent: new Database('torrent', __config.database.host, __config.database.port, __DBtoken)
 }
 
-var Directory = require(Path.join(__base, 'src/worker/directory'))
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Directory = require(Path.join(__workingDir, 'worker/directory'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Torrent'
 })
-var Client = require(Path.join(__base, 'src/worker/client.js'))
+var Client = require(Path.join(__workingDir, 'worker/client.js'))
 
 /**
  * Torrent manager.
  * @constructor
 */
 function Torrent () {
-  var self = this
-
   DB.torrent.remove({}, { multi: true }, function (err) {
     if (err) {
       LogWorker.error(err)

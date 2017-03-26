@@ -2,9 +2,9 @@ var Path = require('path')
 var express = require('express')
 var router = express()
 
-var Directory = require(Path.join(__base, 'src/worker/directory'))
-var FileTransfert = require(Path.join(__base, 'src/worker/filetransfert'))
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Directory = require(Path.join(__workingDir, 'worker/directory'))
+var FileTransfert = require(Path.join(__workingDir, 'worker/filetransfert'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Server'
 })

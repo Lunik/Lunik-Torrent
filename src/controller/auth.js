@@ -2,7 +2,7 @@ var Path = require('path')
 var express = require('express')
 var router = express.Router()
 
-var Auth = require(Path.join(__base, 'src/worker/auth'))
+var Auth = require(Path.join(__workingDir, 'worker/auth'))
 
 router.use(function (req, res, next) {
   if (req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)) {
@@ -47,7 +47,7 @@ router.post('/auth/login', function (req, res) {
   if (data.user && data.pass) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
     var cookieExpire = 86400000 // One day
-    if(data.staylogged){
+    if (data.staylogged) {
       cookieExpire = 31536000000 // One year
     }
     Auth.login(data.user, data.pass, ip, cookieExpire, function (token) {

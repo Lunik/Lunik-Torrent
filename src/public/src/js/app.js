@@ -44,10 +44,10 @@ var App
       'jquery-ui',
       'format',
       'clipboard'
-    ], function (v, ls, jq, jqui, f, clip) {
+    ], function (v, ls, jq, jqui, f, Clip) {
       self.Vue = v
       self.Storage = new Storage()
-      self.Clipboard = new clip('.clip-but')
+      self.Clipboard = new Clip('.clip-but')
       /**
        * Get The index of an object into an array
        * @param {array} array - The array

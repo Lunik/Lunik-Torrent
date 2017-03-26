@@ -45,6 +45,10 @@
       "require.js"
     ],
     "globals": [
+      "__base",
+      "__config",
+      "__DBtoken",
+      "__workingDir",
       "$",
       "confirm",
       "prompt",
