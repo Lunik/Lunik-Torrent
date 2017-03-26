@@ -2,7 +2,7 @@
 var fs = require('fs')
 var Path = require('path')
 
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Log = require(Path.join(__base, __workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'FileTransfert'
 })

@@ -5,7 +5,13 @@ var Path = require('path')
 
 global.__base = Path.join(__dirname, '..', '/')
 
-var Config = require(Path.join(__base, 'src/worker/config.js'))
+if(__dirname.match(/([^\/]*\/)*\/build/g)){
+  global.__workingDir = 'build'
+} else {
+  global.__workingDir = 'src'
+}
+
+var Config = require(Path.join(__base, __workingDir, 'worker/config.js'))
 var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(Path.join(__base, 'configs/config.json'))
 
@@ -19,7 +25,7 @@ if (__config.server.duplication > 1){
     var Crypto = require('crypto-js')
     var token = Crypto.SHA256(Rand.rand().toString()).toString()
 
-    var Database = require(Path.join(__base, 'src/database/server.js'))
+    var Database = require(Path.join(__base, __workingDir, 'database/server.js'))
     var DBPort = process.env.DB_PORT || __config.database.port
     var DB = new Database(DBPort, token)
 
@@ -39,7 +45,7 @@ if (__config.server.duplication > 1){
       cluster.fork()
     })
   } else {
-    var Server = require(Path.join(__base, 'src/controller/main.js'))
+    var Server = require(Path.join(__base, __workingDir, 'controller/main.js'))
     process.on('message', function (token) {
       global.__DBtoken = token
       var ServerWorker = new Server(cluster.worker.id)
@@ -50,11 +56,11 @@ if (__config.server.duplication > 1){
   var Crypto = require('crypto-js')
   var token = Crypto.SHA256(Rand.rand().toString()).toString()
 
-  var Database = require(Path.join(__base, 'src/database/server.js'))
+  var Database = require(Path.join(__base, __workingDir, 'database/server.js'))
   var DBPort = process.env.DB_PORT || __config.database.port
   var DB = new Database(DBPort, token)
 
-  var Server = require(Path.join(__base, 'src/controller/main.js'))
+  var Server = require(Path.join(__base, __workingDir, 'controller/main.js'))
 
   global.__DBtoken = token
   var ServerWorker = new Server(1)

@@ -2,7 +2,7 @@ var Path = require('path')
 var express = require('express')
 var router = express.Router()
 
-var Auth = require(Path.join(__base, 'src/worker/auth'))
+var Auth = require(Path.join(__base, __workingDir, 'worker/auth'))
 
 router.use(function (req, res, next) {
   if (req.url.match(/\/auth\/.*/g) || req.url.match(/\/src\/.*/g)) {

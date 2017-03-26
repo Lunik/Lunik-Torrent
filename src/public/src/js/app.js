@@ -8,15 +8,15 @@ var App
     requirejs.config({
       priority: ['jquery'],
       paths: {
-        'localstorage': '../bower_components/local-storage-api/dist/storage.min',
-        'jquery': '../bower_components/jquery/dist/jquery.min',
-        'jquery-ui': '../bower_components/jquery-ui/jquery-ui.min',
-        'vue': '../bower_components/vue/dist/vue.min',
-        'jquery.ui.touch-punch': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
-        'notify-me': '../bower_components/notify.me/dist/js/notify-me',
-        'popup': '../bower_components/popupjs/dist/popup.min',
-        'clipboard': '../bower_components/clipboard/dist/clipboard.min',
-        'snow': 'special-event/jquery.snow.min.1.0'
+        'localstorage': '../lib/local-storage-api/dist/storage.min',
+        'jquery': '../lib/jquery/dist/jquery.min',
+        'jquery-ui': '../lib/jquery-ui/jquery-ui.min',
+        'vue': '../lib/vue/dist/vue.min',
+        'jquery.ui.touch-punch': '../lib/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
+        'notify-me': '../lib/notify.me/dist/js/notify-me',
+        'popup': '../lib/popupjs/dist/popup.min',
+        'clipboard': '../lib/clipboard/dist/clipboard.min',
+        'snow': '../lib/jquery.snow.min.1.0'
       },
       shim: {
         'jquery.ui.touch-punch': ['jquery'],

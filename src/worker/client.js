@@ -1,12 +1,12 @@
 'use strict'
 var Path = require('path')
 var WebTorrent = require('webtorrent')
-var Database = require(Path.join(__base, 'src/database/client.js'))
+var Database = require(Path.join(__base, __workingDir, 'database/client.js'))
 var DB = {
   torrent: new Database('torrent', __config.database.host, __config.database.port, __DBtoken)
 }
 
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Log = require(Path.join(__base, __workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Client'
 })

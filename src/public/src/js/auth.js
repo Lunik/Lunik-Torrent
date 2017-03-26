@@ -4,10 +4,10 @@ var App = {}
     var self = this
     requirejs.config({
       paths: {
-        'jquery': '../bower_components/jquery/dist/jquery.min',
-        'crypto-js': '../bower_components/crypto-js/crypto-js',
-        'vue': '../bower_components/vue/dist/vue.min',
-        'notify-me': '../bower_components/notify.me/dist/js/notify-me'
+        'jquery': '../lib/jquery/dist/jquery.min',
+        'crypto-js': '../lib/crypto-js/crypto-js',
+        'vue': '../lib/vue/dist/vue.min',
+        'notify-me': '../lib/notify.me/dist/js/notify-me'
       },
       shim: {
         'notify-me': ['jquery'],
