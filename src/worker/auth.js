@@ -186,7 +186,7 @@ Auth.prototype.genUserToken = function (user, pass, cookieExpire, cb) {
   var token = Crypto.SHA256(seed).toString()
   DB.token.insert({
     user: user,
-    token: token,
+    token: Crypto.SHA256(token).toString(),
     creation: Date.now(),
     'out-of-date': (new Date(Date.now() + cookieExpire)).getTime()
   }, function (err) {
