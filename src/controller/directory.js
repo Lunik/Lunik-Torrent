@@ -9,7 +9,7 @@ var LogWorker = new Log({
   module: 'Server'
 })
 
-router.get('/directory', function (req, res) {
+router.get('/directory', (req, res) => {
   res.header('Content-Type', 'application/json')
   res.end(JSON.stringify({
     GET: [
@@ -27,10 +27,10 @@ router.get('/directory', function (req, res) {
 })
 
 // client ask list of directory
-router.get('/directory/list', function (req, res) {
+router.get('/directory/list', (req, res) => {
   if (req.query.dir) {
     req.query.dir = req.query.dir.replace(/%20/g, ' ')
-    Directory.list(req.query.dir, function (dir) {
+    Directory.list(req.query.dir, (dir) => {
       res.end(JSON.stringify(dir))
     })
   } else {
@@ -41,11 +41,11 @@ router.get('/directory/list', function (req, res) {
 })
 
 // client remove directory / file
-router.post('/directory/remove', function (req, res) {
+router.post('/directory/remove', (req, res) => {
   if (req.body.file) {
     req.body.file = req.body.file.replace(/%20/g, ' ')
 
-    Directory.remove(req.body.file, function (err) {
+    Directory.remove(req.body.file, (err) => {
       if (!err) {
         LogWorker.info(`${req.cookies.user} remove file: ${req.body.file}`)
         res.end(JSON.stringify({
@@ -65,12 +65,12 @@ router.post('/directory/remove', function (req, res) {
 })
 
 // client rename file
-router.post('/directory/rename', function (req, res) {
+router.post('/directory/rename', (req, res) => {
   if (req.body.path && req.body.oldname && req.body.newname) {
     req.body.path = req.body.path.replace(/%20/g, ' ')
     req.body.oldname = req.body.oldname.replace(/%20/g, ' ')
     req.body.newname = req.body.newname.replace(/%20/g, ' ')
-    Directory.rename(req.body.path, req.body.oldname, req.body.newname, function (err) {
+    Directory.rename(req.body.path, req.body.oldname, req.body.newname, (err) => {
       if (!err) {
         LogWorker.info(`${req.cookies.user} rename file: ${Path.join(req.body.path, req.body.oldname)} in: ${req.body.newname}`)
         res.end(JSON.stringify({
@@ -93,7 +93,7 @@ router.post('/directory/rename', function (req, res) {
 })
 
 // client create directory
-router.post('/directory/mkdir', function (req, res) {
+router.post('/directory/mkdir', (req, res) => {
   if (req.body.path && req.body.name) {
     req.body.path = req.body.path.replace(/%20/g, ' ')
     req.body.name = req.body.name.replace(/%20/g, ' ')
@@ -111,12 +111,12 @@ router.post('/directory/mkdir', function (req, res) {
 })
 
 // client move directory
-router.post('/directory/mv', function (req, res) {
+router.post('/directory/mv', (req, res) => {
   if (req.body.path && req.body.file && req.body.folder) {
     req.body.path = req.body.path.replace(/%20/g, ' ')
     req.body.file = req.body.file.replace(/%20/g, ' ')
     req.body.folder = req.body.folder.replace(/%20/g, ' ')
-    Directory.mv(req.body.path, req.body.file, req.body.folder, function (error) {
+    Directory.mv(req.body.path, req.body.file, req.body.folder, (error) => {
       if (!error) {
         LogWorker.info(`${req.cookies.user} move: ${Path.join(req.body.path, req.body.file)} in: ${Path.join(req.body.path, req.body.folder)}`)
         res.end(JSON.stringify({
@@ -137,10 +137,10 @@ router.post('/directory/mv', function (req, res) {
 })
 
 // lock api request
-router.get('/directory/lock', function (req, res) {
+router.get('/directory/lock', (req, res) => {
   if (req.query.f) {
     req.query.f = req.query.f.replace(/%20/g, ' ')
-    Directory.isDownloading(req.query.f, function (isdl) {
+    Directory.isDownloading(req.query.f, (isdl) => {
       res.end(isdl.toString())
     })
   } else {
@@ -151,11 +151,11 @@ router.get('/directory/lock', function (req, res) {
 })
 
 // client get meida info
-router.get('/directory/info', function (req, res) {
+router.get('/directory/info', (req, res) => {
   if (req.query.type && req.query.query) {
     req.query.type = req.query.type.replace(/%20/g, ' ')
     req.query.query = req.query.query.replace(/%20/g, ' ')
-    InfoEngine.getInfo(req.query.type, req.query.query, function (data) {
+    InfoEngine.getInfo(req.query.type, req.query.query, (data) => {
       res.end(JSON.stringify(data))
     })
   } else {

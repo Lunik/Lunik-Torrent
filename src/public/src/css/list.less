@@ -1,0 +1,82 @@
+
+/* remove some columns when screen is to little */
+.list {
+	position: relative;
+	top: 80px;
+	display: table-cell;
+	vertical-align: top;
+	z-index: 10;
+	overflow: auto;
+	height: calc(100vh - 80px);
+	table {
+		width: 100%;
+		table-layout: fixed;
+		border-collapse: collapse;
+		th#name {
+			width: 40%;
+		}
+		th#size {
+			width: 15%;
+		}
+		th#date {
+			width: 15%;
+		}
+		th#owner {
+			width: 10%;
+		}
+		th#progress {
+			width: 50%;
+		}
+		th#down {
+			width: 10%;
+		}
+		th#up {
+			width: 10%;
+		}
+		td#name {
+			.download {
+				font-size: 15px;
+			}
+		}
+	}
+	th {
+		height: 40px;
+		text-align: left;
+		display: table-cell;
+		overflow: hidden;
+		padding-left: 10px;
+	}
+	tr {
+		height: 35px;
+	}
+	td {
+		display: table-cell;
+		overflow: hidden;
+		padding-left: 10px;
+	}
+}
+.scrollTop {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 100;
+	font-size: 25px;
+}
+@media only screen and (max-width: 470px) {
+	.list {
+		table {
+			th#down {
+				display: none;
+			}
+			th#up {
+				display: none;
+			}
+			th#owner {
+				display: none;
+			}
+			th#name {
+				width: 80%;
+			}
+		}
+	}
+}

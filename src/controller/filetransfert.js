@@ -10,17 +10,17 @@ var LogWorker = new Log({
 })
 
 // Client Download file
-router.get('/files', function (req, res) {
+router.get('/files', (req, res) => {
   if (req.query.f) {
     req.query.f = req.query.f.split('..').join('')
     LogWorker.info(`${req.cookies.user} download file: ${req.query.f}`)
-    Directory.setDownloading(req.query.f, function (err) {
+    Directory.setDownloading(req.query.f, (err) => {
       if (err) {
         LogWorker.error(err)
         res.end()
       } else {
-        var transfert = new FileTransfert(req, res, function () {
-          Directory.finishDownloading(req.query.f, function (err) {
+        var transfert = new FileTransfert(req, res, () => {
+          Directory.finishDownloading(req.query.f, (err) => {
             if (err) {
               LogWorker.error(err)
             }

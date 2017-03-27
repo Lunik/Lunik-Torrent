@@ -10,9 +10,9 @@ var LogWorker = new Log({
   module: 'Logs'
 })
 
-router.get('/logs', function (req, res) {
+router.get('/logs', (req, res) => {
   res.header('Content-Type', 'text/plain')
-  fs.readFile(LogWorker.getFile(), function (err, text) {
+  fs.readFile(LogWorker.getFile(), (err, text) => {
     if (err) {
       LogWorker.error(err)
     }

@@ -13,3 +13,4 @@ bower_components
 data/
 coverage/
 .idea/
+build/

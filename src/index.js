@@ -38,16 +38,16 @@ if (__config.server.duplication > 1) {
       i++
     }
 
-    cluster.on('online', function (worker) {
+    cluster.on('online', (worker) => {
       worker.send(token)
     })
 
-    cluster.on('exit', function (worker, code, signal) {
+    cluster.on('exit', (worker, code, signal) => {
       console.log('Worker ' + worker.process.pid + ' died')
       cluster.fork()
     })
   } else {
-    process.on('message', function (token) {
+    process.on('message', (token) => {
       global.__DBtoken = token
       var ServerWorker = new Server(cluster.worker.id)
     })

@@ -1,0 +1,118 @@
+
+/* form starting stylings ------------------------------- */
+/* BOTTOM BARS ================================= */
+/* active state -------------------------------------------- */
+.auth {
+	display: block;
+	margin: 100px auto;
+	text-align: center;
+	.form {
+		display: inline-block;
+		padding: 30px;
+		border-radius: 2px;
+	}
+	h1 {
+		font-size: 30px;
+		font-weight: bold;
+	}
+	button {
+		display: inline-block;
+		padding: 5px 10px;
+		border-radius: 2px;
+	}
+	.info {
+		font-weight: bold;
+		font-size: 15px;
+	}
+	.switch {
+		display: inline-block;
+		padding: 0 10px;
+		font-weight: bold;
+		font-size: 15px;
+	}
+	.invite {
+		p {
+			font-size: 20px;
+			font-weight: bold;
+		}
+	}
+	.input {
+		position: relative;
+		margin-bottom: 45px;
+		label {
+			font-size: 18px;
+			position: absolute;
+			pointer-events: none;
+			left: 5px;
+			top: 10px;
+			transition: 0.2s ease all;
+		}
+		input {
+			font-size: 18px;
+			padding: 10px 10px 10px 5px;
+			display: block;
+			width: 300px;
+		}
+	}
+	.checkbox {
+		text-align: left;
+		font-size: 18px;
+		margin: -10px 0 10px 0;
+		display: block;
+		width: 300px;
+	}
+	.bar {
+		padding: 0 10px 0 5px;
+		position: relative;
+		display: block;
+		width: 300px;
+		&:before {
+			content: '';
+			height: 2px;
+			width: 0;
+			bottom: 1px;
+			position: absolute;
+			transition: 0.2s ease all;
+			left: 50%;
+		}
+		&:after {
+			content: '';
+			height: 2px;
+			width: 0;
+			bottom: 1px;
+			position: absolute;
+			transition: 0.2s ease all;
+			right: 50%;
+		}
+	}
+	input {
+		&:focus {
+			&~label {
+				top: -20px;
+				font-size: 14px;
+			}
+			&~.bar {
+				&:before {
+					width: 50%;
+				}
+				&:after {
+					width: 50%;
+				}
+			}
+		}
+	}
+	input.used {
+		&~label {
+			top: -20px;
+			font-size: 14px;
+		}
+	}
+	.footer {
+		p {
+			margin: 2px;
+		}
+		.logs {
+			font-size: 10px;
+		}
+	}
+}

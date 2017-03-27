@@ -6,7 +6,7 @@ var allocine = require('allocine-api')
  * MediaInfo requester.
  * @constructor
 */
-function MediaInfo () {}
+class MediaInfo {
 
 /**
  * Get Media Info from allocine.
@@ -15,53 +15,53 @@ function MediaInfo () {}
  * @param {string} code - Media code.
  * @param {function} callback - callback with iformation.
 */
-MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
-  var getMediaInfo = function () {
-    if (type === 'tvseries') {
-      allocine.api('tvseries', {
-        code: code
-      }, function (err, data) {
-        if (err) {
+  getMediaInfo (query, type, code, callback) {
+    var getMediaInfo = () => {
+      if (type === 'tvseries') {
+        allocine.api('tvseries', {
+          code: code
+        }, (err, data) => {
+          if (err) {
+            callback({
+              err: err
+            })
+            return
+          }
           callback({
-            err: err
+            'type': 'series',
+            'query': query,
+            'title': data.tvseries.title,
+            'link': data.tvseries.link.length > 0 ? data.tvseries.link[0].href : '',
+            'description': data.tvseries.synopsisShort.replace(/<\/*p>/g, ''),
+            'poster': data.tvseries.poster ? data.tvseries.poster.href : '',
+            'rating': `${Math.round((data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2)}/5`
           })
-          return
-        }
-        callback({
-          'type': 'series',
-          'query': query,
-          'title': data.tvseries.title,
-          'link': data.tvseries.link.length > 0 ? data.tvseries.link[0].href : '',
-          'description': data.tvseries.synopsisShort.replace(/<\/*p>/g, ''),
-          'poster': data.tvseries.poster ? data.tvseries.poster.href : '',
-          'rating': `${Math.round((data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2)}/5`
         })
-      })
-    } else if (type === 'movie') {
-      allocine.api('movie', {
-        code: code
-      }, function (err, data) {
-        if (err) {
+      } else if (type === 'movie') {
+        allocine.api('movie', {
+          code: code
+        }, (err, data) => {
+          if (err) {
+            callback({
+              err: err
+            })
+            return
+          }
           callback({
-            err: err
+            'type': 'films',
+            'query': query,
+            'title': data.movie.title,
+            'link': data.movie.link[0].href,
+            'description': data.movie.synopsisShort,
+            'poster': data.movie.poster ? data.movie.poster.href : '',
+            'rating': (data.movie.statistics.pressRating + data.movie.statistics.userRating) / 2
           })
-          return
-        }
-        callback({
-          'type': 'films',
-          'query': query,
-          'title': data.movie.title,
-          'link': data.movie.link[0].href,
-          'description': data.movie.synopsisShort,
-          'poster': data.movie.poster ? data.movie.poster.href : '',
-          'rating': (data.movie.statistics.pressRating + data.movie.statistics.userRating) / 2
         })
-      })
+      }
     }
-  }
 
-  setTimeout(getMediaInfo)
-}
+    setTimeout(getMediaInfo)
+  }
 
 /**
  * Search Media on allocine.
@@ -69,59 +69,57 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
  * @param {string} query - Media to search.
  * @param {function} callback - callback with iformation.
 */
-MediaInfo.prototype.search = function (type, query, callback) {
-  var self = this
-
-  var search = function () {
-    if (type === 'tvseries') {
-      allocine.api('search', {
-        q: query,
-        filter: 'tvseries'
-      }, function (err, data) {
-        if (err) {
-          callback({
-            err: err
-          })
-          return
-        }
-        if (data.feed.totalResults > 0) {
-          // Maybe Change that
-          while (data.feed.tvseries[0].length > 0 || data.feed.tvseries[0].yearStart < 2000) {
-            data.feed.tvseries.shift()
+  search (type, query, callback) {
+    var search = () => {
+      if (type === 'tvseries') {
+        allocine.api('search', {
+          q: query,
+          filter: 'tvseries'
+        }, (err, data) => {
+          if (err) {
+            callback({
+              err: err
+            })
+            return
           }
-          self.getMediaInfo(query, type, data.feed.tvseries[0].code, callback)
-        } else {
-          callback({
-            err: `Nothing found for "${query}".`
-          })
-          return
-        }
-      })
-    } else if (type === 'movie') {
-      allocine.api('search', {
-        q: query,
-        filter: 'movie'
-      }, function (err, data) {
-        if (err) {
-          callback({
-            err: err
-          })
-          return
-        }
-        if (data.feed.totalResults > 0) {
-          self.getMediaInfo(query, type, data.feed.movie[0].code, callback)
-        } else {
-          callback({
-            err: `Nothing found for "${query}".`
-          })
-          return
-        }
-      })
+          if (data.feed.totalResults > 0) {
+          // Maybe Change that
+            while (data.feed.tvseries[0].length > 0 || data.feed.tvseries[0].yearStart < 2000) {
+              data.feed.tvseries.shift()
+            }
+            this.getMediaInfo(query, type, data.feed.tvseries[0].code, callback)
+          } else {
+            callback({
+              err: `Nothing found for "${query}".`
+            })
+            return
+          }
+        })
+      } else if (type === 'movie') {
+        allocine.api('search', {
+          q: query,
+          filter: 'movie'
+        }, (err, data) => {
+          if (err) {
+            callback({
+              err: err
+            })
+            return
+          }
+          if (data.feed.totalResults > 0) {
+            this.getMediaInfo(query, type, data.feed.movie[0].code, callback)
+          } else {
+            callback({
+              err: `Nothing found for "${query}".`
+            })
+            return
+          }
+        })
+      }
     }
-  }
 
-  setTimeout(search)
-}
+    setTimeout(search)
+  }
 
 /**
  * Get info about a Media.
@@ -129,22 +127,20 @@ MediaInfo.prototype.search = function (type, query, callback) {
  * @param {string} query - Media to search.
  * @param {function} callback - callback with iformation.
 */
-MediaInfo.prototype.getInfo = function (type, query, callback) {
-  var self = this
-
-  var getInfo = function () {
-    if (type === 'series') {
-      self.search('tvseries', query, callback)
-    } else if (type === 'films') {
-      self.search('movie', query, callback)
-    } else {
-      callback({
-        err: `Unknown type: ${type}`
-      })
+  getInfo (type, query, callback) {
+    var getInfo = () => {
+      if (type === 'series') {
+        this.search('tvseries', query, callback)
+      } else if (type === 'films') {
+        this.search('movie', query, callback)
+      } else {
+        callback({
+          err: `Unknown type: ${type}`
+        })
+      }
     }
+
+    setTimeout(getInfo)
   }
-
-  setTimeout(getInfo)
 }
-
 module.exports = new MediaInfo()

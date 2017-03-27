@@ -1,0 +1,246 @@
+@color_1: #675f5f;
+@color_2: #f7a253;
+@color_3: inherit;
+@color_4: #BBB;
+@color_5: #EEE;
+@color_6: #151515;
+@color_7: #1C1C1C;
+@color_8: #f75353;
+@color_9: #27AE60;
+@color_10: #5264AE;
+@color_11: #111;
+@color_12: #FFF;
+@color_13: #D8E1E4;
+@color_14: #2E2E2E;
+
+@keyframes "color" {
+	100%,0% {
+		stroke: @color_2;
+	}
+}
+body {
+	background: @color_7;
+}
+* {
+	&::selection {
+		background: @color_2;
+	}
+}
+.button {
+	cursor: pointer;
+	&:hover {
+		color: @color_1;
+		transition: color 0.1s ease-out;
+	}
+	&:active {
+		color: @color_2;
+	}
+}
+a {
+	text-decoration: none;
+	color: @color_3;
+}
+.loading {
+	.loading-app {
+		background-color: @color_7;
+	}
+	.loading-actions {
+		.load {
+			i {
+				color: @color_2;
+			}
+		}
+	}
+}
+.top-menu {
+	color: @color_4;
+	background-color: @color_11;
+	.unactive {
+		color: @color_1;
+	}
+	.ariane {
+		.active {
+			color: @color_2;
+		}
+	}
+}
+.config-pop {
+	input {
+		color: @color_1;
+		background-color: @color_4;
+		border: 1px solid @color_13;
+	}
+	select {
+		color: @color_1;
+		background-color: @color_4;
+		border: 1px solid @color_13;
+	}
+}
+.left-menu {
+	color: @color_4;
+	background-color: @color_6;
+	transition: left 0.3s ease-out;
+	.new {
+		color: @color_5;
+	}
+	.search {
+		color: @color_5;
+	}
+	.start {
+		color: @color_5;
+	}
+	.menu {
+		i.open {
+			background-color: @color_6;
+		}
+	}
+	.nav-bar {
+		li.active {
+			background-color: @color_2;
+			color: @color_6;
+		}
+	}
+	.action {
+		.button {
+			background-color: @color_8;
+			border: 1px outset @color_8;
+			&:active {
+				border: 1px inset @color_8;
+			}
+		}
+	}
+	.torrent-input {
+		input {
+			color: @color_1;
+			background-color: @color_12;
+			border: 1px solid @color_13;
+		}
+		input[type=text] {
+			transition: width 0.2s ease-out;
+		}
+	}
+	.footer {
+		color: @color_1;
+		a {
+			&:hover {
+				color: @color_2;
+			}
+		}
+	}
+}
+.list {
+	background-color: @color_7;
+	color: @color_4;
+	th {
+		background: @color_14;
+	}
+	tr.selected {
+		background-color: @color_2;
+		color: @color_7;
+		a {
+			background-color: @color_2;
+			color: @color_7;
+		}
+	}
+	tr {
+		border-top: 1px solid @color_14;
+		border-bottom: 1px solid @color_14;
+	}
+	.file {
+		td#name {
+			.locked {
+				color: @color_8;
+			}
+		}
+	}
+}
+.scrollTop {
+	background-color: @color_6;
+	color: @color_4;
+}
+.searchtorrent-pop {
+	tr.search-item {
+		&:hover {
+			background-color: @color_2;
+		}
+	}
+	.search-item {
+		border-top: 1px solid @color_14;
+		border-bottom: 1px solid @color_6;
+		.seed {
+			color: @color_9;
+		}
+		.peer {
+			color: @color_8;
+		}
+	}
+}
+.auth {
+	.form {
+		color: @color_4;
+	}
+	h1 {
+		color: @color_2;
+	}
+	.invite {
+		p {
+			color: @color_2;
+		}
+	}
+	input {
+		border: none;
+		border-bottom: 1px solid @color_4;
+		background-color: @color_7;
+		color: @color_4;
+		&:valid {
+			border-bottom: 1px solid @color_2;
+			&~.bar {
+				&:before {
+					background: @color_2 !important;
+				}
+				&:after {
+					background: @color_2 !important;
+				}
+			}
+			&~label {
+				color: @color_2;
+			}
+		}
+		&:focus {
+			&~label {
+				color: @color_2;
+			}
+		}
+		&:valid.used {
+			&~label {
+				color: @color_2;
+			}
+		}
+	}
+	input.used {
+		&~label {
+			color: @color_2;
+		}
+	}
+	button {
+		background-color: @color_8;
+		border: 1px outset @color_8;
+		&:active {
+			border: 1px inset @color_8;
+		}
+	}
+	.info {
+		color: @color_8;
+	}
+	.footer {
+		color: @color_1;
+		a {
+			&:hover {
+				color: @color_2;
+			}
+		}
+	}
+}
+#flake {
+	z-index: 100;
+}

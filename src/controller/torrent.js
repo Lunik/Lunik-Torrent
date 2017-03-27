@@ -13,7 +13,7 @@ var LogWorker = new Log({
   module: 'Server'
 })
 
-router.get('/torrent', function (req, res) {
+router.get('/torrent', (req, res) => {
   res.header('Content-Type', 'application/json')
   res.end(JSON.stringify({
     GET: [
@@ -28,7 +28,7 @@ router.get('/torrent', function (req, res) {
 })
 
 // client start torrent
-router.post('/torrent/download', function (req, res) {
+router.post('/torrent/download', (req, res) => {
   if (req.body.url) {
     LogWorker.info(`${req.cookies.user} download torrent: ${req.body.url}`)
     Torrent.start(req.cookies.user, req.body.url)
@@ -41,14 +41,14 @@ router.post('/torrent/download', function (req, res) {
 })
 
 // client ask list of torrent active
-router.get('/torrent/list', function (req, res) {
-  Torrent.getInfo(function (data) {
+router.get('/torrent/list', (req, res) => {
+  Torrent.getInfo((data) => {
     res.end(JSON.stringify(data))
   })
 })
 
 // client remove torrent
-router.post('/torrent/remove', function (req, res) {
+router.post('/torrent/remove', (req, res) => {
   if (req.body.hash) {
     LogWorker.info(`${req.cookies.user} remove torrent: ${req.body.hash}`)
     Torrent.remove(req.body.hash)
@@ -63,15 +63,15 @@ router.post('/torrent/remove', function (req, res) {
 })
 
 // client search torrent
-router.post('/torrent/search', function (req, res) {
+router.post('/torrent/search', (req, res) => {
   if (req.body.query && req.body.query !== '') {
     req.body.query = req.body.query.replace(/%20/g, ' ')
     LogWorker.info(`${req.cookies.user} search: ${req.body.query}`)
-    SearchEngine.search(req.body.query, function (data) {
+    SearchEngine.search(req.body.query, (data) => {
       res.end(JSON.stringify(data))
     })
   } else {
-    SearchEngine.latest(function (data) {
+    SearchEngine.latest((data) => {
       res.end(JSON.stringify(data))
     })
   }

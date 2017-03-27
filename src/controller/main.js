@@ -15,28 +15,30 @@ var LogWorker = new Log({
  * Deserve http requests.
  * @constructor
 */
-function Server (id) {
-  this.app = express()
-  this.app.use(compression())
-  this.app.use(cookieParser())
-  this.app.use(bodyParser.json())
-  this.app.use(bodyParser.urlencoded({
-    extended: true
-  }))
+class Server {
+  constructor (id) {
+    this.app = express()
+    this.app.use(compression())
+    this.app.use(cookieParser())
+    this.app.use(bodyParser.json())
+    this.app.use(bodyParser.urlencoded({
+      extended: true
+    }))
 
-  this.app.use(require(Path.join(__workingDir, 'controller/auth.js')))
-  this.app.use(require(Path.join(__workingDir, 'controller/config.js')))
-  this.app.use(require(Path.join(__workingDir, 'controller/filetransfert')))
-  this.app.use(require(Path.join(__workingDir, 'controller/torrent')))
-  this.app.use(require(Path.join(__workingDir, 'controller/directory')))
-  this.app.use(require(Path.join(__workingDir, 'controller/logs')))
+    this.app.use(require(Path.join(__workingDir, 'controller/auth.js')))
+    this.app.use(require(Path.join(__workingDir, 'controller/config.js')))
+    this.app.use(require(Path.join(__workingDir, 'controller/filetransfert')))
+    this.app.use(require(Path.join(__workingDir, 'controller/torrent')))
+    this.app.use(require(Path.join(__workingDir, 'controller/directory')))
+    this.app.use(require(Path.join(__workingDir, 'controller/logs')))
 
-  this.app.use(express.static(Path.join(__workingDir, 'public')))
+    this.app.use(express.static(Path.join(__workingDir, 'public')))
 
-  var port = process.env.PORT || __config.server.port
-  this.app.listen(port, function () {
-    LogWorker.info(`Server ${id} listening at port ${port}`)
-  })
+    var port = process.env.PORT || __config.server.port
+    this.app.listen(port, () => {
+      LogWorker.info(`Server ${id} listening at port ${port}`)
+    })
+  }
 }
 
 module.exports = Server
