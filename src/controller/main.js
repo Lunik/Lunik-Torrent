@@ -18,6 +18,9 @@ var LogWorker = new Log({
  * @constructor
 */
 function Server (id) {
+  var port = process.env.PORT || __config.server.port
+  var sslport = __config.server.https
+
   this.app = express()
   this.app.use(compression())
   this.app.use(cookieParser())
@@ -45,8 +48,6 @@ function Server (id) {
 
   this.app.use(express.static(Path.join(__workingDir, 'public')))
 
-  var port = process.env.PORT || __config.server.port
-  var sslport = __config.server.https
   if (sslport) {
     var options = {
       key: fs.readFileSync(__config.server.certs.privatekey),
