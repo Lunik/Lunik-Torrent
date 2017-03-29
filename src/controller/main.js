@@ -5,6 +5,8 @@ var compression = require('compression')
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 var Path = require('path')
+var https = require('https')
+var fs = require('fs')
 
 var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
@@ -34,9 +36,21 @@ function Server (id) {
   this.app.use(express.static(Path.join(__workingDir, 'public')))
 
   var port = process.env.PORT || __config.server.port
-  this.app.listen(port, function () {
-    LogWorker.info(`Server ${id} listening at port ${port}`)
-  })
+
+  if (__config.server.https) {
+    var options = {
+      key: fs.readFileSync(__config.server.certs.privatekey),
+      cert: fs.readFileSync(__config.server.certs.certificate)
+    }
+
+    this.server = https.createServer(options, this.app).listen(port, function () {
+      LogWorker.info(`Server ${id} listening at port ${port}`)
+    })
+  } else {
+    this.app.listen(port, function () {
+      LogWorker.info(`Server ${id} listening at port ${port}`)
+    })
+  }
 }
 
 module.exports = Server

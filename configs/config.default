@@ -5,7 +5,12 @@
   "server": {
     "port": 8080,
     "masterKey": "MY_KEY",
-    "duplication": 1
+    "duplication": 1,
+    "https": false,
+    "certs": {
+      "privatekey": "",
+      "certificate": ""
+    }
   },
   "database": {
     "port": 33066,
