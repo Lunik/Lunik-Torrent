@@ -6,6 +6,7 @@ var rand = require('crypto-rand')
 var request = require('request')
 
 global.__base = path.join(__dirname, '..', '/')
+global.__workingDir = path.join(__base, 'src')
 
 var Config = require(path.join(__base, 'src/worker/config.js'))
 var ConfigWorker = new Config()
