@@ -31,11 +31,7 @@ function Server (id) {
 
   if (sslport) {
     this.app.use(function (req, res, next) {
-      if (req.headers['referer'] && !req.headers['referer'].match('https://')) {
-        res.redirect(req.headers['referer'].replace('http://', 'https://'))
-      } else {
-        return next()
-      }
+      res.redirect(`https://${req.headers['host']}`)
     })
   }
   this.app.use(require(Path.join(__workingDir, 'controller/auth.js')))
