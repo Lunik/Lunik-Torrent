@@ -46,11 +46,11 @@ function Server (id) {
     this.server = https.createServer(options, this.app).listen(port, function () {
       LogWorker.info(`Server ${id} listening at port ${port}`)
     })
-  } else {
-    this.app.listen(port, function () {
-      LogWorker.info(`Server ${id} listening at port ${port}`)
-    })
+    port ++
   }
+  this.app.listen(port, function () {
+    LogWorker.info(`Server ${id} listening at port ${port}`)
+  })
 }
 
 module.exports = Server
