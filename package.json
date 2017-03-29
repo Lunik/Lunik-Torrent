@@ -50,6 +50,8 @@
       "__DBtoken",
       "__workingDir",
       "$",
+      "it",
+      "describe",
       "confirm",
       "prompt",
       "requirejs",

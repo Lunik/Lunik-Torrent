@@ -259,7 +259,7 @@ describe('Backend', function () {
         this.timeout(30000)
         request(url, function (err, res, body) {
           assert(!err)
-          if (!err && res.statusCode == 200) {
+          if (!err && res.statusCode === 200) {
             assert(body.match('<title>Login - Lunik - Torrent</title>'))
           }
           done()
@@ -274,7 +274,7 @@ describe('Backend', function () {
           }
         }, function (err, res, body) {
           assert(!err)
-          if (!err && res.statusCode == 200) {
+          if (!err && res.statusCode === 200) {
             var invite = JSON.parse(body).invitationCode
             assert(invite)
           }
@@ -286,7 +286,7 @@ describe('Backend', function () {
           }
         }, function (err, res, body) {
           assert(!err)
-          if (!err && res.statusCode == 200) {
+          if (!err && res.statusCode === 200) {
             var invite = JSON.parse(body).invitationCode
             assert(invite)
             // register
@@ -299,7 +299,7 @@ describe('Backend', function () {
               }
             }, function (err, res, body) {
               assert(!err)
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 var token = JSON.parse(body).token
                 assert(token)
                 // login
@@ -311,7 +311,7 @@ describe('Backend', function () {
                   }
                 }, function (err, res, body) {
                   assert(!err)
-                  if (!err && res.statusCode == 200) {
+                  if (!err && res.statusCode === 200) {
                     var token = JSON.parse(body).token
                     assert(token)
                     // logout
@@ -323,8 +323,8 @@ describe('Backend', function () {
                       }
                     }, function (err, res, body) {
                       assert(!err)
-                      if (!err && res.statusCode == 200) {
-                        var err = JSON.parse(body).err
+                      if (!err && res.statusCode === 200) {
+                        err = JSON.parse(body).err
                         assert(!err)
                         request.post({
                           url: url + '/auth/changepass',
@@ -335,8 +335,8 @@ describe('Backend', function () {
                           }
                         }, function (err, res, body) {
                           assert(!err)
-                          if (!err && res.statusCode == 200) {
-                            var err = JSON.parse(body).err
+                          if (!err && res.statusCode === 200) {
+                            err = JSON.parse(body).err
                             assert(!err)
                             request.post({
                               url: url + '/auth/changepass',
@@ -347,8 +347,8 @@ describe('Backend', function () {
                               }
                             }, function (err, res, body) {
                               assert(!err)
-                              if (!err && res.statusCode == 200) {
-                                var err = JSON.parse(body).err
+                              if (!err && res.statusCode === 200) {
+                                err = JSON.parse(body).err
                                 assert(!err)
                               }
                               done()
@@ -368,7 +368,7 @@ describe('Backend', function () {
         Auth(url, user, pass, function (token) {
           var file = 'ok' + rand.rand()
           var r = rand.rand()
-          fs.writeFile(path.join(__base, __config.directory.path, file), r , function (err) {
+          fs.writeFile(path.join(__base, __config.directory.path, file), r, function (err) {
             assert(!err)
             request.get({
               url: url + '/files?f=' + file,
@@ -377,7 +377,7 @@ describe('Backend', function () {
               }
             }, function (err, res, body) {
               assert(!err)
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 assert.equal(body, r)
                 assert(!JSON.parse(body).err)
               }
@@ -394,7 +394,7 @@ describe('Backend', function () {
               Cookie: 'user=' + user + ';token=' + token
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               assert(Array.isArray(body))
@@ -417,7 +417,7 @@ describe('Backend', function () {
                 dir: dir
               }
             }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 body = JSON.parse(body)
                 assert(!body.err)
                 assert.typeOf(body, 'object')
@@ -441,7 +441,7 @@ describe('Backend', function () {
                 file: file
               }
             }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 body = JSON.parse(body)
                 assert(!body.err)
                 assert.equal(body.file, file)
@@ -468,7 +468,7 @@ describe('Backend', function () {
                 newname: file2
               }
             }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 body = JSON.parse(body)
                 assert(!body.err)
                 assert.equal(body.oldname, file)
@@ -492,7 +492,7 @@ describe('Backend', function () {
               name: dir
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               assert.equal(body.name, dir)
@@ -520,7 +520,7 @@ describe('Backend', function () {
                   folder: dir
                 }
               }, function (err, res, body) {
-                if (!err && res.statusCode == 200) {
+                if (!err && res.statusCode === 200) {
                   body = JSON.parse(body)
                   assert(!body.err)
                   assert.equal(body.file, file)
@@ -543,7 +543,7 @@ describe('Backend', function () {
               query: 'Game of Thrones'
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               assert.typeOf(body, 'object')
@@ -565,7 +565,7 @@ describe('Backend', function () {
               query: 'Game of Thrones'
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               assert.typeOf(body, 'object')
@@ -585,7 +585,7 @@ describe('Backend', function () {
                 Cookie: 'user=' + user + ';token=' + token
               }
             }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 body = JSON.parse(body)
                 assert(!body.err)
                 done()
@@ -606,7 +606,7 @@ describe('Backend', function () {
               url: 'magnet:?xt=urn:btih:fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4&dn=CentOS-6.8-i386-netinstall'
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               request.post({
@@ -618,7 +618,7 @@ describe('Backend', function () {
                   hash: 'fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4'
                 }
               }, function (err, res, body) {
-                if (!err && res.statusCode == 200) {
+                if (!err && res.statusCode === 200) {
                   body = JSON.parse(body)
                   assert.equal(body.hash, 'fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4')
                   assert(!body.err)
@@ -749,7 +749,7 @@ function Auth (url, user, pass, cb) {
       pass: pass
     }
   }, function (err, res, body) {
-    if (!err && res.statusCode == 200) {
+    if (!err && res.statusCode === 200) {
       var token = JSON.parse(body).token
       cb(token)
     }
