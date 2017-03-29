@@ -36,9 +36,8 @@ function Server (id) {
   this.app.use(express.static(Path.join(__workingDir, 'public')))
 
   var port = process.env.PORT || __config.server.port
-
-  if (__config.server.https) {
-    var sslport = port
+  var sslport = __config.server.https
+  if (sslport) {
     var options = {
       key: fs.readFileSync(__config.server.certs.privatekey),
       cert: fs.readFileSync(__config.server.certs.certificate)
@@ -47,7 +46,6 @@ function Server (id) {
     this.server = https.createServer(options, this.app).listen(sslport, function () {
       LogWorker.info(`Server ${id} listening at port ${sslport}`)
     })
-    port++
   }
   this.app.listen(port, function () {
     LogWorker.info(`Server ${id} listening at port ${port}`)
