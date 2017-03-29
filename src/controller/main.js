@@ -33,6 +33,8 @@ function Server (id) {
     this.app.use(function (req, res, next) {
       if (!req.secure) {
         res.redirect(`https://${req.headers['host']}`)
+      } else {
+        next()
       }
     })
   }
