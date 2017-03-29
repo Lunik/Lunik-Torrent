@@ -31,9 +31,8 @@ function Server (id) {
 
   if (sslport) {
     this.app.use(function (req, res, next) {
-      console.log(req.headers)
-      if (req.headers['x-forwarded-proto'] === 'http') {
-        res.redirect('https://[your url goes here]' + req.url)
+      if (req.headers['referer'] && !req.headers['referer'].match('https://')) {
+        res.redirect(req.headers['referer'].replace('http://', 'https://'))
       } else {
         return next()
       }
