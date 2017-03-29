@@ -26,6 +26,16 @@ function Server (id) {
     extended: true
   }))
 
+  if (sslport) {
+    this.app.use(function (req, res, next) {
+      console.log(req.headers)
+      if (req.headers['x-forwarded-proto'] === 'http') {
+        res.redirect('https://[your url goes here]' + req.url)
+      } else {
+        return next()
+      }
+    })
+  }
   this.app.use(require(Path.join(__workingDir, 'controller/auth.js')))
   this.app.use(require(Path.join(__workingDir, 'controller/config.js')))
   this.app.use(require(Path.join(__workingDir, 'controller/filetransfert')))
@@ -38,13 +48,6 @@ function Server (id) {
   var port = process.env.PORT || __config.server.port
   var sslport = __config.server.https
   if (sslport) {
-    this.app.use(function (req, res, next) {
-      if (req.headers['x-forwarded-proto'] === 'http') {
-        res.redirect('https://[your url goes here]' + req.url)
-      } else {
-        return next()
-      }
-    })
     var options = {
       key: fs.readFileSync(__config.server.certs.privatekey),
       cert: fs.readFileSync(__config.server.certs.certificate)
