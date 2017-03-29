@@ -38,6 +38,13 @@ function Server (id) {
   var port = process.env.PORT || __config.server.port
   var sslport = __config.server.https
   if (sslport) {
+    this.app.use(function (req, res, next) {
+      if (req.headers['x-forwarded-proto'] === 'http') {
+        res.redirect('https://[your url goes here]' + req.url)
+      } else {
+        return next()
+      }
+    })
     var options = {
       key: fs.readFileSync(__config.server.certs.privatekey),
       cert: fs.readFileSync(__config.server.certs.certificate)
@@ -46,10 +53,11 @@ function Server (id) {
     this.server = https.createServer(options, this.app).listen(sslport, function () {
       LogWorker.info(`Server ${id} listening at port ${sslport}`)
     })
+  } else {
+    this.app.listen(port, function () {
+      LogWorker.info(`Server ${id} listening at port ${port}`)
+    })
   }
-  this.app.listen(port, function () {
-    LogWorker.info(`Server ${id} listening at port ${port}`)
-  })
 }
 
 module.exports = Server
