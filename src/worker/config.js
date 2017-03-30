@@ -23,6 +23,7 @@ Config.prototype.load = function (path) {
   assert(config.server.duplication, messageError('server.duplication'))
   assert(config.server.https === false || config.server.https, messageError('server.https'))
   if (config.server.https) {
+    assert(config.server.hostname, messageError('server.hostname'))
     assert(config.server.certs.privatekey, messageError('server.duplication.privatekey'))
     assert(config.server.certs.certificate, messageError('server.duplication.certificate'))
   }

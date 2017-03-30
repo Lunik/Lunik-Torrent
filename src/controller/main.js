@@ -49,6 +49,7 @@ function Server (id) {
 
   if (sslport) {
     var options = {
+      hostname: __config.server.hostname,
       key: fs.readFileSync(__config.server.certs.privatekey),
       cert: fs.readFileSync(__config.server.certs.certificate)
     }
