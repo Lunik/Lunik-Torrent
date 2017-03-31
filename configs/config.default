@@ -10,7 +10,8 @@
     "hostname": "",
     "certs": {
       "privatekey": "",
-      "certificate": ""
+      "certificate": "",
+      "chain": ""
     }
   },
   "database": {

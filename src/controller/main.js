@@ -51,7 +51,8 @@ function Server (id) {
     var options = {
       hostname: __config.server.hostname,
       key: fs.readFileSync(__config.server.certs.privatekey),
-      cert: fs.readFileSync(__config.server.certs.certificate)
+      cert: fs.readFileSync(__config.server.certs.certificate),
+      ca: fs.readFileSync(__config.server.certs.chain)
     }
 
     this.server = https.createServer(options, this.app).listen(sslport, function () {
