@@ -102,11 +102,12 @@
     var i = 0
     if (Object.keys(dir.files).length > 0) {
       $.each(dir.files, function (index, value) {
+        var hash = App.Crypto.AES.encrypt(`${document.location.hash.substring(1)}${index}`, '').toString()
         value.name = index
         lines.push({
           name: index,
           href: value.isfile ? null : `#${App.hash}${index}/`,
-          url: encodeURI(`${window.location.host}/files/?f=${document.location.hash.substring(1)}${index}`),
+          url: encodeURI(`${window.location.host}/directdl/${hash}`),
           type: 'file',
           extension: App.Format.extention(value),
           size: value.isfile ? App.Format.size(value.size) : '-',
@@ -201,11 +202,12 @@
               duration: 10
             })
           } else {
+            var hash = App.Crypto.AES.encrypt(`${document.location.hash.substring(1)}${data.newname}`, '').toString()
             App.List.updateLine({
               name: fileName,
               newname: data.newname,
               href: dir ? `#${App.hash}${data.newname}/` : null,
-              url: encodeURI(`${window.location.host}/files/?f=${document.location.hash.substring(1)}${data.newname}`)
+              url: encodeURI(`${window.location.host}/directdl/${hash}`)
             })
           }
         }

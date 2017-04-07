@@ -10,6 +10,7 @@ var App = {}
         'notify-me': '../bower_components/notify.me/dist/js/notify-me'
       },
       shim: {
+        'crypto-js': [],
         'notify-me': ['jquery'],
         'loading': ['jquery', 'vue']
       }

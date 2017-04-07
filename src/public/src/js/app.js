@@ -11,6 +11,7 @@ var App
         'localstorage': '../bower_components/local-storage-api/dist/storage.min',
         'jquery': '../bower_components/jquery/dist/jquery.min',
         'jquery-ui': '../bower_components/jquery-ui/jquery-ui.min',
+        'crypto-js': '../bower_components/crypto-js/crypto-js',
         'vue': '../bower_components/vue/dist/vue.min',
         'jquery.ui.touch-punch': '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved',
         'notify-me': '../bower_components/notify.me/dist/js/notify-me',
@@ -19,6 +20,7 @@ var App
         'snow': 'special-event/jquery.snow.min.1.0'
       },
       shim: {
+        'crypto-js': [],
         'jquery.ui.touch-punch': ['jquery'],
         'snow': ['jquery'],
         'notify-me': ['jquery'],
@@ -43,11 +45,13 @@ var App
       'jquery',
       'jquery-ui',
       'format',
-      'clipboard'
-    ], function (v, ls, jq, jqui, f, Clip) {
+      'clipboard',
+      'crypto-js'
+    ], function (v, ls, jq, jqui, f, Clip, crypto) {
       self.Vue = v
       self.Storage = new Storage()
       self.Clipboard = new Clip('.clip-but')
+      self.Crypto = crypto
       /**
        * Get The index of an object into an array
        * @param {array} array - The array
