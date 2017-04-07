@@ -24,7 +24,7 @@
   "client": {
     "downloads": "downloads/",
     "updateTimeout": 3000,
-    "timeout": 30000
+    "timeout": 300000
   },
   "directory": {
     "path": "files/"
