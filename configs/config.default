@@ -14,6 +14,9 @@
       "chain": ""
     }
   },
+  "authentification": {
+    "status": false
+  },
   "database": {
     "port": 33066,
     "host": "127.0.0.1"

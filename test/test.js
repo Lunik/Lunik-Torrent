@@ -13,6 +13,8 @@ var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
 global.__config.server.port = process.env.PORT || global.__config.server.port
 
+global.__config.authentification.status = process.env.AUTH
+
 var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
 var token = Crypto.SHA256(Rand.rand().toString()).toString()
