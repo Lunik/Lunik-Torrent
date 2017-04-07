@@ -32,7 +32,7 @@ function Server (id) {
   if (sslport) {
     this.app.use(function (req, res, next) {
       if (!req.secure) {
-        res.redirect(`https://${req.headers['host']}`)
+        res.redirect(`https://${req.headers['host']}/${req.originalUrl}`)
       } else {
         next()
       }
@@ -54,7 +54,6 @@ function Server (id) {
       cert: fs.readFileSync(__config.server.certs.certificate),
       ca: fs.readFileSync(__config.server.certs.chain)
     }
-
     this.server = https.createServer(options, this.app).listen(sslport, function () {
       LogWorker.info(`Server ${id} listening at port ${sslport}`)
     })
