@@ -38,12 +38,12 @@ function Server (id) {
       }
     })
   }
-  this.app.use(require(Path.join(__workingDir, 'controller/auth.js')))
-  this.app.use(require(Path.join(__workingDir, 'controller/config.js')))
-  this.app.use(require(Path.join(__workingDir, 'controller/filetransfert')))
-  this.app.use(require(Path.join(__workingDir, 'controller/torrent')))
-  this.app.use(require(Path.join(__workingDir, 'controller/directory')))
-  this.app.use(require(Path.join(__workingDir, 'controller/logs')))
+  require(Path.join(__workingDir, 'controller/auth.js'))(this.app)
+  require(Path.join(__workingDir, 'controller/config.js'))(this.app)
+  require(Path.join(__workingDir, 'controller/filetransfert'))(this.app)
+  require(Path.join(__workingDir, 'controller/torrent'))(this.app)
+  require(Path.join(__workingDir, 'controller/directory'))(this.app)
+  require(Path.join(__workingDir, 'controller/logs'))(this.app)
 
   this.app.use(express.static(Path.join(__workingDir, 'public')))
 

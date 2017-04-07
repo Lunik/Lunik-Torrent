@@ -4,6 +4,7 @@ var path = require('path')
 var fs = require('fs')
 var rand = require('crypto-rand')
 var request = require('request')
+var Crypto = require('crypto-js')
 
 global.__base = path.join(__dirname, '..', '/')
 global.__workingDir = path.join(__base, 'src')
@@ -385,6 +386,23 @@ describe('Backend', function () {
               }
               done()
             })
+          })
+        })
+      })
+      it('GET /direct', function () {
+        var file = 'ok' + rand.rand()
+        var r = rand.rand()
+        fs.writeFile(path.join(__base, __config.directory.path, file), r, function (err) {
+          assert(!err)
+          request.get({
+            url: url + '/directdl/' + Crypto.AES.encode(file, '').toString()
+          }, function (err, res, body) {
+            assert(!err)
+            if (!err && res.statusCode === 200) {
+              assert.equal(body, r)
+              assert(!JSON.parse(body).err)
+            }
+            done()
           })
         })
       })
