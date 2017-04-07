@@ -32,7 +32,7 @@ function Server (id) {
   if (sslport) {
     this.app.use(function (req, res, next) {
       if (!req.secure) {
-        res.redirect(`https://${req.headers['host']}/${req.originalUrl}`)
+        res.redirect(`https://${req.headers['host']}${req.originalUrl}`)
       } else {
         next()
       }

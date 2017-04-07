@@ -37,11 +37,9 @@ Client.prototype.download = function (torrentLink, cbStart, cbDone) {
       self.stop()
     }, __config.client.timeout)
 
-    self.client.add(torrentLink, {
+    var torrent = self.client.add(torrentLink, {
       path: __config.torrent.downloads
     }, function (torrent) {
-      clearTimeout(timeout)
-
       LogWorker.info(`Start torrent: ${torrent.name}`)
       cbStart(torrent.infoHash)
 
@@ -71,6 +69,10 @@ Client.prototype.download = function (torrentLink, cbStart, cbDone) {
         self.doneFunction(null)
         cbDone('Download error', self.getTorrent(torrent))
       })
+    })
+
+    torrent.on('metadata', function () {
+      clearTimeout(timeout)
     })
   }
 
