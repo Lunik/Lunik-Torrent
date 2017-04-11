@@ -105,7 +105,6 @@ SearchTorrent.prototype.parse = function ($, tr) {
       torrent.seeds = $($($line.children()[2]).find('span')).text()
       torrent.leechs = $($line.children()[3]).text()
       torrent.torrent = `${self.url}/get_torrent/${$($line.children()[0]).find('a').attr('href').split('/').pop()}.torrent`
-      torrent.cover = `${self.url}/_pictures/${$($line.children()[0]).find('a').attr('href').split('/').pop()}.jpg`
       array.push(torrent)
     }
   }

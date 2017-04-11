@@ -241,7 +241,7 @@ describe('Backend', function () {
     describe('Dowload()', function () {
       this.timeout(305000)
       it('Dowload ubuntu', function (done) {
-        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511',
+        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511', 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511',
           function (hash) {
             assert.equal(hash, '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
           }, function () {
