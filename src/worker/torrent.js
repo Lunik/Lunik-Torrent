@@ -38,7 +38,9 @@ Torrent.prototype.start = function (user, url) {
   var self = this
 
   var preprocess = function () {
-    if (url.match(/https?.*/g)) {
+    if (url.match(/magnet.*/)) {
+      start(url)
+    } else if (url.match(/https?.*/g)) {
       cloudscraper.get(url, function (err, res, body) {
         if (err) {
           LogWorker.error(err)
@@ -46,8 +48,6 @@ Torrent.prototype.start = function (user, url) {
         }
         start(res.body)
       })
-    } else if (url.match(/magnet.*/)) {
-      start(url)
     } else {
       LogWorker.error(`Cannot handle this kind of download: ${url}`)
     }
