@@ -1,5 +1,6 @@
 'use strict'
 
+var cloudscraper = require('cloudscraper')
 var fs = require('fs-extra')
 var Path = require('path')
 var Database = require(Path.join(__workingDir, 'database/client.js'))
@@ -36,9 +37,25 @@ function Torrent () {
 Torrent.prototype.start = function (user, url) {
   var self = this
 
-  var start = function () {
+  var preprocess = function () {
+    if (url.match(/https?.*/g)) {
+      cloudscraper.get(url, function (err, res, body) {
+        if (err) {
+          LogWorker.error(err)
+          return
+        }
+        start(res.body)
+      })
+    } else if (url.match(/magnet.*/)) {
+      start(url)
+    } else {
+      LogWorker.error(`Cannot handle this kind of download: ${url}`)
+    }
+  }
+
+  var start = function (torrentId) {
     var c = new Client()
-    c.download(url, function (hash) {
+    c.download(torrentId, url, function (hash) {
       self.client[hash] = c
     }, function (err, torrent) {
       delete self.client[torrent.infoHash]
@@ -59,7 +76,7 @@ Torrent.prototype.start = function (user, url) {
       }
     })
   }
-  setTimeout(start)
+  setTimeout(preprocess)
 }
 
 /**

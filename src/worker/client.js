@@ -24,16 +24,16 @@ function Client () {
  * Download a torrent.
  * @param {string} torrentLink - The link or magnet of the torrent.
 */
-Client.prototype.download = function (torrentLink, cbStart, cbDone) {
+Client.prototype.download = function (torrentLink, url, cbStart, cbDone) {
   var self = this
 
   var download = function () {
-    LogWorker.info(`Start: ${torrentLink}`)
+    LogWorker.info(`Start: ${url}`)
 
     self.client = new WebTorrent()
 
     var timeout = setTimeout(function () {
-      LogWorker.warning(`${torrentLink} didn't start on time, removing it.`)
+      LogWorker.warning(`${url} didn't start on time, removing it.`)
       self.stop()
     }, __config.client.timeout)
 
