@@ -27,7 +27,6 @@ var App
         'popup': ['jquery'],
         'loading': ['jquery', 'vue'],
         'top-menu': ['jquery', 'vue'],
-        'config': ['jquery', 'vue', 'notify-me', 'localstorage'],
         'list': ['jquery', 'vue', 'notify-me', 'loading'],
         'mediainfo': ['jquery', 'vue', 'notify-me', 'loading', 'format', 'localstorage'],
         'searchtorrent': ['jquery', 'vue', 'popup', 'loading'],
@@ -75,7 +74,6 @@ var App
         'popup',
         'loading',
         'top-menu',
-        'config',
         'list',
         'mediainfo',
         'searchtorrent',
@@ -83,55 +81,53 @@ var App
         'torrent',
         'left-menu',
         'special-event'
-      ], function (jqui, snow, notif, pop, load, tm, conf, l, mi, st, dir, tor, lm) {
-        // Get hash
-        self.hash = document.location.hash.substring(1)
-        if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
-          self.hash += '/'
-        }
-
-        // Start with directory
-        self.Directory.getDir(function (dir) {
-          self.Directory.append(dir)
-        })
-        self.Directory.setRefresh(true, 30000)
-
-        // on hash change set hash and reload directory
-        $(window).bind('hashchange', function () {
-          $('.list .file').removeClass('selected')
-          $('.list .torrent').removeClass('selected')
-
-          self.hash = document.location.hash.substring(1)
-          if (self.hash[self.hash.length - 1] !== '/' && self.hash.length > 0) {
-            self.hash += '/'
-          }
-
-          App.TopMenu.setActions({
-            download: false,
-            rename: false,
-            remove: false,
-            info: false
-          })
-          self.Directory.getDir(function (dir) {
-            self.Directory.append(dir)
-          })
-        })
-
-        // Trigger keydown event
-        $(window).keydown(function (event) {
-          switch (event.keyCode) {
-            case 13:
-              $(`.left-menu .action .${App.LeftMenu.vue.$data.currentAction}`).trigger('click')
-              break
-          }
-        })
-
-        // Everithing is loaded
-        self.Loading.hide('app')
+      ], function (jqui, snow, notif, pop, load, tm, l, mi, st, dir, tor, lm) {
+        self.main()
       })
     })
   }
 
+  _App.prototype.main = function () {
+    var self = this
+    // Get hash
+    self.updateHash()
+
+    // Start with directory
+    self.Directory.getDir(function (dir) {
+      self.Directory.append(dir)
+    })
+    self.Directory.setRefresh(true, 30000)
+
+    // on hash change set hash and reload directory
+    $(window).bind('hashchange', function () {
+      $('.list .file').removeClass('selected')
+      $('.list .torrent').removeClass('selected')
+
+      self.updateHash()
+
+      self.TopMenu.setActions({
+        download: false,
+        rename: false,
+        remove: false,
+        info: false
+      })
+      self.Directory.getDir(function (dir) {
+        self.Directory.append(dir)
+      })
+    })
+
+    // Trigger keydown event
+    $(window).keydown(function (event) {
+      switch (event.keyCode) {
+        case 13:
+          $(`.left-menu .action .${App.LeftMenu.vue.$data.currentAction}`).trigger('click')
+          break
+      }
+    })
+
+    // Everithing is loaded
+    self.Loading.hide('app')
+  }
   /**
    * Get directory array from hash
    * @return {array} - Array of directories
@@ -146,6 +142,12 @@ var App
     return dir
   }
 
+  _App.prototype.updateHash = function () {
+    this.hash = document.location.hash.substring(1)
+    if (this.hash[this.hash.length - 1] !== '/' && this.hash.length > 0) {
+      this.hash += '/'
+    }
+  }
   // Global var with all the modules
   App = new _App()
 })()
