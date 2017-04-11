@@ -127,6 +127,37 @@ var App
 
     // Everithing is loaded
     self.Loading.hide('app')
+
+    // Logout
+
+    $('body').on('click', '.top-menu .logout', function () {
+      $.ajax({
+        type: 'post',
+        url: '/auth/logout',
+        data: {},
+        dataType: 'json',
+        success: function (data) {
+          if (data.err) {
+            $.notify.error({
+              title: 'Error',
+              text: data.err,
+              duration: 10
+            })
+          } else {
+            $.notify.success({
+              title: 'Logout',
+              text: 'Successfully logged out.'
+            })
+            window.location = '/login.html'
+          }
+        }
+      }).done(function () {
+        App.Loading.hide('action')
+      }).fail(function (err) {
+        App.Loading.hide('action')
+        console.error(`Error in Config.logout() : ${err.statusText}`)
+      })
+    })
   }
   /**
    * Get directory array from hash
