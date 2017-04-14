@@ -11,7 +11,7 @@ var cheerio = require('cheerio')
  * @constructor
 */
 function SearchTorrent () {
-  this.url = new Buffer('aHR0cDovL3d3dy50b3JyZW50OS5iaXo=', 'base64').toString()
+  this.url = new Buffer('aHR0cDovL3d3dy50b3JyZW50OS5pbmZvCg==', 'base64').toString()
 }
 
 /**
