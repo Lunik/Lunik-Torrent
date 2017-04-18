@@ -3,7 +3,7 @@
 var Path = require('path')
 var request = require('request')
 
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'DatabaseClient'
 })
@@ -27,8 +27,8 @@ DatabaseClient.prototype.find = function (query, cb) {
     },
     qs: query
   }, function (err, res, body) {
-    if (err || res.statusCode == 403) {
-      if (res && res.statusCode == 403) {
+    if (err || res.statusCode === 403) {
+      if (res && res.statusCode === 403) {
         LogWorker.error('Unauthorized 403')
         cb(null, [])
       } else {
@@ -42,7 +42,7 @@ DatabaseClient.prototype.find = function (query, cb) {
         } else {
           cb(null, body.data)
         }
-      } catch(err) {
+      } catch (err) {
         cb(err, [])
       }
     }
@@ -61,8 +61,8 @@ DatabaseClient.prototype.insert = function (data, cb) {
     },
     form: data
   }, function (err, res, body) {
-    if (err || res.statusCode == 403) {
-      if (res && res.statusCode == 403) {
+    if (err || res.statusCode === 403) {
+      if (res && res.statusCode === 403) {
         cb('Database request unauthorized 403')
       } else {
         cb(err)
@@ -75,7 +75,7 @@ DatabaseClient.prototype.insert = function (data, cb) {
         } else {
           cb(null)
         }
-      } catch(err) {
+      } catch (err) {
         cb(err)
       }
     }
@@ -98,8 +98,8 @@ DatabaseClient.prototype.update = function (query, data, options, cb) {
       __database: self.db
     }
   }, function (err, res, body) {
-    if (err || res.statusCode == 403) {
-      if (res && res.statusCode == 403) {
+    if (err || res.statusCode === 403) {
+      if (res && res.statusCode === 403) {
         cb('Database request unauthorized 403')
       } else {
         cb(err)
@@ -112,7 +112,7 @@ DatabaseClient.prototype.update = function (query, data, options, cb) {
         } else {
           cb(null)
         }
-      } catch(err) {
+      } catch (err) {
         cb(err)
       }
     }
@@ -134,8 +134,8 @@ DatabaseClient.prototype.remove = function (query, options, cb) {
       __database: self.db
     }
   }, function (err, res, body) {
-    if (err || res.statusCode == 403) {
-      if (res && res.statusCode == 403) {
+    if (err || res.statusCode === 403) {
+      if (res && res.statusCode === 403) {
         cb('Database request unauthorized 403')
       } else {
         cb(err)
@@ -148,7 +148,7 @@ DatabaseClient.prototype.remove = function (query, options, cb) {
         } else {
           cb(null)
         }
-      } catch(err) {
+      } catch (err) {
         cb(err)
       }
     }

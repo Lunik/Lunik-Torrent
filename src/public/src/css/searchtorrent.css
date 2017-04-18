@@ -15,6 +15,10 @@
   vertical-align: top;
 }
 
+.searchtorrent-pop table:first-of-type{
+  margin-left: 5px;
+}
+
 @media only screen and (max-width: 750px) {
   .searchtorrent-pop table {
     display: block;
@@ -22,25 +26,7 @@
   }
 }
 
-.searchtorrent-pop img {
-  width: 100px;
-  margin: 0 20px;
-  border-radius: 2px;
-}
-
-.searchtorrent-pop img:hover {
-  width: 200px;
-}
-
 @media only screen and (max-width: 750px) {
-  .searchtorrent-pop img {
-    width: 50px;
-  }
-
-  .searchtorrent-pop img:hover {
-    width: 50px;
-  }
-
   .searchtorrent-pop .seed, .searchtorrent-pop .peer {
     display: none;
   }

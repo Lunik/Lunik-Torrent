@@ -56,7 +56,6 @@
   */
   _Torrent.prototype.getTorrents = function (cb) {
     App.Loading.show('action')
-    var self = this
     $.ajax({
       type: 'get',
       url: '/torrent/list',

@@ -1,26 +1,25 @@
 'use strict'
 
+var cloudscraper = require('cloudscraper')
 var fs = require('fs-extra')
 var Path = require('path')
-var Database = require(Path.join(__base, 'src/database/client.js'))
+var Database = require(Path.join(__workingDir, 'database/client.js'))
 var DB = {
   torrent: new Database('torrent', __config.database.host, __config.database.port, __DBtoken)
 }
 
-var Directory = require(Path.join(__base, 'src/worker/directory'))
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Directory = require(Path.join(__workingDir, 'worker/directory'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Torrent'
 })
-var Client = require(Path.join(__base, 'src/worker/client.js'))
+var Client = require(Path.join(__workingDir, 'worker/client.js'))
 
 /**
  * Torrent manager.
  * @constructor
 */
 function Torrent () {
-  var self = this
-
   DB.torrent.remove({}, { multi: true }, function (err) {
     if (err) {
       LogWorker.error(err)
@@ -29,10 +28,6 @@ function Torrent () {
 
   this.client = {}
   this.waitList = []
-
-  setInterval(function () {
-    self.startPointTorrent(self)
-  }, 30000)
 }
 
 /**
@@ -42,9 +37,25 @@ function Torrent () {
 Torrent.prototype.start = function (user, url) {
   var self = this
 
-  var start = function () {
+  var preprocess = function () {
+    if (url.match(/magnet.*/)) {
+      start(url)
+    } else if (url.match(/https?.*/g)) {
+      cloudscraper.get(url, function (err, res, body) {
+        if (err) {
+          LogWorker.error(err)
+          return
+        }
+        start(res.body)
+      })
+    } else {
+      LogWorker.error(`Cannot handle this kind of download: ${url}`)
+    }
+  }
+
+  var start = function (torrentId) {
     var c = new Client()
-    c.download(url, function (hash) {
+    c.download(torrentId, url, function (hash) {
       self.client[hash] = c
     }, function (err, torrent) {
       delete self.client[torrent.infoHash]
@@ -65,7 +76,7 @@ Torrent.prototype.start = function (user, url) {
       }
     })
   }
-  setTimeout(start)
+  setTimeout(preprocess)
 }
 
 /**
@@ -76,31 +87,6 @@ Torrent.prototype.remove = function (hash) {
   if (this.client[hash]) {
     this.client[hash].stop()
   }
-}
-
-/**
- * Start torrent into configured torrent file.
- * @param {object} self - Torrent instance.
-*/
-Torrent.prototype.startPointTorrent = function (self) {
-  fs.readFile(Path.join(__config.torrent.scanTorrent), 'utf-8', function (err, data) {
-    if (err) {
-      LogWorker.error(err)
-    } else {
-      var torrents = data.split('\n')
-      fs.writeFile(Path.join(__config.torrent.scanTorrent), '', 'utf-8', function (err) {
-        if (err) {
-          LogWorker.error(err)
-        } else {
-          torrents.forEach(function (element) {
-            if (element !== '') {
-              self.start('-', element)
-            }
-          })
-        }
-      })
-    }
-  })
 }
 
 Torrent.prototype.getInfo = function (cb) {

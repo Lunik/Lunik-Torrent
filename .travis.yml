@@ -2,10 +2,12 @@ notifications:
   email: false
 language: node_js
 node_js:
+- '7'
 - '6'
 - '5'
 env:
-- PORT="5000"
+- PORT="5000" AUTH=false
+- PORT="5000" AUTH=true
 script:
 - npm test
 cache:

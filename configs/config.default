@@ -5,7 +5,17 @@
   "server": {
     "port": 8080,
     "masterKey": "MY_KEY",
-    "duplication": 1
+    "duplication": 1,
+    "https": false,
+    "hostname": "",
+    "certs": {
+      "privatekey": "",
+      "certificate": "",
+      "chain": ""
+    }
+  },
+  "authentification": {
+    "status": false
   },
   "database": {
     "port": 33066,
@@ -14,7 +24,7 @@
   "client": {
     "downloads": "downloads/",
     "updateTimeout": 3000,
-    "timeout": 30000
+    "timeout": 300000
   },
   "directory": {
     "path": "files/"

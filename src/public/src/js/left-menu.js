@@ -116,6 +116,7 @@
   */
   _LeftMenu.prototype.switchTab = function (tabId) {
     var self = this
+    var a, i, action, input
     for (var t in this.vue.$data.tabs) {
       var tab = this.vue.$data.tabs[t]
 
@@ -125,15 +126,15 @@
         }
         tab.state = true
         self.vue.$data.currentAction = tab.actions[0]
-        for (var a in this.vue.$data.actions) {
-          var action = this.vue.$data.actions[a]
+        for (a in this.vue.$data.actions) {
+          action = this.vue.$data.actions[a]
 
           if (tab.actions.indexOf(action.class) !== -1) {
             action.state = true
           }
         }
-        for (var i in this.vue.$data.inputs) {
-          var input = this.vue.$data.inputs[i]
+        for (i in this.vue.$data.inputs) {
+          input = this.vue.$data.inputs[i]
 
           if (tab.inputs.indexOf(input.class) !== -1) {
             input.state = true
@@ -141,15 +142,15 @@
         }
       } else {
         tab.state = false
-        for (var a in this.vue.$data.actions) {
-          var action = this.vue.$data.actions[a]
+        for (a in this.vue.$data.actions) {
+          action = this.vue.$data.actions[a]
 
           if (tab.actions.indexOf(action.class) !== -1) {
             action.state = false
           }
         }
-        for (var i in this.vue.$data.inputs) {
-          var input = this.vue.$data.inputs[i]
+        for (i in this.vue.$data.inputs) {
+          input = this.vue.$data.inputs[i]
 
           if (tab.inputs.indexOf(input.class) !== -1) {
             input.state = false

@@ -85,3 +85,7 @@
 .left-menu .footer p{
   margin: 2px;
 }
+
+.left-menu .footer .logs{
+  font-size: 10px;
+}

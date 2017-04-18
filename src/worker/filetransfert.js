@@ -2,7 +2,7 @@
 var fs = require('fs')
 var Path = require('path')
 
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'FileTransfert'
 })
@@ -14,9 +14,9 @@ var LogWorker = new Log({
  * @param {object} res - http res object.
  * @param {callback} function - callback when transfert is complet.
  */
-function FileTransfert (req, res, callback) {
+function FileTransfert (req, res, file, callback) {
   var self = this
-  self.transfertNode(req, res, callback)
+  self.transfertNode(req, res, file, callback)
 }
 
 /**
@@ -25,11 +25,9 @@ function FileTransfert (req, res, callback) {
  * @param {object} res - http res object.
  * @param {callback} function - callback when transfert is complet.
  */
-FileTransfert.prototype.transfertNode = function (req, res, callback) {
-  var self = this
-
+FileTransfert.prototype.transfertNode = function (req, res, file, callback) {
   var transfertNode = function () {
-    var filename = Path.join(__base, `${__config.directory.path}${req.query.f}`)
+    var filename = Path.join(__base, `${__config.directory.path}${file}`)
     fs.stat(filename, function (err, stats) {
       if (err) {
         callback()
@@ -40,14 +38,14 @@ FileTransfert.prototype.transfertNode = function (req, res, callback) {
       if (stats) {
         res.download(filename, function (err) {
           if (err) {
-            LogWorker.error(`${req.cookies.user} error during download file: ${req.query.f}
+            LogWorker.error(`${req.cookies.user} error during download file: ${file}
  ${err}`)
             callback()
 
             res.status(500)
             res.end()
           } else {
-            LogWorker.info(`${req.cookies.user} finish download file: ${req.query.f}`)
+            LogWorker.info(`${req.cookies.user} finish download file: ${file}`)
             callback()
 
             res.end()

@@ -39,6 +39,10 @@
             <span class="bar"></span>
             <label for="login-pass">Password...</label>
           </div>
+          <div class="staylogged checkbox">
+            <input type="checkbox" name="staylogged" v-model="login.staylogged" id="login-stay-logged">
+            <label for="login-stay-logged"> Stay logged</label>
+          </div>
           <button class="submit button">Login</button>
         </div>
         <div class="register" v-show="register.state">
@@ -100,6 +104,10 @@
           <div class="switch button" id="register">Register</div>
           <div class="switch button" id="changepass">Change Password</div>
         </div>
+      </div>
+      <div class="footer">
+        <p><a target="_blank" href="https://github.com/Lunik/Lunik-Torrent/issues">FeedBack</a></p>
+        <p>Powered by <a target="_blank" href="https://github.com/Lunik">@Lunik</a></p>
       </div>
     </div>
     <script data-main="src/js/auth" src="src/bower_components/requirejs/require.js" async></script>

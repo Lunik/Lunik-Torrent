@@ -4,13 +4,17 @@ var path = require('path')
 var fs = require('fs')
 var rand = require('crypto-rand')
 var request = require('request')
+var Crypto = require('crypto-js')
 
 global.__base = path.join(__dirname, '..', '/')
+global.__workingDir = path.join(__base, 'src')
 
 var Config = require(path.join(__base, 'src/worker/config.js'))
 var ConfigWorker = new Config()
 global.__config = ConfigWorker.load(path.join(__base, 'configs/config.json'))
 global.__config.server.port = process.env.PORT || global.__config.server.port
+
+global.__config.authentification.status = process.env.AUTH
 
 var Rand = require('crypto-rand')
 var Crypto = require('crypto-js')
@@ -89,19 +93,19 @@ describe('Backend', function () {
     })
     describe('Loggin()', function () {
       it('User: foo, Pass: bar', function (done) {
-        Auth.login(username, 'bar', 'localhost', function (token) {
+        Auth.login(username, 'bar', 'localhost', 86400000, function (token) {
           assert.typeOf(token, 'string')
           done()
         })
       })
       it('User: Unknown, Pass: bar', function (done) {
-        Auth.login(username2, 'bar', 'localhost', function (token) {
+        Auth.login(username2, 'bar', 'localhost', 86400000, function (token) {
           assert(!token)
           done()
         })
       })
       it('User: foo, Pass: Wrong', function (done) {
-        Auth.login(username, 'test', 'localhost', function (token) {
+        Auth.login(username, 'test', 'localhost', 86400000, function (token) {
           assert(!token)
           done()
         })
@@ -109,7 +113,7 @@ describe('Backend', function () {
     })
     describe('Logout()', function () {
       it('User: foo, Token: valid', function (done) {
-        Auth.login(username, 'bar', 'localhost', function (token) {
+        Auth.login(username, 'bar', 'localhost', 86400000, function (token) {
           Auth.logout(username, token, function (loggedOut) {
             assert(loggedOut)
             done()
@@ -123,7 +127,7 @@ describe('Backend', function () {
         })
       })
       it('User: foo, Token: invalid', function (done) {
-        Auth.login(username, 'bar', 'localhost', function (token) {
+        Auth.login(username, 'bar', 'localhost', 86400000, function (token) {
           Auth.logout(username, token + '1', function (loggedOut) {
             assert(!loggedOut)
             done()
@@ -159,7 +163,7 @@ describe('Backend', function () {
     })
     describe('CheckLogged()', function () {
       it('User: foo', function (done) {
-        Auth.login(username, 'bar', 'localhost', function (token) {
+        Auth.login(username, 'bar', 'localhost', 86400000, function (token) {
           Auth.checkLogged(username, token, function (isLogged) {
             assert(isLogged)
             done()
@@ -237,7 +241,7 @@ describe('Backend', function () {
     describe('Dowload()', function () {
       this.timeout(305000)
       it('Dowload ubuntu', function (done) {
-        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511',
+        ClientWorker.download('magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511', 'magnet:?xt=urn:btih:63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b&dn=CentOS-7-x86_64-NetInstall-1511',
           function (hash) {
             assert.equal(hash, '63c393906fc843e7e4d1cba6bd4c5e16bf9e8e4b')
           }, function () {
@@ -258,7 +262,7 @@ describe('Backend', function () {
         this.timeout(30000)
         request(url, function (err, res, body) {
           assert(!err)
-          if (!err && res.statusCode == 200) {
+          if (!err && res.statusCode === 200) {
             assert(body.match('<title>Login - Lunik - Torrent</title>'))
           }
           done()
@@ -273,7 +277,7 @@ describe('Backend', function () {
           }
         }, function (err, res, body) {
           assert(!err)
-          if (!err && res.statusCode == 200) {
+          if (!err && res.statusCode === 200) {
             var invite = JSON.parse(body).invitationCode
             assert(invite)
           }
@@ -285,7 +289,7 @@ describe('Backend', function () {
           }
         }, function (err, res, body) {
           assert(!err)
-          if (!err && res.statusCode == 200) {
+          if (!err && res.statusCode === 200) {
             var invite = JSON.parse(body).invitationCode
             assert(invite)
             // register
@@ -298,7 +302,7 @@ describe('Backend', function () {
               }
             }, function (err, res, body) {
               assert(!err)
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 var token = JSON.parse(body).token
                 assert(token)
                 // login
@@ -310,7 +314,7 @@ describe('Backend', function () {
                   }
                 }, function (err, res, body) {
                   assert(!err)
-                  if (!err && res.statusCode == 200) {
+                  if (!err && res.statusCode === 200) {
                     var token = JSON.parse(body).token
                     assert(token)
                     // logout
@@ -322,8 +326,8 @@ describe('Backend', function () {
                       }
                     }, function (err, res, body) {
                       assert(!err)
-                      if (!err && res.statusCode == 200) {
-                        var err = JSON.parse(body).err
+                      if (!err && res.statusCode === 200) {
+                        err = JSON.parse(body).err
                         assert(!err)
                         request.post({
                           url: url + '/auth/changepass',
@@ -334,8 +338,8 @@ describe('Backend', function () {
                           }
                         }, function (err, res, body) {
                           assert(!err)
-                          if (!err && res.statusCode == 200) {
-                            var err = JSON.parse(body).err
+                          if (!err && res.statusCode === 200) {
+                            err = JSON.parse(body).err
                             assert(!err)
                             request.post({
                               url: url + '/auth/changepass',
@@ -346,8 +350,8 @@ describe('Backend', function () {
                               }
                             }, function (err, res, body) {
                               assert(!err)
-                              if (!err && res.statusCode == 200) {
-                                var err = JSON.parse(body).err
+                              if (!err && res.statusCode === 200) {
+                                err = JSON.parse(body).err
                                 assert(!err)
                               }
                               done()
@@ -367,7 +371,7 @@ describe('Backend', function () {
         Auth(url, user, pass, function (token) {
           var file = 'ok' + rand.rand()
           var r = rand.rand()
-          fs.writeFile(path.join(__base, __config.directory.path, file), r , function (err) {
+          fs.writeFile(path.join(__base, __config.directory.path, file), r, function (err) {
             assert(!err)
             request.get({
               url: url + '/files?f=' + file,
@@ -376,12 +380,29 @@ describe('Backend', function () {
               }
             }, function (err, res, body) {
               assert(!err)
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 assert.equal(body, r)
                 assert(!JSON.parse(body).err)
               }
               done()
             })
+          })
+        })
+      })
+      it('GET /direct', function () {
+        var file = 'ok' + rand.rand()
+        var r = rand.rand()
+        fs.writeFile(path.join(__base, __config.directory.path, file), r, function (err) {
+          assert(!err)
+          request.get({
+            url: url + '/directdl/' + Crypto.AES.encode(file, '').toString()
+          }, function (err, res, body) {
+            assert(!err)
+            if (!err && res.statusCode === 200) {
+              assert.equal(body, r)
+              assert(!JSON.parse(body).err)
+            }
+            done()
           })
         })
       })
@@ -393,7 +414,7 @@ describe('Backend', function () {
               Cookie: 'user=' + user + ';token=' + token
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               assert(Array.isArray(body))
@@ -416,7 +437,7 @@ describe('Backend', function () {
                 dir: dir
               }
             }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 body = JSON.parse(body)
                 assert(!body.err)
                 assert.typeOf(body, 'object')
@@ -440,7 +461,7 @@ describe('Backend', function () {
                 file: file
               }
             }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 body = JSON.parse(body)
                 assert(!body.err)
                 assert.equal(body.file, file)
@@ -467,7 +488,7 @@ describe('Backend', function () {
                 newname: file2
               }
             }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 body = JSON.parse(body)
                 assert(!body.err)
                 assert.equal(body.oldname, file)
@@ -491,7 +512,7 @@ describe('Backend', function () {
               name: dir
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               assert.equal(body.name, dir)
@@ -519,7 +540,7 @@ describe('Backend', function () {
                   folder: dir
                 }
               }, function (err, res, body) {
-                if (!err && res.statusCode == 200) {
+                if (!err && res.statusCode === 200) {
                   body = JSON.parse(body)
                   assert(!body.err)
                   assert.equal(body.file, file)
@@ -542,7 +563,7 @@ describe('Backend', function () {
               query: 'Game of Thrones'
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               assert.typeOf(body, 'object')
@@ -564,7 +585,7 @@ describe('Backend', function () {
               query: 'Game of Thrones'
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               assert.typeOf(body, 'object')
@@ -584,7 +605,7 @@ describe('Backend', function () {
                 Cookie: 'user=' + user + ';token=' + token
               }
             }, function (err, res, body) {
-              if (!err && res.statusCode == 200) {
+              if (!err && res.statusCode === 200) {
                 body = JSON.parse(body)
                 assert(!body.err)
                 done()
@@ -605,7 +626,7 @@ describe('Backend', function () {
               url: 'magnet:?xt=urn:btih:fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4&dn=CentOS-6.8-i386-netinstall'
             }
           }, function (err, res, body) {
-            if (!err && res.statusCode == 200) {
+            if (!err && res.statusCode === 200) {
               body = JSON.parse(body)
               assert(!body.err)
               request.post({
@@ -617,7 +638,7 @@ describe('Backend', function () {
                   hash: 'fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4'
                 }
               }, function (err, res, body) {
-                if (!err && res.statusCode == 200) {
+                if (!err && res.statusCode === 200) {
                   body = JSON.parse(body)
                   assert.equal(body.hash, 'fe00c3de0ce28bcc6724f309aa8e0fcc5e6e0bf4')
                   assert(!body.err)
@@ -713,20 +734,15 @@ describe('Backend', function () {
   describe('torrent', function () {
     var Torrent = require(path.join(__base, 'src/worker/torrent.js'))
     describe('Start()', function () {
-      it('startPointTorrent()', function (done) {
-        this.timeout(305000)
-        Torrent.setDownloader('admin', 'magnet:?xt=urn:btih:6377717b47564ca965283ed240c1b766eedb5a19&dn=CentOS-6.8-x86_64-netinstall')
-        fs.writeFile(path.join(__base, __config.torrent.scanTorrent),
-          'magnet:?xt=urn:btih:406bcd979f0f2650e859324d97efd0a1139328a0&dn=CentOS-5.11-i386-netinstall\n'
-          + 'magnet:?xt=urn:btih:2700d4801a22ab198428bf1b4a85b097bf0497d3&dn=CentOS-5.11-x86_64-netinstall\n'
-          + 'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso\n'
-          + 'magnet:?xt=urn:btih:6bf4c6b4b86dbfcc79180b042abc2bd60a9ca3a4&dn=ubuntu-16.10-server-i386.iso\n', function (err) {
-            assert(!err)
-            Torrent.startPointTorrent(Torrent)
-            setTimeout(function () {
-              done()
-            }, 60000)
-          })
+      it('start multiple torrent', function (done) {
+        this.timeout(300000)
+        Torrent.start('nobody', 'magnet:?xt=urn:btih:406bcd979f0f2650e859324d97efd0a1139328a0&dn=CentOS-5.11-i386-netinstall')
+        Torrent.start('nobody', 'magnet:?xt=urn:btih:2700d4801a22ab198428bf1b4a85b097bf0497d3&dn=CentOS-5.11-x86_64-netinstall')
+        Torrent.start('nobody', 'magnet:?xt=urn:btih:90289fd34dfc1cf8f316a268add8354c85334458&dn=ubuntu-16.04.1-server-amd64.iso')
+        Torrent.start('nobody', 'magnet:?xt=urn:btih:6bf4c6b4b86dbfcc79180b042abc2bd60a9ca3a4&dn=ubuntu-16.10-server-i386.iso')
+        setTimeout(function () {
+          done()
+        }, 10000)
       })
     })
     describe('remove()', function () {
@@ -753,7 +769,7 @@ function Auth (url, user, pass, cb) {
       pass: pass
     }
   }, function (err, res, body) {
-    if (!err && res.statusCode == 200) {
+    if (!err && res.statusCode === 200) {
       var token = JSON.parse(body).token
       cb(token)
     }

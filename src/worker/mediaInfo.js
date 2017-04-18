@@ -27,6 +27,7 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
           })
           return
         }
+
         callback({
           'type': 'series',
           'query': query,
@@ -34,7 +35,7 @@ MediaInfo.prototype.getMediaInfo = function (query, type, code, callback) {
           'link': data.tvseries.link.length > 0 ? data.tvseries.link[0].href : '',
           'description': data.tvseries.synopsisShort.replace(/<\/*p>/g, ''),
           'poster': data.tvseries.poster ? data.tvseries.poster.href : '',
-          'rating': `${Math.round((data.tvseries.statistics.pressRating + data.tvseries.statistics.userRating) / 2)}/5`
+          'rating': ((data.tvseries.statistics.pressRating || 0) + (data.tvseries.statistics.userRating || 0) / 2)
         })
       })
     } else if (type === 'movie') {

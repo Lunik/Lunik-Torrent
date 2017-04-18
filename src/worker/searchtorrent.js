@@ -1,6 +1,6 @@
 'use strict'
 
-/*var CPBAPI = require('cpasbien-api')
+/* var CPBAPI = require('cpasbien-api')
 var CpasbienApi = new CPBAPI()
 */
 var cloudscraper = require('cloudscraper')
@@ -11,7 +11,7 @@ var cheerio = require('cheerio')
  * @constructor
 */
 function SearchTorrent () {
-  this.url = new Buffer('aHR0cDovL3d3dy50b3JyZW50OS5iaXo=', 'base64').toString()
+  this.url = new Buffer('aHR0cDovL3d3dy50b3JyZW50OS5pbmZv', 'base64').toString()
 }
 
 /**
@@ -105,7 +105,6 @@ SearchTorrent.prototype.parse = function ($, tr) {
       torrent.seeds = $($($line.children()[2]).find('span')).text()
       torrent.leechs = $($line.children()[3]).text()
       torrent.torrent = `${self.url}/get_torrent/${$($line.children()[0]).find('a').attr('href').split('/').pop()}.torrent`
-      torrent.cover = `${self.url}/_pictures/${$($line.children()[0]).find('a').attr('href').split('/').pop()}.jpg`
       array.push(torrent)
     }
   }

@@ -1,12 +1,12 @@
 'use strict'
 var Path = require('path')
 var WebTorrent = require('webtorrent')
-var Database = require(Path.join(__base, 'src/database/client.js'))
+var Database = require(Path.join(__workingDir, 'database/client.js'))
 var DB = {
   torrent: new Database('torrent', __config.database.host, __config.database.port, __DBtoken)
 }
 
-var Log = require(Path.join(__base, 'src/worker/log.js'))
+var Log = require(Path.join(__workingDir, 'worker/log.js'))
 var LogWorker = new Log({
   module: 'Client'
 })
@@ -24,23 +24,22 @@ function Client () {
  * Download a torrent.
  * @param {string} torrentLink - The link or magnet of the torrent.
 */
-Client.prototype.download = function (torrentLink, cbStart, cbDone) {
+Client.prototype.download = function (torrentLink, url, cbStart, cbDone) {
   var self = this
 
   var download = function () {
-    LogWorker.info(`Start: ${torrentLink}`)
+    LogWorker.info(`Start: ${url}`)
 
     self.client = new WebTorrent()
 
     var timeout = setTimeout(function () {
+      LogWorker.warning(`${url} didn't start on time, removing it.`)
       self.stop()
     }, __config.client.timeout)
 
-    self.client.add(torrentLink, {
+    var torrent = self.client.add(torrentLink, {
       path: __config.torrent.downloads
     }, function (torrent) {
-      clearTimeout(timeout)
-
       LogWorker.info(`Start torrent: ${torrent.name}`)
       cbStart(torrent.infoHash)
 
@@ -70,6 +69,10 @@ Client.prototype.download = function (torrentLink, cbStart, cbDone) {
         self.doneFunction(null)
         cbDone('Download error', self.getTorrent(torrent))
       })
+    })
+
+    torrent.on('metadata', function () {
+      clearTimeout(timeout)
     })
   }
 

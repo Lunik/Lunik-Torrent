@@ -37,11 +37,11 @@ Log.prototype.error = function (text) {
 Log.prototype.save = function (text) {
   var self = this
   var save = function () {
-    var name = Path.join(__config.log.path, `log-${(new Date()).getDate()}-${((new Date()).getMonth() + 1)}`)
+    var name = self.getFile()
     fs.appendFile(name, `[${getDate()}] ${text}
 `, 'utf8', function (err) {
-      if (err) self.echo(`${colors.red.bold('[Error] ')}${err}`)
-    })
+  if (err) self.echo(`${colors.red.bold('[Error] ')}${err}`)
+})
   }
   setTimeout(save)
 }
@@ -58,6 +58,12 @@ Log.prototype.trace = function (text) {
   console.log(text)
   console.trace()
 }
+
+Log.prototype.getFile = function () {
+  var date = new Date()
+  return Path.join(__config.log.path, `log-${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)
+}
+
 function getDate () {
   var date = new Date()
   return formatDateNumbers(`${formatDateNumbers(date.getDate())}/${formatDateNumbers(date.getMonth() + 1)}/${formatDateNumbers(date.getFullYear())} ${formatDateNumbers(date.getHours())}:${formatDateNumbers(date.getMinutes())}:${formatDateNumbers(date.getSeconds())}`)

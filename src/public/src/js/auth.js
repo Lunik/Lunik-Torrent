@@ -10,6 +10,7 @@ var App = {}
         'notify-me': '../bower_components/notify.me/dist/js/notify-me'
       },
       shim: {
+        'crypto-js': [],
         'notify-me': ['jquery'],
         'loading': ['jquery', 'vue']
       }
@@ -22,122 +23,128 @@ var App = {}
       'vue'], function (jq, crypto, vue) {
       self.Crypto = crypto
       self.Vue = vue
-      self.v = new self.Vue({
-        el: '.auth',
-        data: {
-          login: {
-            state: true,
-            user: '',
-            pass: ''
-          },
-          register: {
-            state: false,
-            user: '',
-            pass: '',
-            pass2: ''
-          },
-          changepass: {
-            state: false,
-            user: '',
-            oldpass: '',
-            newpass: '',
-            newpass2: ''
-          },
-          invite: {
-            state: false
-          },
-          info: '',
-          currentSubmit: 'login'
-        }
-      })
+      self.main()
+    })
+  }
 
-      // Init auth input
-      $('input').blur(function () {
-        // check if the input has any value (if we've typed into it)
-        if ($(this).val()) {
-          $(this).addClass('used')
+  _App.prototype.main = function () {
+    var self = this
+    self.v = new self.Vue({
+      el: '.auth',
+      data: {
+        login: {
+          state: true,
+          user: '',
+          pass: '',
+          staylogged: false
+        },
+        register: {
+          state: false,
+          user: '',
+          pass: '',
+          pass2: ''
+        },
+        changepass: {
+          state: false,
+          user: '',
+          oldpass: '',
+          newpass: '',
+          newpass2: ''
+        },
+        invite: {
+          state: false
+        },
+        info: '',
+        currentSubmit: 'login'
+      }
+    })
+
+    // Init auth input
+    $('input').blur(function () {
+      // check if the input has any value (if we've typed into it)
+      if ($(this).val()) {
+        $(this).addClass('used')
+      } else {
+        $(this).removeClass('used')
+      }
+    })
+
+    // Trigger keydown event
+    $(window).keydown(function (event) {
+      switch (event.keyCode) {
+        case 13:
+          $(`.auth .${self.getCurrentSubmit()} button`).trigger('click')
+          break
+      }
+    })
+
+    $('.auth .switch #login').on('click', function () {
+      App.switch('login')
+    })
+    $('.auth .switch #register').on('click', function () {
+      App.switch('register')
+    })
+    $('.auth .switch #changepass').on('click', function () {
+      App.switch('changepass')
+    })
+
+    requirejs([
+      'notify-me',
+      'format',
+      'loading'], function (notif) {
+      self.updateHash()
+
+      $('.auth .login .submit').on('click', function () {
+        var loginData = self.getLogin()
+        if (loginData.user.length > 0 && loginData.pass.length) {
+          self.login(loginData.user, loginData.pass, loginData.staylogged)
         } else {
-          $(this).removeClass('used')
+          self.setInfo('User and Password are required.')
         }
       })
 
-      // Trigger keydown event
-      $(window).keydown(function (event) {
-        switch (event.keyCode) {
-          case 13:
-            $(`.auth .${self.getCurrentSubmit()} button`).trigger('click')
-            break
-        }
-      })
-
-      $('.auth .switch #login').on('click', function () {
-        App.switch('login')
-      })
-      $('.auth .switch #register').on('click', function () {
-        App.switch('register')
-      })
-      $('.auth .switch #changepass').on('click', function () {
-        App.switch('changepass')
-      })
-
-      requirejs([
-        'notify-me',
-        'format',
-        'loading'], function (notif) {
-        self.updateHash()
-
-        $('.auth .login .submit').on('click', function () {
-          var loginData = self.getLogin()
-          if (loginData.user.length > 0 && loginData.pass.length) {
-            self.login(loginData.user, loginData.pass)
-          } else {
-            self.setInfo('User and Password are required.')
-          }
-        })
-
-        $('.auth .register .submit').on('click', function () {
-          var registerData = self.getRegister()
-          if (App.hash) {
-            if (registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length) {
-              if (registerData.pass === registerData.pass2) {
-                self.register(registerData.user, registerData.pass, App.hash)
-              } else {
-                self.setInfo('The two Passwords must be identical.')
-              }
-            } else {
-              self.setInfo('User and Password are required.')
-            }
-          } else {
-            self.switch('invite')
-          }
-        })
-
-        $('.auth .changepass .submit').on('click', function () {
-          var changePassData = self.getChangePass()
-          if (changePassData.user.length > 0 && changePassData.oldpass.length && changePassData.newpass.length && changePassData.newpass2.length) {
-            if (changePassData.newpass === changePassData.newpass2) {
-              if (changePassData.newpass !== changePassData.oldpass) {
-                self.changePass(changePassData.user, changePassData.oldpass, changePassData.newpass)
-              } else {
-                self.setInfo('Same Password, nothing to change.')
-              }
+      $('.auth .register .submit').on('click', function () {
+        var registerData = self.getRegister()
+        if (App.hash) {
+          if (registerData.user.length > 0 && registerData.pass.length && registerData.pass2.length) {
+            if (registerData.pass === registerData.pass2) {
+              self.register(registerData.user, registerData.pass, App.hash)
             } else {
               self.setInfo('The two Passwords must be identical.')
             }
           } else {
-            self.setInfo('User, old Password and new Password are required.')
+            self.setInfo('User and Password are required.')
           }
-        })
-
-        $('.auth .invite input').keyup(function () {
-          var code = $(this).val()
-          if (code.length === 64) {
-            document.location.hash = `#${code}`
-          }
-        })
-
-        App.Loading.hide('app')
+        } else {
+          self.switch('invite')
+        }
       })
+
+      $('.auth .changepass .submit').on('click', function () {
+        var changePassData = self.getChangePass()
+        if (changePassData.user.length > 0 && changePassData.oldpass.length && changePassData.newpass.length && changePassData.newpass2.length) {
+          if (changePassData.newpass === changePassData.newpass2) {
+            if (changePassData.newpass !== changePassData.oldpass) {
+              self.changePass(changePassData.user, changePassData.oldpass, changePassData.newpass)
+            } else {
+              self.setInfo('Same Password, nothing to change.')
+            }
+          } else {
+            self.setInfo('The two Passwords must be identical.')
+          }
+        } else {
+          self.setInfo('User, old Password and new Password are required.')
+        }
+      })
+
+      $('.auth .invite input').keyup(function () {
+        var code = $(this).val()
+        if (code.length === 64) {
+          document.location.hash = `#${code}`
+        }
+      })
+
+      App.Loading.hide('app')
     })
   }
 
@@ -181,7 +188,8 @@ var App = {}
   _App.prototype.getLogin = function () {
     return {
       user: this.v.$data.login.user.toLowerCase(),
-      pass: App.Crypto.SHA256(this.v.$data.login.pass).toString()
+      pass: App.Crypto.SHA256(this.v.$data.login.pass).toString(),
+      staylogged: this.v.$data.login.staylogged
     }
   }
 
@@ -202,14 +210,15 @@ var App = {}
     }
   }
 
-  _App.prototype.login = function (user, pass) {
+  _App.prototype.login = function (user, pass, staylogged) {
     App.Loading.show('action')
     $.ajax({
       type: 'post',
       url: '/auth/login',
       data: {
         user: user,
-        pass: pass
+        pass: pass,
+        staylogged: staylogged
       },
       dataType: 'json',
       success: function (data) {
