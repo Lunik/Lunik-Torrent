@@ -6,8 +6,8 @@ node_js:
 - '6'
 - '5'
 env:
-- PORT="5000" AUTH=false
-- PORT="5000" AUTH=true
+- PORT="45682" AUTH=false
+- PORT="45682" AUTH=true
 script:
 - npm test
 cache:
