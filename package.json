@@ -35,7 +35,7 @@
     "request": "^2.80.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.3.0",
     "nodemon": "^1.11.0"
