@@ -19,7 +19,7 @@
     "allocine-api": "^0.1.9",
     "body-parser": "^1.17.2",
     "bower": "^1.8.0",
-    "cheerio": "^0.22.0",
+    "cheerio": "^1.0.0-rc.2",
     "cloudscraper": "^1.4.1",
     "colors": "^1.1.2",
     "compression": "^1.6.2",
