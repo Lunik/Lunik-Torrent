@@ -5,6 +5,9 @@
 [![Dependency Status](https://gemnasium.com/badges/github.com/Lunik/Lunik-Torrent.svg)](https://gemnasium.com/github.com/Lunik/Lunik-Torrent)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
+### New version
+I am currently develloping a new version with more recent technologies right now. Check out [Tcloud](https://github.com/Lunik/Tcloud) for more informations.
+
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Lunik-Torrent](#lunik-torrent)

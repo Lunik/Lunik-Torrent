@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "allocine-api": "^0.1.9",
-    "body-parser": "^1.17.2",
+    "body-parser": "^1.18.0",
     "bower": "^1.8.0",
     "cheerio": "^1.0.0-rc.2",
     "cloudscraper": "^1.4.1",
@@ -38,7 +38,7 @@
     "chai": "^4.0.2",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.12.0"
   },
   "standard": {
     "ignore": [
